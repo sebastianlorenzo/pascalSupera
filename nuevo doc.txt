@@ -15,8 +15,6 @@ juanfraa 2222
 
 hhhh
 
-<<<<<<< HEAD
 jaunfra 333
-=======
+
 última prueba!!!!!!!
->>>>>>> 03486f453a5c3a9ba19def9e0c83ebed0f64eaaa
