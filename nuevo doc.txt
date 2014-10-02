@@ -10,8 +10,7 @@ va otro
 
 juanfraaa
 
-<<<<<<< HEAD
+
 juanfraa 2222
-=======
+
 hhhh
->>>>>>> 9d53a9be6d26a416451a39d358f45097a00af31a
