@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.*;
 
 import persistencia.UsuarioDAO;
-import persistencia.UsuarioDAOImpl;
 import dominio.Usuario;
 
 @Stateless
@@ -15,16 +14,13 @@ public class ServiciosSeguridadImpl implements ServiciosSeguridad{
 	@EJB
 	private UsuarioDAO usuarioDAO;
 	
-	public ServiciosSeguridadImpl() {
-		this.usuarioDAO = new UsuarioDAOImpl();
-	}
-	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean existeUsuario(String login, String password) 
 	{
 		//try
 		//{
 			List<Usuario> usuarios = this.usuarioDAO.buscarUsuario(login, password);
+
 			return usuarios != null && usuarios.size() > 0;
 		/*}
 		catch (Throwable ex)
@@ -35,7 +31,7 @@ public class ServiciosSeguridadImpl implements ServiciosSeguridad{
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public void agregarUsuario(){
-		Usuario u = new Usuario(2, "aa", "aa");
+		Usuario u = new Usuario(2, "juan", "123", "j@h.com", "equipo");
 		usuarioDAO.insert(u);
 	}
 	

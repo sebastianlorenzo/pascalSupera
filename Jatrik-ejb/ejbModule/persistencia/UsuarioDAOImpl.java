@@ -1,10 +1,8 @@
 package persistencia;
 
-import java.util.*;
+import java.util.List;
 
 import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import dominio.Usuario;
@@ -13,10 +11,8 @@ import dominio.Usuario;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class UsuarioDAOImpl implements UsuarioDAO {
 
-	@PersistenceContext(unitName="USUARIOS_UNIT")
-	private EntityManager em;
-	
-	public UsuarioDAOImpl(){}
+	@javax.persistence.PersistenceContext(unitName="USUARIOS_UNIT")
+	private javax.persistence.EntityManager em;
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Usuario insert(Usuario entity)
@@ -31,7 +27,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			throw ExceptionManager.process(ex);
 		}*/
 	}
-
+	
 	@Override
 	public void update(Usuario entity) {
 		// TODO Auto-generated method stub
@@ -64,7 +60,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	@Override
 	public List<Usuario> buscarUsuario(String login, String password) {
-		Query query = em.createQuery("SELECT u FROM Usuario u WHERE login = ?1").setParameter(1, login);
+		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login and u.password = :password");
+		query.setParameter("login", login);
+		/*query.setParameter("password", password);*/
 		List<Usuario> resultList = query.getResultList();
 		return resultList;
 	}
