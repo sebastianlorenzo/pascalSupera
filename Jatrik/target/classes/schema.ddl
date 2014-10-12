@@ -1,4 +1,9 @@
 
+    create table public.campeonato_equipo (
+        campeonatos_campeonato varchar(255) not null,
+        equipos_equipo varchar(255) not null
+    );
+
     create table public.campeonato_partido (
         campeonato_campeonato varchar(255) not null,
         partidos_partido varchar(255) not null
@@ -84,6 +89,16 @@
 
     alter table public.estadio 
         add constraint UK_skdonnocr2o2l7vr9x3wh3p5e  unique (capacidad);
+
+    alter table public.campeonato_equipo 
+        add constraint FK_k7mcfwfovv12itg9awsyblm8d 
+        foreign key (equipos_equipo) 
+        references public.equipo;
+
+    alter table public.campeonato_equipo 
+        add constraint FK_3851qsbu1o421r2aitupqvyu5 
+        foreign key (campeonatos_campeonato) 
+        references public.campeonato;
 
     alter table public.campeonato_partido 
         add constraint FK_qel622wydwywu34avof4n9wpi 
