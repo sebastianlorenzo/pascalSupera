@@ -3,7 +3,7 @@
   <display-name>Jatrik</display-name>
   <servlet>
     <description>JAX-RS Tools Generated</description>
-    <servlet-name>Login</servlet-name>
+    <servlet-name>JatrikServlet</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
         <param-name>com.sun.jersey.config.property.packages</param-name>
@@ -12,7 +12,7 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Login</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
+    <servlet-name>JatrikServlet</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
   </servlet-mapping>
 </web-app>
