@@ -12,13 +12,14 @@ import negocio.IUsuarioController;
 
 @ManagedBean
 @ViewScoped
-@Path("/login/{nomUsuario}/{passUsuario}")
+@Path("/")
 public class UsuarioWS {
 	@EJB
 	private  IUsuarioController iusuarioController;
 	  
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("login/{nomUsuario}/{passUsuario}")
     public String getLoginUsuario(@PathParam("nomUsuario") String nomUsuario, @PathParam("passUsuario") String passUsuario) {
     	Boolean b =  iusuarioController.existeUsuario(nomUsuario, passUsuario);
     	JSONObject json = new JSONObject();
