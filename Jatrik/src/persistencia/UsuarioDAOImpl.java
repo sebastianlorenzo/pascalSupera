@@ -73,9 +73,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 		
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Usuario> buscarUsuario(String login){
-		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login");
+	public List<Usuario> buscarUsuario(String login, String password){
+		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login and u.password = :password");
 		query.setParameter("login", login);
+		query.setParameter("password", password);
 		List<Usuario> resultList = query.getResultList();
 		return resultList;
 	}
