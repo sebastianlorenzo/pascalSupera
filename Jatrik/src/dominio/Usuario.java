@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jettison.json.JSONObject;
+
 @Entity
 @Table (name = "usuario", schema = "public")
 public class Usuario implements java.io.Serializable{
@@ -81,5 +83,17 @@ public class Usuario implements java.io.Serializable{
 	public void setEsAdmin(boolean es_admin) {
 		this.es_admin = es_admin;
 	}
+	
+	public JSONObject getJson() {
+        JSONObject json = new JSONObject();
+        try{
+            json.put("login",this.login);
+            json.put("password",this.password);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return json;
+    }
 	
 }
