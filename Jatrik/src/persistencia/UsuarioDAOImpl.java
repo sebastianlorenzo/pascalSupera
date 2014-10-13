@@ -77,8 +77,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login and u.password = :password");
 		query.setParameter("login", login);
 		query.setParameter("password", password);
-		List<Usuario> resultList = query.getResultList();
-		return resultList;
+		List<Usuario> resultado = query.getResultList();
+		return resultado;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -86,6 +86,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		Query query = em.createQuery("SELECT u FROM Usuario u");
 		List<Usuario> resultList = query.getResultList();
 		return resultList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public boolean existeUsuarioRegistrado(String login){
+		return (em.find(Usuario.class, login) != null);
 	}
 	
 }

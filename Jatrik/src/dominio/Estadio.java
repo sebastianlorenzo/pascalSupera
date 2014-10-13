@@ -37,12 +37,11 @@ public class Estadio implements java.io.Serializable {
 	public Estadio() {
 	}
 
-	public Estadio(String estadio, int capacidad, Equipo equipo,
-			Collection<Partido> partidos) {
+	public Estadio(String estadio, int capacidad) {
 		this.estadio = estadio;
 		this.capacidad = capacidad;
-		this.equipo = equipo;
-		this.partidos = partidos;
+		this.equipo = null;
+		this.partidos = null;
 	}
 
 	

@@ -14,10 +14,18 @@ public class EstadioDAOImpl implements EstadioDAO {
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
 
-	@Override
-	public Estadio insert(Estadio entity) {
-		// TODO Auto-generated method stub
-		return null;
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Estadio insert(Estadio e) {
+		try
+		{
+			em.persist(e);
+			return e;
+		}
+		catch (Throwable ex)
+		{
+			System.out.println("EXCEPCIÓN: " + ex.getClass());
+            return null;
+		}
 	}
 
 	@Override

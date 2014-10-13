@@ -44,17 +44,15 @@ public class Equipo implements java.io.Serializable{
 	public Equipo() {
 	}
 
-	public Equipo(String equipo, String pais, String localidad, Estadio estadio,
-			Usuario usuario, Collection <Jugador> jugadores, Collection <Partido> partidos) {
+	public Equipo(String equipo, String pais, String localidad) {
 		
 		this.equipo = equipo;
 		this.pais = pais;
 		this.localidad = localidad;
-		this.estadio = estadio;
-		this.usuario = usuario;		
-		this.jugadores = jugadores;
-		this.partidos = partidos;
-
+		this.estadio = null;
+		this.usuario = null;		
+		this.jugadores = null;
+		this.partidos = null;
 	}
 
 	public String getEquipo() {

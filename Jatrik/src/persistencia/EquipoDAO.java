@@ -1,7 +1,9 @@
 package persistencia;
 
 import java.util.List;
+
 import javax.ejb.Local;
+
 import dominio.Equipo;
 
 @Local
@@ -18,5 +20,7 @@ public interface EquipoDAO {
 	public List<Equipo> obtenerTodosEquipos();	
 	
 	public List<String> obtenerPaises();
+	
+	public boolean existeEquipo(String equipo);
 
 }

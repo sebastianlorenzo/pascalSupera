@@ -31,11 +31,11 @@ public class Usuario implements java.io.Serializable{
 	public Usuario() {
 	}
 	
-	public Usuario(String login, String password, String mail, Equipo equipo, boolean conectado, boolean es_admin) {
+	public Usuario(String login, String password, String mail) {
 		this.login = login;
 		this.password = password;
 		this.mail = mail;
-		this.equipo = equipo;
+		this.equipo = null;
 		this.conectado = true;
 		this.es_admin = false;
 	}

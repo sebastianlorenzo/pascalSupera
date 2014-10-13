@@ -27,4 +27,5 @@ public interface UsuarioDAO {
 	
 	public List<Usuario> obtenerTodos();
 	
+	public boolean existeUsuarioRegistrado(String login);
 }
