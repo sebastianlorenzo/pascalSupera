@@ -43,7 +43,7 @@ public class UsuarioController implements IUsuarioController{
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONObject ingresarUsuario(String login, String password, String mail,
-			String equipo, String pais, String localidad) {
+			String equipo, String pais, String localidad, String estadio) {
 		
 		Boolean encontreUsuario = this.usuarioDAO.existeUsuarioRegistrado(login);
 		Boolean encontreEquipo = this.iEquipoController.existeEquipoRegistrado(equipo);
@@ -69,7 +69,7 @@ public class UsuarioController implements IUsuarioController{
 		        }
 		}else{
 			Usuario u = new Usuario(login, password, mail);
-			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad);
+			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad, estadio);
 			u.setEquipo(nuevoequipo);
 			this.usuarioDAO.insertarUsuario(u);
 			try{

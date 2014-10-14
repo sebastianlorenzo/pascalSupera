@@ -12,6 +12,7 @@ import dominio.Jugador;
 import dominio.Estadio;
 import dominio.Usuario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -50,10 +51,13 @@ public class Equipo implements java.io.Serializable{
 		this.pais = pais;
 		this.localidad = localidad;
 		this.estadio = null;
-		this.usuario = null;		
-		this.jugadores = null;
-		this.partidos = null;
-		this.campeonatos = null;
+		this.usuario = null;
+		Collection<Jugador> jugadores = new ArrayList<Jugador>();
+		this.jugadores = jugadores;
+		Collection<Partido> partidos = new ArrayList<Partido>();
+		this.partidos = partidos;
+		Collection<Campeonato> campeonatos = new ArrayList<Campeonato>();
+		this.campeonatos = campeonatos;
 	}
 
 	public String getEquipo() {

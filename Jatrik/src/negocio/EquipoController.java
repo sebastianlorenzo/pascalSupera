@@ -5,12 +5,13 @@ import javax.ejb.*;
 import dominio.Equipo;
 import dominio.Estadio;
 import persistencia.EquipoDAO;
-import persistencia.EquipoDAOImpl;
 import persistencia.EstadioDAO;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class EquipoController implements IEquipoController{
+	
+	static final int MAX_CAPACIDAD = 10000;
 	
 	@EJB
 	private EquipoDAO equipoDAO;
@@ -23,11 +24,11 @@ public class EquipoController implements IEquipoController{
 		return this.equipoDAO.existeEquipo(equipo);
 	}
 	
-	public Equipo crearEquipo(String equipo, String pais, String localidad){
+	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio){
 		
 		Equipo e = new Equipo(equipo, pais, localidad);
-		int capacidadAleatoria = (int) (Math.random() + 1000);
-		Estadio estadio = new Estadio("Estadio "+equipo, capacidadAleatoria);
+		int capacidad = MAX_CAPACIDAD;
+		Estadio estadio = new Estadio(nomestadio, capacidad);
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
 		this.equipoDAO.insertarEquipo(e);
