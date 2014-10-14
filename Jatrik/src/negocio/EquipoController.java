@@ -6,6 +6,7 @@ import dominio.Equipo;
 import dominio.Estadio;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
+import persistencia.EstadioDAO;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -13,6 +14,9 @@ public class EquipoController implements IEquipoController{
 	
 	@EJB
 	private EquipoDAO equipoDAO;
+	
+	@EJB
+	private EstadioDAO estadioDAO;
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean existeEquipoRegistrado(String equipo) {
@@ -22,10 +26,12 @@ public class EquipoController implements IEquipoController{
 	public Equipo crearEquipo(String equipo, String pais, String localidad){
 		
 		Equipo e = new Equipo(equipo, pais, localidad);
-		Estadio estadio = new Estadio("Estadio "+equipo, 10000);
-		//e.setEstadio(estadio);
-		//estadio.setEquipo(e);
+		int capacidadAleatoria = (int) (Math.random() + 1000);
+		Estadio estadio = new Estadio("Estadio "+equipo, capacidadAleatoria);
+		this.estadioDAO.insertarEstadio(estadio);
+		e.setEstadio(estadio);
 		this.equipoDAO.insertarEquipo(e);
+		estadio.setEquipo(e);
 		return e;
 	}
 }

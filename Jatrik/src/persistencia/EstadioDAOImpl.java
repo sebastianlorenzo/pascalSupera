@@ -15,7 +15,7 @@ public class EstadioDAOImpl implements EstadioDAO {
 	private javax.persistence.EntityManager em;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Estadio insert(Estadio e) {
+	public Estadio insertarEstadio(Estadio e) {
 		try
 		{
 			em.persist(e);
@@ -30,31 +30,26 @@ public class EstadioDAOImpl implements EstadioDAO {
 
 	@Override
 	public void update(Estadio entity) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void delete(Estadio entity) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Estadio findById(Integer id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Estadio> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

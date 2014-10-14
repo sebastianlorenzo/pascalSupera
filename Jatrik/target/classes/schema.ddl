@@ -40,7 +40,7 @@
     create table public.estadio (
         estadio varchar(255) not null,
         capacidad int4 not null,
-        equipo varchar(255) not null,
+        equipo varchar(255),
         primary key (estadio)
     );
 
@@ -86,9 +86,6 @@
 
     alter table public.estadio_partido 
         add constraint UK_6ajiscv5xwex5i7hg445t9lxb  unique (partidos_partido);
-
-    alter table public.estadio 
-        add constraint UK_skdonnocr2o2l7vr9x3wh3p5e  unique (capacidad);
 
     alter table public.campeonato_equipo 
         add constraint FK_k7mcfwfovv12itg9awsyblm8d 

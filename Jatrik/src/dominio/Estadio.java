@@ -21,14 +21,11 @@ public class Estadio implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "estadio", unique = true, nullable = false)
 	private String estadio;
-	
-	@Column(name = "capacidad", unique = true, nullable = false)
 	private int capacidad;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "equipo", nullable = false)
+	@JoinColumn(name = "equipo", nullable = true)
 	private Equipo equipo;
 	
 	@OneToMany(fetch = FetchType.LAZY)

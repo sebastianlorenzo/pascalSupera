@@ -9,11 +9,11 @@ import dominio.Estadio;
 @Local
 public interface EstadioDAO {
 
-	public Estadio insert(Estadio entity);
+	public Estadio insertarEstadio(Estadio estadio);
 	
-	public void update(Estadio entity);
+	public void update(Estadio estadio);
 	
-	public void delete(Estadio entity);
+	public void delete(Estadio estadio);
 	
 	public void delete(Integer id);
 	
