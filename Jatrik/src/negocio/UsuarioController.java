@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.*;
 
+import org.codehaus.jettison.json.JSONObject;
+
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import dominio.Equipo;
@@ -40,21 +42,46 @@ public class UsuarioController implements IUsuarioController{
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean ingresarUsuario(String login, String password, String mail,
+	public JSONObject ingresarUsuario(String login, String password, String mail,
 			String equipo, String pais, String localidad) {
 		
 		Boolean encontreUsuario = this.usuarioDAO.existeUsuarioRegistrado(login);
 		Boolean encontreEquipo = this.iEquipoController.existeEquipoRegistrado(equipo);
 		
-		if((encontreUsuario) || (encontreEquipo)){
-			return false;
+		JSONObject jsonRegistrar = new JSONObject();
+   	 			
+		if(encontreUsuario){
+			
+			try{
+		   	 	jsonRegistrar.put("registrado:", false);
+		   	 	jsonRegistrar.put("mensaje:", "ERROR: Existe usuario con ese nombre.");
+		        }
+		        catch(Exception ex){
+		            ex.printStackTrace();
+		        }
+		}else if(encontreEquipo){
+			try{
+		   	 	jsonRegistrar.put("registrado:", false);
+		   	 	jsonRegistrar.put("mensaje:", "ERROR: Existe equipo con mismo nombre.");
+		        }
+		        catch(Exception ex){
+		            ex.printStackTrace();
+		        }
+		}else{
+			Usuario u = new Usuario(login, password, mail);
+			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad);
+			u.setEquipo(nuevoequipo);
+			this.usuarioDAO.insertarUsuario(u);
+			try{
+		   	 	jsonRegistrar.put("registrado:", true);
+		   	 	jsonRegistrar.put("mensaje:","Usuario registrado.");
+		        }
+		        catch(Exception ex){
+		            ex.printStackTrace();
+		        }
 		}
+		return jsonRegistrar;
 		
-		Usuario u = new Usuario(login, password, mail);
-		Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad);
-		u.setEquipo(nuevoequipo);
-		this.usuarioDAO.insertarUsuario(u);
-		return true;
 	}
 
 }
