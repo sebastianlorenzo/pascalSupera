@@ -6,6 +6,8 @@ import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import dominio.Usuario;
 
+
+//luego lo borramos
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ServiciosSeguridadImpl implements ServiciosSeguridad{
