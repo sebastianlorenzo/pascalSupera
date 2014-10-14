@@ -9,7 +9,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import dominio.*;
 

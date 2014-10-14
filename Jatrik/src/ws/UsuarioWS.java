@@ -1,19 +1,13 @@
 package ws;
 
-import java.util.Arrays;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.bean.ViewScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import com.google.gson.Gson;
-import dominio.Equipo;
-import dominio.Usuario;
 import negocio.IUsuarioController;
 
 @ManagedBean
