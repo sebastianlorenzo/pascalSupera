@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import dominio.*;
 
@@ -61,12 +62,15 @@ public class EquipoDAOImpl implements EquipoDAO{
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Equipo encontrarEquipo(String equipo) {
-		return null;
+		return em.find(Equipo.class, equipo);
 	}
 
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Equipo> obtenerTodosEquipos() {
-		return null;
+		Query query = em.createQuery("SELECT eq FROM Equipo eq");
+		List<Equipo> resultList = query.getResultList();
+		return resultList;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

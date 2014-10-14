@@ -81,6 +81,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return ((Usuario) query.getSingleResult());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Usuario> obtenerTodos(){
 		Query query = em.createQuery("SELECT u FROM Usuario u");

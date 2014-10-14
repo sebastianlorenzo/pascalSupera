@@ -1,11 +1,15 @@
 package negocio;
 
+import java.util.List;
+
 import javax.ejb.*;
 
 import dominio.Equipo;
 import dominio.Estadio;
+import dominio.Jugador;
 import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
+import persistencia.JugadorDAO;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -19,6 +23,9 @@ public class EquipoController implements IEquipoController{
 	@EJB
 	private EstadioDAO estadioDAO;
 	
+	@EJB
+	private JugadorDAO jugadorDAO;
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean existeEquipoRegistrado(String equipo) {
 		return this.equipoDAO.existeEquipo(equipo);
@@ -31,6 +38,10 @@ public class EquipoController implements IEquipoController{
 		Estadio estadio = new Estadio(nomestadio, capacidad);
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
+		
+		//agregar jugadores aquí
+		List<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
+		
 		this.equipoDAO.insertarEquipo(e);
 		estadio.setEquipo(e);
 		return e;
