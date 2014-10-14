@@ -52,7 +52,7 @@ public class UsuarioWS {
     							   @PathParam("mail") String mail, @PathParam("nombreEquipo") String nombreEquipo,
     							   @PathParam("pais") String pais, @PathParam("localidad") String localidad){
     	
-    	/*Cambiar esto por la función registrarUsuario */
+    	
     	Boolean b = this.iusuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, localidad);
     	
     	/*Gson g = new Gson();

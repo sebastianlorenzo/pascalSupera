@@ -53,6 +53,7 @@ public class Equipo implements java.io.Serializable{
 		this.usuario = null;		
 		this.jugadores = null;
 		this.partidos = null;
+		this.campeonatos = null;
 	}
 
 	public String getEquipo() {
@@ -109,6 +110,14 @@ public class Equipo implements java.io.Serializable{
 
 	public Collection<Partido> getPartidos() {
 		return this.partidos;
+	}
+	
+	public void setCampeonatos(Collection<Campeonato> campeonatos) {
+		this.campeonatos = campeonatos;
+	}
+
+	public Collection<Campeonato> getCampeonatos() {
+		return this.campeonatos;
 	}
 
 }

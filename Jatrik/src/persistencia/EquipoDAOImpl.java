@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,7 +11,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import dominio.Equipo;
+import dominio.*;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -33,32 +34,40 @@ public class EquipoDAOImpl implements EquipoDAO{
 		}
 	}
 
-	@Override
-	public void actualizarEquipo(Equipo e) {
-		// TODO Auto-generated method stub
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public boolean actualizarEquipo(String equipo, String pais, String localidad,
+			Estadio estadio, Usuario usuario, Collection<Jugador> jugadores,
+			Collection<Partido> partidos, Collection<Campeonato> campeonatos) {
+		Equipo e = em.find(Equipo.class, equipo);
+		if (e != null){
+			e.setEquipo(equipo);
+			e.setPais(pais);
+			e.setLocalidad(localidad);
+			e.setEstadio(estadio);
+			e.setUsuario(usuario);
+			e.setJugadores(jugadores);
+			e.setPartidos(partidos);
+			e.setCampeonatos(campeonatos);
+			em.merge(e);
+			return true;
+		}else
+			return false;
 		
 	}
 
-	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void borrarEquipo(Equipo e) {
-		// TODO Auto-generated method stub	
+		em.remove(e);	
 	}
 
-	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Equipo encontrarEquipo(String equipo) {
 		return null;
 	}
 
-	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Equipo> obtenerTodosEquipos() {
 		return null;
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<String> obtenerPaises() {
-		Query query = em.createQuery("Select distinct(pais) from Equipo e order by pais");
-		List<String> paises = query.getResultList();
-		return paises;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

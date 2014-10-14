@@ -41,7 +41,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			em.merge(u);
 			return true;
 		}else
-			return false;				
+			return false;	
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -54,7 +54,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return em.find(Usuario.class, login);
 	}
 
-		@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void setearConectado(String login){
 		Usuario u = em.find(Usuario.class, login);
 		if (u != null){
@@ -73,12 +73,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 		
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Usuario> buscarUsuario(String login, String password){
-		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login and u.password = :password");
+	public Usuario buscarUsuario(String login, String password){
+		Query query = em.createQuery("SELECT u FROM Usuario u "
+				+ "WHERE u.login = :login and u.password = :password");
 		query.setParameter("login", login);
 		query.setParameter("password", password);
-		List<Usuario> resultado = query.getResultList();
-		return resultado;
+		return ((Usuario) query.getSingleResult());
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

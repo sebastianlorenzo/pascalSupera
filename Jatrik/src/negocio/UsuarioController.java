@@ -29,8 +29,8 @@ public class UsuarioController implements IUsuarioController{
 	{
 		try
 		{
-			List<Usuario> usuarios = this.usuarioDAO.buscarUsuario(login, password);
-			return usuarios != null && usuarios.size() > 0;
+			Usuario usuario = this.usuarioDAO.buscarUsuario(login, password);
+			return usuario != null;
 		}
 		catch (Throwable ex)
 		{
@@ -56,6 +56,5 @@ public class UsuarioController implements IUsuarioController{
 		this.usuarioDAO.insertarUsuario(u);
 		return true;
 	}
-		
 
 }

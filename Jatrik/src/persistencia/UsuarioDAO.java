@@ -23,7 +23,7 @@ public interface UsuarioDAO {
 	
 	public void setearDesconectado(String login);	
 	
-	public List<Usuario> buscarUsuario(String login, String password);
+	public Usuario buscarUsuario(String login, String password);
 	
 	public List<Usuario> obtenerTodos();
 	
