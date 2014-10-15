@@ -96,11 +96,11 @@ public class Jugador implements java.io.Serializable {
 		this.defensa = defensa;
 	}
 
-	public Integer getPortería() {
+	public Integer getPorteria() {
 		return porteria;
 	}
 
-	public void setPortería(Integer porteria) {
+	public void setPorteria(Integer porteria) {
 		this.porteria = porteria;
 	}
 
