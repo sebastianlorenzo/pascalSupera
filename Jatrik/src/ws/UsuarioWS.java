@@ -48,18 +48,19 @@ public class UsuarioWS {
     	
     }
     
+    /*
     @GET
     @Path("pruebaRegistrar/")
     public String registrar() throws JSONException {
     	JSONObject datosUsr = new JSONObject();
-		datosUsr.put("login", "nom");
+		datosUsr.put("login", "nomUsr");
 		datosUsr.put("password", "passUsr");
 		datosUsr.put("mail", "mailUsr");
-		datosUsr.put("nombreEquipo", "equipN");
+		datosUsr.put("nombreEquipo", "equipoUsr");
 		datosUsr.put("pais", "paisUsr");
 		datosUsr.put("localidad", "localidadUsr");
-		datosUsr.put("nombreEstadio", "estadio");
+		datosUsr.put("nombreEstadio", "estadioUsr");
 		return registrarUsuario(datosUsr);
     }
-    
+    */
 }
