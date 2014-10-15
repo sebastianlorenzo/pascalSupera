@@ -1,6 +1,6 @@
 package persistencia;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,11 +21,10 @@ public class JugadorDAOImpl implements JugadorDAO{
 	
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Jugador> obtenerJugadoresSinEquipo(){
-		/*Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo_equipo is null");
-		List<Jugador> resultList = query.getResultList();
-		return resultList;*/
-		return null;
+	public ArrayList<Jugador> obtenerJugadoresSinEquipo(){
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY");
+		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
+		return resultList;
 	}
 
 }

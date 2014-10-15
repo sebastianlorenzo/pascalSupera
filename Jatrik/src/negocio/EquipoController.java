@@ -1,6 +1,8 @@
 package negocio;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.ejb.*;
 
@@ -39,11 +41,25 @@ public class EquipoController implements IEquipoController{
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
 		
-		//agregar jugadores aquí
-		List<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
+//poner un tope de jugadores
+		ArrayList<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
+		Collection<Jugador> jug = new ArrayList<Jugador>();
+		Iterator<Jugador> iter = jugadores.iterator();
+		while(iter.hasNext()){
+			Jugador j = iter.next();
+			jug.add(j);		
+		}
+		e.setJugadores(jug);
 		
 		this.equipoDAO.insertarEquipo(e);
 		estadio.setEquipo(e);
+		
+		Iterator<Jugador> iterdos = jug.iterator();
+		while(iterdos.hasNext()){
+			Jugador j = iterdos.next();
+			j.setEquipo(e);	
+		}
+
 		return e;
 	}
 }

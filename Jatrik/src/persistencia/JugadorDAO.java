@@ -1,11 +1,11 @@
 package persistencia;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import dominio.Jugador;
 
 public interface JugadorDAO {
 	
-	public List<Jugador> obtenerJugadoresSinEquipo();
+	public ArrayList<Jugador> obtenerJugadoresSinEquipo();
 
 }
