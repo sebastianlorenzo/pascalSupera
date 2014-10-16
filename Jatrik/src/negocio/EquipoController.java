@@ -18,6 +18,7 @@ import persistencia.JugadorDAO;
 public class EquipoController implements IEquipoController{
 	
 	static final int MAX_CAPACIDAD = 10000;
+	static final int MAX_CANT_JUG = 2;
 	
 	@EJB
 	private EquipoDAO equipoDAO;
@@ -45,10 +46,13 @@ public class EquipoController implements IEquipoController{
 		ArrayList<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
 		Collection<Jugador> jug = new ArrayList<Jugador>();
 		Iterator<Jugador> iter = jugadores.iterator();
-		while(iter.hasNext()){
+		int cant = 1;
+		while(iter.hasNext() && (cant<= MAX_CANT_JUG)){
 			Jugador j = iter.next();
-			jug.add(j);		
+			jug.add(j);	
+			cant++;
 		}
+
 		e.setJugadores(jug);
 		
 		this.equipoDAO.insertarEquipo(e);
