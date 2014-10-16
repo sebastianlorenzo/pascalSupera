@@ -8,6 +8,7 @@
 		<class>dominio.Estadio</class>
 		<class>dominio.Partido</class>
 		<class>dominio.Campeonato</class>
+		<class>dominio.Pais</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.default_schema" value="public"/>

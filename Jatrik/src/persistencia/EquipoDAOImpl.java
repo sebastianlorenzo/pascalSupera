@@ -11,6 +11,10 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import dominio.*;
 
 @Stateless
@@ -76,5 +80,28 @@ public class EquipoDAOImpl implements EquipoDAO{
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean existeEquipo(String equipo) {
 		return (em.find(Equipo.class, equipo) != null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerPaises() {
+		Query query = em.createQuery("SELECT p FROM Pais p");
+		List<Pais> paisesList = query.getResultList();
+		
+		JSONArray jpaises = new JSONArray();
+		
+		for (Pais p : paisesList) {
+
+			JSONObject ob = new JSONObject();
+			try {
+				ob.put("pais", p.getPais());
+				ob.put("localidad", p.getLocalidad());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			jpaises.put(ob);
+		}
+		
+		return jpaises;
 	}
 }

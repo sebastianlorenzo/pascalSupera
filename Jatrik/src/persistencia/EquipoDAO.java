@@ -5,12 +5,9 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import dominio.Campeonato;
-import dominio.Equipo;
-import dominio.Estadio;
-import dominio.Jugador;
-import dominio.Partido;
-import dominio.Usuario;
+import org.codehaus.jettison.json.JSONArray;
+
+import dominio.*;
 
 @Local
 public interface EquipoDAO {
@@ -28,5 +25,7 @@ public interface EquipoDAO {
 	public List<Equipo> obtenerTodosEquipos();
 	
 	public boolean existeEquipo(String equipo);
+	
+	public JSONArray obtenerPaises();
 
 }

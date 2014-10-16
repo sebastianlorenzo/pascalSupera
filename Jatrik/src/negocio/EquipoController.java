@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import javax.ejb.*;
 
+import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Equipo;
 import dominio.Estadio;
 import dominio.Jugador;
@@ -34,6 +36,7 @@ public class EquipoController implements IEquipoController{
 		return this.equipoDAO.existeEquipo(equipo);
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio){
 		
 		Equipo e = new Equipo(equipo, pais, localidad);
@@ -42,7 +45,6 @@ public class EquipoController implements IEquipoController{
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
 		
-//poner un tope de jugadores
 		ArrayList<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
 		Collection<Jugador> jug = new ArrayList<Jugador>();
 		Iterator<Jugador> iter = jugadores.iterator();
@@ -66,4 +68,11 @@ public class EquipoController implements IEquipoController{
 
 		return e;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerPaisesInicial(){
+		return this.equipoDAO.obtenerPaises();
+	}
+	
+	
 }
