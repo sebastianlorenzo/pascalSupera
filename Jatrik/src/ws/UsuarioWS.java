@@ -1,18 +1,19 @@
 package ws;
 
-
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import negocio.IUsuarioController;
 
 @ManagedBean
-@ViewScoped
-@Path("/")
+@ApplicationScoped
+@Path("/ws")
 @Produces(MediaType.APPLICATION_JSON)
 public class UsuarioWS {
 	
@@ -34,7 +35,7 @@ public class UsuarioWS {
     }
     
     @POST
-    @Path("registrar/")
+    @Path("registrar")
     public String registrarUsuario(JSONObject datosUsr) throws JSONException{	
     	String login         = (String) datosUsr.get("login");
     	String password      = (String) datosUsr.get("password");
@@ -48,9 +49,9 @@ public class UsuarioWS {
     	
     }
     
-    /*
+    
     @GET
-    @Path("pruebaRegistrar/")
+    @Path("pruebaRegistrar")
     public String registrar() throws JSONException {
     	JSONObject datosUsr = new JSONObject();
 		datosUsr.put("login", "nomUsr");
@@ -62,5 +63,16 @@ public class UsuarioWS {
 		datosUsr.put("nombreEstadio", "estadioUsr");
 		return registrarUsuario(datosUsr);
     }
-    */
+    
+    @GET
+    @Path("print/{param}")
+    @Produces(MediaType.APPLICATION_JSON)
+	public String printMessage(@PathParam("param") String msg) {
+ 
+		String result = "{\"result\":\"" + msg+"\"}";
+ 
+		return result;
+ 
+	}
+    
 }
