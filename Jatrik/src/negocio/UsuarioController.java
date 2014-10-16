@@ -28,7 +28,7 @@ public class UsuarioController implements IUsuarioController{
 		try
 		{
 			Usuario usuario = this.usuarioDAO.buscarUsuario(login, password);
-			return usuario != null;
+			return (usuario != null);
 		}
 		catch (Throwable ex)
 		{

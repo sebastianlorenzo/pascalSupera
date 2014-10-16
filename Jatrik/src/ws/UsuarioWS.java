@@ -36,43 +36,19 @@ public class UsuarioWS {
     
     @POST
     @Path("registrar")
-    public String registrarUsuario(JSONObject datosUsr) throws JSONException{	
-    	String login         = (String) datosUsr.get("login");
-    	String password      = (String) datosUsr.get("password");
-    	String mail          = (String) datosUsr.get("mail");
-    	String nombreEquipo  = (String) datosUsr.get("nombreEquipo");
-    	String pais          = (String) datosUsr.get("pais");
-    	String localidad     = (String) datosUsr.get("localidad");
-    	String nombreEstadio = (String) datosUsr.get("nombreEstadio");
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String registrarUsuario(String datos) throws JSONException{
+    JSONObject datosUsr = new JSONObject(datos);
+    	String login         = datosUsr.getString("login");
+    	String password      = datosUsr.getString("password");
+    	String mail          = datosUsr.getString("mail");
+    	String nombreEquipo  = datosUsr.getString("nombreEquipo");
+    	String pais          = datosUsr.getString("pais");
+    	String localidad     = datosUsr.getString("localidad");
+    	String nombreEstadio = datosUsr.getString("nombreEstadio");
     	
     	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, localidad, nombreEstadio).toString();
     	
     }
-    
-    
-    @GET
-    @Path("pruebaRegistrar")
-    public String registrar() throws JSONException {
-    	JSONObject datosUsr = new JSONObject();
-		datosUsr.put("login", "nomUsr");
-		datosUsr.put("password", "passUsr");
-		datosUsr.put("mail", "mailUsr");
-		datosUsr.put("nombreEquipo", "equipoUsr");
-		datosUsr.put("pais", "paisUsr");
-		datosUsr.put("localidad", "localidadUsr");
-		datosUsr.put("nombreEstadio", "estadioUsr");
-		return registrarUsuario(datosUsr);
-    }
-    
-    @GET
-    @Path("print/{param}")
-    @Produces(MediaType.APPLICATION_JSON)
-	public String printMessage(@PathParam("param") String msg) {
- 
-		String result = "{\"result\":\"" + msg+"\"}";
- 
-		return result;
- 
-	}
-    
+        
 }

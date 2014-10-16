@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.*;
@@ -72,13 +73,21 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 	}
 		
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Usuario buscarUsuario(String login, String password){
 		Query query = em.createQuery("SELECT u FROM Usuario u "
 				+ "WHERE u.login = :login and u.password = :password");
 		query.setParameter("login", login);
 		query.setParameter("password", password);
-		return ((Usuario) query.getSingleResult());
+//		return ((Usuario) query.getSingleResult());
+		ArrayList<Usuario> lst = (ArrayList<Usuario>) query.getResultList();
+		if (lst.isEmpty()){
+			return null;
+		}
+		else{
+			return lst.get(0);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
