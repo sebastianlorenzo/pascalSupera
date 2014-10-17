@@ -1,7 +1,9 @@
 package negocio;
 
 import javax.ejb.*;
+
 import org.codehaus.jettison.json.JSONObject;
+
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import dominio.Equipo;
@@ -28,7 +30,6 @@ public class UsuarioController implements IUsuarioController{
 		try
 		{
 			Usuario usuario = this.usuarioDAO.buscarUsuario(login, password);
-//aquí llamar para setear conectado true
 			return (usuario != null);
 		}
 		catch (Throwable ex)
@@ -79,6 +80,16 @@ public class UsuarioController implements IUsuarioController{
 		}
 		return jsonRegistrar;
 		
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void seteoConectado(String login) {
+		this.usuarioDAO.setearConectado(login);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void seteoDesconectado(String login) {
+		this.usuarioDAO.setearDesconectado(login);	
 	}
 
 }

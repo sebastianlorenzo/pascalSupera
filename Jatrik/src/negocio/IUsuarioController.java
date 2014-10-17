@@ -11,5 +11,9 @@ public interface IUsuarioController {
 	
 	public JSONObject ingresarUsuario(String login, String password, String mail, String equipo,
 			String pais, String localidad, String estadio);
+	
+	public void seteoConectado(String login);
+	
+	public void seteoDesconectado(String login);
 
 }
