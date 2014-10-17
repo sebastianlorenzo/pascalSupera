@@ -80,7 +80,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				+ "WHERE u.login = :login and u.password = :password");
 		query.setParameter("login", login);
 		query.setParameter("password", password);
-//		return ((Usuario) query.getSingleResult());
 		ArrayList<Usuario> lst = (ArrayList<Usuario>) query.getResultList();
 		if (lst.isEmpty()){
 			return null;

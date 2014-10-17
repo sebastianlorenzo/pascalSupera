@@ -28,6 +28,7 @@ public class UsuarioController implements IUsuarioController{
 		try
 		{
 			Usuario usuario = this.usuarioDAO.buscarUsuario(login, password);
+//aquí llamar para setear conectado true
 			return (usuario != null);
 		}
 		catch (Throwable ex)
@@ -49,16 +50,16 @@ public class UsuarioController implements IUsuarioController{
 		if(encontreUsuario){
 			
 			try{
-		   	 	jsonRegistrar.put("registrado:", false);
-		   	 	jsonRegistrar.put("mensaje:", "ERROR: Existe usuario con ese nombre.");
+		   	 	jsonRegistrar.put("registrado", false);
+		   	 	jsonRegistrar.put("mensaje", "ERROR. Existe usuario con ese nombre.");
 		        }
 		        catch(Exception ex){
 		            ex.printStackTrace();
 		        }
 		}else if(encontreEquipo){
 			try{
-		   	 	jsonRegistrar.put("registrado:", false);
-		   	 	jsonRegistrar.put("mensaje:", "ERROR: Existe equipo con mismo nombre.");
+		   	 	jsonRegistrar.put("registrado", false);
+		   	 	jsonRegistrar.put("mensaje", "ERROR. Existe equipo con mismo nombre.");
 		        }
 		        catch(Exception ex){
 		            ex.printStackTrace();
@@ -69,8 +70,8 @@ public class UsuarioController implements IUsuarioController{
 			u.setEquipo(nuevoequipo);
 			this.usuarioDAO.insertarUsuario(u);
 			try{
-		   	 	jsonRegistrar.put("registrado:", true);
-		   	 	jsonRegistrar.put("mensaje:","Usuario registrado.");
+		   	 	jsonRegistrar.put("registrado", true);
+		   	 	jsonRegistrar.put("mensaje","Usuario registrado.");
 		        }
 		        catch(Exception ex){
 		            ex.printStackTrace();
