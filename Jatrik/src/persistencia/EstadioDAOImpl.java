@@ -52,5 +52,11 @@ public class EstadioDAOImpl implements EstadioDAO {
 	public List<Estadio> findAll() {
 		return null;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean existeEstadio(String estadio)
+	{
+		return (em.find(Estadio.class, estadio) != null);
+	}
 
 }
