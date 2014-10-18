@@ -10,5 +10,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
+	
+	
 
 }

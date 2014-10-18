@@ -58,5 +58,14 @@ public class Campeonato
 	{
 		return partidos;
 	}
-
+	
+	public Collection<Equipo> getEquipos() 
+	{
+		return equipos;
+	}
+	
+	public void setEquipos(Collection<Equipo> equipos)
+	{
+		this.equipos = equipos;
+	}
 }
