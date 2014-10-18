@@ -1,7 +1,11 @@
 package dominio;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+
 import javax.persistence.*;
+
 import dominio.Partido;
 
 @Entity
@@ -12,7 +16,9 @@ public class Campeonato
 	@Id
 	private String campeonato;
 	
-	private Integer anio;
+	private Date inicioCampeonato;
+	
+	private Integer cantEquipos;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private Collection<Partido> partidos;
@@ -22,11 +28,15 @@ public class Campeonato
 	
 	public Campeonato(){}
 	
-	public Campeonato(String campeonato, Integer anio, Collection<Partido> partidos)
+	public Campeonato(String campeonato, Date inicioCampeonato, Integer cantEquipos)
 	{
 		this.campeonato = campeonato;
-		this.anio = anio;
-		this.partidos = partidos;		
+		this.inicioCampeonato = inicioCampeonato;
+		this.cantEquipos = cantEquipos;
+		Collection<Partido> partidos = new ArrayList<Partido>();
+		this.partidos = partidos;
+		Collection<Equipo> equipos = new ArrayList<Equipo>();
+		this.equipos = equipos;
 	}
 
 	public String getCampeonato() 
@@ -39,14 +49,14 @@ public class Campeonato
 		this.campeonato = campeonato;
 	}
 	
-	public Integer getAnio() 
+	public Date getInicioCampeonato() 
 	{
-		return anio;
+		return inicioCampeonato;
 	}
 
-	public void setAnio(Integer anio)
+	public void setInicioCampeonato(Date inicioCampeonato)
 	{
-		this.anio = anio;
+		this.inicioCampeonato = inicioCampeonato;
 	}
 	
 	public void setPartidos(Collection<Partido> partidos)
@@ -58,5 +68,22 @@ public class Campeonato
 	{
 		return partidos;
 	}
+	
+	public Collection<Equipo> getEquipos() 
+	{
+		return equipos;
+	}
+	
+	public void setEquipos(Collection<Equipo> equipos)
+	{
+		this.equipos = equipos;
+	}
 
+	public Integer getCantEquipos() {
+		return cantEquipos;
+	}
+
+	public void setCantEquipos(Integer cantEquipos) {
+		this.cantEquipos = cantEquipos;
+	}
 }

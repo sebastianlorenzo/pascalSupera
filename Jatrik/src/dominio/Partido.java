@@ -1,7 +1,9 @@
 package dominio;
 
 import java.util.Date;
+
 import javax.persistence.*;
+
 import dominio.Estadio;
 
 @Entity
@@ -32,13 +34,24 @@ public class Partido implements java.io.Serializable
 	
 	public Partido(){}
 	
-	public Partido (Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, Campeonato campeonato)
-	{
+	public Partido (String partido, Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, Campeonato campeonato)
+	{	
+		this.partido = partido;
 		this.equipoLocal = equipoLocal;
 		this.equipoVisitante = equipoVisitante;
 		this.fechaPartido = fechaPartido;
 		this.estadio = estadio;
 		this.campeonato = campeonato;
+	}
+	
+	public String getPartido() 
+	{
+		return partido;
+	}
+	
+	public void setPartido(String partido) 
+	{
+		this.partido = partido;
 	}
 	
 	public Equipo getEquipoLocal() 
