@@ -19,5 +19,19 @@ public class PartidoDAOImpl implements PartidoDAO
 		Partido p = em.find(Partido.class, partido);
 		return p;
 	}
+
+
+	@Override
+	public Partido insertarPartido(Partido p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void borrarPartido(Partido p) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
