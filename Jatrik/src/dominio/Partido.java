@@ -26,15 +26,19 @@ public class Partido implements java.io.Serializable
 	@ManyToOne
 	private Estadio estadio;
 	
+	@ManyToOne
+	private Campeonato campeonato;
+	
 	
 	public Partido(){}
 	
-	public Partido (Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio)
+	public Partido (Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, Campeonato campeonato)
 	{
 		this.equipoLocal = equipoLocal;
 		this.equipoVisitante = equipoVisitante;
 		this.fechaPartido = fechaPartido;
 		this.estadio = estadio;
+		this.campeonato = campeonato;
 	}
 	
 	public Equipo getEquipoLocal() 
@@ -75,6 +79,16 @@ public class Partido implements java.io.Serializable
 	public void setEstadio(Estadio estadio) 
 	{
 		this.estadio = estadio;
+	}
+	
+	public Campeonato getCampeonato() 
+	{
+		return campeonato;
+	}
+
+	public void setCampeonato(Campeonato campeonato) 
+	{
+		this.campeonato = campeonato;
 	}
 	
 }
