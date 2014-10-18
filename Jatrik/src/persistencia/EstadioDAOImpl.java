@@ -1,11 +1,8 @@
 package persistencia;
 
 import java.util.List;
-
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
-
-import dominio.Equipo;
 import dominio.Estadio;
 
 @Stateless

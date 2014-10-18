@@ -1,9 +1,7 @@
 package negocio;
 
 import javax.ejb.*;
-
 import org.codehaus.jettison.json.JSONObject;
-
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import dominio.Equipo;

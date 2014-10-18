@@ -10,6 +10,9 @@ public class Jugador implements java.io.Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue
+	private Integer idJugador;
+	
 	private String jugador;
 	private String posicion;
 	private Integer velocidad;
@@ -24,17 +27,29 @@ public class Jugador implements java.io.Serializable
 	
 	public Jugador(){}
 
-	public Jugador(String jugador, Equipo equipo, String posicion, Integer velocidad,	
+	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Integer velocidad,	
 				   Integer tecnica, Integer ataque, Integer defensa, Integer porteria) 
 	{
-		this.jugador = jugador;
-		this.equipo = equipo;
-		this.posicion = posicion;
+		this.idJugador = idJugador;
+		this.jugador   = jugador;
+		this.equipo    = equipo;
+		this.posicion  = posicion;
 		this.velocidad = velocidad;
-		this.tecnica = tecnica;
-		this.ataque = ataque;
-		this.defensa = defensa;
-		this.porteria = porteria;
+		this.tecnica   = tecnica;
+		this.ataque    = ataque;
+		this.defensa   = defensa;
+		this.porteria  = porteria;
+	}
+	
+
+	public Integer getIdJugador() 
+	{
+		return idJugador;
+	}
+
+	public void setIdJugador(Integer idJugador)
+	{
+		this.idJugador = idJugador;
 	}
 	
 	public String getJugador() 
