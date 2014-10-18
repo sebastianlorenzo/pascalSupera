@@ -26,7 +26,8 @@
 
     create table public.campeonato (
         campeonato varchar(255) not null,
-        anio int4,
+        cantEquipos int4,
+        inicioCampeonato timestamp,
         primary key (campeonato)
     );
 
@@ -39,7 +40,7 @@
 
     create table public.estadio (
         estadio varchar(255) not null,
-        capacidad int4 not null,
+        capacidad int4,
         equipo varchar(255),
         primary key (estadio)
     );
@@ -65,6 +66,7 @@
     create table public.partido (
         partido varchar(255) not null,
         fechaPartido timestamp,
+        campeonato_campeonato varchar(255),
         equipoLocal_equipo varchar(255),
         equipoVisitante_equipo varchar(255),
         estadio_estadio varchar(255),
@@ -73,8 +75,8 @@
 
     create table public.usuario (
         login varchar(255) not null,
-        conectado boolean not null,
-        es_admin boolean not null,
+        conectado boolean,
+        es_admin boolean,
         mail varchar(255),
         password varchar(255),
         equipo varchar(255),
@@ -152,6 +154,11 @@
         add constraint FK_jltddv363vbt9cehyysuepcje 
         foreign key (equipo_equipo) 
         references public.equipo;
+
+    alter table public.partido 
+        add constraint FK_11pj8odckk9psgwfjo3npve9a 
+        foreign key (campeonato_campeonato) 
+        references public.campeonato;
 
     alter table public.partido 
         add constraint FK_o6chfqysk1nn832lro339xyre 
