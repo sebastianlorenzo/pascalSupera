@@ -73,7 +73,7 @@ public class UsuarioWS
     public String logoutUsuario(String datos) throws JSONException
     {
     	JSONObject datosUsr = new JSONObject(datos);
-		String nomUsuario   = datosUsr.getString("login");
+		String nomUsuario   = datosUsr.getString("logout");
 		
 		Boolean conectadoUsr =  iUsuarioController.estaConectadoUsuario(nomUsuario);
     	if (conectadoUsr)
