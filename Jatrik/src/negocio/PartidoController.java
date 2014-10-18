@@ -36,15 +36,16 @@ public class PartidoController implements IPartidoController
 			float equipoJugada = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
 			
 			// Si la probabilidad es menor o igual a 0.5 => Asumimos que la jugada es realizada por el equipo local
+			Equipo equipo = null;
 			if (equipoJugada <= 0.5)
 			{
-				Equipo equipo = partido.getEquipoLocal();
+				equipo = partido.getEquipoLocal();
 				// Obtener los cambios programados
 				Collection cambiosProgramados = (Collection) partido.getCambiosLocal();
 			}
 			else
 			{
-				Equipo equipo = partido.getEquipoVisitante();
+				equipo = partido.getEquipoVisitante();
 				// Obtener los cambios programados
 				Collection cambiosProgramados = (Collection) partido.getCambiosVisitante();
 			}
@@ -53,9 +54,16 @@ public class PartidoController implements IPartidoController
 			// 		probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100
 			// 		RegateATs = Sumatoria de la habilidad de regate de todos los delanteros
 			// 		RegateMEDs = Sumatoria de la habilidad de regate de todos los mediocampistas
-			// 		PotenciaDEFs = Sumatoria de la habilidad de potencia de todos los defensas
 			// 		PotenciaMEDs = Sumatoria de la habilidad de potencia de todos los mediocampistas
-			float probabilidad_de_jugada_de_gol; 
+			// 		PotenciaDEFs = Sumatoria de la habilidad de potencia de todos los defensas
+			/*Collection<Jugador> delanteros     = equipo.getJugadoresDelanteros();
+			Collection<Jugador> mediocampistas = equipo.getJugadoresMediocampistas();
+			Collection<Jugador> defensas       = equipo.getJugadoresDefensas();*/
+			float RegateATs    = 0;
+			float RegateMEDs   = 0;
+			float PotenciaMEDs = 0;
+			float PotenciaDEFs = 0;
+			float probabilidad_de_jugada_de_gol = (((RegateATs + RegateMEDs) / 2) - ((PotenciaMEDs + PotenciaDEFs) / 2)) / 100; 
 			
 			// Calcular la probabilidad de gol para la jugada
 			
