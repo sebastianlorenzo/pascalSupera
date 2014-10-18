@@ -19,7 +19,7 @@ public class EquipoWS
 	@EJB
 	private  IEquipoController iEquipoController;
 	
-	@POST
+	@GET
 	@Path("listarPaises")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String listarPaises()
