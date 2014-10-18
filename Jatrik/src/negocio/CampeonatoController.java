@@ -1,8 +1,6 @@
 package negocio;
 
-public class CampeonatoController implements ICampeonatoController{
+public class CampeonatoController implements ICampeonatoController
+{
 	
-	
-	//hola
-
 }

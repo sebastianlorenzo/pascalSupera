@@ -1,13 +1,12 @@
 package persistencia;
 
 import java.util.List;
-
 import javax.ejb.Local;
-
 import dominio.Estadio;
 
 @Local
-public interface EstadioDAO {
+public interface EstadioDAO
+{
 
 	public Estadio insertarEstadio(Estadio estadio);
 	
@@ -20,5 +19,7 @@ public interface EstadioDAO {
 	public Estadio findById(Integer id);
 	
 	public List<Estadio> findAll();
+	
+	public Boolean existeEstadio(String estadio);
 
 }

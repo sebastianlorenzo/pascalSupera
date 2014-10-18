@@ -1,13 +1,11 @@
 package dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "jugador", schema = "public")
-public class Jugador implements java.io.Serializable {
+public class Jugador implements java.io.Serializable 
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,11 +21,12 @@ public class Jugador implements java.io.Serializable {
 	@ManyToOne
 	private Equipo equipo;
 	
-	public Jugador() {
-	}
+	
+	public Jugador(){}
 
 	public Jugador(String jugador, Equipo equipo, String posicion, Integer velocidad,	
-	Integer tecnica, Integer ataque, Integer defensa, Integer porteria) {
+				   Integer tecnica, Integer ataque, Integer defensa, Integer porteria) 
+	{
 		this.jugador = jugador;
 		this.equipo = equipo;
 		this.posicion = posicion;
@@ -37,70 +36,84 @@ public class Jugador implements java.io.Serializable {
 		this.defensa = defensa;
 		this.porteria = porteria;
 	}
-
 	
-	public String getJugador() {
+	public String getJugador() 
+	{
 		return this.jugador;
 	}
 
-	public void setJugador(String jugador) {
+	public void setJugador(String jugador) 
+	{
 		this.jugador = jugador;
 	}
-
 	
-	public Equipo getEquipo() {
+	public Equipo getEquipo() 
+	{
 		return this.equipo;
 	}
 
-	public void setEquipo(Equipo equipo) {
+	public void setEquipo(Equipo equipo) 
+	{
 		this.equipo = equipo;
 	}
 
-	public String getPosicion() {
+	public String getPosicion() 
+	{
 		return posicion;
 	}
 
-	public void setPosicion(String posicion) {
+	public void setPosicion(String posicion) 
+	{
 		this.posicion = posicion;
 	}
 
-	public Integer getVelocidad() {
+	public Integer getVelocidad() 
+	{
 		return velocidad;
 	}
 
-	public void setVelocidad(Integer velocidad) {
+	public void setVelocidad(Integer velocidad) 
+	{
 		this.velocidad = velocidad;
 	}
 
-	public Integer getTecnica() {
+	public Integer getTecnica() 
+	{
 		return tecnica;
 	}
 
-	public void setTecnica(Integer tecnica) {
+	public void setTecnica(Integer tecnica)
+	{
 		this.tecnica = tecnica;
 	}
 
-	public Integer getAtaque() {
+	public Integer getAtaque() 
+	{
 		return ataque;
 	}
 
-	public void setAtaque(Integer ataque) {
+	public void setAtaque(Integer ataque) 
+	{
 		this.ataque = ataque;
 	}
 
-	public Integer getDefensa() {
+	public Integer getDefensa()
+	{
 		return defensa;
 	}
 
-	public void setDefensa(Integer defensa) {
+	public void setDefensa(Integer defensa) 
+	{
 		this.defensa = defensa;
 	}
 
-	public Integer getPorteria() {
+	public Integer getPorteria()
+	{
 		return porteria;
 	}
 
-	public void setPorteria(Integer porteria) {
+	public void setPorteria(Integer porteria) 
+	{
 		this.porteria = porteria;
 	}
 

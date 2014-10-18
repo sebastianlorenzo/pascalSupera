@@ -1,5 +1,6 @@
 package persistencia;
 
-public interface CampeonatoDAO {
+public interface CampeonatoDAO 
+{
 
 }

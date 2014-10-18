@@ -1,31 +1,22 @@
 package persistencia;
 
-import java.util.Collection;
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
+import java.util.*;
+import javax.ejb.*;
+import javax.persistence.*;
+import org.codehaus.jettison.json.*;
 import dominio.*;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class EquipoDAOImpl implements EquipoDAO{
+public class EquipoDAOImpl implements EquipoDAO
+{
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Equipo insertarEquipo(Equipo e) {
+	public Equipo insertarEquipo(Equipo e) 
+	{
 		try
 		{
 			em.persist(e);
@@ -39,11 +30,13 @@ public class EquipoDAOImpl implements EquipoDAO{
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public boolean actualizarEquipo(String equipo, String pais, String localidad,
-			Estadio estadio, Usuario usuario, Collection<Jugador> jugadores,
-			Collection<Partido> partidos, Collection<Campeonato> campeonatos) {
+	public Boolean actualizarEquipo(String equipo, String pais, String localidad,
+									Estadio estadio, Usuario usuario, Collection<Jugador> jugadores,
+									Collection<Partido> partidos, Collection<Campeonato> campeonatos) 
+	{
 		Equipo e = em.find(Equipo.class, equipo);
-		if (e != null){
+		if (e != null)
+		{
 			e.setEquipo(equipo);
 			e.setPais(pais);
 			e.setLocalidad(localidad);
@@ -54,49 +47,55 @@ public class EquipoDAOImpl implements EquipoDAO{
 			e.setCampeonatos(campeonatos);
 			em.merge(e);
 			return true;
-		}else
-			return false;
-		
+		}
+		return false;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void borrarEquipo(Equipo e) {
+	public void borrarEquipo(Equipo e)
+	{
 		em.remove(e);	
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Equipo encontrarEquipo(String equipo) {
+	public Equipo encontrarEquipo(String equipo) 
+	{
 		return em.find(Equipo.class, equipo);
 	}
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Equipo> obtenerTodosEquipos() {
+	public List<Equipo> obtenerTodosEquipos() 
+	{
 		Query query = em.createQuery("SELECT eq FROM Equipo eq");
 		List<Equipo> resultList = query.getResultList();
 		return resultList;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public boolean existeEquipo(String equipo) {
+	public Boolean existeEquipo(String equipo)
+	{
 		return (em.find(Equipo.class, equipo) != null);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public JSONArray obtenerPaises() {
+	public JSONArray obtenerPaises()
+	{
 		Query query = em.createQuery("SELECT p FROM Pais p");
-		List<Pais> paisesList = query.getResultList();
-		
+		List<Pais> paisesList = query.getResultList();		
 		JSONArray jpaises = new JSONArray();
 		
-		for (Pais p : paisesList) {
-
+		for (Pais p : paisesList) 
+		{
 			JSONObject ob = new JSONObject();
-			try {
+			try 
+			{
 				ob.put("pais", p.getPais());
 				ob.put("localidad", p.getLocalidad());
-			} catch (JSONException e) {
+			} 
+			catch (JSONException e) 
+			{
 				e.printStackTrace();
 			}
 			jpaises.put(ob);
@@ -104,4 +103,5 @@ public class EquipoDAOImpl implements EquipoDAO{
 		
 		return jpaises;
 	}
+	
 }

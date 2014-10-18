@@ -1,5 +1,6 @@
 package negocio;
 
-public interface IPartidoController {
+public interface IPartidoController 
+{
 
 }

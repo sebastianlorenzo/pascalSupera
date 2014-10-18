@@ -1,5 +1,6 @@
 package negocio;
 
-public interface ICampeonatoController {
+public interface ICampeonatoController 
+{
 
 }

@@ -1,5 +1,6 @@
 package negocio;
 
-public class PartidoController implements IPartidoController{
+public class PartidoController implements IPartidoController
+{
 
 }

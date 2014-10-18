@@ -1,8 +1,6 @@
 package negocio;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 import javax.ejb.*;
 
@@ -17,7 +15,8 @@ import persistencia.JugadorDAO;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class EquipoController implements IEquipoController{
+public class EquipoController implements IEquipoController
+{
 	
 	static final int MAX_CAPACIDAD = 10000;
 	static final int MAX_CANT_JUG = 2;
@@ -32,13 +31,14 @@ public class EquipoController implements IEquipoController{
 	private JugadorDAO jugadorDAO;
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean existeEquipoRegistrado(String equipo) {
+	public Boolean existeEquipoRegistrado(String equipo) 
+	{
 		return this.equipoDAO.existeEquipo(equipo);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio){
-		
+	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio)
+	{
 		Equipo e = new Equipo(equipo, pais, localidad);
 		int capacidad = MAX_CAPACIDAD;
 		Estadio estadio = new Estadio(nomestadio, capacidad);
@@ -49,7 +49,8 @@ public class EquipoController implements IEquipoController{
 		Collection<Jugador> jug = new ArrayList<Jugador>();
 		Iterator<Jugador> iter = jugadores.iterator();
 		int cant = 1;
-		while(iter.hasNext() && (cant<= MAX_CANT_JUG)){
+		while(iter.hasNext() && (cant<= MAX_CANT_JUG))
+		{
 			Jugador j = iter.next();
 			jug.add(j);	
 			cant++;
@@ -61,7 +62,8 @@ public class EquipoController implements IEquipoController{
 		estadio.setEquipo(e);
 		
 		Iterator<Jugador> iterdos = jug.iterator();
-		while(iterdos.hasNext()){
+		while(iterdos.hasNext())
+		{
 			Jugador j = iterdos.next();
 			j.setEquipo(e);	
 		}
@@ -70,9 +72,15 @@ public class EquipoController implements IEquipoController{
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray obtenerPaisesInicial(){
+	public JSONArray obtenerPaisesInicial()
+	{
 		return this.equipoDAO.obtenerPaises();
 	}
 	
-	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean existeEstadioRegistrado(String estadio) 
+	{
+		return this.estadioDAO.existeEstadio(estadio);
+	}
+		
 }

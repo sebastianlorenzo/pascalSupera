@@ -1,5 +1,6 @@
 package persistencia;
 
-public interface PartidoDAO {
+public interface PartidoDAO 
+{
 
 }

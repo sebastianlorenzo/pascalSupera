@@ -1,25 +1,18 @@
 package dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import dominio.Jugador;
 import dominio.Estadio;
 import dominio.Usuario;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 
 @Entity
 @Table(name = "equipo", schema = "public")
-public class Equipo implements java.io.Serializable{
-
+public class Equipo implements java.io.Serializable
+{
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -42,11 +35,10 @@ public class Equipo implements java.io.Serializable{
 	@ManyToMany(mappedBy="equipos", fetch = FetchType.LAZY)
 	private Collection<Campeonato> campeonatos;
 	
-	public Equipo() {
-	}
+	public Equipo(){}
 
-	public Equipo(String equipo, String pais, String localidad) {
-		
+	public Equipo(String equipo, String pais, String localidad) 
+	{
 		this.equipo = equipo;
 		this.pais = pais;
 		this.localidad = localidad;
@@ -60,67 +52,83 @@ public class Equipo implements java.io.Serializable{
 		this.campeonatos = campeonatos;
 	}
 
-	public String getEquipo() {
+	public String getEquipo() 
+	{
 		return equipo;
 	}
 
-	public void setEquipo(String equipo) {
+	public void setEquipo(String equipo) 
+	{
 		this.equipo = equipo;
 	}
 
-	public String getPais() {
+	public String getPais() 
+	{
 		return pais;
 	}
 
-	public void setPais(String pais) {
+	public void setPais(String pais) 
+	{
 		this.pais = pais;
 	}
 
-	public String getLocalidad() {
+	public String getLocalidad() 
+	{
 		return localidad;
 	}
 
-	public void setLocalidad(String localidad) {
+	public void setLocalidad(String localidad) 
+	{
 		this.localidad = localidad;
 	}
 
-	public Estadio getEstadio() {
+	public Estadio getEstadio()
+	{
 		return estadio;
 	}
 
-	public void setEstadio(Estadio estadio) {
+	public void setEstadio(Estadio estadio) 
+	{
 		this.estadio = estadio;
 	}
 
-	public Usuario getUsuario() {
+	public Usuario getUsuario() 
+	{
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Usuario usuario) 
+	{
 		this.usuario = usuario;
 	}
 	
-	public void setJugadores(Collection<Jugador> jugadores) {
+	public void setJugadores(Collection<Jugador> jugadores)
+	{
 		this.jugadores = jugadores;
 	}
 
-	public Collection<Jugador> getJugadores() {
+	public Collection<Jugador> getJugadores() 
+	{
 		return jugadores;
 	}
 	
-	public void setPartidos(Collection<Partido> partidos) {
+	public void setPartidos(Collection<Partido> partidos) 
+	{
 		this.partidos = partidos;
 	}
 
-	public Collection<Partido> getPartidos() {
+	public Collection<Partido> getPartidos() 
+	{
 		return this.partidos;
 	}
 	
-	public void setCampeonatos(Collection<Campeonato> campeonatos) {
+	public void setCampeonatos(Collection<Campeonato> campeonatos)
+	{
 		this.campeonatos = campeonatos;
 	}
 
-	public Collection<Campeonato> getCampeonatos() {
+	public Collection<Campeonato> getCampeonatos()
+	{
 		return this.campeonatos;
 	}
 

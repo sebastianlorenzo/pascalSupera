@@ -1,27 +1,21 @@
 package dominio;
 
 import java.util.Collection;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import dominio.Partido;
 import dominio.Equipo;
 
 @Entity
 @Table(name = "estadio", schema = "public")
-public class Estadio implements java.io.Serializable {
+public class Estadio implements java.io.Serializable 
+{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String estadio;
-	private int capacidad;
+	
+	private Integer capacidad;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "equipo", nullable = true)
@@ -30,45 +24,53 @@ public class Estadio implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY)
 	private Collection<Partido> partidos;
 	
-	public Estadio() {
-	}
+	
+	public Estadio(){}
 
-	public Estadio(String estadio, int capacidad) {
+	public Estadio(String estadio, Integer capacidad) 
+	{
 		this.estadio = estadio;
 		this.capacidad = capacidad;
 		this.equipo = null;
 		this.partidos = null;
 	}
-
 	
-	public String getEstadio() {
+	public String getEstadio() 
+	{
 		return this.estadio;
 	}
 
-	public void setEstadio(String estadio) {
+	public void setEstadio(String estadio) 
+	{
 		this.estadio = estadio;
 	}
 	
-	public int getCapacidad() {
+	public Integer getCapacidad()
+	{
 		return this.capacidad;
 	}
 
-	public void setCapacidad(int capacidad) {
+	public void setCapacidad(Integer capacidad) 
+	{
 		this.capacidad = capacidad;
 	}
 	
-	public Equipo getEquipo() {
+	public Equipo getEquipo()
+	{
 		return equipo;
 	}
-	public void setEquipo(Equipo equipo) {
+	public void setEquipo(Equipo equipo)
+	{
 		this.equipo = equipo;
 	}
 	
-	public void setPartidos(Collection<Partido> partidos) {
+	public void setPartidos(Collection<Partido> partidos) 
+	{
 		this.partidos = partidos;
 	}
 
-	public Collection<Partido> getPartidos() {
+	public Collection<Partido> getPartidos() 
+	{
 		return partidos;
 	}
 

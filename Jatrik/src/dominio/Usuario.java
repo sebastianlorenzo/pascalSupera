@@ -1,19 +1,15 @@
 package dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import org.codehaus.jettison.json.JSONObject;
 
 @Entity
 @Table (name = "usuario", schema = "public")
-public class Usuario implements java.io.Serializable{
+public class Usuario implements java.io.Serializable
+{
 
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	private String login;
 	
@@ -25,74 +21,96 @@ public class Usuario implements java.io.Serializable{
 	@JoinColumn(name = "equipo", nullable = true)
 	private Equipo equipo;
 	
-	private boolean conectado;
-	private boolean es_admin;
-		
-	public Usuario() {
-	}
+	private Boolean conectado;
 	
-	public Usuario(String login, String password, String mail) {
+	private Boolean es_admin;
+	
+	
+	public Usuario(){}
+	
+	public Usuario(String login, String password, String mail) 
+	{
 		this.login = login;
 		this.password = password;
 		this.mail = mail;
 		this.equipo = null;
-		this.conectado = true;
+		this.conectado = false;
 		this.es_admin = false;
 	}
 	
-	public String getLogin() {
+	public String getLogin() 
+	{
 		return login;
 	}
-	public void setLogin(String login) {
+	
+	public void setLogin(String login) 
+	{
 		this.login = login;
 	}
 	
-	public String getPassword() {
+	public String getPassword() 
+	{
 		return password;
 	}
-	public void setPassword(String password) {
+	
+	public void setPassword(String password) 
+	{
 		this.password = password;
 	}
 	
-	public String getMail() {
+	public String getMail() 
+	{
 		return mail;
 	}
-	public void setMail(String mail) {
+	
+	public void setMail(String mail) 
+	{
 		this.mail = mail;
 	}
 	
-	public Equipo getEquipo() {
+	public Equipo getEquipo() 
+	{
 		return equipo;
 	}
-	public void setEquipo(Equipo equipo) {
+	
+	public void setEquipo(Equipo equipo) 
+	{
 		this.equipo = equipo;
 	}
 	
-	public boolean getConectado() {
+	public Boolean getConectado() 
+	{
 		return conectado;
 	}
 
-	public void setConectado(boolean conectado) {
+	public void setConectado(Boolean conectado) 
+	{
 		this.conectado = conectado;
 	}
 	
-	public boolean getEsAdmin() {
+	public Boolean getEsAdmin() 
+	{
 		return es_admin;
 	}
 
-	public void setEsAdmin(boolean es_admin) {
+	public void setEsAdmin(Boolean es_admin) 
+	{
 		this.es_admin = es_admin;
 	}
 	
-	public JSONObject getJson() {
+	public JSONObject getJson() 
+	{
         JSONObject json = new JSONObject();
-        try{
+        try
+        {
             json.put("login",this.login);
             json.put("password",this.password);
         }
-        catch(Exception ex){
+        catch(Exception ex)
+        {
             ex.printStackTrace();
         }
+        
         return json;
     }
 	
