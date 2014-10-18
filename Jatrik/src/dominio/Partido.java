@@ -1,10 +1,10 @@
 package dominio;
 
+import java.util.Collection;
 import java.util.Date;
-
 import javax.persistence.*;
-
 import dominio.Estadio;
+import tipos.DataCambio;
 
 @Entity
 @Table(name = "partido", schema = "public")
@@ -31,10 +31,14 @@ public class Partido implements java.io.Serializable
 	@ManyToOne
 	private Campeonato campeonato;
 	
+	private Collection<DataCambio> cambiosLocal;	
+	
+	private Collection<DataCambio> cambiosVisitante;
 	
 	public Partido(){}
 	
-	public Partido (String partido, Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, Campeonato campeonato)
+	public Partido (String partido, Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, 
+					Campeonato campeonato, Collection<DataCambio> cambiosLocal, Collection<DataCambio> cambiosVisitante)
 	{	
 		this.partido = partido;
 		this.equipoLocal = equipoLocal;
@@ -42,6 +46,8 @@ public class Partido implements java.io.Serializable
 		this.fechaPartido = fechaPartido;
 		this.estadio = estadio;
 		this.campeonato = campeonato;
+		this.cambiosLocal     = cambiosLocal;
+		this.cambiosVisitante = cambiosVisitante;
 	}
 	
 	public String getPartido() 
@@ -102,6 +108,26 @@ public class Partido implements java.io.Serializable
 	public void setCampeonato(Campeonato campeonato) 
 	{
 		this.campeonato = campeonato;
+	}
+	
+	public Collection<DataCambio> getCambiosLocal() 
+	{
+		return cambiosLocal;
+	}
+
+	public void setCambiosLocal(Collection<DataCambio> cambiosLocal) 
+	{
+		this.cambiosLocal = cambiosLocal;
+	}
+
+	public Collection<DataCambio> getCambiosVisitante() 
+	{
+		return cambiosVisitante;
+	}
+
+	public void setCambiosVisitante(Collection<DataCambio> cambiosVisitante) 
+	{
+		this.cambiosVisitante = cambiosVisitante;
 	}
 	
 }
