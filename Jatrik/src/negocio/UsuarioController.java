@@ -1,7 +1,9 @@
 package negocio;
 
 import javax.ejb.*;
+
 import org.codehaus.jettison.json.JSONObject;
+
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import dominio.Equipo;
@@ -125,6 +127,11 @@ public class UsuarioController implements IUsuarioController
 	public void setearDesconectado(String login) 
 	{
 		this.usuarioDAO.setearDesconectado(login);	
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean esAdmin(String login) {
+		return this.usuarioDAO.esAdministrador(login);
 	}
 
 }

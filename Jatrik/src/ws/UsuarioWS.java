@@ -27,17 +27,19 @@ public class UsuarioWS
 		JSONObject datosUsr = new JSONObject(datos);
 		String login        = datosUsr.getString("login");
 		String password     = datosUsr.getString("password");    
-		
+		Boolean es_admin = false;
 		Boolean existeUsr = iUsuarioController.existeUsuario(login, password);
 		if (existeUsr)
 		{
     		iUsuarioController.setearConectado(login);
+    		es_admin = iUsuarioController.esAdmin(login);
 		}
 		
 		JSONObject json = new JSONObject();
 		try
 		{
 			json.put("login", existeUsr);
+			json.put("es_admin", es_admin);
 		}
 		catch(Exception ex)
 		{

@@ -125,5 +125,16 @@ public class UsuarioDAOImpl implements UsuarioDAO
 	{
 		return (em.find(Usuario.class, login) != null);
 	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean esAdministrador(String login) 
+	{
+		Usuario u = em.find(Usuario.class, login);
+		if (u != null)
+		{
+			return u.getEsAdmin();
+		}
+		return false;
+	}
 	
 }

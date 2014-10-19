@@ -29,4 +29,6 @@ public interface UsuarioDAO
 	
 	public Boolean existeUsuarioRegistrado(String login);
 	
+	public Boolean esAdministrador(String login);
+	
 }

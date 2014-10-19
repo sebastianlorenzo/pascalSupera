@@ -17,5 +17,9 @@ public interface IUsuarioController
 	public void setearConectado(String login);
 	
 	public void setearDesconectado(String login);
+	
+	public Boolean esAdmin(String login);
+	
+	
 
 }
