@@ -65,7 +65,8 @@ public class EquipoController implements IEquipoController
 		while(iterdos.hasNext())
 		{
 			Jugador j = iterdos.next();
-			j.setEquipo(e);	
+			Integer idJugador = j.getIdJugador();
+			this.jugadorDAO.setearEquipo(idJugador, e);
 		}
 
 		return e;
