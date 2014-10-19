@@ -16,10 +16,11 @@ public class Jugador implements java.io.Serializable
 	private String jugador;
 	private String posicion;
 	private Integer velocidad;
-	private Integer tecnica;
-	private Integer ataque;
+	private Integer tecnica; // Equivale al regate
+	private Integer ataque;  // Equivale a potencia
 	private Integer defensa;
 	private Integer porteria;
+	
 	
 	@ManyToOne
 	private Equipo equipo;

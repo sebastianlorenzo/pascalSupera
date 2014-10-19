@@ -1,12 +1,15 @@
 package negocio;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.ejb.*;
-
-import org.hibernate.mapping.Collection;
-
 import dominio.Equipo;
+import dominio.Jugador;
 import dominio.Partido;
+import persistencia.EquipoDAO;
 import persistencia.PartidoDAO;
+import tipos.DataCambio;
 import tipos.DataResumenPartido;
 
 public class PartidoController implements IPartidoController
@@ -18,6 +21,9 @@ public class PartidoController implements IPartidoController
 	
 	@EJB
 	private PartidoDAO partidoDAO;
+
+	@EJB
+	private EquipoDAO equipoDAO;
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataResumenPartido simularPartido(String idPartido)
@@ -41,31 +47,21 @@ public class PartidoController implements IPartidoController
 			{
 				equipo = partido.getEquipoLocal();
 				// Obtener los cambios programados
-				Collection cambiosProgramados = (Collection) partido.getCambiosLocal();
+				ArrayList<DataCambio> cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosLocal();
 			}
 			else
 			{
 				equipo = partido.getEquipoVisitante();
 				// Obtener los cambios programados
-				Collection cambiosProgramados = (Collection) partido.getCambiosVisitante();
+				ArrayList<DataCambio> cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosVisitante();
 			}
 			
 			// Calcular la probabilidad de jugada de gol
-			// 		probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100
-			// 		RegateATs = Sumatoria de la habilidad de regate de todos los delanteros
-			// 		RegateMEDs = Sumatoria de la habilidad de regate de todos los mediocampistas
-			// 		PotenciaMEDs = Sumatoria de la habilidad de potencia de todos los mediocampistas
-			// 		PotenciaDEFs = Sumatoria de la habilidad de potencia de todos los defensas
-			/*Collection<Jugador> delanteros     = equipo.getJugadoresDelanteros();
-			Collection<Jugador> mediocampistas = equipo.getJugadoresMediocampistas();
-			Collection<Jugador> defensas       = equipo.getJugadoresDefensas();*/
-			float RegateATs    = 0;
-			float RegateMEDs   = 0;
-			float PotenciaMEDs = 0;
-			float PotenciaDEFs = 0;
-			float probabilidad_de_jugada_de_gol = (((RegateATs + RegateMEDs) / 2) - ((PotenciaMEDs + PotenciaDEFs) / 2)) / 100; 
+			String nombreEquipo = equipo.getEquipo();
+			float probJugadaGol = calcularProbabilidadJugadaGol(nombreEquipo);
 			
 			// Calcular la probabilidad de gol para la jugada
+			float probGolParaJugada = calcularProbabilidadGol(probJugadaGol);
 			
 			// Calcular la probabilidad de tarjeta roja/amarilla
 			
@@ -80,5 +76,65 @@ public class PartidoController implements IPartidoController
 		// Retornar resultado
 		DataResumenPartido resumenPartido = null;
 		return resumenPartido;
+	}
+	
+	private float calcularProbabilidadJugadaGol(String nombreEquipo)
+	{
+		// RegateATs = Sumatoria de la habilidad de regate de todos los delanteros
+		float RegateATs = 0;
+		ArrayList<Jugador> delanteros = (ArrayList<Jugador>) equipoDAO.getJugadoresDelanterosEquipo(nombreEquipo);
+		Iterator<Jugador> itD = delanteros.iterator();
+        while(itD.hasNext()) 
+        {
+            Jugador j = itD.next();
+            RegateATs += j.getTecnica();
+        }
+
+		// RegateMEDs   = Sumatoria de la habilidad de regate de todos los mediocampistas
+		// PotenciaMEDs = Sumatoria de la habilidad de potencia de todos los mediocampistas
+		float RegateMEDs   = 0;
+		float PotenciaMEDs = 0;
+		ArrayList<Jugador> mediocampistas = (ArrayList<Jugador>) equipoDAO.getJugadoresMediocampistasEquipo(nombreEquipo);
+		Iterator<Jugador> itM = mediocampistas.iterator();
+        while(itM.hasNext()) 
+        {
+            Jugador j = itM.next();
+            RegateMEDs   += j.getTecnica();
+            PotenciaMEDs += j.getAtaque();
+        }
+
+		// PotenciaDEFs = Sumatoria de la habilidad de potencia de todos los defensas
+		float PotenciaDEFs = 0;
+		ArrayList<Jugador> defensas = (ArrayList<Jugador>) equipoDAO.getJugadoresDefensasEquipo(nombreEquipo);
+		Iterator<Jugador> itDef = defensas.iterator();
+        while(itDef.hasNext()) 
+        {
+            Jugador j = itDef.next();
+            PotenciaDEFs += j.getAtaque();
+        }
+
+		// probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100
+		float probJugadaGol = (((RegateATs + RegateMEDs) / 2) - ((PotenciaMEDs + PotenciaDEFs) / 2)) / 100; 
+		
+		return probJugadaGol;
+	}
+	
+	private float calcularProbabilidadGol(float probJugadaGol)
+	{
+		// probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque habilidad del portero*factor_aleatorio_portero))/100
+		/*
+		 	El tiro a gol debe ser realizado por un único jugador, por lo cual es necesario definirlo. Dado que
+			un delantero tiene mayor probabilidad de gol que un defensa o mediocampista, se definen las
+			siguientes probabilidades para la selección del jugador:
+			- probabilidad que salga un delantero: 60%
+			- probabilidad que salga un mediocampista: 30%
+			- probabilidad que salga un defensa: 10%
+			Una vez determinado el tipo de jugador (atacante, mediocampista o defensa) que realiza el
+			disparo, se debe determinar de alguna forma (puede ser aleatoria), cual de todos es el que
+			efectivamente realiza el tiro a gol. La forma de determinar este jugador es libre a cada grupo.
+		 */
+		float probGol = 0;		
+		
+		return probGol;
 	}
 }

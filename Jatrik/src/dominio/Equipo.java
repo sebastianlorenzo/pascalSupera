@@ -131,5 +131,5 @@ public class Equipo implements java.io.Serializable
 	{
 		return this.campeonatos;
 	}
-
+	
 }

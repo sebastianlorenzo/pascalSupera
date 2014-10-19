@@ -29,5 +29,11 @@ public interface EquipoDAO
 	public Boolean existeEquipo(String equipo);
 	
 	public JSONArray obtenerPaises();
+	
+	public List<Jugador> getJugadoresDelanterosEquipo(String nombreEquipo);
+	
+	public List<Jugador> getJugadoresMediocampistasEquipo(String nombreEquipo);
+	
+	public List<Jugador> getJugadoresDefensasEquipo(String nombreEquipo);
 
 }

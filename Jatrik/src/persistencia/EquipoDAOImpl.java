@@ -4,7 +4,14 @@ import java.util.*;
 import javax.ejb.*;
 import javax.persistence.*;
 import org.codehaus.jettison.json.*;
-import dominio.*;
+import dominio.Campeonato;
+import dominio.Equipo;
+import dominio.Estadio;
+import dominio.Jugador;
+import dominio.Pais;
+import dominio.Partido;
+import dominio.Usuario;
+
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -102,6 +109,42 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		
 		return jpaises;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Jugador> getJugadoresDelanterosEquipo(String nombreEquipo) 
+	{
+		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
+								   + "WHERE j = e.j AND "
+								   + "		j.posicion = 'delantero' AND"
+								   + "		e.equipo = '" + nombreEquipo + "'");
+		List<Jugador> jugadores = query.getResultList();
+		return jugadores;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Jugador> getJugadoresMediocampistasEquipo(String nombreEquipo) 
+	{
+		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
+								   + "WHERE j = e.j AND "
+								   + "		j.posicion = 'mediocampista' AND"
+								   + "		e.equipo = '" + nombreEquipo + "'");
+		List<Jugador> jugadores = query.getResultList();
+		return jugadores;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Jugador> getJugadoresDefensasEquipo(String nombreEquipo) 
+	{
+		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
+								   + "WHERE j = e.j AND "
+								   + "		j.posicion = 'defensa' AND"
+								   + "		e.equipo = '" + nombreEquipo + "'");
+		List<Jugador> jugadores = query.getResultList();
+		return jugadores;
 	}
 	
 }
