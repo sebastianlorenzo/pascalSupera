@@ -31,8 +31,10 @@ public class Partido implements java.io.Serializable
 	@ManyToOne
 	private Campeonato campeonato;
 	
-	private Collection<DataCambio> cambiosLocal;	
+	@Transient
+	private Collection<DataCambio> cambiosLocal;
 	
+	@Transient
 	private Collection<DataCambio> cambiosVisitante;
 	
 	public Partido(){}

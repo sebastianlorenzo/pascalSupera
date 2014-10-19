@@ -11,7 +11,7 @@
 
     create table public.equipo_jugador (
         equipo_equipo varchar(255) not null,
-        jugadores_jugador varchar(255) not null
+        jugadores_idJugador int4 not null
     );
 
     create table public.equipo_partido (
@@ -46,15 +46,16 @@
     );
 
     create table public.jugador (
-        jugador varchar(255) not null,
+        idJugador int4 not null,
         ataque int4,
         defensa int4,
+        jugador varchar(255),
         porteria int4,
         posicion varchar(255),
         tecnica int4,
         velocidad int4,
         equipo_equipo varchar(255),
-        primary key (jugador)
+        primary key (idJugador)
     );
 
     create table public.pais (
@@ -87,7 +88,7 @@
         add constraint UK_qel622wydwywu34avof4n9wpi  unique (partidos_partido);
 
     alter table public.equipo_jugador 
-        add constraint UK_p22ag9c61ffbp1xf68jip9kuf  unique (jugadores_jugador);
+        add constraint UK_l82welmroy9q2qx97fud6ivs4  unique (jugadores_idJugador);
 
     alter table public.equipo_partido 
         add constraint UK_gytbsr37ln8p6mmqbpjyy6em3  unique (partidos_partido);
@@ -116,8 +117,8 @@
         references public.campeonato;
 
     alter table public.equipo_jugador 
-        add constraint FK_p22ag9c61ffbp1xf68jip9kuf 
-        foreign key (jugadores_jugador) 
+        add constraint FK_l82welmroy9q2qx97fud6ivs4 
+        foreign key (jugadores_idJugador) 
         references public.jugador;
 
     alter table public.equipo_jugador 
@@ -179,3 +180,5 @@
         add constraint FK_k2bt9tx57xvrxrl8gd5af2dbl 
         foreign key (equipo) 
         references public.equipo;
+
+    create sequence public.hibernate_sequence;

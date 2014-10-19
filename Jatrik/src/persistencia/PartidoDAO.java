@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.util.List;
+
+import dominio.Campeonato;
 import dominio.Partido;
 
 public interface PartidoDAO 
@@ -11,6 +14,9 @@ public interface PartidoDAO
 	
 	public void borrarPartido(Partido p);
 	
+	public List<Partido> obtenerPartidos();
+	
+	public void setearCampeonato(String partido, Campeonato campeonato);
 	
 	
 }

@@ -1,7 +1,12 @@
 package persistencia;
 
+import java.util.List;
+
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import dominio.Campeonato;
 import dominio.Partido;
 
 @Stateless
@@ -21,16 +26,48 @@ public class PartidoDAOImpl implements PartidoDAO
 	}
 
 
-	@Override
-	public Partido insertarPartido(Partido p) {
-		// TODO Auto-generated method stub
-		return null;
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Partido insertarPartido(Partido p)
+	{
+		try
+		{
+			em.persist(p);
+			return p;
+		}
+		catch (Throwable ex)
+		{
+			System.out.println("EXCEPCIÓN: " + ex.getClass());
+            return null;
+		}
 	}
 
 
-	@Override
-	public void borrarPartido(Partido p) {
-		// TODO Auto-generated method stub
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void borrarPartido(Partido p)
+	{
+		em.remove(p);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Partido> obtenerPartidos()
+	{
+		Query query = em.createQuery("SELECT p FROM Partido p");
+		List<Partido> resultListP = query.getResultList();
+		return resultListP;
+	}
+
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearCampeonato(String partido, Campeonato campeonato)
+	{
+		
+		Partido p = em.find(Partido.class, partido);
+		if (p != null)
+		{
+			p.setCampeonato(campeonato);
+			em.merge(p);
+		}
 		
 	}
 	

@@ -38,8 +38,6 @@ public class CampeonatoWS
 		Date date = null;
 		try {
 			date = formatter.parse(dateInString);
-System.out.println(date);
-System.out.println(formatter.format(date));
 	 
 		} catch (Exception e) {
 			e.printStackTrace();

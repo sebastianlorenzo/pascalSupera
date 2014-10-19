@@ -3,6 +3,7 @@ package negocio;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -71,18 +72,26 @@ public class CampeonatoController implements ICampeonatoController
 			for(cant=0; cant<=cantidadEquipos; cant++){
 				Partido partido_nuevo = new Partido(nomCampeonato+"_partido_"+cant, null, null, fecha, null, null, null, null);
 				fecha = sumarDiasFecha(fecha, 7);
-				//this.partidoDAO.insertarPartido(partido_nuevo);
+				this.partidoDAO.insertarPartido(partido_nuevo);				
 				partidos.add(partido_nuevo);
 			}
-			//c.setPartidos(partidos);
-						
+			c.setPartidos(partidos);						
 			this.campeonatoDAO.insertarCampeonato(c);
+			
+			Iterator<Partido> iter = partidos.iterator();
+			while(iter.hasNext()){
+					Partido p = iter.next();
+					String nomPartido = p.getPartido();
+					this.partidoDAO.setearCampeonato(nomPartido, c);
+			}
+			
 			try
 			{
 				jsonCampeonato.put("campeonato", true);
 				jsonCampeonato.put("mensaje","Campeonato creado correctamente.");
 	        }
-	        catch(Exception ex){
+	        catch(Exception ex)
+			{
 	            ex.printStackTrace();
 	        }
 		}
