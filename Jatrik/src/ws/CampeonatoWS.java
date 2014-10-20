@@ -7,11 +7,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -48,6 +50,27 @@ public class CampeonatoWS
 		Integer cantidadEquipos =  Integer.parseInt(cantidad);
 		
 		return iCampeonatoController.crearCampeonato(nomCampeonato, inicioCampeonato, cantidadEquipos).toString();    	
+	}
+	
+	@GET
+	@Path("listarCampeonatos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarCampeonatos()
+	{
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray jcampeonatos = null;
+			jcampeonatos = iCampeonatoController.obtenerCampeonatos();
+			respuesta.put("campeonatos", jcampeonatos);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return respuesta.toString();
 	}
 
 }

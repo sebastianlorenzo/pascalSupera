@@ -1,10 +1,17 @@
 package persistencia;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
 
@@ -61,7 +68,41 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	{
 		return (em.find(Campeonato.class, campeonato) != null);
 	}
-	
-	
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerCampeonatos()
+	{
+		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		List<Campeonato> campeonatosList = query.getResultList();		
+		JSONArray jcampeonatos = new JSONArray();
+		
+		Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    String fecha_hoy = formateador.format(ahora);
+	    
+		for (Campeonato c : campeonatosList) 
+		{	
+			String fecha_campeonato = c.getInicioCampeonato().toString();
+			if ((fecha_campeonato.compareTo(fecha_hoy) >=0) &&
+					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
+			{
+				JSONObject ob = new JSONObject();
+				try 
+				{
+					ob.put("campeonato", c.getCampeonato());
+					
+					ob.put("hoy", fecha_hoy);
+					ob.put("fecha c", fecha_campeonato);
+				} 
+				catch (JSONException e) 
+				{
+					e.printStackTrace();
+				}
+				jcampeonatos.put(ob);
+			}
+		}		
+		return jcampeonatos;
+	}
 
 }

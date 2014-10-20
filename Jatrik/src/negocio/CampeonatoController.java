@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
@@ -96,6 +97,13 @@ public class CampeonatoController implements ICampeonatoController
 	        }
 		}
 		return jsonCampeonato;
+	}
+
+	//obtengo todos los campeonatos disponibles para inscripción
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerCampeonatos()
+	{
+		return this.campeonatoDAO.obtenerCampeonatos();
 	}
 
 }
