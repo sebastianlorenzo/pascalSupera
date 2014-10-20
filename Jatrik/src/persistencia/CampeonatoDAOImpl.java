@@ -91,9 +91,6 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				try 
 				{
 					ob.put("campeonato", c.getCampeonato());
-					
-					ob.put("hoy", fecha_hoy);
-					ob.put("fecha c", fecha_campeonato);
 				} 
 				catch (JSONException e) 
 				{
