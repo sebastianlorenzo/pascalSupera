@@ -106,4 +106,10 @@ public class CampeonatoController implements ICampeonatoController
 		return this.campeonatoDAO.obtenerCampeonatos();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario) 
+	{
+		return this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
+	}
+
 }

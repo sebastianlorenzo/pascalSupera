@@ -13,4 +13,7 @@ public interface ICampeonatoController
 	public JSONObject crearCampeonato(String nomCampeonato, Date inicioCampeonato, Integer cantidadEquipos);
 	
 	public JSONArray obtenerCampeonatos();
+
+	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario);
+	
 }

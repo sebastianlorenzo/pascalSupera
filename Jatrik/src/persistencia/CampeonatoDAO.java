@@ -16,4 +16,7 @@ public interface CampeonatoDAO
 	
 	public JSONArray obtenerCampeonatos();
 
+	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario);
+	
+
 }

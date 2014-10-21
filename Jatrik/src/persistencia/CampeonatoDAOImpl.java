@@ -2,6 +2,7 @@ package persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
+import dominio.Equipo;
+import dominio.Usuario;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -100,6 +103,31 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			}
 		}		
 		return jcampeonatos;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario) 
+	{	
+		Campeonato c = em.find(Campeonato.class, nomCampeonato);
+		Usuario u = em.find(Usuario.class, nomUsuario);
+		Equipo e = u.getEquipo();
+		Collection<Equipo> listEquipos = c.getEquipos();
+		if(listEquipos.size() < c.getCantEquipos())
+		{
+			for (Equipo eq: listEquipos)
+			{
+				if(eq.getEquipo() == e.getEquipo())
+					return false;
+			}
+			listEquipos.add(e);
+			Collection<Campeonato> listCampeonatos = e.getCampeonatos();
+			listCampeonatos.add(c);
+			em.merge(e);
+			em.merge(c);		
+			return true;
+		}
+		else 
+			return false;
 	}
 
 }

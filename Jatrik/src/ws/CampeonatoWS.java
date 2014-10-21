@@ -72,5 +72,29 @@ public class CampeonatoWS
 		
 		return respuesta.toString();
 	}
+	
+	@POST
+	@Path("inscribirse")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String anotarseACampeonato(String datos) throws JSONException
+	{
+		JSONObject datosCampI = new JSONObject(datos);
+		String nomCampeonato = datosCampI.getString("nomCampeonato");
+		String nomUsuario = datosCampI.getString("nomUsuario");
+		Boolean ok = this.iCampeonatoController.anotarseACampeonato(nomCampeonato, nomUsuario);
+		JSONObject json = new JSONObject();
+		try
+		{
+			json.put("inscripcion", ok );
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return json.toString();
+		
+	}
 
 }
