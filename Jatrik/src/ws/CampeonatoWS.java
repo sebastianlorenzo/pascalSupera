@@ -28,29 +28,32 @@ public class CampeonatoWS
 	private ICampeonatoController iCampeonatoController;
 
 	@POST
-	@Path("crear")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String crearCampeonato(String datos) throws JSONException
-	{
-		JSONObject datosCamp = new JSONObject(datos);
-		String nomCampeonato = datosCamp.getString("nomCampeonato");
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		String dateInString = datosCamp.getString("inicioCampeonato");
-		Date date = null;
-		try {
-			date = formatter.parse(dateInString);
-	 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		Date inicioCampeonato = date;
-		String cantidad = datosCamp.getString("cantidadEquipos");
-		Integer cantidadEquipos =  Integer.parseInt(cantidad);
-		
-		return iCampeonatoController.crearCampeonato(nomCampeonato, inicioCampeonato, cantidadEquipos).toString();    	
-	}
+    @Path("crear")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String crearCampeonato(String datos) throws JSONException
+    {
+        JSONObject datosCamp = new JSONObject(datos);
+        String nomCampeonato = datosCamp.getString("nomCampeonato");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dia = datosCamp.getString("dia");
+        String mes = datosCamp.getString("mes");
+        String anio = datosCamp.getString("anio");
+        String dateInString = dia+"/"+mes+"/"+anio;
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Date inicioCampeonato = date;
+        String cantidad = datosCamp.getString("cantidadEquipos");
+        Integer cantidadEquipos =  Integer.parseInt(cantidad);
+        
+        return iCampeonatoController.crearCampeonato(nomCampeonato, inicioCampeonato, cantidadEquipos).toString();        
+    }
 	
 	@GET
 	@Path("listarCampeonatos")
