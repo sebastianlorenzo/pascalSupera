@@ -70,7 +70,7 @@ public class CampeonatoController implements ICampeonatoController
 			ArrayList<Partido> partidos = new ArrayList<Partido>();
 			int cant;
 			Date fecha = inicioCampeonato;
-			for(cant=0; cant<=cantidadEquipos; cant++){
+			for(cant=1; cant<=cantidadEquipos*(cantidadEquipos-1); cant++){
 				Partido partido_nuevo = new Partido(nomCampeonato+"_partido_"+cant, null, null, fecha, null, null, null, null);
 				fecha = sumarDiasFecha(fecha, 7);
 				this.partidoDAO.insertarPartido(partido_nuevo);				

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.*;
@@ -16,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
 import dominio.Equipo;
+import dominio.Partido;
 import dominio.Usuario;
 
 @Stateless
@@ -123,7 +125,26 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			Collection<Campeonato> listCampeonatos = e.getCampeonatos();
 			listCampeonatos.add(c);
 			em.merge(e);
-			em.merge(c);		
+			em.merge(c);	
+			
+			if(listEquipos.size() == c.getCantEquipos()){
+				Collection<Partido> listPartidos = c.getPartidos();
+				for(Equipo eq : listEquipos){
+					Iterator<Partido> iter = listPartidos.iterator();
+					int cant = 0;
+					while(iter.hasNext())
+					{
+						Partido p = iter.next();
+						if (cant < (listEquipos.size()-1) && (p.getEquipoLocal() == null)){
+							p.setEquipoLocal(eq);
+							p.setEstadio(eq.getEstadio());
+							em.merge(p);
+							cant++;
+						}
+					}
+			
+				}
+			}
 			return true;
 		}
 		else 
