@@ -131,19 +131,20 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				Collection<Partido> listPartidos = c.getPartidos();
 				for(Equipo eq : listEquipos){
 					Iterator<Partido> iter = listPartidos.iterator();
+					
 					int cant = 0;
 					while(iter.hasNext())
 					{
 						Partido p = iter.next();
-						if (cant < (listEquipos.size()-1) && (p.getEquipoLocal() == null)){
+						if ((cant < (listEquipos.size()-1)) && (p.getEquipoLocal() == null)){
 							p.setEquipoLocal(eq);
-							p.setEstadio(eq.getEstadio());
+							p.setEstadio(eq.getEstadio());	
 							em.merge(p);
 							cant++;
 						}
 					}
-			
 				}
+//Falta setear el visitante!!!!!!!!!
 			}
 			return true;
 		}

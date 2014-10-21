@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 
+import dominio.Equipo;
 import dominio.Estadio;
 
 @Stateless
@@ -57,6 +58,17 @@ public class EstadioDAOImpl implements EstadioDAO {
 	public Boolean existeEstadio(String estadio)
 	{
 		return (em.find(Estadio.class, estadio) != null);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearEquipo(String nomEstadio, Equipo e) 
+	{
+		Estadio estadio = em.find(Estadio.class, nomEstadio);
+		if (estadio != null)
+		{
+			estadio.setEquipo(e);;
+			em.merge(estadio);
+		}	
 	}
 
 }

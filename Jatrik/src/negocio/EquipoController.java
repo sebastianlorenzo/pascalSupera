@@ -59,7 +59,7 @@ public class EquipoController implements IEquipoController
 		e.setJugadores(jug);
 		
 		this.equipoDAO.insertarEquipo(e);
-		estadio.setEquipo(e);
+		this.estadioDAO.setearEquipo(nomestadio,e);
 		
 		Iterator<Jugador> iterdos = jug.iterator();
 		while(iterdos.hasNext())
