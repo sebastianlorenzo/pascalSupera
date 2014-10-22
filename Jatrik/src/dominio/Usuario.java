@@ -1,7 +1,6 @@
 package dominio;
 
 import javax.persistence.*;
-import org.codehaus.jettison.json.JSONObject;
 
 @Entity
 @Table (name = "usuario", schema = "public")
@@ -17,6 +16,8 @@ public class Usuario implements java.io.Serializable
 	
 	private String mail;
 	
+	private Integer capital;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "equipo", nullable = true)
 	private Equipo equipo;
@@ -25,14 +26,14 @@ public class Usuario implements java.io.Serializable
 	
 	private Boolean es_admin;
 	
-	
 	public Usuario(){}
 	
-	public Usuario(String login, String password, String mail) 
+	public Usuario(String login, String password, String mail, Integer capital) 
 	{
 		this.login = login;
 		this.password = password;
 		this.mail = mail;
+		this.capital = capital;
 		this.equipo = null;
 		this.conectado = false;
 		this.es_admin = false;
@@ -97,21 +98,13 @@ public class Usuario implements java.io.Serializable
 	{
 		this.es_admin = es_admin;
 	}
-	
-	public JSONObject getJson() 
-	{
-        JSONObject json = new JSONObject();
-        try
-        {
-            json.put("login",this.login);
-            json.put("password",this.password);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        
-        return json;
-    }
+
+	public Integer getCapital() {
+		return capital;
+	}
+
+	public void setCapital(Integer capital) {
+		this.capital = capital;
+	}
 	
 }

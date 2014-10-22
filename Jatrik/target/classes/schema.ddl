@@ -76,6 +76,7 @@
 
     create table public.usuario (
         login varchar(255) not null,
+        capital int4,
         conectado boolean,
         es_admin boolean,
         mail varchar(255),

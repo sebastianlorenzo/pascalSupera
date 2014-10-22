@@ -20,6 +20,8 @@ public class UsuarioController implements IUsuarioController
 	@EJB
 	private  IEquipoController iEquipoController;
 	
+	static final int CAPITAL_USUARIO = 10000;
+	
 	public UsuarioController()
 	{
 		this.usuarioDAO = new UsuarioDAOImpl();
@@ -100,7 +102,8 @@ public class UsuarioController implements IUsuarioController
 		}
 		else
 		{
-			Usuario u = new Usuario(login, password, mail);
+			Integer capitalIni = CAPITAL_USUARIO;
+			Usuario u = new Usuario(login, password, mail, capitalIni);
 			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad, estadio);
 			u.setEquipo(nuevoequipo);
 			this.usuarioDAO.insertarUsuario(u);
