@@ -144,7 +144,24 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 						}
 					}
 				}
-//Falta setear el visitante!!!!!!!!!
+				Iterator<Partido> iter2 = listPartidos.iterator();
+				for(Equipo eq2 : listEquipos){
+					
+					Iterator<Equipo> iter3 = listEquipos.iterator();
+					int cant = 0;
+					while(iter3.hasNext() && (cant < (listEquipos.size()-1)))
+					{	
+						Equipo eqVisitante = iter3.next();
+						if (eq2.getEquipo() != eqVisitante.getEquipo()){
+							Partido p = iter2.next();
+							p.setEquipoVisitante(eqVisitante);
+							iter2.hasNext();
+							em.merge(p);
+							cant++;
+						}
+					}
+				}
+				
 			}
 			return true;
 		}
