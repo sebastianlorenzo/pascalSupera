@@ -3,10 +3,10 @@ package tipos;
 public class DataResumenPartido 
 {
 	
-	public Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante;
-	public Integer[] tarjetasRojasEquipoLocalEquipoVisitante;
-	public Integer[] golesEquipoLocalEquipoVisitante;
-	public Integer[] lesionesEquipoLocalEquipoVisitante;
+	public Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante = new Integer[2];
+	public Integer[] tarjetasRojasEquipoLocalEquipoVisitante 	 = new Integer[2];
+	public Integer[] golesEquipoLocalEquipoVisitante 			 = new Integer[2];
+	public Integer[] lesionesEquipoLocalEquipoVisitante 		 = new Integer[2];
 	
 	
 	public DataResumenPartido(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 

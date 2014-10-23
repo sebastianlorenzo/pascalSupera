@@ -20,8 +20,9 @@ public class Jugador implements java.io.Serializable
 	private Integer ataque;  // Equivale a potencia
 	private Integer defensa;
 	private Integer porteria;
+	private String  estado_jugador; //{titular, suplente, lesionado}
 	
-	
+
 	@ManyToOne
 	private Equipo equipo;
 	
@@ -131,6 +132,16 @@ public class Jugador implements java.io.Serializable
 	public void setPorteria(Integer porteria) 
 	{
 		this.porteria = porteria;
+	}
+	
+	public String getEstado_jugador() 
+	{
+		return estado_jugador;
+	}
+
+	public void setEstado_jugador(String estado_jugador) 
+	{
+		this.estado_jugador = estado_jugador;
 	}
 
 }

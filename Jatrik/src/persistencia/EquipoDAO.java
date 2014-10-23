@@ -1,8 +1,11 @@
 package persistencia;
 
 import java.util.*;
+
 import javax.ejb.Local;
+
 import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -30,10 +33,6 @@ public interface EquipoDAO
 	
 	public JSONArray obtenerPaises();
 	
-	public List<Jugador> getJugadoresDelanterosEquipo(String nombreEquipo);
-	
-	public List<Jugador> getJugadoresMediocampistasEquipo(String nombreEquipo);
-	
-	public List<Jugador> getJugadoresDefensasEquipo(String nombreEquipo);
+	public List<Jugador> getJugadoresEquipo(String nombreEquipo, String posicion, Boolean titular);
 
 }

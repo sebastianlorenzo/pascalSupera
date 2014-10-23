@@ -1,9 +1,12 @@
 package persistencia;
 
 import java.util.*;
+
 import javax.ejb.*;
 import javax.persistence.*;
+
 import org.codehaus.jettison.json.*;
+
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -17,6 +20,8 @@ import dominio.Usuario;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class EquipoDAOImpl implements EquipoDAO
 {
+	
+	static final String CONST_TITULAR = "titular";
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
@@ -113,36 +118,34 @@ public class EquipoDAOImpl implements EquipoDAO
 	
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Jugador> getJugadoresDelanterosEquipo(String nombreEquipo) 
+	public List<Jugador> getJugadoresEquipo(String nombreEquipo, String posicion, Boolean titular)
 	{
-		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
-								   + "WHERE j = e.j AND "
-								   + "		j.posicion = 'delantero' AND"
-								   + "		e.equipo = '" + nombreEquipo + "'");
-		List<Jugador> jugadores = query.getResultList();
-		return jugadores;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Jugador> getJugadoresMediocampistasEquipo(String nombreEquipo) 
-	{
-		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
-								   + "WHERE j = e.j AND "
-								   + "		j.posicion = 'mediocampista' AND"
-								   + "		e.equipo = '" + nombreEquipo + "'");
-		List<Jugador> jugadores = query.getResultList();
-		return jugadores;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Jugador> getJugadoresDefensasEquipo(String nombreEquipo) 
-	{
-		Query query = em.createQuery("SELECT j FROM  Jugador j, Equipo e"
-								   + "WHERE j = e.j AND "
-								   + "		j.posicion = 'defensa' AND"
-								   + "		e.equipo = '" + nombreEquipo + "'");
+		/*String str_query = "SELECT ju FROM Jugador ju, Equipo e "
+						 + "WHERE ju = e.j AND e.equipo = '" + nombreEquipo + "'";
+		
+		if (posicion != "")
+		{
+			str_query += " AND j.posicion = '" + posicion + "'";
+		}
+		
+		if (titular)
+		{
+			str_query += " AND j.estado_jugador = '" + CONST_TITULAR + "'";
+		}*/
+		String str_query = "SELECT e.j FROM Equipo e "
+				 + "WHERE e.equipo = '" + nombreEquipo + "'";
+
+		if (posicion != "")
+		{
+			str_query += " AND e.j.posicion = '" + posicion + "'";
+		}
+		
+		if (titular)
+		{
+			str_query += " AND e.j.estado_jugador = '" + CONST_TITULAR + "'";
+		}
+		
+		Query query = em.createQuery(str_query);
 		List<Jugador> jugadores = query.getResultList();
 		return jugadores;
 	}
