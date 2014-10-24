@@ -15,6 +15,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import tipos.DataCampeonato;
+import tipos.DataListaCampeonato;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Partido;
@@ -105,6 +107,49 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			}
 		}		
 		return jcampeonatos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaCampeonato listarCampeonatosDisponibles()
+	{
+		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		List<Campeonato> campeonatosList = query.getResultList();		
+		DataListaCampeonato dlcampeonatos = new DataListaCampeonato();
+		
+		Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    String fecha_hoy = formateador.format(ahora);
+	    
+		for (Campeonato c : campeonatosList) 
+		{	
+			String fecha_campeonato = c.getInicioCampeonato().toString();
+			if ((fecha_campeonato.compareTo(fecha_hoy) >=0) &&
+					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
+			{
+				DataCampeonato dca = new DataCampeonato();
+				String nomCampeonato = c.getCampeonato();
+				dca.setNomCampeonato(nomCampeonato);
+				String fechaInicio = c.getInicioCampeonato().toString();
+				dca.setFechaInicio(fechaInicio);
+				Integer bacantes = (c.getCantEquipos() - c.getEquipos().size());
+				dca.setDisponibilidad(bacantes);
+				Collection<Equipo> lsteq = c.getEquipos();
+				
+				List<String> lsteqdata = new ArrayList<String>();
+				for (Equipo e : lsteq)
+				{
+					String nomEq = e.getEquipo();
+					lsteqdata.add(nomEq);					
+				}
+				
+				dca.setEquiposCampeonato(lsteqdata);
+				
+				dlcampeonatos.addDataCampeonato(dca);
+			}
+		}		
+		return dlcampeonatos;
+		
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

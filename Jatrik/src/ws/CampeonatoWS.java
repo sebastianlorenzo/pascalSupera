@@ -13,9 +13,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import tipos.DataListaCampeonato;
+
+import com.google.gson.Gson;
 
 import negocio.ICampeonatoController;
 
@@ -59,7 +62,7 @@ public class CampeonatoWS
 	@Path("listarCampeonatos")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String listarCampeonatos()
-	{
+	{	/*
 		JSONObject respuesta = new JSONObject();		
 		try 
 		{
@@ -73,7 +76,12 @@ public class CampeonatoWS
 			e.printStackTrace();
 		}
 		
-		return respuesta.toString();
+		return respuesta.toString();*/
+		
+		Gson g = new Gson();
+		DataListaCampeonato dataCamp = this.iCampeonatoController.campeonatosDisponibles();
+		return g.toJson(dataCamp);
+		
 	}
 	
 	@POST

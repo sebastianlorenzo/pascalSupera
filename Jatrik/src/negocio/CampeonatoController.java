@@ -21,6 +21,7 @@ import persistencia.CampeonatoDAO;
 import persistencia.CampeonatoDAOImpl;
 import persistencia.PartidoDAO;
 import persistencia.PartidoDAOImpl;
+import tipos.DataListaCampeonato;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -104,6 +105,12 @@ public class CampeonatoController implements ICampeonatoController
 	public JSONArray obtenerCampeonatos()
 	{
 		return this.campeonatoDAO.obtenerCampeonatos();
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaCampeonato campeonatosDisponibles() 
+	{
+		return this.campeonatoDAO.listarCampeonatosDisponibles();
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
