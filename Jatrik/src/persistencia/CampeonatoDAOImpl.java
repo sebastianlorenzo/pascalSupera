@@ -2,6 +2,7 @@ package persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ import dominio.Usuario;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CampeonatoDAOImpl implements CampeonatoDAO
 {
+	static final int DIAS_APLAZO = 15;
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
@@ -72,6 +74,16 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		return (em.find(Campeonato.class, campeonato) != null);
 	}
 	
+	
+	//funcion auxiliar. Suma los días recibidos a la fecha  	
+	public Date sumarDiasFecha(Date fecha, int dias)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fecha);
+		calendar.add(Calendar.DAY_OF_YEAR, dias);
+		return calendar.getTime(); 
+	}
+		
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public DataListaCampeonato listarCampeonatosDisponibles()
@@ -87,13 +99,35 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		for (Campeonato c : campeonatosList) 
 		{	
 			String fecha_campeonato = c.getInicioCampeonato().toString();
+			
+			//aplazar campeonato
+			if ((fecha_campeonato.compareTo(fecha_hoy) < 0)  &&
+					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
+			{
+				Date dateIni = sumarDiasFecha(c.getInicioCampeonato(), DIAS_APLAZO);
+				c.setInicioCampeonato(dateIni);
+				em.merge(c);
+				Collection<Partido> partidos = c.getPartidos();
+				Iterator<Partido> iterador = partidos.iterator();
+				while(iterador.hasNext()){
+					Partido p = iterador.next();
+					Date fechaPartido = sumarDiasFecha(p.getFechaPartido(), DIAS_APLAZO);
+					p.setFechaPartido(fechaPartido);
+					em.merge(p);
+				}				
+			}
+			
+			fecha_campeonato = c.getInicioCampeonato().toString();
+			
 			if ((fecha_campeonato.compareTo(fecha_hoy) >=0) &&
 					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
 			{
 				DataCampeonato dca = new DataCampeonato();
 				String nomCampeonato = c.getCampeonato();
 				dca.setNomCampeonato(nomCampeonato);
-				String fechaInicio = c.getInicioCampeonato().toString();
+				Date fechaCamp = c.getInicioCampeonato();
+				formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaInicio = formateador.format(fechaCamp);
 				dca.setFechaInicio(fechaInicio);
 				Integer bacantes = (c.getCantEquipos() - c.getEquipos().size());
 				dca.setDisponibilidad(bacantes);

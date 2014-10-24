@@ -31,6 +31,8 @@ public class CampeonatoController implements ICampeonatoController
 	@EJB
 	private PartidoDAO partidoDAO;
 	
+	static final int DIAS_ENTRE_PARTIDOS = 7;
+	
 	public CampeonatoController()
 	{
 		this.campeonatoDAO = new CampeonatoDAOImpl();
@@ -72,7 +74,7 @@ public class CampeonatoController implements ICampeonatoController
 			Date fecha = inicioCampeonato;
 			for(cant=1; cant<=cantidadEquipos*(cantidadEquipos-1); cant++){
 				Partido partido_nuevo = new Partido(nomCampeonato+"_partido_"+cant, null, null, fecha, null, null, null, null);
-				fecha = sumarDiasFecha(fecha, 7);
+				fecha = sumarDiasFecha(fecha, DIAS_ENTRE_PARTIDOS);
 				this.partidoDAO.insertarPartido(partido_nuevo);				
 				partidos.add(partido_nuevo);
 			}
