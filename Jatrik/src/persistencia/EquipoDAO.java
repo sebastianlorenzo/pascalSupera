@@ -33,6 +33,4 @@ public interface EquipoDAO
 	
 	public JSONArray obtenerPaises();
 	
-	public List<Jugador> getJugadoresEquipo(String nombreEquipo, String posicion, Boolean titular);
-
 }

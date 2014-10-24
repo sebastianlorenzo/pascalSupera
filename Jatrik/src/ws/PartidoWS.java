@@ -8,9 +8,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import negocio.IPartidoController;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import com.google.gson.Gson;
 
 import tipos.DataResumenPartido;
 
@@ -34,17 +38,10 @@ public class PartidoWS
 		
 		DataResumenPartido resumenPartido = iPartidoController.simularPartido(partido);
 		
-		JSONObject json = new JSONObject();
-		try
-		{
-			json.put("resumenPartido", resumenPartido);
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
+		Gson  g = new Gson();
+		String r = g.toJson(resumenPartido);
 		
-		return json.toString();
+		return r;
 	}
 	
 }

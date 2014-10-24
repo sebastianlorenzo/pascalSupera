@@ -72,6 +72,8 @@ public class EquipoController implements IEquipoController
 		return e;
 	}
 	
+	///COMENTARIO SEBA
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONArray obtenerPaisesInicial()
 	{

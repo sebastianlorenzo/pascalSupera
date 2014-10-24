@@ -1,12 +1,9 @@
 package persistencia;
 
 import java.util.*;
-
 import javax.ejb.*;
 import javax.persistence.*;
-
 import org.codehaus.jettison.json.*;
-
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -114,40 +111,6 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		
 		return jpaises;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Jugador> getJugadoresEquipo(String nombreEquipo, String posicion, Boolean titular)
-	{
-		/*String str_query = "SELECT ju FROM Jugador ju, Equipo e "
-						 + "WHERE ju = e.j AND e.equipo = '" + nombreEquipo + "'";
-		
-		if (posicion != "")
-		{
-			str_query += " AND j.posicion = '" + posicion + "'";
-		}
-		
-		if (titular)
-		{
-			str_query += " AND j.estado_jugador = '" + CONST_TITULAR + "'";
-		}*/
-		String str_query = "SELECT e.j FROM Equipo e "
-				 + "WHERE e.equipo = '" + nombreEquipo + "'";
-
-		if (posicion != "")
-		{
-			str_query += " AND e.j.posicion = '" + posicion + "'";
-		}
-		
-		if (titular)
-		{
-			str_query += " AND e.j.estado_jugador = '" + CONST_TITULAR + "'";
-		}
-		
-		Query query = em.createQuery(str_query);
-		List<Jugador> jugadores = query.getResultList();
-		return jugadores;
 	}
 	
 }
