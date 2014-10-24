@@ -3,12 +3,12 @@
 	<persistence-unit name="Jatrik">
 		<jta-data-source>java:jboss/datasources/jat</jta-data-source>
 		<class>dominio.Usuario</class>
-		<class>dominio.Equipo</class>
-		<class>dominio.Jugador</class>
-		<class>dominio.Estadio</class>
-		<class>dominio.Partido</class>
 		<class>dominio.Campeonato</class>
+		<class>dominio.Equipo</class>
+		<class>dominio.Estadio</class>
+		<class>dominio.Jugador</class>
 		<class>dominio.Pais</class>
+		<class>dominio.Partido</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.default_schema" value="public"/>
