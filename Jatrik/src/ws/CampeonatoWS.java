@@ -62,26 +62,10 @@ public class CampeonatoWS
 	@Path("listarCampeonatos")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String listarCampeonatos()
-	{	/*
-		JSONObject respuesta = new JSONObject();		
-		try 
-		{
-			JSONArray jcampeonatos = null;
-			jcampeonatos = iCampeonatoController.obtenerCampeonatos();
-			respuesta.put("campeonatos", jcampeonatos);
-
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return respuesta.toString();*/
-		
+	{			
 		Gson g = new Gson();
 		DataListaCampeonato dataCamp = this.iCampeonatoController.campeonatosDisponibles();
-		return g.toJson(dataCamp);
-		
+		return g.toJson(dataCamp);	
 	}
 	
 	@POST

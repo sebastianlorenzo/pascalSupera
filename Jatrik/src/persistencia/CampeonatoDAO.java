@@ -1,7 +1,5 @@
 package persistencia;
 
-import org.codehaus.jettison.json.JSONArray;
-
 import tipos.DataListaCampeonato;
 import dominio.Campeonato;
 
@@ -14,8 +12,6 @@ public interface CampeonatoDAO
 	public Boolean existeCampeonato(String campeonato);
 	
 	public Campeonato buscarCampeonato(String campeonato);
-	
-	public JSONArray obtenerCampeonatos();
 	
 	public DataListaCampeonato listarCampeonatosDisponibles();
 
