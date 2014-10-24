@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.Collection;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,13 +20,21 @@ public class Usuario implements java.io.Serializable
 	
 	private Integer capital;
 	
+	private Boolean conectado;
+	
+	private Boolean es_admin;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "equipo", nullable = true)
 	private Equipo equipo;
 	
-	private Boolean conectado;
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="usuario_mensajesEnviados")
+	private Collection<Mensaje> mensajesEnviados;
 	
-	private Boolean es_admin;
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="usuario_mensajesRecibidos")
+	private Collection<Mensaje> mensajesRecibidos;
 	
 	public Usuario(){}
 	
@@ -99,12 +109,34 @@ public class Usuario implements java.io.Serializable
 		this.es_admin = es_admin;
 	}
 
-	public Integer getCapital() {
+	public Integer getCapital() 
+	{
 		return capital;
 	}
 
-	public void setCapital(Integer capital) {
+	public void setCapital(Integer capital) 
+	{
 		this.capital = capital;
+	}
+	
+	public Collection<Mensaje> getMensajesEnviados() 
+	{
+		return mensajesEnviados;
+	}
+
+	public void setMensajesEnviados(Collection<Mensaje> mensajesEnviados) 
+	{
+		this.mensajesEnviados = mensajesEnviados;
+	}
+
+	public Collection<Mensaje> getMensajesRecibidos() 
+	{
+		return mensajesRecibidos;
+	}
+
+	public void setMensajesRecibidos(Collection<Mensaje> mensajesRecibidos) 
+	{
+		this.mensajesRecibidos = mensajesRecibidos;
 	}
 	
 }

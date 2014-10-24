@@ -59,6 +59,15 @@
         primary key (idJugador)
     );
 
+    create table public.mensaje (
+        idMensaje int8 not null,
+        leido boolean,
+        texto varchar(255),
+        emisorMensaje_login varchar(255),
+        receptorMensaje_login varchar(255),
+        primary key (idMensaje)
+    );
+
     create table public.pais (
         localidad varchar(255) not null,
         pais varchar(255),
@@ -86,6 +95,16 @@
         primary key (login)
     );
 
+    create table public.usuario_mensajesEnviados (
+        usuario_login varchar(255) not null,
+        mensajesEnviados_idMensaje int8 not null
+    );
+
+    create table public.usuario_mensajesRecibidos (
+        usuario_login varchar(255) not null,
+        mensajesRecibidos_idMensaje int8 not null
+    );
+
     alter table public.campeonato_partido 
         add constraint UK_qel622wydwywu34avof4n9wpi  unique (partidos_partido);
 
@@ -97,6 +116,12 @@
 
     alter table public.estadio_partido 
         add constraint UK_6ajiscv5xwex5i7hg445t9lxb  unique (partidos_partido);
+
+    alter table public.usuario_mensajesEnviados 
+        add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
+
+    alter table public.usuario_mensajesRecibidos 
+        add constraint UK_hrqjp7i4k5ujfksrh4gsbyvak  unique (mensajesRecibidos_idMensaje);
 
     alter table public.campeonato_equipo 
         add constraint FK_k7mcfwfovv12itg9awsyblm8d 
@@ -158,6 +183,16 @@
         foreign key (equipo_equipo) 
         references public.equipo;
 
+    alter table public.mensaje 
+        add constraint FK_krtsmml61bh27wbyatxxfv9c0 
+        foreign key (emisorMensaje_login) 
+        references public.usuario;
+
+    alter table public.mensaje 
+        add constraint FK_3j18mdk95u7goe6wnx4k9kfq1 
+        foreign key (receptorMensaje_login) 
+        references public.usuario;
+
     alter table public.partido 
         add constraint FK_11pj8odckk9psgwfjo3npve9a 
         foreign key (campeonato_campeonato) 
@@ -182,5 +217,25 @@
         add constraint FK_k2bt9tx57xvrxrl8gd5af2dbl 
         foreign key (equipo) 
         references public.equipo;
+
+    alter table public.usuario_mensajesEnviados 
+        add constraint FK_8h29hety033e3pfj8054fwkbr 
+        foreign key (mensajesEnviados_idMensaje) 
+        references public.mensaje;
+
+    alter table public.usuario_mensajesEnviados 
+        add constraint FK_1kkvwjm0dmxsaenmrl9d9fp9n 
+        foreign key (usuario_login) 
+        references public.usuario;
+
+    alter table public.usuario_mensajesRecibidos 
+        add constraint FK_hrqjp7i4k5ujfksrh4gsbyvak 
+        foreign key (mensajesRecibidos_idMensaje) 
+        references public.mensaje;
+
+    alter table public.usuario_mensajesRecibidos 
+        add constraint FK_r3v7ljoc36f539pmfbikbtxg8 
+        foreign key (usuario_login) 
+        references public.usuario;
 
     create sequence public.hibernate_sequence;

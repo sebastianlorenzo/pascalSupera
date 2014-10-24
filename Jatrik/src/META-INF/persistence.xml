@@ -9,6 +9,7 @@
 		<class>dominio.Jugador</class>
 		<class>dominio.Pais</class>
 		<class>dominio.Partido</class>
+		<class>dominio.Mensaje</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.default_schema" value="public"/>

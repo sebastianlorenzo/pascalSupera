@@ -5,7 +5,10 @@ import java.util.*;
 import javax.ejb.*;
 import javax.persistence.*;
 
+import tipos.DataListaMensaje;
+import tipos.DataMensaje;
 import dominio.Equipo;
+import dominio.Mensaje;
 import dominio.Usuario;
 
 @Stateless
@@ -135,6 +138,51 @@ public class UsuarioDAOImpl implements UsuarioDAO
 			return u.getEsAdmin();
 		}
 		return false;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void enviarChat(String emisor, String receptor, String mensaje) 
+	{
+		Usuario uEmisor =  em.find(Usuario.class, emisor);
+		Usuario uReceptor =  em.find(Usuario.class, receptor);
+		
+		Mensaje m = new Mensaje(uEmisor, uReceptor, mensaje);
+		
+		Collection<Mensaje> mensajesEnviados = uEmisor.getMensajesEnviados();
+		mensajesEnviados.add(m);
+		uEmisor.setMensajesEnviados(mensajesEnviados);
+		
+		Collection<Mensaje> mensajesRecibidos = uReceptor.getMensajesRecibidos();
+		mensajesRecibidos.add(m);
+		uReceptor.setMensajesRecibidos(mensajesRecibidos);
+		
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaMensaje recibirChat(String receptor) 
+	{
+		Usuario uReceptor =  em.find(Usuario.class, receptor);
+		Collection<Mensaje> mensajesRecibidos = uReceptor.getMensajesRecibidos();
+		Iterator<Mensaje> iter = mensajesRecibidos.iterator();
+		
+		DataListaMensaje dlm = new DataListaMensaje();
+		
+		while(iter.hasNext()){
+			DataMensaje dm = new DataMensaje();
+			Mensaje m = iter.next();
+			if(m.getLeido() == false)
+			{
+				//agrego la info a DataMensaje
+				dm.setEmisor(m.getEmisorMensaje().getLogin());
+				dm.setTexto(m.getTexto());
+				
+				//seteo mensaje como leido = true.
+				//El usuario tendrá disponibles los mensajes recibidos para leer
+				m.setLeido(true);
+			}
+			dlm.addDataMensaje(dm);
+		}
+		return dlm;
 	}
 	
 }

@@ -1,7 +1,10 @@
 package persistencia;
 
 import java.util.List;
+
 import javax.ejb.Local;
+
+import tipos.DataListaMensaje;
 import dominio.Equipo;
 import dominio.Usuario;
 
@@ -31,4 +34,7 @@ public interface UsuarioDAO
 	
 	public Boolean esAdministrador(String login);
 	
+	public void enviarChat(String emisor, String receptor, String mensaje);
+
+	public DataListaMensaje recibirChat(String receptor);	
 }
