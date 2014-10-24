@@ -16,6 +16,7 @@ public interface CampeonatoDAO
 	public DataListaCampeonato listarCampeonatosDisponibles();
 
 	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario);
-	
 
+	public DataListaCampeonato listarCampeonatosEnEjecucion();
+	
 }

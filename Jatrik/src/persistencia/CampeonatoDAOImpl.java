@@ -144,9 +144,9 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				
 				dlcampeonatos.addDataCampeonato(dca);
 			}
-		}		
-		return dlcampeonatos;
+		}
 		
+		return dlcampeonatos;		
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -209,6 +209,53 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		}
 		else 
 			return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaCampeonato listarCampeonatosEnEjecucion()
+	{
+		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		List<Campeonato> campEnEjecucion = query.getResultList();		
+		DataListaCampeonato dlcampeonatos = new DataListaCampeonato();
+		Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    String fecha_hoy = formateador.format(ahora);
+	    
+		for (Campeonato c : campEnEjecucion) 
+		{	
+			String fecha_campeonato = c.getInicioCampeonato().toString();
+			String nomCamp = c.getCampeonato();
+			Integer cantidadEquipos = c.getCantEquipos();			
+			Integer numero_partido = cantidadEquipos*(cantidadEquipos-1);
+			
+			Partido par = em.find(Partido.class, nomCamp+"_partido_"+numero_partido);
+			
+			String fecha_ultimo_partido = par.getFechaPartido().toString();
+			if ((fecha_campeonato.compareTo(fecha_hoy) < 0) && (fecha_ultimo_partido.compareTo(fecha_hoy) >=0))
+			{
+				DataCampeonato dca = new DataCampeonato();
+				String nomCampeonato = c.getCampeonato();
+				dca.setNomCampeonato(nomCampeonato);
+				Date fechaCamp = c.getInicioCampeonato();
+				formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaInicio = formateador.format(fechaCamp);
+				dca.setFechaInicio(fechaInicio);
+				
+				Collection<Equipo> lsteq = c.getEquipos();
+				
+				List<String> lsteqdata = new ArrayList<String>();
+				for (Equipo e : lsteq)
+				{
+					String nomEq = e.getEquipo();
+					lsteqdata.add(nomEq);					
+				}
+				dca.setEquiposCampeonato(lsteqdata);
+				
+				dlcampeonatos.addDataCampeonato(dca);
+			}	
+		}		
+		return dlcampeonatos;
 	}
 
 }

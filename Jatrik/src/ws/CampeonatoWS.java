@@ -68,6 +68,16 @@ public class CampeonatoWS
 		return g.toJson(dataCamp);	
 	}
 	
+	@GET
+	@Path("campeonatosEnEjecucion")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarCampeonatosEnEjecucion()
+	{			
+		Gson g = new Gson();
+		DataListaCampeonato dataCamp = this.iCampeonatoController.campeonatosEnEjecucion();
+		return g.toJson(dataCamp);	
+	}
+	
 	@POST
 	@Path("inscribirse")
 	@Produces(MediaType.APPLICATION_JSON)

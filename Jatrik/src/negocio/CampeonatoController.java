@@ -114,4 +114,10 @@ public class CampeonatoController implements ICampeonatoController
 		return this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
 	}
 
+	//obtengo todos los campeonatos en ejecución
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaCampeonato campeonatosEnEjecucion() {
+		return this.campeonatoDAO.listarCampeonatosEnEjecucion();
+	}
+
 }
