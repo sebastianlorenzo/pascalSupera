@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import org.codehaus.jettison.json.JSONArray;
+
 import tipos.DataListaMensaje;
 import dominio.Equipo;
 import dominio.Usuario;
@@ -36,5 +38,8 @@ public interface UsuarioDAO
 	
 	public void enviarChat(String emisor, String receptor, String mensaje);
 
-	public DataListaMensaje recibirChat(String receptor);	
+	public DataListaMensaje recibirChat(String receptor);
+
+	public JSONArray obtenerDesconectados();	
+	
 }

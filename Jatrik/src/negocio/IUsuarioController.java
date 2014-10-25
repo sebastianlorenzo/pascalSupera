@@ -1,6 +1,8 @@
 package negocio;
 
 import javax.ejb.Local;
+
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 @Local
@@ -19,7 +21,8 @@ public interface IUsuarioController
 	public void setearDesconectado(String login);
 	
 	public Boolean esAdmin(String login);
-	
+
+	public JSONArray obtenerDesconectados();
 	
 
 }

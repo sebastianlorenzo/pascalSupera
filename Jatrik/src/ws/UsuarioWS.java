@@ -5,8 +5,11 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import negocio.IUsuarioController;
 
 @ManagedBean
@@ -95,5 +98,27 @@ public class UsuarioWS
 		
 	    return json.toString();
     }
+    
+    @GET
+	@Path("listarDesconectados")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarDesconectados()
+	{
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray jdesconectados = null;
+			jdesconectados = iUsuarioController.obtenerDesconectados();
+			respuesta.put("desconectados", jdesconectados);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return respuesta.toString();
+	}
+
         
 }

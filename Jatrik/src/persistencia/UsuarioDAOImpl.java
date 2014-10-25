@@ -5,6 +5,10 @@ import java.util.*;
 import javax.ejb.*;
 import javax.persistence.*;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import tipos.DataListaMensaje;
 import tipos.DataMensaje;
 import dominio.Equipo;
@@ -183,6 +187,30 @@ public class UsuarioDAOImpl implements UsuarioDAO
 			dlm.addDataMensaje(dm);
 		}
 		return dlm;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerDesconectados() 
+	{	Query query = em.createQuery("SELECT us FROM Usuario us");
+		List<Usuario> usuarios = query.getResultList();		
+		JSONArray jdesconectados = new JSONArray();
+	
+		for (Usuario u : usuarios) 
+		{
+			JSONObject ob = new JSONObject();
+			try 
+			{	
+				if(u.getConectado() == false)
+					ob.put("desconectado", u.getLogin());
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
+			jdesconectados.put(ob);
+		}
+		return jdesconectados;
 	}
 	
 }

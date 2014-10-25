@@ -2,6 +2,7 @@ package negocio;
 
 import javax.ejb.*;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import persistencia.UsuarioDAO;
@@ -133,8 +134,15 @@ public class UsuarioController implements IUsuarioController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean esAdmin(String login) {
+	public Boolean esAdmin(String login) 
+	{
 		return this.usuarioDAO.esAdministrador(login);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerDesconectados()
+	{
+		return this.usuarioDAO.obtenerDesconectados();
 	}
 
 }
