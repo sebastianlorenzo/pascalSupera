@@ -24,5 +24,5 @@ public interface IUsuarioController
 
 	public JSONArray obtenerDesconectados();
 	
-
+	public Boolean enviarChat(String emisor, String receptor, String mensaje);
 }

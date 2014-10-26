@@ -120,5 +120,30 @@ public class UsuarioWS
 		return respuesta.toString();
 	}
 
-        
+    @POST
+	@Path("enviarChat")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String enviarChat(String datos) throws JSONException
+    {
+    	JSONObject datosM = new JSONObject(datos);
+		String emisor   = datosM.getString("emisor");
+		String receptor   = datosM.getString("receptor");
+		String mensaje   = datosM.getString("mensaje");
+		
+		Boolean enviado =  iUsuarioController.enviarChat(emisor, receptor, mensaje);
+    	
+    	JSONObject json = new JSONObject();
+		try
+		{
+			json.put("mensaje", enviado);
+	    }
+	    catch(Exception ex)
+		{
+	    	ex.printStackTrace();
+	    }
+		
+	    return json.toString();
+    }
+      
 }

@@ -145,12 +145,16 @@ public class UsuarioDAOImpl implements UsuarioDAO
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void enviarChat(String emisor, String receptor, String mensaje) 
+	public Boolean enviarChat(String emisor, String receptor, String mensaje) 
 	{
 		Usuario uEmisor =  em.find(Usuario.class, emisor);
 		Usuario uReceptor =  em.find(Usuario.class, receptor);
 		
+		if((uEmisor == null) || (uReceptor == null)){
+			return false;
+		}
 		Mensaje m = new Mensaje(uEmisor, uReceptor, mensaje);
+		em.persist(m);
 		
 		Collection<Mensaje> mensajesEnviados = uEmisor.getMensajesEnviados();
 		mensajesEnviados.add(m);
@@ -160,6 +164,7 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		mensajesRecibidos.add(m);
 		uReceptor.setMensajesRecibidos(mensajesRecibidos);
 		
+		return true;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

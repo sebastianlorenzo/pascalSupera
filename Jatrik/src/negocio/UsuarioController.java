@@ -145,4 +145,10 @@ public class UsuarioController implements IUsuarioController
 		return this.usuarioDAO.obtenerDesconectados();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean enviarChat(String emisor, String receptor, String mensaje)
+	{
+		return this.usuarioDAO.enviarChat(emisor, receptor, mensaje);		
+	}
+
 }
