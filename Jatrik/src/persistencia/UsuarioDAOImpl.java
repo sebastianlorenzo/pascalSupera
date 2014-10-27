@@ -202,20 +202,24 @@ public class UsuarioDAOImpl implements UsuarioDAO
 	{	Query query = em.createQuery("SELECT us FROM Usuario us");
 		List<Usuario> usuarios = query.getResultList();		
 		JSONArray jdesconectados = new JSONArray();
+		JSONObject ob;
 	
 		for (Usuario u : usuarios) 
 		{
-			JSONObject ob = new JSONObject();
 			try 
 			{	
-				if(u.getConectado() == false)
+				ob = new JSONObject();
+				if(u.getConectado() == false) 
+				{
 					ob.put("desconectado", u.getLogin());
+					jdesconectados.put(ob);
+				}
 			} 
 			catch (JSONException e) 
 			{
 				e.printStackTrace();
 			}
-			jdesconectados.put(ob);
+			
 		}
 		return jdesconectados;
 	}
