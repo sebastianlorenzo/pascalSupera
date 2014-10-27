@@ -9,7 +9,8 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
+import tipos.DataListaMensaje;
+import com.google.gson.Gson;
 import negocio.IUsuarioController;
 
 @ManagedBean
@@ -43,6 +44,13 @@ public class UsuarioWS
 		{
 			json.put("login", existeUsr);
 			json.put("es_admin", es_admin);
+			
+			if(existeUsr)
+			{
+				Gson g = new Gson();
+				DataListaMensaje mensajesNuevos = iUsuarioController.obtenerMensajes(login);		
+				json.put("mensajesNuevos", g.toJson(mensajesNuevos));
+			}
 		}
 		catch(Exception ex)
 		{

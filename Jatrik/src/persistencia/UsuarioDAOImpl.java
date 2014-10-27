@@ -175,12 +175,13 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		Iterator<Mensaje> iter = mensajesRecibidos.iterator();
 		
 		DataListaMensaje dlm = new DataListaMensaje();
+		DataMensaje dm = null;
 		
 		while(iter.hasNext()){
-			DataMensaje dm = new DataMensaje();
 			Mensaje m = iter.next();
 			if(m.getLeido() == false)
-			{
+			{	
+				dm = new DataMensaje();
 				//agrego la info a DataMensaje
 				dm.setEmisor(m.getEmisorMensaje().getLogin());
 				dm.setTexto(m.getTexto());
@@ -189,6 +190,7 @@ public class UsuarioDAOImpl implements UsuarioDAO
 				//El usuario tendrá disponibles los mensajes recibidos para leer
 				m.setLeido(true);
 			}
+			if(dm != null)
 			dlm.addDataMensaje(dm);
 		}
 		return dlm;

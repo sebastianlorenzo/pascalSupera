@@ -5,6 +5,8 @@ import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
+import tipos.DataListaMensaje;
+
 @Local
 public interface IUsuarioController 
 {
@@ -25,4 +27,7 @@ public interface IUsuarioController
 	public JSONArray obtenerDesconectados();
 	
 	public Boolean enviarChat(String emisor, String receptor, String mensaje);
+
+	public DataListaMensaje obtenerMensajes(String receptor);
+	
 }

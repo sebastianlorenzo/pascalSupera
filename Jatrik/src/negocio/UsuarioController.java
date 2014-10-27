@@ -7,6 +7,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
+import tipos.DataListaMensaje;
 import dominio.Equipo;
 import dominio.Usuario;
 
@@ -151,4 +152,8 @@ public class UsuarioController implements IUsuarioController
 		return this.usuarioDAO.enviarChat(emisor, receptor, mensaje);		
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaMensaje obtenerMensajes(String receptor) {
+		return this.usuarioDAO.recibirChat(receptor);
+	}
 }
