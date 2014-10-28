@@ -89,6 +89,8 @@ public class EquipoDAOImpl implements EquipoDAO
 			try 
 			{
 				ob.put("equipo", e.getEquipo());
+				ob.put("pais", e.getPais());
+				ob.put("localidad", e.getLocalidad());
 			} 
 			catch (JSONException ex) 
 			{
