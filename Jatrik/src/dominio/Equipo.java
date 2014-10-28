@@ -26,7 +26,8 @@ public class Equipo implements java.io.Serializable
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
 	private Usuario usuario;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	//@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch=FetchType.EAGER)
 	private Collection<Jugador> jugadores;
 	
 	@OneToMany(fetch = FetchType.LAZY)

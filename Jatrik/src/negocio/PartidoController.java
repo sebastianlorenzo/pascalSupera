@@ -20,14 +20,16 @@ public class PartidoController implements IPartidoController
 {
 
 	/* Constantes */
-	public static Integer MIN_JUGADAS_PARTIDO = 10;
-	public static Integer MAX_JUGADAS_PARTIDO = 20;
+	static final Integer MIN_JUGADAS_PARTIDO = 10;
+	static final Integer MAX_JUGADAS_PARTIDO = 20;
+	static final Float CONST_GOL 			 = (float) 0.9;
 	
 	static final String CONST_DELANTERO     = "delantero";
 	static final String CONST_MEDIOCAMPISTA = "mediocampista";
 	static final String CONST_DEFENSA 		= "defensa";
 	static final String CONST_PORTERO 		= "portero";
 	static final String CONST_TITULAR		= "titular";
+	
 	
 	@EJB
 	private PartidoDAO partidoDAO;
@@ -44,32 +46,26 @@ public class PartidoController implements IPartidoController
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataResumenPartido simularPartido(String idPartido)
 	{
-		// Obtengo el partido que quiero simular
+		// Obtener el partido que vamos a simular
 		Partido partido = partidoDAO.getPartido(idPartido);
 		
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (MAX_JUGADAS_PARTIDO - MIN_JUGADAS_PARTIDO + 1) + MIN_JUGADAS_PARTIDO);
 		
-		Equipo equipo1 = new Equipo("equipo3", "pais3", "localidad3");
-		Equipo equipo2 = new Equipo("equipo4", "pais4", "localidad4");
-		
-		/******************/
-		List<Jugador> jugadores = new ArrayList<Jugador>();
-		Jugador j = new Jugador(9, "jugador9", equipo1, "delantero",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(10, "jugador10", equipo1, "defensa",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(11, "jugador11", equipo1, "mediocampista",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(12, "jugador12", equipo1, "portero",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(13, "jugador13", equipo2, "delantero",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(14, "jugador14", equipo2, "defensa",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(15, "jugador15", equipo2, "mediocampista",60,60,65,65,65); jugadores.add(j);
-		j = new Jugador(16, "jugador16", equipo2, "portero",60,60,65,65,65); jugadores.add(j);
-		/******************/
+		boolean es_local = false;
+
+		int tarjetasAmarillasLocal		= 0;
+		int tarjetasAmarillasVisitante  = 0; 
+		int tarjetasRojasLocal			= 0;
+		int tarjetasRojasVisitante		= 0;
+		int golesLocal					= 0;
+		int golesVisitante				= 0;
+		int lesionesLocal				= 0;
+		int lesionesVisitante			= 0;
 		
 		// De 0 a cantidad_jugadas
 		for (int i = 0; i < cantidad_jugadas; i++)
 		{
-			// Realizar cambios 
-			
 			
 			// Elijo el equipo que va a realizar la jugada
 			// Se hace 50 y 50.
@@ -80,24 +76,46 @@ public class PartidoController implements IPartidoController
 			ArrayList<DataCambio> cambiosProgramados = null;
 			if (equipoJugada <= 0.5)
 			{
+				es_local = true;
 				equipo = partido.getEquipoLocal();
 				// Obtener los cambios programados
 				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosLocal();
 			}
 			else
 			{
+				es_local = false;
 				equipo = partido.getEquipoVisitante();
 				// Obtener los cambios programados
 				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosVisitante();
 			}
-			//List<Jugador> jugadores = (List<Jugador>) equipo.getJugadores();
+			String nombreEquipo = equipo.getEquipo(); 
+			
+			// Realizar cambios antes de jugar
+			realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
+			
+			List<Jugador> jugadores = (List<Jugador>) equipo.getJugadores();
 			
 			// Calcular la probabilidad de jugada de gol
-			String nombreEquipo = equipo.getEquipo();
 			float probJugadaGol = calcularProbabilidadJugadaGol(jugadores);
+			System.out.println("*** PROB. JUG. GOL ***");
+			String local_visitante = "visitante";
+			if (es_local)
+			{
+				local_visitante = "local";
+			}
+			System.out.println("Equipo " + local_visitante + " - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
+			System.out.println("**********************");
 			
 			// Calcular la probabilidad de gol para la jugada
-			float probGolParaJugada = calcularProbabilidadGol(jugadores, probJugadaGol);
+			float probGolParaJugada = calcularProbabilidadGol(jugadores, probJugadaGol);			
+			System.out.println("*** PROB. GOL ***");
+			local_visitante = "visitante";
+			if (es_local)
+			{
+				local_visitante = "local";
+			}
+			System.out.println("Equipo " + local_visitante + " - Probabilidad de gol: " + probGolParaJugada + "\n");
+			System.out.println("****************");
 			
 			// Calcular la probabilidad de tarjeta roja/amarilla
 			float probTarjeta = calcularProbabilidadTarjeta(jugadores, probGolParaJugada);
@@ -111,20 +129,28 @@ public class PartidoController implements IPartidoController
 			{
 				realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
 			}
+			
+			// Actualizo los valores de la jugada
+			if (es_local)
+			{
+				if (probGolParaJugada >= CONST_GOL)
+				{
+					golesLocal++;
+				}
+			}
+			else
+			{
+				if (probGolParaJugada >= CONST_GOL)
+				{
+					golesVisitante++;
+				}
+			}
 		}
 		
 		// Retornar resultado
-		Integer tarjetasAmarillasLocal		= 0;
-		Integer tarjetasAmarillasVisitante  = 0; 
-		Integer tarjetasRojasLocal			= 0;
-		Integer tarjetasRojasVisitante		= 0;
-		Integer gloesLocal					= 0;
-		Integer gloesVisitante				= 0;
-		Integer lesionesLocal				= 0;
-		Integer lesionesVisitante			= 0;
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillasLocal, tarjetasAmarillasVisitante, 
 																   tarjetasRojasLocal, tarjetasRojasVisitante,
-																   gloesLocal,gloesVisitante,
+																   golesLocal,golesVisitante,
 																   lesionesLocal, lesionesVisitante);
 		return resumenPartido;
 	}
@@ -147,22 +173,22 @@ public class PartidoController implements IPartidoController
         while(it.hasNext()) 
         {
             Jugador j = it.next();
-            if (j.getEstado_jugador() == CONST_TITULAR)
+            if (j.getEstado_jugador().equals(CONST_TITULAR))
             {
 	            String posicion = j.getPosicion();
-	            if (posicion == CONST_DELANTERO)
+	            if (posicion.equals(CONST_DELANTERO))
 	            {
 	            	RegateATs += j.getTecnica();
 	            	cant_delanteros_y_mediocampistas++;
 	            }
-	            else if (posicion == CONST_MEDIOCAMPISTA)
+	            else if (posicion.equals(CONST_MEDIOCAMPISTA))
 	            {
 	            	RegateMEDs   += j.getTecnica();
 	                PotenciaMEDs += j.getAtaque();
 	                cant_delanteros_y_mediocampistas++;
 	                cant_mediocampistas_y_defensas++;
 	            }
-	            else if (posicion == CONST_DEFENSA)
+	            else if (posicion.equals(CONST_DEFENSA))
 	            {
 	            	PotenciaDEFs += j.getAtaque();
 	            	cant_mediocampistas_y_defensas++;
@@ -192,7 +218,20 @@ public class PartidoController implements IPartidoController
 		 */
 		
 		// Tiro de un jugador
-		float tiro_jugador = 1;
+		float tiro_jugador = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
+tiro_jugador = 60; /********* Sacar este valor y poner el que va según la posición **********/
+		if (tiro_jugador <= 0.60)
+		{
+			// Es un Delantero
+		}
+		else if (tiro_jugador <= 0.90)
+		{
+			// Es un Mediocampista
+		}
+		else
+		{
+			// Es un Defensa
+		}
 		
 		// Habilidad del portero
 		float habilidad_portero = 0;
@@ -200,19 +239,20 @@ public class PartidoController implements IPartidoController
         while(it.hasNext()) 
         {
             Jugador j = it.next();
-            if (j.getEstado_jugador() == CONST_TITULAR)
+            if (j.getEstado_jugador().equals(CONST_TITULAR))
             {
 	            String posicion = j.getPosicion();
-	            if (posicion == CONST_PORTERO)
+	            if (posicion.equals(CONST_PORTERO))
 	            {
 	            	habilidad_portero = j.getPorteria();
+	            	break;
 	            }
             }
         }
 		
 		// Factores aleatorios
-		float factor_ataque  = (float) Math.random();
-		float factor_portero = (float) Math.random();
+		float factor_ataque  = (float) Math.random()*10;	/******** Ajustar estos parámetros ***********/
+		float factor_portero = (float) Math.random()*10;
 		
 		// Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100
 		float probGol = (probJugadaGol * (tiro_jugador * factor_ataque - habilidad_portero * factor_portero)) / 100;
@@ -232,15 +272,15 @@ public class PartidoController implements IPartidoController
         while(it.hasNext()) 
         {
             Jugador j = it.next();
-            if (j.getEstado_jugador() == CONST_TITULAR)
+            if (j.getEstado_jugador().equals(CONST_TITULAR))
             {
 	            String posicion = j.getPosicion();
-	            if (posicion == CONST_MEDIOCAMPISTA)
+	            if (posicion.equals(CONST_MEDIOCAMPISTA))
 	            {
 	                PotenciaMEDs += j.getAtaque();
 	                cant_mediocampistas_y_defensas++;
 	            }
-	            else if (posicion == CONST_DEFENSA)
+	            else if (posicion.equals(CONST_DEFENSA))
 	            {
 	            	PotenciaDEFs += j.getAtaque();
 	            	cant_mediocampistas_y_defensas++;
