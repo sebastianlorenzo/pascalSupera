@@ -21,6 +21,8 @@ public class EquipoController implements IEquipoController
 	
 	static final int MAX_CAPACIDAD = 10000;
 	static final int MAX_CANT_JUG = 2;
+	static final int MAX_ALTURA_ESTADIO = 4500;
+	static final int MIN_ALTURA_ESTADIO = 0;
 	
 	@EJB
 	private EquipoDAO equipoDAO;
@@ -42,7 +44,8 @@ public class EquipoController implements IEquipoController
 	{
 		Equipo e = new Equipo(equipo, pais, localidad);
 		int capacidad = MAX_CAPACIDAD;
-		Estadio estadio = new Estadio(nomestadio, capacidad);
+		int altura = (int) (Math.random() * (MAX_ALTURA_ESTADIO - MIN_ALTURA_ESTADIO + 1) + MIN_ALTURA_ESTADIO);
+		Estadio estadio = new Estadio(nomestadio, capacidad, altura);
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
 		

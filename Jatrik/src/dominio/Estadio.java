@@ -17,6 +17,8 @@ public class Estadio implements java.io.Serializable
 	
 	private Integer capacidad;
 	
+	private Integer altura;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "equipo", nullable = true)
 	private Equipo equipo;
@@ -27,10 +29,11 @@ public class Estadio implements java.io.Serializable
 	
 	public Estadio(){}
 
-	public Estadio(String estadio, Integer capacidad) 
+	public Estadio(String estadio, Integer capacidad, Integer altura) 
 	{
 		this.estadio = estadio;
 		this.capacidad = capacidad;
+		this.altura = altura;
 		this.equipo = null;
 		this.partidos = null;
 	}
@@ -72,6 +75,14 @@ public class Estadio implements java.io.Serializable
 	public Collection<Partido> getPartidos() 
 	{
 		return partidos;
+	}
+
+	public Integer getAltura() {
+		return altura;
+	}
+
+	public void setAltura(Integer altura) {
+		this.altura = altura;
 	}
 
 }

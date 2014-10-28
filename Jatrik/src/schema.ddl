@@ -40,6 +40,7 @@
 
     create table public.estadio (
         estadio varchar(255) not null,
+        altura int4,
         capacidad int4,
         equipo varchar(255),
         primary key (estadio)
