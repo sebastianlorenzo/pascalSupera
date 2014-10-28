@@ -5,6 +5,7 @@ import java.util.*;
 import javax.ejb.*;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Equipo;
 import dominio.Estadio;
@@ -71,9 +72,7 @@ public class EquipoController implements IEquipoController
 
 		return e;
 	}
-	
-	///COMENTARIO SEBA
-	
+		
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONArray obtenerPaisesInicial()
 	{
@@ -85,5 +84,17 @@ public class EquipoController implements IEquipoController
 	{
 		return this.estadioDAO.existeEstadio(estadio);
 	}
-		
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerEquipos() 
+	{
+		return this.equipoDAO.obtenerTodosEquipos();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONObject obtenerZonaEquipo(String nomEquipo) 
+	{
+		return this.equipoDAO.obtenerLugarEquipo(nomEquipo);
+	}
+	
 }

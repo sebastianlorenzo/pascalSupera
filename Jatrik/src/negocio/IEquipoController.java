@@ -1,7 +1,10 @@
 package negocio;
 
 import javax.ejb.Local;
+
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+
 import dominio.Equipo;
 
 @Local
@@ -15,5 +18,9 @@ public interface IEquipoController
 	public JSONArray obtenerPaisesInicial();
 	
 	public Boolean existeEstadioRegistrado(String estadio);
+
+	public JSONArray obtenerEquipos();
+
+	public JSONObject obtenerZonaEquipo(String nomEquipo);
 	
 }

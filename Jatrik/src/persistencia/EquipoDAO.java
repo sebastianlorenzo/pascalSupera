@@ -5,6 +5,7 @@ import java.util.*;
 import javax.ejb.Local;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
 import dominio.Equipo;
@@ -27,10 +28,12 @@ public interface EquipoDAO
 	
 	public Equipo encontrarEquipo(String equipo);
 	
-	public List<Equipo> obtenerTodosEquipos();
+	public JSONArray obtenerTodosEquipos();
 	
 	public Boolean existeEquipo(String equipo);
 	
 	public JSONArray obtenerPaises();
-	
+
+	public JSONObject obtenerLugarEquipo(String nomEquipo);
+		
 }

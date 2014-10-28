@@ -1,9 +1,12 @@
 package persistencia;
 
 import java.util.*;
+
 import javax.ejb.*;
 import javax.persistence.*;
+
 import org.codehaus.jettison.json.*;
+
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -74,11 +77,26 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Equipo> obtenerTodosEquipos() 
+	public JSONArray obtenerTodosEquipos() 
 	{
 		Query query = em.createQuery("SELECT eq FROM Equipo eq");
-		List<Equipo> resultList = query.getResultList();
-		return resultList;
+		List<Equipo> equiposList = query.getResultList();
+		JSONArray jequipos = new JSONArray();
+		
+		for (Equipo e : equiposList) 
+		{
+			JSONObject ob = new JSONObject();
+			try 
+			{
+				ob.put("equipo", e.getEquipo());
+			} 
+			catch (JSONException ex) 
+			{
+				ex.printStackTrace();
+			}
+			jequipos.put(ob);
+		}
+		return jequipos;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -109,8 +127,25 @@ public class EquipoDAOImpl implements EquipoDAO
 			}
 			jpaises.put(ob);
 		}
-		
 		return jpaises;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONObject obtenerLugarEquipo(String nomEquipo) 
+	{
+		JSONObject paisYLocalidad = new JSONObject();
+		Equipo eq = em.find(Equipo.class, nomEquipo);
+		
+		try
+		{
+			paisYLocalidad.put("pais", eq.getPais() );
+			paisYLocalidad.put("localidad", eq.getLocalidad());
+        }
+        catch(Exception ex)
+		{
+            ex.printStackTrace();
+        }
+		return paisYLocalidad;
 	}
 	
 }
