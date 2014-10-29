@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.Collection;
+
 import javax.persistence.*;
 
 @Entity
@@ -27,6 +29,9 @@ public class Jugador implements java.io.Serializable
 	@ManyToOne
 	private Equipo equipo;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="oferta_jugadores")
+	private Collection<Oferta> oferta_jugadores;	
 	
 	public Jugador(){}
 

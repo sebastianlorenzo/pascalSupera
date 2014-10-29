@@ -24,6 +24,11 @@
         partidos_partido varchar(255) not null
     );
 
+    create table public.oferta_jugadores (
+        jugador_idJugador int4 not null,
+        oferta_jugadores_idOferta int8 not null
+    );
+
     create table public.campeonato (
         campeonato varchar(255) not null,
         cantEquipos int4,
@@ -71,6 +76,14 @@
         emisorMensaje_login varchar(255),
         receptorMensaje_login varchar(255),
         primary key (idMensaje)
+    );
+
+    create table public.oferta (
+        idOferta int8 not null,
+        estado_oferta varchar(255),
+        precio int4,
+        jugadorEnVenta_idJugador int4,
+        primary key (idOferta)
     );
 
     create table public.pais (
@@ -121,6 +134,9 @@
 
     alter table public.estadio_partido 
         add constraint UK_6ajiscv5xwex5i7hg445t9lxb  unique (partidos_partido);
+
+    alter table public.oferta_jugadores 
+        add constraint UK_84ki5xvluuaj6u5sfnc5nwy5q  unique (oferta_jugadores_idOferta);
 
     alter table public.usuario_mensajesEnviados 
         add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
@@ -178,6 +194,16 @@
         foreign key (estadio_estadio) 
         references public.estadio;
 
+    alter table public.oferta_jugadores 
+        add constraint FK_84ki5xvluuaj6u5sfnc5nwy5q 
+        foreign key (oferta_jugadores_idOferta) 
+        references public.oferta;
+
+    alter table public.oferta_jugadores 
+        add constraint FK_bgfkvvjb7ms0qllcj93ry6knj 
+        foreign key (jugador_idJugador) 
+        references public.jugador;
+
     alter table public.estadio 
         add constraint FK_es3pkcufchab44tdwagonlbvc 
         foreign key (equipo) 
@@ -197,6 +223,11 @@
         add constraint FK_3j18mdk95u7goe6wnx4k9kfq1 
         foreign key (receptorMensaje_login) 
         references public.usuario;
+
+    alter table public.oferta 
+        add constraint FK_m479pwas40jj1wmhw1uipul3w 
+        foreign key (jugadorEnVenta_idJugador) 
+        references public.jugador;
 
     alter table public.partido 
         add constraint FK_11pj8odckk9psgwfjo3npve9a 

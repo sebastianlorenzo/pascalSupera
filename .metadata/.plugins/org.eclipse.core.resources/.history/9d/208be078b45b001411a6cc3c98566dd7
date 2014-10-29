@@ -1,0 +1,13 @@
+package negocio;
+
+import javax.ejb.Local;
+
+import tipos.DataMensaje;
+
+@Local
+public interface IChatController 
+{
+	public void enviarChat(String emisor, String receptor, String mensaje);
+	
+	public DataMensaje recibirChat(String receptor);
+}
