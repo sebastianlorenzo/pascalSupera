@@ -20,10 +20,13 @@ public class EquipoController implements IEquipoController
 {
 	
 	static final int MAX_CAPACIDAD = 10000;
-	static final int MAX_CANT_JUG = 18;
 	static final int MAX_ALTURA_ESTADIO = 4500;
 	static final int MIN_ALTURA_ESTADIO = 0;
 	
+	static final int MAX_CANT_PORTEROS = 2;
+	static final int MAX_CANT_DEFENSAS = 6;
+	static final int MAX_CANT_MEDIOCAMPISTAS = 6;
+	static final int MAX_CANT_DELANTEROS = 4;
 	static final String CONST_TITULAR		= "titular";
 	static final String CONST_SUPLENTE		= "suplente";
 	
@@ -65,32 +68,48 @@ public class EquipoController implements IEquipoController
 		Iterator<Jugador> iterMediocampistas = jugadoresMediocampistas.iterator();
 		Iterator<Jugador> iterDelanteros = jugadoresDelanteros.iterator();
 		
-		for (int i = 0 ; i<2; i++){
+		int i = 0;
+		while(iterPorteros.hasNext() && (i< MAX_CANT_PORTEROS)){
+		//for (int i = 0 ; i<2; i++){
 			Jugador j = iterPorteros.next();
-			if (i == 0)
+			if (i == 0){
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-			jug.add(j);	
+				jug.add(j);
+				i++;
+			}
 		}
 		
-		for (int i = 0 ; i<6; i++){
+		//for (int i = 0 ; i<6; i++){
+		i = 0;
+		while(iterDefensas.hasNext() && (i< MAX_CANT_DEFENSAS)){
 			Jugador j = iterDefensas.next();
-			if (i<4)
+			if (i<4){
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-			jug.add(j);	
+				jug.add(j);	
+				i++;
+			}
 		}
 		
-		for (int i = 0 ; i<6; i++){
+		//for (int i = 0 ; i<6; i++){
+		i = 0;
+		while(iterMediocampistas.hasNext() && (i< MAX_CANT_MEDIOCAMPISTAS)){
 			Jugador j = iterMediocampistas.next();
-			if (i<4)
+			if (i<4){
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-			jug.add(j);	
+				jug.add(j);
+				i++;
+			}
 		}
 		
-		for (int i = 0 ; i<4; i++){
+		i = 0;
+		while(iterDelanteros.hasNext() && (i< MAX_CANT_DELANTEROS)){
+		//for (int i = 0 ; i<4; i++){
 			Jugador j = iterDelanteros.next();
-			if (i<2)
+			if (i<2){
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-			jug.add(j);	
+				jug.add(j);	
+				i++;
+			}
 		}
 		
 		

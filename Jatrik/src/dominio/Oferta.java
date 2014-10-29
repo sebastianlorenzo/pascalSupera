@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,14 +16,20 @@ public class Oferta implements java.io.Serializable
 	
 	@Id
 	@GeneratedValue
-	private long idOferta;
-	
-	private String estado_oferta; // aceptada, rechazada, pendiente
-	
-	private Integer precio;
+	private long idOferta;	
+	private String estado_oferta; // aceptada, rechazada, pendiente	
+	private Integer precio;	
+	private Date fecha_oferta;
+	private String comentario;
 	
 	@ManyToOne
 	Jugador jugadorEnVenta;
+	
+	@ManyToOne
+	Equipo equipoOrigen;// equipo al que pertenece
+	
+	@ManyToOne
+	Equipo equipoDestino;// equipo que oferta y posible comprador
 	
 	public Oferta(){}
 
@@ -56,6 +64,38 @@ public class Oferta implements java.io.Serializable
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
 	}
+
+	public Date getFecha_oferta() {
+		return fecha_oferta;
+	}
+
+	public void setFecha_oferta(Date fecha_oferta) {
+		this.fecha_oferta = fecha_oferta;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
 	
+
+	public Equipo getEquipoOrigen() {
+		return equipoOrigen;
+	}
+
+	public void setEquipoOrigen(Equipo equipoOrigen) {
+		this.equipoOrigen = equipoOrigen;
+	}
+
+	public Equipo getEquipoDestino() {
+		return equipoDestino;
+	}
+
+	public void setEquipoDestino(Equipo equipoDestino) {
+		this.equipoDestino = equipoDestino;
+	}
 
 }

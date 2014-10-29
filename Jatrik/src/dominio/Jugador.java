@@ -24,7 +24,6 @@ public class Jugador implements java.io.Serializable
 	private Integer defensa;
 	private Integer porteria;
 	private String  estado_jugador; //{titular, suplente, lesionado}
-	
 
 	@ManyToOne
 	private Equipo equipo;

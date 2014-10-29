@@ -1,9 +1,11 @@
 package dominio;
 
 import javax.persistence.*;
+
 import dominio.Jugador;
 import dominio.Estadio;
 import dominio.Usuario;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,6 +24,7 @@ public class Equipo implements java.io.Serializable
 	private Integer tacticaDefensa;
 	private Integer tacticaMediocampo;
 	private Integer tacticaAtaque;
+	private Integer puntaje;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
@@ -30,7 +33,6 @@ public class Equipo implements java.io.Serializable
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
 	private Usuario usuario;
 	
-	//@OneToMany(fetch = FetchType.LAZY)
 	@OneToMany(fetch=FetchType.EAGER)
 	private Collection<Jugador> jugadores;
 	
@@ -39,6 +41,14 @@ public class Equipo implements java.io.Serializable
 	
 	@ManyToMany(mappedBy="equipos", fetch = FetchType.LAZY)
 	private Collection<Campeonato> campeonatos;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="equipo_ofertas_realizadas")
+	private Collection<Oferta> ofertasRealizadas;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="equipo_ofertas_recibidas")
+	private Collection<Oferta> ofertasRecibidas;
 	
 	public Equipo(){}
 
@@ -49,6 +59,7 @@ public class Equipo implements java.io.Serializable
 		this.localidad = localidad;
 		this.estadio = null;
 		this.usuario = null;
+		this.puntaje = 0;
 		Collection<Jugador> jugadores = new ArrayList<Jugador>();
 		this.jugadores = jugadores;
 		Collection<Partido> partidos = new ArrayList<Partido>();
@@ -165,6 +176,31 @@ public class Equipo implements java.io.Serializable
 	public Collection<Campeonato> getCampeonatos()
 	{
 		return this.campeonatos;
+	}
+
+	public Integer getPuntaje() {
+		return puntaje;
+	}
+
+	public void setPuntaje(Integer puntaje) {
+		this.puntaje = puntaje;
+	}
+	
+	
+	public Collection<Oferta> getOfertasRealizadas() {
+		return ofertasRealizadas;
+	}
+
+	public void setOfertasRealizadas(Collection<Oferta> ofertasRealizadas) {
+		this.ofertasRealizadas = ofertasRealizadas;
+	}
+
+	public Collection<Oferta> getOfertasRecibidas() {
+		return ofertasRecibidas;
+	}
+
+	public void setOfertasRecibidas(Collection<Oferta> ofertasRecibidas) {
+		this.ofertasRecibidas = ofertasRecibidas;
 	}
 	
 }

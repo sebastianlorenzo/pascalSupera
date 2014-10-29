@@ -14,6 +14,16 @@
         jugadores_idJugador int4 not null
     );
 
+    create table public.equipo_ofertas_realizadas (
+        equipo_equipo varchar(255) not null,
+        ofertasRealizadas_idOferta int8 not null
+    );
+
+    create table public.equipo_ofertas_recibidas (
+        equipo_equipo varchar(255) not null,
+        ofertasRecibidas_idOferta int8 not null
+    );
+
     create table public.equipo_partido (
         equipo_equipo varchar(255) not null,
         partidos_partido varchar(255) not null
@@ -40,6 +50,7 @@
         equipo varchar(255) not null,
         localidad varchar(255),
         pais varchar(255),
+        puntaje int4,
         tacticaAtaque int4,
         tacticaDefensa int4,
         tacticaMediocampo int4,
@@ -80,8 +91,12 @@
 
     create table public.oferta (
         idOferta int8 not null,
+        comentario varchar(255),
         estado_oferta varchar(255),
+        fecha_oferta timestamp,
         precio int4,
+        equipoDestino_equipo varchar(255),
+        equipoOrigen_equipo varchar(255),
         jugadorEnVenta_idJugador int4,
         primary key (idOferta)
     );
@@ -129,6 +144,12 @@
     alter table public.equipo_jugador 
         add constraint UK_l82welmroy9q2qx97fud6ivs4  unique (jugadores_idJugador);
 
+    alter table public.equipo_ofertas_realizadas 
+        add constraint UK_eavouqg5a9fwrr0nw677not49  unique (ofertasRealizadas_idOferta);
+
+    alter table public.equipo_ofertas_recibidas 
+        add constraint UK_nc2huhrpd05yohw7dyggn864c  unique (ofertasRecibidas_idOferta);
+
     alter table public.equipo_partido 
         add constraint UK_gytbsr37ln8p6mmqbpjyy6em3  unique (partidos_partido);
 
@@ -171,6 +192,26 @@
 
     alter table public.equipo_jugador 
         add constraint FK_lq30w5112apaow29nev280yty 
+        foreign key (equipo_equipo) 
+        references public.equipo;
+
+    alter table public.equipo_ofertas_realizadas 
+        add constraint FK_eavouqg5a9fwrr0nw677not49 
+        foreign key (ofertasRealizadas_idOferta) 
+        references public.oferta;
+
+    alter table public.equipo_ofertas_realizadas 
+        add constraint FK_n9gkc654nhb55jrbbhsiqrbnf 
+        foreign key (equipo_equipo) 
+        references public.equipo;
+
+    alter table public.equipo_ofertas_recibidas 
+        add constraint FK_nc2huhrpd05yohw7dyggn864c 
+        foreign key (ofertasRecibidas_idOferta) 
+        references public.oferta;
+
+    alter table public.equipo_ofertas_recibidas 
+        add constraint FK_mvvo8i72tbcna26skg92dfjug 
         foreign key (equipo_equipo) 
         references public.equipo;
 
@@ -223,6 +264,16 @@
         add constraint FK_3j18mdk95u7goe6wnx4k9kfq1 
         foreign key (receptorMensaje_login) 
         references public.usuario;
+
+    alter table public.oferta 
+        add constraint FK_8d2cj49xk01bjwuw1kne6ocbh 
+        foreign key (equipoDestino_equipo) 
+        references public.equipo;
+
+    alter table public.oferta 
+        add constraint FK_lkgh8luft9i3f19v8oy8h02o5 
+        foreign key (equipoOrigen_equipo) 
+        references public.equipo;
 
     alter table public.oferta 
         add constraint FK_m479pwas40jj1wmhw1uipul3w 
