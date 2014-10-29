@@ -7,6 +7,9 @@ import javax.persistence.*;
 
 import org.codehaus.jettison.json.*;
 
+import tipos.DataEquipo;
+import tipos.DataJugador;
+import tipos.DataListaEquipo;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -14,7 +17,6 @@ import dominio.Jugador;
 import dominio.Pais;
 import dominio.Partido;
 import dominio.Usuario;
-
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -174,6 +176,32 @@ public class EquipoDAOImpl implements EquipoDAO
 			return true;
 		}
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaEquipo equiposData() 
+	{
+		Query query = em.createQuery("SELECT eq FROM Equipo eq ORDER BY eq.puntaje desc");
+		List<Equipo> lequipos = query.getResultList();		
+		DataListaEquipo dlequipos = new DataListaEquipo();
+		
+		for (Equipo e: lequipos)
+		{
+			String nomEq = e.getEquipo();
+			DataEquipo de = new DataEquipo(nomEq);
+			Collection<Jugador> ljugadores = e.getJugadores();
+			
+			for(Jugador jug: ljugadores)
+			{
+				DataJugador dj = new DataJugador(jug.getJugador(), jug.getPosicion(), 
+						jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
+						jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
+				de.addDataJugador(dj);
+			}
+			dlequipos.addDataEquipo(de);
+		}
+		return dlequipos;
 	}
 	
 }

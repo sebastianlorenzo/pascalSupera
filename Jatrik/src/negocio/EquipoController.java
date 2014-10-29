@@ -13,6 +13,7 @@ import dominio.Jugador;
 import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
 import persistencia.JugadorDAO;
+import tipos.DataListaEquipo;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -56,8 +57,6 @@ public class EquipoController implements IEquipoController
 		e.setEstadio(estadio);
 		Collection<Jugador> jug = new ArrayList<Jugador>();
 		
-		
-		//DE ACA PARA ABAOJ HAY QUE COMENTAR SI QUIEREN USAR LA IMPLEMENTACION VIEJA
 		ArrayList<Jugador> jugadoresPorteros = this.jugadorDAO.obtenerPorterosSinEquipo();
 		ArrayList<Jugador> jugadoresDefensas = this.jugadorDAO.obtenerDefensasSinEquipo();
 		ArrayList<Jugador> jugadoresMediocampistas = this.jugadorDAO.obtenerMediocampistasSinEquipo();
@@ -70,60 +69,40 @@ public class EquipoController implements IEquipoController
 		
 		int i = 0;
 		while(iterPorteros.hasNext() && (i< MAX_CANT_PORTEROS)){
-		//for (int i = 0 ; i<2; i++){
 			Jugador j = iterPorteros.next();
-			if (i == 0){
+			if (i == 0)
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-				jug.add(j);
-				i++;
-			}
+			jug.add(j);
+			i++;
 		}
 		
-		//for (int i = 0 ; i<6; i++){
 		i = 0;
 		while(iterDefensas.hasNext() && (i< MAX_CANT_DEFENSAS)){
 			Jugador j = iterDefensas.next();
-			if (i<4){
+			if (i<4)
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-				jug.add(j);	
-				i++;
-			}
+			jug.add(j);	
+			i++;
 		}
 		
-		//for (int i = 0 ; i<6; i++){
 		i = 0;
 		while(iterMediocampistas.hasNext() && (i< MAX_CANT_MEDIOCAMPISTAS)){
 			Jugador j = iterMediocampistas.next();
-			if (i<4){
+			if (i<4)
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-				jug.add(j);
-				i++;
-			}
+			jug.add(j);
+			i++;
 		}
 		
 		i = 0;
 		while(iterDelanteros.hasNext() && (i< MAX_CANT_DELANTEROS)){
-		//for (int i = 0 ; i<4; i++){
 			Jugador j = iterDelanteros.next();
-			if (i<2){
+			if (i<2)
 				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
-				jug.add(j);	
-				i++;
-			}
-		}
-		
-		
-		/* HASTA ACA PARA LA IMPLEMENTACION VIEJA DESCOMENTAR LO DE ABAJO LA DEJO PORQUE SI NO TIENE CARGADA LA BASE DE DATOS PROBABLEMENTE FALLE
-		ArrayList<Jugador> jugadores = this.jugadorDAO.obtenerJugadoresSinEquipo();
-		Iterator<Jugador> iter = jugadores.iterator();
-		int cant = 0;
-		while(iter.hasNext() && (cant<= MAX_CANT_JUG))
-		{
-			Jugador j = iter.next();
 			jug.add(j);	
-			cant++;
+			i++;
 		}
-		*/
+		
 		e.setJugadores(jug);
 		
 		this.equipoDAO.insertarEquipo(e);
@@ -183,8 +162,15 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public void modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa) {
+	public void modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa) 
+	{
 		this.equipoDAO.modificarTactica(equipo,ataque,mediocampo,defensa);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaEquipo obtenerEquiposData() 
+	{
+		return this.equipoDAO.equiposData();
 	}
 	
 }

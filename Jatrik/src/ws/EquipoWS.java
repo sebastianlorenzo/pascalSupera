@@ -10,6 +10,10 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import tipos.DataListaEquipo;
+
+import com.google.gson.Gson;
+
 import negocio.IEquipoController;
 
 @ManagedBean
@@ -42,9 +46,9 @@ public class EquipoWS
 	}
 	
 	@GET
-	@Path("listarEquipos")
+	@Path("listarEquiposMapa")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String listarEquipos()
+	public String listarEquiposMapa()
 	{
 		JSONObject respuesta = new JSONObject();		
 		try 
@@ -137,6 +141,16 @@ public class EquipoWS
 			}
 			return jsonResult.toString();
 		}
+	}
+	
+	@GET
+	@Path("listarEquipos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarEquipos()
+	{
+		Gson g = new Gson();
+		DataListaEquipo dataEq = this.iEquipoController.obtenerEquiposData();
+		return g.toJson(dataEq);	
 	}
 		
 }

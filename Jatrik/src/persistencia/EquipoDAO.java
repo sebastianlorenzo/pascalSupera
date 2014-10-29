@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
+import tipos.DataListaEquipo;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -39,5 +40,7 @@ public interface EquipoDAO
 	public Object[] getTaticaEquipo(String nombreEquipo); 
 	
 	public Boolean modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
-		
+
+	public DataListaEquipo equiposData();
+			
 }

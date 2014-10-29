@@ -65,7 +65,7 @@ public class CampeonatoWS
 	{			
 		Gson g = new Gson();
 		DataListaCampeonato dataCamp = this.iCampeonatoController.campeonatosDisponibles();
-		return g.toJson(dataCamp);	
+		return g.toJson(dataCamp);
 	}
 	
 	@GET
