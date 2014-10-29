@@ -95,4 +95,27 @@ public class JugadorDAOImpl implements JugadorDAO
 		}
 		
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void sumarTarjetaAmarilla(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			int tarjetas = j.getCant_tarjetas_amarillas();
+			j.setCant_tarjetas_amarillas(tarjetas + 1);
+			em.merge(j);
+		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public int getCantidadTarjetasAmarillas(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			return j.getCant_tarjetas_amarillas();
+		}
+		return -1;
+	}
 }

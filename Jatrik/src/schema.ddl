@@ -68,6 +68,7 @@
     create table public.jugador (
         idJugador int4 not null,
         ataque int4,
+        cant_tarjetas_amarillas int4,
         defensa int4,
         estado_jugador varchar(255),
         jugador varchar(255),

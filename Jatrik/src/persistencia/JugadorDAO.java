@@ -24,4 +24,8 @@ public interface JugadorDAO
 	
 	public void setearEstadoJugador(Integer idJugador, String estadoJugador);
 
+	public void sumarTarjetaAmarilla(Integer idJugador);
+	
+	public int getCantidadTarjetasAmarillas(Integer idJugador);
+	
 }

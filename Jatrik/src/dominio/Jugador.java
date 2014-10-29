@@ -24,6 +24,7 @@ public class Jugador implements java.io.Serializable
 	private Integer defensa;
 	private Integer porteria;
 	private String  estado_jugador; //{titular, suplente, lesionado}
+	private Integer cant_tarjetas_amarillas;
 
 	@ManyToOne
 	private Equipo equipo;
@@ -32,22 +33,6 @@ public class Jugador implements java.io.Serializable
 	@JoinTable(name="oferta_jugadores")
 	private Collection<Oferta> oferta_jugadores;
 	
-	public String getPosicion_ideal() {
-		return posicion_ideal;
-	}
-
-	public void setPosicion_ideal(String posicion_ideal) {
-		this.posicion_ideal = posicion_ideal;
-	}
-
-	public Collection<Oferta> getOferta_jugadores() {
-		return oferta_jugadores;
-	}
-
-	public void setOferta_jugadores(Collection<Oferta> oferta_jugadores) {
-		this.oferta_jugadores = oferta_jugadores;
-	}
-
 	public Jugador(){}
 
 	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Integer velocidad,	
@@ -63,6 +48,7 @@ public class Jugador implements java.io.Serializable
 		this.ataque    = ataque;
 		this.defensa   = defensa;
 		this.porteria  = porteria;
+		this.cant_tarjetas_amarillas = 0;
 	}
 	
 
@@ -176,4 +162,34 @@ public class Jugador implements java.io.Serializable
 		this.estado_jugador = estado_jugador;
 	}
 
+	public String getPosicion_ideal() 
+	{
+		return posicion_ideal;
+	}
+
+	public void setPosicion_ideal(String posicion_ideal) 
+	{
+		this.posicion_ideal = posicion_ideal;
+	}
+
+	public Collection<Oferta> getOferta_jugadores()
+	{
+		return oferta_jugadores;
+	}
+
+	public void setOferta_jugadores(Collection<Oferta> oferta_jugadores) 
+	{
+		this.oferta_jugadores = oferta_jugadores;
+	}
+
+	public Integer getCant_tarjetas_amarillas() 
+	{
+		return cant_tarjetas_amarillas;
+	}
+
+	public void setCant_tarjetas_amarillas(Integer cant_tarjetas_amarillas) 
+	{
+		this.cant_tarjetas_amarillas = cant_tarjetas_amarillas;
+	}
+	
 }

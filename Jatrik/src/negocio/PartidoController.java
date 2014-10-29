@@ -9,6 +9,8 @@ import dominio.Jugador;
 import dominio.Partido;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
+import persistencia.JugadorDAO;
+import persistencia.JugadorDAOImpl;
 import persistencia.PartidoDAO;
 import persistencia.PartidoDAOImpl;
 import tipos.DataCambio;
@@ -20,9 +22,13 @@ public class PartidoController implements IPartidoController
 {
 
 	/* Constantes */
-	static final Integer MIN_JUGADAS_PARTIDO = 10;
-	static final Integer MAX_JUGADAS_PARTIDO = 20;
-	static final Float CONST_GOL 			 = (float) 0.9;
+	static final Integer MIN_JUGADAS_PARTIDO  = 10;
+	static final Integer MAX_JUGADAS_PARTIDO  = 20;
+	static final Float CONST_GOL 			  = (float) 0.9;  // Probabilidad mínima para que haya gol
+	static final Float CONST_TARJETA		  = (float) 0.4;  // Probabilidad mínima para que haya tarjeta
+	static final Float CONST_TARJETA_AMARILLA = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
+	static final Float CONST_MIN_LESION           = (float) 0.65; // Probabilidad mínima para que sea lesión
+	static final Float CONST_MAX_LESION           = (float) 0.85; // Probabilidad máxima para que sea lesión
 	
 	static final String CONST_DELANTERO     = "delantero";
 	static final String CONST_MEDIOCAMPISTA = "mediocampista";
@@ -36,11 +42,15 @@ public class PartidoController implements IPartidoController
 
 	@EJB
 	private EquipoDAO equipoDAO;
+	
+	@EJB
+	private JugadorDAO jugadorDAO;
 		
 	public PartidoController()
 	{
 		this.partidoDAO = new PartidoDAOImpl();
-		this.equipoDAO = new EquipoDAOImpl();
+		this.equipoDAO  = new EquipoDAOImpl();
+		this.jugadorDAO = new JugadorDAOImpl();
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -53,7 +63,9 @@ public class PartidoController implements IPartidoController
 		int cantidad_jugadas = (int) (Math.random() * (MAX_JUGADAS_PARTIDO - MIN_JUGADAS_PARTIDO + 1) + MIN_JUGADAS_PARTIDO);
 		
 		boolean es_local = false;
-
+		float penalizacionLocal = 0;
+		float penalizacionVisitante = 0;
+		
 		int tarjetasAmarillasLocal		= 0;
 		int tarjetasAmarillasVisitante  = 0; 
 		int tarjetasRojasLocal			= 0;
@@ -73,11 +85,13 @@ public class PartidoController implements IPartidoController
 			
 			// Si la probabilidad es menor o igual a 0.5 => Asumimos que la jugada es realizada por el equipo local
 			Equipo equipo = null;
+			Equipo equipoContrario = null;
 			ArrayList<DataCambio> cambiosProgramados = null;
 			if (equipoJugada <= 0.5)
 			{
 				es_local = true;
 				equipo = partido.getEquipoLocal();
+				equipoContrario = partido.getEquipoVisitante();
 				// Obtener los cambios programados
 				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosLocal();
 			}
@@ -85,18 +99,28 @@ public class PartidoController implements IPartidoController
 			{
 				es_local = false;
 				equipo = partido.getEquipoVisitante();
+				equipoContrario = partido.getEquipoLocal();
 				// Obtener los cambios programados
 				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosVisitante();
 			}
-			String nombreEquipo = equipo.getEquipo(); 
+			String nombreEquipo = equipo.getEquipo();
 			
 			// Realizar cambios antes de jugar
 			realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
 			
 			List<Jugador> jugadores = (List<Jugador>) equipo.getJugadores();
+			List<Jugador> jugadoresContrarios = (List<Jugador>) equipoContrario.getJugadores();
 			
 			// Calcular la probabilidad de jugada de gol
-			float probJugadaGol = calcularProbabilidadJugadaGol(jugadores);
+			float probJugadaGol = 0;
+			if (es_local)
+			{
+				probJugadaGol = calcularProbabilidadJugadaGol(jugadores, penalizacionLocal);				
+			}
+			else
+			{
+				probJugadaGol = calcularProbabilidadJugadaGol(jugadores, penalizacionVisitante);				
+			}
 			System.out.println("*** PROB. JUG. GOL ***");
 			String local_visitante = "visitante";
 			if (es_local)
@@ -107,7 +131,10 @@ public class PartidoController implements IPartidoController
 			System.out.println("**********************");
 			
 			// Calcular la probabilidad de gol para la jugada
-			float probGolParaJugada = calcularProbabilidadGol(jugadores, probJugadaGol);			
+			String[] prob_gol = calcularProbabilidadGol(jugadores, probJugadaGol);
+			float probGolParaJugada = Float.parseFloat(prob_gol[0]);
+			String tipoJugador = prob_gol[1];
+			
 			System.out.println("*** PROB. GOL ***");
 			local_visitante = "visitante";
 			if (es_local)
@@ -118,14 +145,19 @@ public class PartidoController implements IPartidoController
 			System.out.println("****************");
 			
 			// Calcular la probabilidad de tarjeta roja/amarilla
-			float probTarjeta = calcularProbabilidadTarjeta(jugadores, probGolParaJugada);
+			float probTarjeta = calcularProbabilidadTarjeta(jugadoresContrarios, probGolParaJugada);
+			System.out.println("*** PROB. TARJETA ***");
+			local_visitante = "visitante";
+			if (es_local)
+			{
+				local_visitante = "local";
+			}
+			System.out.println("Equipo " + local_visitante + " - Probabilidad de tarjeta: " + probTarjeta + "\n");
+			System.out.println("********************");
 			
-			// Si hubo tarjeta => Calcular la posibilidad de lesión con mayor probabilidad
-			// Sino 		   => Calcular la posibilidad de lesión con menor probabilidad
-			float probLesion = calcularProbabilidadLesion(probTarjeta);
-			
-			// En cualquiera de los dos casos, si hubo lesión, realizar cambio.
-			if (probLesion == 1)
+			// Verificar si hubo lesión
+			boolean lesion = huboLesion(probTarjeta);
+			if (lesion)
 			{
 				realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
 			}
@@ -137,6 +169,34 @@ public class PartidoController implements IPartidoController
 				{
 					golesLocal++;
 				}
+				
+				// Hubo tarjeta
+				if (probTarjeta >= CONST_TARJETA)
+				{
+					// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
+					Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
+					if(probTarjeta <= CONST_TARJETA_AMARILLA)
+					{
+						// Las tarjetas van sobre el equipo contrario
+						tarjetasAmarillasVisitante++;
+						jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
+						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
+						{
+							penalizacionVisitante += (float) 0.1;
+						}
+					}
+					else
+					{
+						tarjetasRojasVisitante++;
+						penalizacionVisitante += (float) 0.1;
+					}
+				}
+				
+				if (lesion)
+				{
+					lesionesLocal++;
+				}
+				
 			}
 			else
 			{
@@ -144,6 +204,34 @@ public class PartidoController implements IPartidoController
 				{
 					golesVisitante++;
 				}
+				
+				if (probTarjeta >= CONST_TARJETA)
+				{
+					// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
+					Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
+					if(probTarjeta <= CONST_TARJETA_AMARILLA)
+					{
+						// Las tarjetas van sobre el equipo contrario
+						tarjetasAmarillasLocal++;
+						jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
+						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
+						{
+							penalizacionLocal += (float) 0.1;
+
+						}
+					}
+					else
+					{
+						tarjetasRojasLocal++;
+						penalizacionLocal += (float) 0.1;
+					}
+				}
+
+				if (lesion)
+				{
+					lesionesVisitante++;
+				}
+				
 			}
 		}
 		
@@ -155,7 +243,7 @@ public class PartidoController implements IPartidoController
 		return resumenPartido;
 	}
 	
-	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores)
+	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores, float penalizacion)
 	{
 		// RegateATs    = Sumatoria de la habilidad de regate de todos los delanteros
 		// RegateMEDs   = Sumatoria de la habilidad de regate de todos los mediocampistas
@@ -200,38 +288,33 @@ public class PartidoController implements IPartidoController
 		float probJugadaGol = (((RegateATs + RegateMEDs) / cant_delanteros_y_mediocampistas) -
 							   ((PotenciaMEDs + PotenciaDEFs) / cant_mediocampistas_y_defensas)) / 100; 
 		
-		return probJugadaGol;
+		return (probJugadaGol * (1 - penalizacion));
 	}
 	
-	private float calcularProbabilidadGol(List<Jugador> jugadores, float probJugadaGol)
+	private String[] calcularProbabilidadGol(List<Jugador> jugadores, float probJugadaGol)
 	{
-		/* 
-		    El tiro a gol debe ser realizado por un único jugador, por lo cual es necesario definirlo. Dado que
-			un delantero tiene mayor probabilidad de gol que un defensa o mediocampista, se definen las
-			siguientes probabilidades para la selección del jugador:
-			- probabilidad que salga un delantero: 60%
-			- probabilidad que salga un mediocampista: 30%
-			- probabilidad que salga un defensa: 10%
-			Una vez determinado el tipo de jugador (atacante, mediocampista o defensa) que realiza el
-			disparo, se debe determinar de alguna forma (puede ser aleatoria), cual de todos es el que
-			efectivamente realiza el tiro a gol. La forma de determinar este jugador es libre a cada grupo.
-		 */
-		
 		// Tiro de un jugador
-		float tiro_jugador = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
-tiro_jugador = 60; /********* Sacar este valor y poner el que va según la posición **********/
-		if (tiro_jugador <= 0.60)
+		float tipo_jugador = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
+		Jugador jugador_realiza_tiro = null;
+		// Probabilidad que salga un delantero: 60%
+		if (tipo_jugador <= 0.60)
 		{
 			// Es un Delantero
+			jugador_realiza_tiro = getJugadorPatearGol(jugadores, CONST_DELANTERO);
 		}
-		else if (tiro_jugador <= 0.90)
+		// Probabilidad que salga un mediocampista: 30%
+		else if (tipo_jugador <= 0.90)
 		{
 			// Es un Mediocampista
+			jugador_realiza_tiro = getJugadorPatearGol(jugadores, CONST_MEDIOCAMPISTA);
 		}
+		// Probabilidad que salga un defensa: 10%
 		else
 		{
 			// Es un Defensa
+			jugador_realiza_tiro = getJugadorPatearGol(jugadores, CONST_DEFENSA);
 		}
+		float tiro_jugador = jugador_realiza_tiro.getAtaque();
 		
 		// Habilidad del portero
 		float habilidad_portero = 0;
@@ -257,7 +340,10 @@ tiro_jugador = 60; /********* Sacar este valor y poner el que va según la posici
 		// Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100
 		float probGol = (probJugadaGol * (tiro_jugador * factor_ataque - habilidad_portero * factor_portero)) / 100;
 		
-		return probGol;
+		String[] resultado = new String[2];
+		resultado[0] = Float.toString(probGol);
+		resultado[1] = jugador_realiza_tiro.getPosicion();
+		return resultado;
 	}
 	
 	private float calcularProbabilidadTarjeta(List<Jugador> jugadores, float probGolParaJugada)
@@ -289,23 +375,59 @@ tiro_jugador = 60; /********* Sacar este valor y poner el que va según la posici
         }
 		
 		// Probabilidad de tarjeta = Oportunidad de gol x (promedio potencia de jugadores defensores y mediocampistas)
-		float probTarjeta = probGolParaJugada * ((PotenciaMEDs + PotenciaDEFs) / cant_mediocampistas_y_defensas);
+		float probTarjeta = probGolParaJugada * ((PotenciaMEDs + PotenciaDEFs) / cant_mediocampistas_y_defensas)/100;
 		
 		return probTarjeta;
 	}
 	
-	private float calcularProbabilidadLesion(float probTarjeta)
+	private boolean huboLesion(float probTarjeta)
 	{
-		if (probTarjeta == 1)
+		if ((probTarjeta >= CONST_MIN_LESION) && (probTarjeta <= CONST_MAX_LESION))
 		{
-			return 1;
+			return true;
 		}
-		return 0;
+		return false;
 	}
 	
 	private void realizarCambiosEnEquipo(String nombreEquipo, ArrayList<DataCambio> cambiosProgramados)
 	{
 		
+	}
+	
+	private Jugador getJugadorPatearGol(List<Jugador> jugadores, String tipo_jugador)
+	{
+		Iterator<Jugador> it = jugadores.iterator();
+		while (it.hasNext())
+		{
+			Jugador j = it.next();
+			if (j.getPosicion().equals(tipo_jugador))
+			{
+				return j;
+			}
+		}
+		return null;
+	}
+	
+	// Retorna el jugador al que le voy a sacar tarjeta amarilla/roja
+	// tipoJugador se refiere al tipo del jugador que está tratando de hacer el gol
+	private Jugador getJugadorTarjeta(List<Jugador> jugadores, String tipoJugador)
+	{
+		Iterator<Jugador> it = jugadores.iterator();
+        while(it.hasNext()) 
+        {
+            Jugador j = it.next();
+			if (j.getEstado_jugador().equals(CONST_TITULAR))
+	        {
+	            String posicion = j.getPosicion();
+	            if ((tipoJugador.equals(CONST_DELANTERO) && posicion.equals(CONST_DEFENSA)) ||
+	            	(tipoJugador.equals(CONST_MEDIOCAMPISTA) && posicion.equals(CONST_MEDIOCAMPISTA)) ||
+	                (tipoJugador.equals(CONST_DEFENSA) && posicion.equals(CONST_DELANTERO)))
+	            {
+	            	return j;
+	            }
+	        }
+		}
+		return null;
 	}
 	
 }
