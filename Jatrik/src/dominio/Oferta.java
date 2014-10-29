@@ -23,7 +23,6 @@ public class Oferta implements java.io.Serializable
 	@ManyToOne
 	Jugador jugadorEnVenta;
 	
-	
 	public Oferta(){}
 
 	public long getIdOferta() {

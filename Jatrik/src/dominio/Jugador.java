@@ -31,8 +31,24 @@ public class Jugador implements java.io.Serializable
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="oferta_jugadores")
-	private Collection<Oferta> oferta_jugadores;	
+	private Collection<Oferta> oferta_jugadores;
 	
+	public String getPosicion_ideal() {
+		return posicion_ideal;
+	}
+
+	public void setPosicion_ideal(String posicion_ideal) {
+		this.posicion_ideal = posicion_ideal;
+	}
+
+	public Collection<Oferta> getOferta_jugadores() {
+		return oferta_jugadores;
+	}
+
+	public void setOferta_jugadores(Collection<Oferta> oferta_jugadores) {
+		this.oferta_jugadores = oferta_jugadores;
+	}
+
 	public Jugador(){}
 
 	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Integer velocidad,	
