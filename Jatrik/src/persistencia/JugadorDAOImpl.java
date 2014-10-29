@@ -12,6 +12,12 @@ import dominio.Jugador;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class JugadorDAOImpl implements JugadorDAO
 {
+	static final String CONST_DELANTERO     = "delantero";
+	static final String CONST_MEDIOCAMPISTA = "mediocampista";
+	static final String CONST_DEFENSA 		= "defensa";
+	static final String CONST_PORTERO 		= "portero";
+	static final String CONST_TITULAR		= "titular";
+	
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
@@ -25,17 +31,68 @@ public class JugadorDAOImpl implements JugadorDAO
 		return resultList;
 	}
 
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ArrayList<Jugador> obtenerPorterosSinEquipo() {
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_PORTERO+"'");
+		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
+		return resultList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ArrayList<Jugador> obtenerDefensasSinEquipo() {
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_DEFENSA+"'");
+		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
+		return resultList;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ArrayList<Jugador> obtenerMediocampistasSinEquipo() {
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_MEDIOCAMPISTA+"'");
+		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
+		return resultList;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ArrayList<Jugador> obtenerDelanteroSinEquipo() {
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_DELANTERO+"'");
+		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
+		return resultList;
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void setearEquipo(Integer idJugador, Equipo e) {
 		Jugador j = em.find(Jugador.class, idJugador);
 		if (j != null)
 		{
-			j.setEquipo(e);;
+			j.setEquipo(e);
 			em.merge(j);
 		}
 		
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearPosicion(Integer idJugador, String posicion) {
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setPosicion(posicion);
+			em.merge(j);
+		}
+		
+	}
 	
-
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearEstadoJugador(Integer idJugador, String estadoJugador) {
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setEstado_jugador(estadoJugador);
+			em.merge(j);
+		}
+		
+	}
 }

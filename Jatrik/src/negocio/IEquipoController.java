@@ -23,4 +23,8 @@ public interface IEquipoController
 
 	public JSONObject obtenerZonaEquipo(String nomEquipo);
 	
+	public JSONObject obtenerTactica(String equipo);
+	
+	public void modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
+	
 }

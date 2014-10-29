@@ -35,5 +35,9 @@ public interface EquipoDAO
 	public JSONArray obtenerPaises();
 
 	public JSONObject obtenerLugarEquipo(String nomEquipo);
+	
+	public Object[] getTaticaEquipo(String nombreEquipo); 
+	
+	public Boolean modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
 		
 }

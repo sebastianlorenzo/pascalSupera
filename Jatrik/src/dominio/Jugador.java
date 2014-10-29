@@ -15,6 +15,7 @@ public class Jugador implements java.io.Serializable
 	
 	private String jugador;
 	private String posicion;
+	private String posicion_ideal;
 	private Integer velocidad;
 	private Integer tecnica; // Equivale al regate
 	private Integer ataque;  // Equivale a potencia
@@ -36,6 +37,7 @@ public class Jugador implements java.io.Serializable
 		this.jugador   = jugador;
 		this.equipo    = equipo;
 		this.posicion  = posicion;
+		this.posicion_ideal  = posicion;
 		this.velocidad = velocidad;
 		this.tecnica   = tecnica;
 		this.ataque    = ataque;
@@ -84,6 +86,16 @@ public class Jugador implements java.io.Serializable
 		this.posicion = posicion;
 	}
 
+	public String getPosicionIdeal() 
+	{
+		return posicion_ideal;
+	}
+
+	public void setPosicionIdeal(String posicionIdeal) 
+	{
+		this.posicion_ideal = posicionIdeal;
+	}
+	
 	public Integer getVelocidad() 
 	{
 		return velocidad;

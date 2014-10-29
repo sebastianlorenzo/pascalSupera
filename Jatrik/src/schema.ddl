@@ -35,6 +35,9 @@
         equipo varchar(255) not null,
         localidad varchar(255),
         pais varchar(255),
+        tacticaAtaque int4,
+        tacticaDefensa int4,
+        tacticaMediocampo int4,
         primary key (equipo)
     );
 
@@ -54,6 +57,7 @@
         jugador varchar(255),
         porteria int4,
         posicion varchar(255),
+        posicion_ideal varchar(255),
         tecnica int4,
         velocidad int4,
         equipo_equipo varchar(255),

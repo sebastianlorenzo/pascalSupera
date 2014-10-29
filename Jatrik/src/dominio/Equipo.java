@@ -19,6 +19,10 @@ public class Equipo implements java.io.Serializable
 	private String equipo;	
 	private String pais;
 	private String localidad;
+	private Integer tacticaDefensa;
+	private Integer tacticaMediocampo;
+	private Integer tacticaAtaque;
+	
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
 	private Estadio estadio;
@@ -81,6 +85,36 @@ public class Equipo implements java.io.Serializable
 	public void setLocalidad(String localidad) 
 	{
 		this.localidad = localidad;
+	}
+	
+	public Integer getTacticaMediocampo() 
+	{
+		return tacticaMediocampo;
+	}
+
+	public void setTacticaMediocampo(Integer tacticaMediocampo) 
+	{
+		this.tacticaMediocampo = tacticaMediocampo;
+	}
+
+	public Integer getTacticaAtaque() 
+	{
+		return tacticaAtaque;
+	}
+
+	public void setTacticaAtaque(Integer tacticaAtaque) 
+	{
+		this.tacticaAtaque = tacticaAtaque;
+	}
+	
+	public Integer getTacticaDefensa() 
+	{
+		return tacticaDefensa;
+	}
+
+	public void setTacticaDefensa(Integer tacticaDefensa) 
+	{
+		this.tacticaDefensa = tacticaDefensa;
 	}
 
 	public Estadio getEstadio()
