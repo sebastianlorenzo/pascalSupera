@@ -14,6 +14,7 @@ import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
 import dominio.Jugador;
+import dominio.Oferta;
 import dominio.Pais;
 import dominio.Partido;
 import dominio.Usuario;
@@ -180,9 +181,10 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public DataListaEquipo equiposData() 
+	public DataListaEquipo equiposData(String nomEquipo)
 	{
-		Query query = em.createQuery("SELECT eq FROM Equipo eq ORDER BY eq.puntaje desc");
+		Query query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		query.setParameter("equipo", nomEquipo);
 		List<Equipo> lequipos = query.getResultList();		
 		DataListaEquipo dlequipos = new DataListaEquipo();
 		
@@ -194,7 +196,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			for(Jugador jug: ljugadores)
 			{
-				DataJugador dj = new DataJugador(jug.getJugador(), jug.getPosicion(), 
+				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicionIdeal(), 
 						jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
 						jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
 				de.addDataJugador(dj);
@@ -202,6 +204,41 @@ public class EquipoDAOImpl implements EquipoDAO
 			dlequipos.addDataEquipo(de);
 		}
 		return dlequipos;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Jugador jug = em.find(Jugador.class, idJugador);
+		
+		if (( us == null) || (jug == null))
+			return false;
+		
+		Equipo equipoDestino = us.getEquipo(); // equipo del usuario que realiza la oferta
+		Equipo equipoActual = jug.getEquipo(); // equipo al que pertenece el jugador	
+		
+		Date fechaOferta = new Date();
+		
+		Oferta of = new Oferta(precio, fechaOferta, jug, equipoActual, equipoDestino);
+		of.setEstado_oferta("pendiente");
+		if(comentario != "")
+			of.setComentario(comentario);
+		em.persist(of);
+		
+		Collection<Oferta> oferta_jugadores = jug.getOferta_jugadores();
+		oferta_jugadores.add(of);
+		jug.setOferta_jugadores(oferta_jugadores);
+		
+		Collection<Oferta> ofertasRealizadas = equipoDestino.getOfertasRealizadas();
+		ofertasRealizadas.add(of);
+		equipoDestino.setOfertasRealizadas(ofertasRealizadas);
+				
+		Collection<Oferta> ofertasRecibidas = equipoActual.getOfertasRecibidas();
+		ofertasRecibidas.add(of);
+		equipoActual.setOfertasRecibidas(ofertasRecibidas);
+				
+		return true;
 	}
 	
 }

@@ -41,6 +41,8 @@ public interface EquipoDAO
 	
 	public Boolean modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
 
-	public DataListaEquipo equiposData();
-			
+	public DataListaEquipo equiposData(String nomEquipo);
+
+	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
+		
 }

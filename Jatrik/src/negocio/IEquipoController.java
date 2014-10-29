@@ -28,6 +28,8 @@ public interface IEquipoController
 	
 	public void modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
 
-	public DataListaEquipo obtenerEquiposData();
-		
+	public DataListaEquipo obtenerEquiposData(String nombreEq);
+
+	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
+
 }

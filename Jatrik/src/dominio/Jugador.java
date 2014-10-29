@@ -162,16 +162,6 @@ public class Jugador implements java.io.Serializable
 		this.estado_jugador = estado_jugador;
 	}
 
-	public String getPosicion_ideal() 
-	{
-		return posicion_ideal;
-	}
-
-	public void setPosicion_ideal(String posicion_ideal) 
-	{
-		this.posicion_ideal = posicion_ideal;
-	}
-
 	public Collection<Oferta> getOferta_jugadores()
 	{
 		return oferta_jugadores;

@@ -29,5 +29,7 @@ public interface IUsuarioController
 	public Boolean enviarChat(String emisor, String receptor, String mensaje);
 
 	public DataListaMensaje obtenerMensajes(String receptor);
+
+	public String obtenerEquipo(String login);
 	
 }

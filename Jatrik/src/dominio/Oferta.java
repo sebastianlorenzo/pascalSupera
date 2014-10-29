@@ -32,7 +32,16 @@ public class Oferta implements java.io.Serializable
 	@ManyToOne
 	Equipo equipoDestino;// equipo que oferta y posible comprador
 	
-	public Oferta(){}
+	public Oferta(Integer precio, Date fecha, Jugador jugador, Equipo eqActual, Equipo eqFuturo)
+	{
+		this.precio = precio;
+		this.fecha_oferta = fecha;
+		this.jugadorEnVenta = jugador;
+		this.equipoOrigen = eqActual;
+		this.equipoDestino = eqFuturo;
+	}
+	
+	public Oferta (){}
 
 	public long getIdOferta() {
 		return idOferta;

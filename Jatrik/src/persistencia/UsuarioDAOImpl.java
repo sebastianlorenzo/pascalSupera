@@ -223,5 +223,13 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		}
 		return jdesconectados;
 	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String obtenerNombreEq(String login) 
+	{	
+		Usuario u = em.find(Usuario.class, login);
+		String eq = u.getEquipo().getEquipo();
+		return eq;
+	}
 	
 }

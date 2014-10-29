@@ -2,6 +2,7 @@ package tipos;
 
 public class DataJugador 
 {
+	private Integer idJugador;
 	private String nomJugador;
 	private String posicion;
 	private Integer velocidad;
@@ -13,9 +14,10 @@ public class DataJugador
 	
 	public DataJugador(){}
 	
-	public DataJugador(String nomJugador, String posicion, Integer velocidad, Integer tecnica, Integer ataque,
+	public DataJugador(Integer idJugador, String nomJugador, String posicion, Integer velocidad, Integer tecnica, Integer ataque,
 			Integer defensa, Integer porteria, String  estado_jugador)
 	{
+		this.idJugador = idJugador;
 		this.nomJugador = nomJugador;
 		this.posicion = posicion;
 		this.velocidad = velocidad;
@@ -24,6 +26,15 @@ public class DataJugador
 		this.defensa = defensa;
 		this.porteria = porteria;
 		this.estado_jugador = estado_jugador;	
+	}
+	
+
+	public Integer getIdJugador() {
+		return idJugador;
+	}
+
+	public void setIdJugador(Integer idJugador) {
+		this.idJugador = idJugador;
 	}
 	
 	public String getNomJugador() 
