@@ -93,6 +93,7 @@
     create table public.oferta (
         idOferta int8 not null,
         comentario varchar(255),
+        comentario_acepta varchar(255),
         estado_oferta varchar(255),
         fecha_oferta timestamp,
         precio int4,

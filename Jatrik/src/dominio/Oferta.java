@@ -20,7 +20,8 @@ public class Oferta implements java.io.Serializable
 	private String estado_oferta; // aceptada, rechazada, pendiente	
 	private Integer precio;	
 	private Date fecha_oferta;
-	private String comentario;
+	private String comentario;// comentario opcional para quien realiza la oferta
+	private String comentario_acepta; // comentario opcional para quién acepta o rechaza
 	
 	@ManyToOne
 	Jugador jugadorEnVenta;
@@ -96,6 +97,14 @@ public class Oferta implements java.io.Serializable
 
 	public void setEquipoDestino(Equipo equipoDestino) {
 		this.equipoDestino = equipoDestino;
+	}
+
+	public String getComentario_acepta() {
+		return comentario_acepta;
+	}
+
+	public void setComentario_acepta(String comentario_acepta) {
+		this.comentario_acepta = comentario_acepta;
 	}
 
 }

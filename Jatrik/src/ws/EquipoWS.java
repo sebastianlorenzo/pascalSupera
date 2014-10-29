@@ -152,5 +152,32 @@ public class EquipoWS
 		DataListaEquipo dataEq = this.iEquipoController.obtenerEquiposData();
 		return g.toJson(dataEq);	
 	}
+	
+	@POST
+	@Path("realizarOferta")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String realizarOferta(String datos) throws JSONException
+	{
+		JSONObject datosOferta = new JSONObject(datos);
+		String nomUsuario = datosOferta.getString("nomUsuario");
+		String nomJugador = datosOferta.getString("nomJugador");
+		Integer precio = Integer.parseInt(datosOferta.getString("precio"));
+		
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray jpaises = null;
+			jpaises = iEquipoController.obtenerPaisesInicial();
+			respuesta.put("paises", jpaises);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return respuesta.toString();
+	}
+	
 		
 }
