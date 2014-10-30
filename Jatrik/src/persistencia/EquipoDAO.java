@@ -46,7 +46,7 @@ public interface EquipoDAO
 
 	public void restablecerEquipoLuegoPartido(String nomEquipo); // Pone tarjetas amarillas de los jugadores en 0
 	
-	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
+	public JSONObject realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 
 	public DataListaOferta obtenerOfertas(String nomUsuario);
 			

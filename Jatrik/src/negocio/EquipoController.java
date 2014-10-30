@@ -175,7 +175,7 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	public JSONObject realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
 	{	
 		return this.equipoDAO.realizarOfertaJugador(nomUsuario, idJugador, precio, comentario);
 		

@@ -31,7 +31,7 @@ public interface IEquipoController
 
 	public DataListaEquipo obtenerEquiposData(String nombreEq);
 
-	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
+	public JSONObject realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 
 	public DataListaOferta obtenerOfertasData(String nomUsuario);
 	
