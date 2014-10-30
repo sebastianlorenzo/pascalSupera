@@ -194,7 +194,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			for(Jugador jug: ljugadores)
 			{
-				DataJugador dj = new DataJugador(jug.getJugador(), jug.getPosicion(), 
+				DataJugador dj = new DataJugador(jug.getIdJugador(),jug.getJugador(), jug.getPosicion(), 
 						jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
 						jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
 				de.addDataJugador(dj);
