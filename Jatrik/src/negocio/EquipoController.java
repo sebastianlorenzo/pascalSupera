@@ -14,6 +14,7 @@ import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
 import persistencia.JugadorDAO;
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -178,6 +179,12 @@ public class EquipoController implements IEquipoController
 	{	
 		return this.equipoDAO.realizarOfertaJugador(nomUsuario, idJugador, precio, comentario);
 		
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaOferta obtenerOfertasData(String nomUsuario) 
+	{
+		return this.equipoDAO.obtenerOfertas(nomUsuario);
 	}
 	
 }

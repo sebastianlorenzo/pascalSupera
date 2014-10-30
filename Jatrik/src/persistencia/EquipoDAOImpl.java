@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.ejb.*;
@@ -10,6 +11,8 @@ import org.codehaus.jettison.json.*;
 import tipos.DataEquipo;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
+import tipos.DataOferta;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -254,6 +257,52 @@ public class EquipoDAOImpl implements EquipoDAO
 		equipoActual.setOfertasRecibidas(ofertasRecibidas);
 				
 		return true;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaOferta obtenerOfertas(String nomUsuario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Equipo miEquipo = us.getEquipo();
+		Collection<Oferta> ofertasRecibidas = miEquipo.getOfertasRecibidas();
+		Iterator<Oferta> iter = ofertasRecibidas.iterator();
+		
+		DataListaOferta dlo = new DataListaOferta();
+		DataOferta dof = null;
+		
+		while(iter.hasNext()){
+			
+			Oferta of = iter.next();
+			String estadoOf = of.getEstado_oferta();
+			if(estadoOf.equals("pendiente"))
+			{	
+				Date fechaOferta = of.getFecha_oferta();
+				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaOf = formateador.format(fechaOferta);
+				
+			    Equipo equipoOferente = of.getEquipoDestino();
+			    String eqDestino = equipoOferente.getEquipo();
+			    
+			    String usuarioOferente = equipoOferente.getUsuario().getLogin();
+			    
+			    Jugador jugadorEnVenta = of.getJugadorEnVenta();
+			    String 	nomJugador = jugadorEnVenta.getJugador();
+			    Integer idJugador = jugadorEnVenta.getIdJugador();
+			    
+			    Integer precio = of.getPrecio();
+			    
+			    dof = new DataOferta(eqDestino, nomJugador, idJugador, precio, fechaOf);
+			    dof.setUsuarioOferente(usuarioOferente);
+			    
+			    String comentario = of.getComentario();
+			    if (!comentario.equals(""))
+			    	dof.setComentario(comentario);
+			}
+			if(dof != null)
+				dlo.addDataOferta(dof);
+		}
+		
+		return dlo;
 	}
 	
 }

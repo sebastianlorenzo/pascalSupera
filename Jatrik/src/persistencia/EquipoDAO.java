@@ -8,6 +8,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -46,5 +47,7 @@ public interface EquipoDAO
 	public void restablecerEquipoLuegoPartido(String nomEquipo); // Pone tarjetas amarillas de los jugadores en 0
 	
 	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
-		
+
+	public DataListaOferta obtenerOfertas(String nomUsuario);
+			
 }

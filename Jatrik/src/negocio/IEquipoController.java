@@ -6,6 +6,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
 import dominio.Equipo;
 
 @Local
@@ -32,4 +33,6 @@ public interface IEquipoController
 
 	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 
+	public DataListaOferta obtenerOfertasData(String nomUsuario);
+	
 }
