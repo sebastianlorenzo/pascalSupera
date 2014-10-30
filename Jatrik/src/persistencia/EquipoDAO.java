@@ -43,6 +43,8 @@ public interface EquipoDAO
 
 	public DataListaEquipo equiposData(String nomEquipo);
 
+	public void restablecerEquipoLuegoPartido(String nomEquipo); // Pone tarjetas amarillas de los jugadores en 0
+	
 	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 		
 }

@@ -23,7 +23,7 @@ public class Jugador implements java.io.Serializable
 	private Integer ataque;  // Equivale a potencia
 	private Integer defensa;
 	private Integer porteria;
-	private String  estado_jugador; //{titular, suplente, lesionado}
+	private String  estado_jugador; //{titular, suplente, lesionado, expulsado}
 	private Integer cant_tarjetas_amarillas;
 
 	@ManyToOne

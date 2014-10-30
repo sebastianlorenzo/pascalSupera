@@ -207,6 +207,21 @@ public class EquipoDAOImpl implements EquipoDAO
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void restablecerEquipoLuegoPartido(String nomEquipo) // Pone tarjetas amarillas de los jugadores en 0
+	{
+		Equipo e = em.find(Equipo.class, nomEquipo);
+		List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
+		Iterator<Jugador> it = jugadores.iterator();
+        while(it.hasNext()) 
+        {
+        	Jugador j = it.next();
+        	j.setCant_tarjetas_amarillas(0);
+        	j.setEstado_jugador(CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
+        }
+		em.merge(e);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
 	{
 		Usuario us = em.find(Usuario.class, nomUsuario);

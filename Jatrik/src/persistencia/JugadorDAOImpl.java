@@ -17,6 +17,7 @@ public class JugadorDAOImpl implements JugadorDAO
 	static final String CONST_DEFENSA 		= "defensa";
 	static final String CONST_PORTERO 		= "portero";
 	static final String CONST_TITULAR		= "titular";
+	static final String CONST_EXPULSADO		= "expulsado";
 	
 	
 	@PersistenceContext(unitName="Jatrik")
@@ -118,4 +119,16 @@ public class JugadorDAOImpl implements JugadorDAO
 		}
 		return -1;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void cambiarEstadoJugador(Integer idJugador, String estado_jugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setEstado_jugador(estado_jugador);
+			em.merge(j);
+		}
+	}
+	
 }

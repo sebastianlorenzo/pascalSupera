@@ -3,7 +3,9 @@ package negocio;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
+
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
@@ -27,14 +29,15 @@ public class PartidoController implements IPartidoController
 	static final Float CONST_GOL 			  = (float) 0.9;  // Probabilidad mínima para que haya gol
 	static final Float CONST_TARJETA		  = (float) 0.4;  // Probabilidad mínima para que haya tarjeta
 	static final Float CONST_TARJETA_AMARILLA = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
-	static final Float CONST_MIN_LESION           = (float) 0.65; // Probabilidad mínima para que sea lesión
-	static final Float CONST_MAX_LESION           = (float) 0.85; // Probabilidad máxima para que sea lesión
+	static final Float CONST_MIN_LESION       = (float) 0.65; // Probabilidad mínima para que sea lesión
+	static final Float CONST_MAX_LESION       = (float) 0.85; // Probabilidad máxima para que sea lesión
 	
 	static final String CONST_DELANTERO     = "delantero";
 	static final String CONST_MEDIOCAMPISTA = "mediocampista";
 	static final String CONST_DEFENSA 		= "defensa";
 	static final String CONST_PORTERO 		= "portero";
 	static final String CONST_TITULAR		= "titular";
+	static final String CONST_EXPULSADO		= "expulsado";
 	
 	
 	@EJB
@@ -183,12 +186,14 @@ public class PartidoController implements IPartidoController
 						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 						{
 							penalizacionVisitante += (float) 0.1;
+							jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
 						}
 					}
 					else
 					{
 						tarjetasRojasVisitante++;
 						penalizacionVisitante += (float) 0.1;
+						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
 					}
 				}
 				
@@ -217,13 +222,14 @@ public class PartidoController implements IPartidoController
 						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 						{
 							penalizacionLocal += (float) 0.1;
-
+							jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
 						}
 					}
 					else
 					{
 						tarjetasRojasLocal++;
 						penalizacionLocal += (float) 0.1;
+						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
 					}
 				}
 
@@ -234,6 +240,10 @@ public class PartidoController implements IPartidoController
 				
 			}
 		}
+		
+		// Restauro los atributos de los jugadores (cant_tarjetas_amarillas y ¿estado_jugador?)
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoLocal().getEquipo());
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoVisitante().getEquipo());
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillasLocal, tarjetasAmarillasVisitante, 
