@@ -11,6 +11,7 @@
 		<class>dominio.Partido</class>
 		<class>dominio.Mensaje</class>
 		<class>dominio.Oferta</class>
+		<class>dominio.Cambio</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.default_schema" value="public"/>

@@ -2,9 +2,10 @@ package dominio;
 
 import java.util.Collection;
 import java.util.Date;
+
 import javax.persistence.*;
+
 import dominio.Estadio;
-import tipos.DataCambio;
 
 @Entity
 @Table(name = "partido", schema = "public")
@@ -30,17 +31,19 @@ public class Partido implements java.io.Serializable
 	
 	@ManyToOne
 	private Campeonato campeonato;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JoinColumn(nullable = true)
+	private Collection<Cambio> cambiosLocal;
 	
-	@Transient
-	private Collection<DataCambio> cambiosLocal;
-	
-	@Transient
-	private Collection<DataCambio> cambiosVisitante;
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JoinColumn(nullable = true)
+	private Collection<Cambio> cambiosVisitante;
 	
 	public Partido(){}
 	
 	public Partido (String partido, Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, 
-					Campeonato campeonato, Collection<DataCambio> cambiosLocal, Collection<DataCambio> cambiosVisitante)
+					Campeonato campeonato, Collection<Cambio> cambiosLocal, Collection<Cambio> cambiosVisitante)
 	{	
 		this.partido = partido;
 		this.equipoLocal = equipoLocal;
@@ -112,22 +115,22 @@ public class Partido implements java.io.Serializable
 		this.campeonato = campeonato;
 	}
 	
-	public Collection<DataCambio> getCambiosLocal() 
+	public Collection<Cambio> getCambiosLocal() 
 	{
 		return cambiosLocal;
 	}
 
-	public void setCambiosLocal(Collection<DataCambio> cambiosLocal) 
+	public void setCambiosLocal(Collection<Cambio> cambiosLocal) 
 	{
 		this.cambiosLocal = cambiosLocal;
 	}
 
-	public Collection<DataCambio> getCambiosVisitante() 
+	public Collection<Cambio> getCambiosVisitante() 
 	{
 		return cambiosVisitante;
 	}
 
-	public void setCambiosVisitante(Collection<DataCambio> cambiosVisitante) 
+	public void setCambiosVisitante(Collection<Cambio> cambiosVisitante) 
 	{
 		this.cambiosVisitante = cambiosVisitante;
 	}

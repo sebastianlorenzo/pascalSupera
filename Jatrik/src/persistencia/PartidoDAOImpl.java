@@ -6,6 +6,7 @@ import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Partido;
 
@@ -69,6 +70,23 @@ public class PartidoDAOImpl implements PartidoDAO
 			em.merge(p);
 		}
 		
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearCambios(Partido p, List<Cambio> cambios, boolean local)
+	{
+		if (p != null)
+		{
+			if (local)
+			{
+				p.setCambiosLocal(cambios);
+			}
+			else
+			{
+				p.setCambiosVisitante(cambios);
+			}
+			em.merge(p);
+		}
 	}
 	
 }

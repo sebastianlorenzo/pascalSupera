@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.*;
 
+import dominio.Cambio;
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
@@ -24,21 +25,22 @@ public class PartidoController implements IPartidoController
 {
 
 	/* Constantes */
-	static final Integer MIN_JUGADAS_PARTIDO  = 10;
-	static final Integer MAX_JUGADAS_PARTIDO  = 20;
-	static final Float CONST_GOL 			  = (float) 0.9;  // Probabilidad mínima para que haya gol
-	static final Float CONST_TARJETA		  = (float) 0.4;  // Probabilidad mínima para que haya tarjeta
-	static final Float CONST_TARJETA_AMARILLA = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
-	static final Float CONST_MIN_LESION       = (float) 0.65; // Probabilidad mínima para que sea lesión
-	static final Float CONST_MAX_LESION       = (float) 0.85; // Probabilidad máxima para que sea lesión
+	static final Integer MIN_JUGADAS_PARTIDO    = 10;
+	static final Integer MAX_JUGADAS_PARTIDO    = 20;
+	static final Integer CONST_DURACION_PARTIDO = 90;
+	static final Float CONST_GOL 			    = (float) 0.9;  // Probabilidad mínima para que haya gol
+	static final Float CONST_TARJETA		    = (float) 0.4;  // Probabilidad mínima para que haya tarjeta
+	static final Float CONST_TARJETA_AMARILLA   = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
+	static final Float CONST_MIN_LESION         = (float) 0.65; // Probabilidad mínima para que sea lesión
+	static final Float CONST_MAX_LESION         = (float) 0.85; // Probabilidad máxima para que sea lesión
 	
 	static final String CONST_DELANTERO     = "delantero";
 	static final String CONST_MEDIOCAMPISTA = "mediocampista";
 	static final String CONST_DEFENSA 		= "defensa";
 	static final String CONST_PORTERO 		= "portero";
 	static final String CONST_TITULAR		= "titular";
+	static final String CONST_SUPLENTE		= "suplente";
 	static final String CONST_EXPULSADO		= "expulsado";
-	
 	
 	@EJB
 	private PartidoDAO partidoDAO;
@@ -56,6 +58,29 @@ public class PartidoController implements IPartidoController
 		this.jugadorDAO = new JugadorDAOImpl();
 	}
 
+	// Se asume que se mandan cambios para un equipo solo, no para los dos a la vez
+	public void configurarCambiosPartido(String partido, DataCambio[] cambios)
+	{
+		List<Cambio> cambiosAgregar = new ArrayList<Cambio>();
+		Partido p = partidoDAO.getPartido(partido);
+		for (int i = 0; i < cambios.length; i++)
+		{
+			if (cambios[i] != null)
+			{
+				Cambio c = new Cambio(cambios[i].getIdJugadorEntrante(), cambios[i].getIdJugadorSaliente(), cambios[i].getMinutoCambio(), p);
+				cambiosAgregar.add(c);
+			}
+		}
+		
+		boolean local = true;
+		// Si es el equipo visitante
+		if (jugadorDAO.obtenerEquipo(cambios[0].getIdJugadorEntrante()).getEquipo().equals(p.getEquipoVisitante().getEquipo()))
+		{
+			local = false;
+		}
+		partidoDAO.setearCambios(p, cambiosAgregar, local);
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataResumenPartido simularPartido(String idPartido)
 	{
@@ -70,8 +95,8 @@ public class PartidoController implements IPartidoController
 		Partido partido = partidoDAO.getPartido(idPartido);
 		
 		// Obtener los cambios programados
-		ArrayList<DataCambio> cambiosProgramadosEquipoLocal = (ArrayList<DataCambio>) partido.getCambiosLocal();
-		ArrayList<DataCambio> cambiosProgramadosEquipoVisitante = (ArrayList<DataCambio>) partido.getCambiosVisitante();
+		List<Cambio> cambiosProgramadosEquipoLocal = (List<Cambio>) partido.getCambiosLocal();
+		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partido.getCambiosVisitante();
 		
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (MAX_JUGADAS_PARTIDO - MIN_JUGADAS_PARTIDO + 1) + MIN_JUGADAS_PARTIDO);
@@ -102,8 +127,8 @@ public class PartidoController implements IPartidoController
 			}
 			
 			// Realizar los cambios programados en ambos equipos antes de jugar
-			realizarCambiosEnEquipo(equipo.getEquipo(), cambiosProgramadosEquipoLocal);
-			realizarCambiosEnEquipo(equipoContrario.getEquipo(), cambiosProgramadosEquipoVisitante);
+			realizarCambiosEnEquipo(equipo.getEquipo(), cambiosProgramadosEquipoLocal, cantidad_jugadas, i);
+			realizarCambiosEnEquipo(equipoContrario.getEquipo(), cambiosProgramadosEquipoVisitante, cantidad_jugadas, i);
 			
 			// Obtengo los jugadores de ambos equipos
 			List<Jugador> jugadores           = (List<Jugador>) equipo.getJugadores();
@@ -125,7 +150,7 @@ public class PartidoController implements IPartidoController
 			boolean lesion = huboLesion(probTarjeta);
 			if (lesion)
 			{
-				realizarCambiosEnEquipo(equipo.getEquipo(), es_local ? cambiosProgramadosEquipoLocal : cambiosProgramadosEquipoVisitante);
+				realizarCambiosEnEquipo(equipo.getEquipo(), es_local ? cambiosProgramadosEquipoLocal : cambiosProgramadosEquipoVisitante, 0, i);
 			}
 			
 
@@ -341,9 +366,39 @@ public class PartidoController implements IPartidoController
 		return false;
 	}
 	
-	private void realizarCambiosEnEquipo(String nombreEquipo, ArrayList<DataCambio> cambiosProgramados)
-	{
-		
+	private void realizarCambiosEnEquipo(String nombreEquipo, List<Cambio> cambiosProgramados, int cantidad_jugadas, int nro_jugada)
+	{	
+		// Si todavía no se realizó la máxima cantidad de cambios permitidos 
+		if (equipoDAO.puedeRealizarCambios(nombreEquipo))
+		{
+			// Cambio por lesion 
+			if (cantidad_jugadas == 0)
+			{
+				
+			}
+			// Cambio programado
+			else
+			{
+				Iterator<Cambio> it = cambiosProgramados.iterator();
+				while (it.hasNext())
+				{
+					// Si este cambio se debe realizar ahora => lo hago y lo elimino de la lista de cambios
+					Cambio cambio = it.next();
+					int minuto_cambio = ((cantidad_jugadas * cambio.getMinutoCambio()) / CONST_DURACION_PARTIDO);
+					if (minuto_cambio == nro_jugada)
+					{
+						jugadorDAO.cambiarEstadoJugador(cambio.getIdJugadorEntrante(), CONST_TITULAR);
+						jugadorDAO.cambiarEstadoJugador(cambio.getIdJugadorSaliente(), CONST_SUPLENTE);
+						equipoDAO.sumarCambio(nombreEquipo);
+						//cambiosProgramados.remove(cambio);
+						System.out.print(" - Cambio\n");
+						System.out.print("     Minuto: " + cambio.getMinutoCambio() + "\n");
+						System.out.print("     Jugador que entra: " + cambio.getIdJugadorEntrante() + "\n");
+						System.out.print("     Jugador que sale: " + cambio.getIdJugadorSaliente() + "\n\n");
+					}
+				}
+			}
+		}
 	}
 	
 	private Jugador getJugadorPatearGol(List<Jugador> jugadores, String tipo_jugador)

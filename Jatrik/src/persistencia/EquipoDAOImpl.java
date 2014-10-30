@@ -25,6 +25,7 @@ public class EquipoDAOImpl implements EquipoDAO
 {
 	
 	static final String CONST_TITULAR = "titular";
+	static final Integer CONST_CANT_MAX_CAMBIOS = 3;
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
@@ -207,7 +208,9 @@ public class EquipoDAOImpl implements EquipoDAO
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void restablecerEquipoLuegoPartido(String nomEquipo) // Pone tarjetas amarillas de los jugadores en 0
+	// Pone tarjetas amarillas de los jugadores y cantidad de cambios realizados por el equipo en 0.
+	// Además, restablece el valor del estado del jugador como estaba antes de jugarse el partido
+	public void restablecerEquipoLuegoPartido(String nomEquipo)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
 		List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
@@ -218,6 +221,7 @@ public class EquipoDAOImpl implements EquipoDAO
         	j.setCant_tarjetas_amarillas(0);
         	j.setEstado_jugador(CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
         }
+        e.setCant_cambios_realizados(0);
 		em.merge(e);
 	}
 	
@@ -254,6 +258,19 @@ public class EquipoDAOImpl implements EquipoDAO
 		equipoActual.setOfertasRecibidas(ofertasRecibidas);
 				
 		return true;
+	}
+	
+	public Boolean puedeRealizarCambios(String nomEquipo)
+	{
+		Equipo e = em.find(Equipo.class, nomEquipo);
+		return (e.getCant_cambios_realizados() < CONST_CANT_MAX_CAMBIOS);
+	}
+	
+	public void sumarCambio(String nomEquipo)
+	{
+		Equipo e = em.find(Equipo.class, nomEquipo);
+		e.setCant_cambios_realizados(e.getCant_cambios_realizados() + 1);
+		em.merge(e);
 	}
 	
 }

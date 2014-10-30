@@ -65,12 +65,19 @@ public class JugadorDAOImpl implements JugadorDAO
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Equipo obtenerEquipo(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		return j.getEquipo();
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void setearEquipo(Integer idJugador, Equipo e) {
 		Jugador j = em.find(Jugador.class, idJugador);
 		if (j != null)
 		{
 			j.setEquipo(e);
-			em.merge(j);
+			em.persist(j);
 		}
 		
 	}
@@ -81,7 +88,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		if (j != null)
 		{
 			j.setPosicion(posicion);
-			em.merge(j);
+			em.persist(j);
 		}
 		
 	}
@@ -92,7 +99,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		if (j != null)
 		{
 			j.setEstado_jugador(estadoJugador);
-			em.merge(j);
+			em.persist(j);
 		}
 		
 	}
@@ -105,7 +112,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		{
 			int tarjetas = j.getCant_tarjetas_amarillas();
 			j.setCant_tarjetas_amarillas(tarjetas + 1);
-			em.merge(j);
+			em.persist(j);
 		}
 	}
 	
@@ -127,7 +134,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		if (j != null)
 		{
 			j.setEstado_jugador(estado_jugador);
-			em.merge(j);
+			em.persist(j);
 		}
 	}
 	

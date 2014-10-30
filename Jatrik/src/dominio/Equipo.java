@@ -25,8 +25,9 @@ public class Equipo implements java.io.Serializable
 	private Integer tacticaMediocampo;
 	private Integer tacticaAtaque;
 	private Integer puntaje;
+	private Integer cant_cambios_realizados;
 	
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
 	private Estadio estadio;
 	
@@ -50,6 +51,7 @@ public class Equipo implements java.io.Serializable
 	@JoinTable(name="equipo_ofertas_recibidas")
 	private Collection<Oferta> ofertasRecibidas;
 	
+	
 	public Equipo(){}
 
 	public Equipo(String equipo, String pais, String localidad) 
@@ -66,6 +68,7 @@ public class Equipo implements java.io.Serializable
 		this.partidos = partidos;
 		Collection<Campeonato> campeonatos = new ArrayList<Campeonato>();
 		this.campeonatos = campeonatos;
+		this.cant_cambios_realizados = 0; 
 	}
 
 	public String getEquipo() 
@@ -201,6 +204,17 @@ public class Equipo implements java.io.Serializable
 
 	public void setOfertasRecibidas(Collection<Oferta> ofertasRecibidas) {
 		this.ofertasRecibidas = ofertasRecibidas;
+	}
+	
+
+	public Integer getCant_cambios_realizados() 
+	{
+		return cant_cambios_realizados;
+	}
+
+	public void setCant_cambios_realizados(Integer cant_cambios_realizados) 
+	{
+		this.cant_cambios_realizados = cant_cambios_realizados;
 	}
 	
 }

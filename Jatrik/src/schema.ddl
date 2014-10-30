@@ -39,6 +39,17 @@
         oferta_jugadores_idOferta int8 not null
     );
 
+    create table public.cambio (
+        idCambio int4 not null,
+        idJugadorEntrante int4,
+        idJugadorSaliente int4,
+        minutoCambio int4,
+        partido_partido varchar(255),
+        cambiosVisitante_partido varchar(255),
+        cambiosLocal_partido varchar(255),
+        primary key (idCambio)
+    );
+
     create table public.campeonato (
         campeonato varchar(255) not null,
         cantEquipos int4,
@@ -48,6 +59,7 @@
 
     create table public.equipo (
         equipo varchar(255) not null,
+        cant_cambios_realizados int4,
         localidad varchar(255),
         pais varchar(255),
         puntaje int4,
@@ -246,6 +258,21 @@
         add constraint FK_bgfkvvjb7ms0qllcj93ry6knj 
         foreign key (jugador_idJugador) 
         references public.jugador;
+
+    alter table public.cambio 
+        add constraint FK_db2khxvpib5xmrjhspw6g3ade 
+        foreign key (partido_partido) 
+        references public.partido;
+
+    alter table public.cambio 
+        add constraint FK_oajxhru2xhu31q1476pbpq66m 
+        foreign key (cambiosVisitante_partido) 
+        references public.partido;
+
+    alter table public.cambio 
+        add constraint FK_14owakocop4k2t8f7akhjxnp5 
+        foreign key (cambiosLocal_partido) 
+        references public.partido;
 
     alter table public.estadio 
         add constraint FK_es3pkcufchab44tdwagonlbvc 

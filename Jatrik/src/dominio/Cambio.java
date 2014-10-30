@@ -1,17 +1,27 @@
-package tipos;
+package dominio;
+import javax.persistence.*;
 
-public class DataCambio
+@Entity
+@Table(name = "cambio", schema = "public")
+public class Cambio implements java.io.Serializable 
 {
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private Integer idCambio;
 	private Integer idJugadorEntrante;
 	private Integer idJugadorSaliente;
 	private Integer minutoCambio;
-	private String  partido;
+	
+	@ManyToOne()
+	private Partido partido;
 
 	
-	public DataCambio(){}
+	public Cambio(){}
 	
-	public DataCambio(Integer idJugadorEntrante, Integer idJugadorSaliente, Integer minutoCambio, String partido)
+	public Cambio(Integer idJugadorEntrante, Integer idJugadorSaliente, Integer minutoCambio, Partido partido)
 	{
 		this.idJugadorEntrante = idJugadorEntrante;
 		this.idJugadorSaliente = idJugadorSaliente;
@@ -49,12 +59,13 @@ public class DataCambio
 		this.minutoCambio = minutoCambio;
 	}
 	
-	public String getPartido() 
+
+	public Partido getPartido() 
 	{
 		return partido;
 	}
 
-	public void setPartido(String partido) 
+	public void setPartido(Partido partido) 
 	{
 		this.partido = partido;
 	}

@@ -1,7 +1,6 @@
 package persistencia;
 
 import java.util.ArrayList;
-
 import dominio.Equipo;
 import dominio.Jugador;
 
@@ -17,6 +16,8 @@ public interface JugadorDAO
 	public ArrayList<Jugador> obtenerMediocampistasSinEquipo();
 	
 	public ArrayList<Jugador> obtenerDelanteroSinEquipo();
+	
+	public Equipo obtenerEquipo(Integer idJugador);
 	
 	public void setearEquipo(Integer idJugador, Equipo e);
 	
