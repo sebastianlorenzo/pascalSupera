@@ -3,7 +3,9 @@ package negocio;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
+
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
@@ -27,14 +29,15 @@ public class PartidoController implements IPartidoController
 	static final Float CONST_GOL 			  = (float) 0.9;  // Probabilidad mínima para que haya gol
 	static final Float CONST_TARJETA		  = (float) 0.4;  // Probabilidad mínima para que haya tarjeta
 	static final Float CONST_TARJETA_AMARILLA = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
-	static final Float CONST_MIN_LESION           = (float) 0.65; // Probabilidad mínima para que sea lesión
-	static final Float CONST_MAX_LESION           = (float) 0.85; // Probabilidad máxima para que sea lesión
+	static final Float CONST_MIN_LESION       = (float) 0.65; // Probabilidad mínima para que sea lesión
+	static final Float CONST_MAX_LESION       = (float) 0.85; // Probabilidad máxima para que sea lesión
 	
 	static final String CONST_DELANTERO     = "delantero";
 	static final String CONST_MEDIOCAMPISTA = "mediocampista";
 	static final String CONST_DEFENSA 		= "defensa";
 	static final String CONST_PORTERO 		= "portero";
 	static final String CONST_TITULAR		= "titular";
+	static final String CONST_EXPULSADO		= "expulsado";
 	
 	
 	@EJB
@@ -56,190 +59,139 @@ public class PartidoController implements IPartidoController
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataResumenPartido simularPartido(String idPartido)
 	{
+		
+		float[] penalizacion    = {0,0};
+		int[] tarjetasAmarillas = {0,0};
+		int[] tarjetasRojas	    = {0,0};
+		int[] goles			    = {0,0};
+		int[] lesiones		    = {0,0};
+		
 		// Obtener el partido que vamos a simular
 		Partido partido = partidoDAO.getPartido(idPartido);
+		
+		// Obtener los cambios programados
+		ArrayList<DataCambio> cambiosProgramadosEquipoLocal = (ArrayList<DataCambio>) partido.getCambiosLocal();
+		ArrayList<DataCambio> cambiosProgramadosEquipoVisitante = (ArrayList<DataCambio>) partido.getCambiosVisitante();
 		
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (MAX_JUGADAS_PARTIDO - MIN_JUGADAS_PARTIDO + 1) + MIN_JUGADAS_PARTIDO);
 		
-		boolean es_local = false;
-		float penalizacionLocal = 0;
-		float penalizacionVisitante = 0;
-		
-		int tarjetasAmarillasLocal		= 0;
-		int tarjetasAmarillasVisitante  = 0; 
-		int tarjetasRojasLocal			= 0;
-		int tarjetasRojasVisitante		= 0;
-		int golesLocal					= 0;
-		int golesVisitante				= 0;
-		int lesionesLocal				= 0;
-		int lesionesVisitante			= 0;
-		
 		// De 0 a cantidad_jugadas
 		for (int i = 0; i < cantidad_jugadas; i++)
 		{
-			
 			// Elijo el equipo que va a realizar la jugada
 			// Se hace 50 y 50.
 			float equipoJugada = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
 			
 			// Si la probabilidad es menor o igual a 0.5 => Asumimos que la jugada es realizada por el equipo local
-			Equipo equipo = null;
+			boolean es_local       = true;
+			Equipo equipo          = null;
 			Equipo equipoContrario = null;
-			ArrayList<DataCambio> cambiosProgramados = null;
+			
 			if (equipoJugada <= 0.5)
 			{
 				es_local = true;
-				equipo = partido.getEquipoLocal();
+				equipo   = partido.getEquipoLocal();
 				equipoContrario = partido.getEquipoVisitante();
-				// Obtener los cambios programados
-				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosLocal();
 			}
 			else
 			{
 				es_local = false;
-				equipo = partido.getEquipoVisitante();
+				equipo   = partido.getEquipoVisitante();
 				equipoContrario = partido.getEquipoLocal();
-				// Obtener los cambios programados
-				cambiosProgramados = (ArrayList<DataCambio>) partido.getCambiosVisitante();
 			}
-			String nombreEquipo = equipo.getEquipo();
 			
-			// Realizar cambios antes de jugar
-			realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
+			// Realizar los cambios programados en ambos equipos antes de jugar
+			realizarCambiosEnEquipo(equipo.getEquipo(), cambiosProgramadosEquipoLocal);
+			realizarCambiosEnEquipo(equipoContrario.getEquipo(), cambiosProgramadosEquipoVisitante);
 			
-			List<Jugador> jugadores = (List<Jugador>) equipo.getJugadores();
+			// Obtengo los jugadores de ambos equipos
+			List<Jugador> jugadores           = (List<Jugador>) equipo.getJugadores();
 			List<Jugador> jugadoresContrarios = (List<Jugador>) equipoContrario.getJugadores();
 			
 			// Calcular la probabilidad de jugada de gol
 			float probJugadaGol = 0;
-			if (es_local)
-			{
-				probJugadaGol = calcularProbabilidadJugadaGol(jugadores, penalizacionLocal);				
-			}
-			else
-			{
-				probJugadaGol = calcularProbabilidadJugadaGol(jugadores, penalizacionVisitante);				
-			}
-			System.out.println("*** PROB. JUG. GOL ***");
-			String local_visitante = "visitante";
-			if (es_local)
-			{
-				local_visitante = "local";
-			}
-			System.out.println("Equipo " + local_visitante + " - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
-			System.out.println("**********************");
+			probJugadaGol = calcularProbabilidadJugadaGol(jugadores, es_local ? penalizacion[0] : penalizacion[1]);
 			
 			// Calcular la probabilidad de gol para la jugada
 			String[] prob_gol = calcularProbabilidadGol(jugadores, probJugadaGol);
 			float probGolParaJugada = Float.parseFloat(prob_gol[0]);
 			String tipoJugador = prob_gol[1];
 			
-			System.out.println("*** PROB. GOL ***");
-			local_visitante = "visitante";
-			if (es_local)
-			{
-				local_visitante = "local";
-			}
-			System.out.println("Equipo " + local_visitante + " - Probabilidad de gol: " + probGolParaJugada + "\n");
-			System.out.println("****************");
-			
 			// Calcular la probabilidad de tarjeta roja/amarilla
 			float probTarjeta = calcularProbabilidadTarjeta(jugadoresContrarios, probGolParaJugada);
-			System.out.println("*** PROB. TARJETA ***");
-			local_visitante = "visitante";
-			if (es_local)
-			{
-				local_visitante = "local";
-			}
-			System.out.println("Equipo " + local_visitante + " - Probabilidad de tarjeta: " + probTarjeta + "\n");
-			System.out.println("********************");
 			
 			// Verificar si hubo lesión
 			boolean lesion = huboLesion(probTarjeta);
 			if (lesion)
 			{
-				realizarCambiosEnEquipo(nombreEquipo, cambiosProgramados);
+				realizarCambiosEnEquipo(equipo.getEquipo(), es_local ? cambiosProgramadosEquipoLocal : cambiosProgramadosEquipoVisitante);
 			}
 			
+
+			System.out.print("*************************\n");
+			System.out.print("***** JUGADA NRO. " + i + " *****\n");
+			System.out.print("*************************\n");
+			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");			
+			System.out.print(" - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
+			System.out.print(" - Probabilidad de gol: " + probGolParaJugada + "\n");
+			System.out.print(" - Probabilidad de tarjeta: " + probTarjeta + "\n");
+			
+			
 			// Actualizo los valores de la jugada
-			if (es_local)
+			int local_visitante = es_local ? 0 : 1;
+			
+			// Hubo gol
+			if (probGolParaJugada >= CONST_GOL)
 			{
-				if (probGolParaJugada >= CONST_GOL)
-				{
-					golesLocal++;
-				}
-				
-				// Hubo tarjeta
-				if (probTarjeta >= CONST_TARJETA)
-				{
-					// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
-					Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
-					if(probTarjeta <= CONST_TARJETA_AMARILLA)
-					{
-						// Las tarjetas van sobre el equipo contrario
-						tarjetasAmarillasVisitante++;
-						jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
-						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
-						{
-							penalizacionVisitante += (float) 0.1;
-						}
-					}
-					else
-					{
-						tarjetasRojasVisitante++;
-						penalizacionVisitante += (float) 0.1;
-					}
-				}
-				
-				if (lesion)
-				{
-					lesionesLocal++;
-				}
-				
+				goles[local_visitante]++;
 			}
-			else
+			
+			// Hubo tarjeta
+			if (probTarjeta >= CONST_TARJETA)
 			{
-				if (probGolParaJugada >= CONST_GOL)
+				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
+				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
+				if(probTarjeta <= CONST_TARJETA_AMARILLA)
 				{
-					golesVisitante++;
-				}
-				
-				if (probTarjeta >= CONST_TARJETA)
-				{
-					// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
-					Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
-					if(probTarjeta <= CONST_TARJETA_AMARILLA)
+					// Las tarjetas van sobre el equipo contrario
+					tarjetasAmarillas[1 - local_visitante]++;
+					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
+					System.out.print(" - Tarjeta amarilla al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario");
+					if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 					{
-						// Las tarjetas van sobre el equipo contrario
-						tarjetasAmarillasLocal++;
-						jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
-						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
-						{
-							penalizacionLocal += (float) 0.1;
-
-						}
+						penalizacion[1 - local_visitante] += (float) 0.1;
+						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
+						System.out.print(" => EXPULSADO");
 					}
-					else
-					{
-						tarjetasRojasLocal++;
-						penalizacionLocal += (float) 0.1;
-					}
+					System.out.print("\n");
 				}
-
-				if (lesion)
+				else
 				{
-					lesionesVisitante++;
+					tarjetasRojas[1 - local_visitante]++;
+					penalizacion[1 - local_visitante] += (float) 0.1;
+					jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), CONST_EXPULSADO);
+					System.out.print(" - Tarjeta roja al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario => EXPULSADO\n");
 				}
-				
 			}
+			System.out.print("\n");
+			
+			if (lesion)
+			{
+				lesiones[local_visitante]++;
+			}
+			
 		}
 		
+		// Restauro los atributos de los jugadores (cant_tarjetas_amarillas y ¿estado_jugador?)
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoLocal().getEquipo());
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoVisitante().getEquipo());
+		
 		// Retornar resultado
-		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillasLocal, tarjetasAmarillasVisitante, 
-																   tarjetasRojasLocal, tarjetasRojasVisitante,
-																   golesLocal,golesVisitante,
-																   lesionesLocal, lesionesVisitante);
+		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
+																   tarjetasRojas[0], tarjetasRojas[1],
+																   goles[0],goles[1],
+																   lesiones[0], lesiones[1]);
 		return resumenPartido;
 	}
 	

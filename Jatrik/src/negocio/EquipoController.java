@@ -22,6 +22,8 @@ import tipos.DataListaEquipo;
 import tipos.DataListaJugador;
 import tipos.DataListaPosicion;
 import tipos.DataPosicion;
+import tipos.DataListaOferta;
+
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -176,9 +178,22 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataListaEquipo obtenerEquiposData() 
+	public DataListaEquipo obtenerEquiposData(String nomEquipo) 
 	{
-		return this.equipoDAO.equiposData();
+		return this.equipoDAO.equiposData(nomEquipo);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	{	
+		return this.equipoDAO.realizarOfertaJugador(nomUsuario, idJugador, precio, comentario);
+		
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaOferta obtenerOfertasData(String nomUsuario) 
+	{
+		return this.equipoDAO.obtenerOfertas(nomUsuario);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

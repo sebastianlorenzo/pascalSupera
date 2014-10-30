@@ -14,6 +14,8 @@ import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaEquipo;
 import tipos.DataListaPosicion;
+import tipos.DataListaOferta;
+
 
 import com.google.gson.Gson;
 
@@ -28,6 +30,7 @@ public class EquipoWS
 	@EJB
 	private  IEquipoController iEquipoController;
 	
+	/*
 	@GET
 	@Path("listarPaises")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -47,6 +50,7 @@ public class EquipoWS
 		}
 		return respuesta.toString();
 	}
+	*/
 	
 	@GET
 	@Path("listarEquiposMapa")
@@ -146,14 +150,17 @@ public class EquipoWS
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("listarEquipos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String listarEquipos()
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String listarEquipos(String datos) throws JSONException
 	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEq = datosEquipo.getString("nombreEquipo");
 		Gson g = new Gson();
-		DataListaEquipo dataEq = this.iEquipoController.obtenerEquiposData();
-		return g.toJson(dataEq);	
+		DataListaEquipo dataEq = this.iEquipoController.obtenerEquiposData(nombreEq);
+		return g.toJson(dataEq);
 	}
 	
 	@POST
@@ -164,16 +171,16 @@ public class EquipoWS
 	{
 		JSONObject datosOferta = new JSONObject(datos);
 		String nomUsuario = datosOferta.getString("nomUsuario");
-		String nomJugador = datosOferta.getString("nomJugador");
+		Integer idJugador = Integer.parseInt(datosOferta.getString("idJugador"));
 		Integer precio = Integer.parseInt(datosOferta.getString("precio"));
+		String comentario = datosOferta.getString("comentario");
 		
-		JSONObject respuesta = new JSONObject();		
-		try 
+		JSONObject respuesta = new JSONObject();
+		try
 		{
-			JSONArray jpaises = null;
-			jpaises = iEquipoController.obtenerPaisesInicial();
-			respuesta.put("paises", jpaises);
-
+			Boolean joferta;
+			joferta = iEquipoController.realizarOferta(nomUsuario, idJugador, precio, comentario);
+			respuesta.put("oferta", joferta);
 		} 
 		catch (Exception e) 
 		{
@@ -221,6 +228,20 @@ public class EquipoWS
 		else 
 			respuesta.put("Resultado", false);
 		return respuesta.toString();
+	}
+	
+	//Obtengo las ofertas realizadas a los jugadores pertenecientes a mi equipo
+	@POST
+	@Path("obtenerOfertas")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String obtenerOfertas(String datos) throws JSONException
+	{
+		JSONObject datosOferta = new JSONObject(datos);
+		String nomUsuario = datosOferta.getString("nomUsuario");
+		Gson g = new Gson();
+		DataListaOferta dataOf = this.iEquipoController.obtenerOfertasData(nomUsuario);
+		return g.toJson(dataOf);	
 	}
 		
 }

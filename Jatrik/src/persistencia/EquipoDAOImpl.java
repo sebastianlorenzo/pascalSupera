@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.ejb.*;
@@ -10,10 +11,13 @@ import org.codehaus.jettison.json.*;
 import tipos.DataEquipo;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
+import tipos.DataOferta;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
 import dominio.Jugador;
+import dominio.Oferta;
 import dominio.Pais;
 import dominio.Partido;
 import dominio.Usuario;
@@ -180,9 +184,10 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public DataListaEquipo equiposData() 
+	public DataListaEquipo equiposData(String nomEquipo)
 	{
-		Query query = em.createQuery("SELECT eq FROM Equipo eq ORDER BY eq.puntaje desc");
+		Query query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		query.setParameter("equipo", nomEquipo);
 		List<Equipo> lequipos = query.getResultList();		
 		DataListaEquipo dlequipos = new DataListaEquipo();
 		
@@ -194,14 +199,110 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			for(Jugador jug: ljugadores)
 			{
-				DataJugador dj = new DataJugador(jug.getIdJugador(),jug.getJugador(), jug.getPosicion(), 
-						jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
-						jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
+				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicionIdeal(), 
+				jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
+				jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
 				de.addDataJugador(dj);
 			}
 			dlequipos.addDataEquipo(de);
 		}
 		return dlequipos;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void restablecerEquipoLuegoPartido(String nomEquipo) // Pone tarjetas amarillas de los jugadores en 0
+	{
+		Equipo e = em.find(Equipo.class, nomEquipo);
+		List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
+		Iterator<Jugador> it = jugadores.iterator();
+        while(it.hasNext()) 
+        {
+        	Jugador j = it.next();
+        	j.setCant_tarjetas_amarillas(0);
+        	j.setEstado_jugador(CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
+        }
+		em.merge(e);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Jugador jug = em.find(Jugador.class, idJugador);
+		
+		if (( us == null) || (jug == null))
+			return false;
+		
+		Equipo equipoDestino = us.getEquipo(); // equipo del usuario que realiza la oferta
+		Equipo equipoActual = jug.getEquipo(); // equipo al que pertenece el jugador	
+		
+		Date fechaOferta = new Date();
+		
+		Oferta of = new Oferta(precio, fechaOferta, jug, equipoActual, equipoDestino);
+		of.setEstado_oferta("pendiente");
+		if(comentario != "")
+			of.setComentario(comentario);
+		em.persist(of);
+		
+		Collection<Oferta> oferta_jugadores = jug.getOferta_jugadores();
+		oferta_jugadores.add(of);
+		jug.setOferta_jugadores(oferta_jugadores);
+		
+		Collection<Oferta> ofertasRealizadas = equipoDestino.getOfertasRealizadas();
+		ofertasRealizadas.add(of);
+		equipoDestino.setOfertasRealizadas(ofertasRealizadas);
+				
+		Collection<Oferta> ofertasRecibidas = equipoActual.getOfertasRecibidas();
+		ofertasRecibidas.add(of);
+		equipoActual.setOfertasRecibidas(ofertasRecibidas);
+				
+		return true;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaOferta obtenerOfertas(String nomUsuario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Equipo miEquipo = us.getEquipo();
+		Collection<Oferta> ofertasRecibidas = miEquipo.getOfertasRecibidas();
+		Iterator<Oferta> iter = ofertasRecibidas.iterator();
+		
+		DataListaOferta dlo = new DataListaOferta();
+		DataOferta dof = null;
+		
+		while(iter.hasNext()){
+			
+			Oferta of = iter.next();
+			String estadoOf = of.getEstado_oferta();
+			if(estadoOf.equals("pendiente"))
+			{	
+				Date fechaOferta = of.getFecha_oferta();
+				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaOf = formateador.format(fechaOferta);
+				
+			    Equipo equipoOferente = of.getEquipoDestino();
+			    String eqDestino = equipoOferente.getEquipo();
+			    
+			    String usuarioOferente = equipoOferente.getUsuario().getLogin();
+			    
+			    Jugador jugadorEnVenta = of.getJugadorEnVenta();
+			    String 	nomJugador = jugadorEnVenta.getJugador();
+			    Integer idJugador = jugadorEnVenta.getIdJugador();
+			    
+			    Integer precio = of.getPrecio();
+			    
+			    dof = new DataOferta(eqDestino, nomJugador, idJugador, precio, fechaOf);
+			    dof.setUsuarioOferente(usuarioOferente);
+			    
+			    String comentario = of.getComentario();
+			    if (!comentario.equals(""))
+			    	dof.setComentario(comentario);
+			}
+			if(dof != null)
+				dlo.addDataOferta(dof);
+		}
+		
+		return dlo;
 	}
 	
 }

@@ -11,6 +11,8 @@ import org.codehaus.jettison.json.JSONObject;
 import tipos.DataListaEquipo;
 import tipos.DataListaPosicion;
 import tipos.DataMensaje;
+import tipos.DataListaOferta;
+
 import dominio.Equipo;
 
 @Local
@@ -32,8 +34,6 @@ public interface IEquipoController
 	public JSONObject obtenerTactica(String equipo);
 	
 	public void modificarTactica(String equipo, Integer ataque, Integer mediocampo, Integer defensa);
-
-	public DataListaEquipo obtenerEquiposData();
 	
 	public String obtenerJugadoresTitulares(String nomEquipo) throws JSONException;
 	
@@ -41,4 +41,10 @@ public interface IEquipoController
 	
 	public Boolean modificarJugadoresTitulares (String nomEquipo, DataListaPosicion titulares) throws JSONException;
 		
+	public DataListaEquipo obtenerEquiposData(String nombreEq);
+
+	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
+
+	public DataListaOferta obtenerOfertasData(String nomUsuario);
+	
 }

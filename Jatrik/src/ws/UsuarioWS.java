@@ -32,11 +32,14 @@ public class UsuarioWS
 		String login        = datosUsr.getString("login");
 		String password     = datosUsr.getString("password");    
 		Boolean es_admin = false;
+		String nomEquipo = null;
 		Boolean existeUsr = iUsuarioController.existeUsuario(login, password);
 		if (existeUsr)
 		{
     		iUsuarioController.setearConectado(login);
     		es_admin = iUsuarioController.esAdmin(login);
+    		if(es_admin == false)
+    			nomEquipo = iUsuarioController.obtenerEquipo(login);
 		}
 		
 		JSONObject json = new JSONObject();
@@ -44,6 +47,7 @@ public class UsuarioWS
 		{
 			json.put("login", existeUsr);
 			json.put("es_admin", es_admin);
+			json.put("nomEquipo", nomEquipo);
 			
 			if(existeUsr)
 			{

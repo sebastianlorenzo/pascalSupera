@@ -40,6 +40,8 @@ public interface UsuarioDAO
 
 	public DataListaMensaje recibirChat(String receptor);
 
-	public JSONArray obtenerDesconectados();	
-	
+	public JSONArray obtenerDesconectados();
+
+	public String obtenerNombreEq(String login);
+		
 }

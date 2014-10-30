@@ -156,4 +156,10 @@ public class UsuarioController implements IUsuarioController
 	public DataListaMensaje obtenerMensajes(String receptor) {
 		return this.usuarioDAO.recibirChat(receptor);
 	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public String obtenerEquipo(String login) 
+	{
+		return this.usuarioDAO.obtenerNombreEq(login);
+	}
 }

@@ -28,4 +28,6 @@ public interface JugadorDAO
 	
 	public int getCantidadTarjetasAmarillas(Integer idJugador);
 	
+	public void cambiarEstadoJugador(Integer idJugador, String estado_jugador);
+	
 }

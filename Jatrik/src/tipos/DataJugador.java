@@ -28,13 +28,12 @@ public class DataJugador
 		this.estado_jugador = estado_jugador;	
 	}
 	
-	public Integer idJugador() 
-	{
+
+	public Integer getIdJugador() {
 		return idJugador;
 	}
-	
-	public void idJugador(Integer idJugador) 
-	{
+
+	public void setIdJugador(Integer idJugador) {
 		this.idJugador = idJugador;
 	}
 	
