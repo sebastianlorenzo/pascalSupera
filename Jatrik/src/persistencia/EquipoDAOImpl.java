@@ -329,11 +329,12 @@ public class EquipoDAOImpl implements EquipoDAO
 			    String comentario = of.getComentario();
 			    if (!comentario.equals(""))
 			    	dof.setComentario(comentario);
-			}
+			    
 			if(dof != null)
 				dlo.addDataOferta(dof);
+			}
+
 		}
-		
 		return dlo;
 	}
 	
