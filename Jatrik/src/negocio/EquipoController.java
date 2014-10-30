@@ -17,7 +17,6 @@ import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
 import persistencia.JugadorDAO;
 import tipos.DataJugador;
-import tipos.DataListaCampeonato;
 import tipos.DataListaEquipo;
 import tipos.DataListaJugador;
 import tipos.DataListaPosicion;

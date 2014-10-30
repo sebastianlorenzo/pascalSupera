@@ -1,24 +1,17 @@
 package ws;
 
-import java.lang.reflect.Type;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import tipos.DataListaEquipo;
 import tipos.DataListaPosicion;
 import tipos.DataListaOferta;
-
-
 import com.google.gson.Gson;
-
 import negocio.IEquipoController;
 
 @ManagedBean

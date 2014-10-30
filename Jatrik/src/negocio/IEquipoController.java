@@ -1,18 +1,12 @@
 package negocio;
 
-import java.util.List;
-
 import javax.ejb.Local;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import tipos.DataListaEquipo;
 import tipos.DataListaPosicion;
-import tipos.DataMensaje;
 import tipos.DataListaOferta;
-
 import dominio.Equipo;
 
 @Local
