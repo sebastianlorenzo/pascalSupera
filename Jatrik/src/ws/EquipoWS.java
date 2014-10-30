@@ -175,18 +175,8 @@ public class EquipoWS
 		Integer precio = Integer.parseInt(datosOferta.getString("precio"));
 		String comentario = datosOferta.getString("comentario");
 		
-		JSONObject respuesta = new JSONObject();
-		try
-		{
-			Boolean joferta;
-			joferta = iEquipoController.realizarOferta(nomUsuario, idJugador, precio, comentario);
-			respuesta.put("oferta", joferta);
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return respuesta.toString();
+		return iEquipoController.realizarOferta(nomUsuario, idJugador, precio, comentario).toString();
+		
 	}
 	
 	@POST
