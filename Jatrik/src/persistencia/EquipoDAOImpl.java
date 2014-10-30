@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.ejb.*;
@@ -10,6 +11,8 @@ import org.codehaus.jettison.json.*;
 import tipos.DataEquipo;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
+import tipos.DataListaOferta;
+import tipos.DataOferta;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -198,8 +201,8 @@ public class EquipoDAOImpl implements EquipoDAO
 			for(Jugador jug: ljugadores)
 			{
 				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicionIdeal(), 
-						jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
-						jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
+				jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
+				jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
 				de.addDataJugador(dj);
 			}
 			dlequipos.addDataEquipo(de);
@@ -226,38 +229,117 @@ public class EquipoDAOImpl implements EquipoDAO
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Boolean realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	public JSONObject realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
 	{
 		Usuario us = em.find(Usuario.class, nomUsuario);
 		Jugador jug = em.find(Jugador.class, idJugador);
 		
-		if (( us == null) || (jug == null))
-			return false;
-		
-		Equipo equipoDestino = us.getEquipo(); // equipo del usuario que realiza la oferta
-		Equipo equipoActual = jug.getEquipo(); // equipo al que pertenece el jugador	
-		
-		Date fechaOferta = new Date();
-		
-		Oferta of = new Oferta(precio, fechaOferta, jug, equipoActual, equipoDestino);
-		of.setEstado_oferta("pendiente");
-		if(comentario != "")
-			of.setComentario(comentario);
-		em.persist(of);
-		
-		Collection<Oferta> oferta_jugadores = jug.getOferta_jugadores();
-		oferta_jugadores.add(of);
-		jug.setOferta_jugadores(oferta_jugadores);
-		
-		Collection<Oferta> ofertasRealizadas = equipoDestino.getOfertasRealizadas();
-		ofertasRealizadas.add(of);
-		equipoDestino.setOfertasRealizadas(ofertasRealizadas);
+		JSONObject respuesta = new JSONObject();
 				
-		Collection<Oferta> ofertasRecibidas = equipoActual.getOfertasRecibidas();
-		ofertasRecibidas.add(of);
-		equipoActual.setOfertasRecibidas(ofertasRecibidas);
+		if (( us == null) || (jug == null)) {
+			try
+			{
+				respuesta.put("oferta", false);
+				respuesta.put("mensaje", "ERROR. Usuario o Jugador no existen en el sistema.");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}else if(us.getCapital() < precio){
+			
+			try
+			{
+				respuesta.put("oferta", false);
+				respuesta.put("mensaje", "ERROR. El precio debe ser menor a su capital actual: "+ us.getCapital());
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else{
+			Equipo equipoDestino = us.getEquipo(); // equipo del usuario que realiza la oferta
+			Equipo equipoActual = jug.getEquipo(); // equipo al que pertenece el jugador	
+			
+			Date fechaOferta = new Date();
+			
+			Oferta of = new Oferta(precio, fechaOferta, jug, equipoActual, equipoDestino);
+			of.setEstado_oferta("pendiente");
+			if(comentario != "")
+				of.setComentario(comentario);
+			em.persist(of);
+			
+			Collection<Oferta> oferta_jugadores = jug.getOferta_jugadores();
+			oferta_jugadores.add(of);
+			jug.setOferta_jugadores(oferta_jugadores);
+			
+			Collection<Oferta> ofertasRealizadas = equipoDestino.getOfertasRealizadas();
+			ofertasRealizadas.add(of);
+			equipoDestino.setOfertasRealizadas(ofertasRealizadas);
+					
+			Collection<Oferta> ofertasRecibidas = equipoActual.getOfertasRecibidas();
+			ofertasRecibidas.add(of);
+			equipoActual.setOfertasRecibidas(ofertasRecibidas);
+			
+			try
+			{
+				respuesta.put("oferta", true);
+				respuesta.put("mensaje", "Oferta realizada correctamente.");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		return respuesta;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaOferta obtenerOfertas(String nomUsuario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Equipo miEquipo = us.getEquipo();
+		Collection<Oferta> ofertasRecibidas = miEquipo.getOfertasRecibidas();
+		Iterator<Oferta> iter = ofertasRecibidas.iterator();
+		
+		DataListaOferta dlo = new DataListaOferta();
+		DataOferta dof = null;
+		
+		while(iter.hasNext()){
+			
+			Oferta of = iter.next();
+			String estadoOf = of.getEstado_oferta();
+			if(estadoOf.equals("pendiente"))
+			{	
+				Date fechaOferta = of.getFecha_oferta();
+				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaOf = formateador.format(fechaOferta);
 				
-		return true;
+			    Equipo equipoOferente = of.getEquipoDestino();
+			    String eqDestino = equipoOferente.getEquipo();
+			    
+			    String usuarioOferente = equipoOferente.getUsuario().getLogin();
+			    
+			    Jugador jugadorEnVenta = of.getJugadorEnVenta();
+			    String 	nomJugador = jugadorEnVenta.getJugador();
+			    Integer idJugador = jugadorEnVenta.getIdJugador();
+			    
+			    Integer precio = of.getPrecio();
+			    
+			    dof = new DataOferta(eqDestino, nomJugador, idJugador, precio, fechaOf);
+			    dof.setUsuarioOferente(usuarioOferente);
+			    
+			    String comentario = of.getComentario();
+			    if (!comentario.equals(""))
+			    	dof.setComentario(comentario);
+			    
+			if(dof != null)
+				dlo.addDataOferta(dof);
+			}
+
+		}
+		return dlo;
 	}
 	
 	public Boolean puedeRealizarCambios(String nomEquipo)

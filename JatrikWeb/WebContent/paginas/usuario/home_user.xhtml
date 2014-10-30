@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="Description" content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
+	<meta name="Keywords" content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
+	<link rel="stylesheet" media="screen" href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<meta name="Author" content="SymiSun* - symisun.com" />
+	<meta name="Robots" content="index,follow" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<script type="text/javascript">
+	    function handleMessage(message) {
+	        var chatContent = $(PrimeFaces.escapeClientId('form:public')),
+	        text = (message.user) ? message.user + ':' + message.text: message.text;
+	 
+	        chatContent.append(text + '<br />');
+	 
+	        //keep scroll
+	        chatContent.scrollTop(chatContent.height());
+	 
+	        if(message.updateList) {
+	            updateList();
+	        }
+	    }
+	</script>
+</h:head>
+<h:body>			
+<div id="daddy">
+
+	<ui:insert name="header_user" >
+	     <ui:include src="/resources/templates/header_user.xhtml"/>
+	</ui:insert> <!-- header -->	
+	
+	<div id="content">
+		<div id="cA">
+			<div class="Ctopleft"></div>
+										<!-- CHATTTTT -->
+			  <p:growl id="growl" showDetail="true" /> 
+				<h:form id="form">
+				    <p:remoteCommand name="updateList" update="users" process="@this" />
+				 
+				    <p:fieldset id="container" legend="PrimeChat" toggleable="true">
+				 
+				        <h:panelGroup rendered="#{chatView.loggedIn}">
+				            <h:panelGrid columns="2" columnClasses="publicColumn,usersColumn" style="width:100%">
+				                <p:outputPanel id="public" layout="block" styleClass="ui-corner-all ui-widget-content chatlogs" />
+				 
+				                <p:dataList id="users" var="user" value="#{chatUsers.users}" styleClass="usersList">
+				                    <f:facet name="header">
+				                        Users
+				                    </f:facet>
+				 
+				                    <p:commandButton title="Chat" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update=":form:privateChatContainer">
+				                        <f:setPropertyActionListener value="#{user}" target="#{chatView.privateUser}" />
+				                    </p:commandButton>
+				                    #{user}
+				                </p:dataList>
+				            </h:panelGrid>
+				 
+				            <p:separator />
+				 
+				            <p:inputText value="#{chatView.globalMessage}" styleClass="messageInput" />
+				            <p:spacer width="5" />
+				            <p:commandButton value="Send" actionListener="#{chatView.sendGlobal}" oncomplete="$('.messageInput').val('').focus()" />
+				            <p:spacer width="5" />
+				            <p:commandButton value="Disconnect" actionListener="#{chatView.disconnect}" global="false" update="container" />
+				        </h:panelGroup>
+				 
+				        <h:panelGroup rendered="#{not chatView.loggedIn}" >
+				            Username: <p:inputText value="#{chatView.username}" disabled="false" />
+				 
+				            <p:spacer width="5" />
+				            <p:commandButton value="Login" actionListener="#{chatView.login}" update="container"
+				                             icon="ui-icon-person" disabled="false" />
+				        </h:panelGroup>
+				 
+				    </p:fieldset>
+				 
+				    <p:dialog widgetVar="pChat" header="Private Chat" modal="true" showEffect="fade" hideEffect="fade">
+				        <h:panelGrid id="privateChatContainer" columns="2" columnClasses="vtop,vtop">
+				            <p:outputLabel for="pChatInput" value="To: #{chatView.privateUser}" />
+				            <p:inputTextarea id="pChatInput" value="#{chatView.privateMessage}" rows="5" cols="30" />
+				 
+				            <p:spacer />
+				            <p:commandButton value="Send" actionListener="#{chatView.sendPrivate}" oncomplete="PF('pChat').hide()" />
+				        </h:panelGrid>
+				    </p:dialog>
+				</h:form>
+				
+		</div><!-- cA -->
+		<div id="cB" >
+			<div class="Ctopright"></div>
+			
+			<p:carousel  numVisible="1" autoPlayInterval="3000" style="float:right" 
+				 circular="true" value="#{carouselVistaNoticiasBean.list_noticias}" headerText="Ultimas Noticias" 
+				 var="DataNoticia" itemStyleClass="carItem">
+		        <h:panelGrid columns="3"  cellpadding="8" style="width:280px;height:250px" columnClasses="label,value">		         
+		            <f:facet  name="header">
+		                <p:graphicImage url="../resources/images/escudo-manya.png" />
+		                <p:graphicImage url="../resources/images/escudo-river.jpeg" />
+		            </f:facet>
+		          
+		 
+		            <h:outputText value="Resultado" />
+		            <h:outputText value="#{DataNoticia.goles_1}" />
+		            <h:outputText value="#{DataNoticia.goles_2}" />
+		            
+		            <h:outputText value="Amarillas" />
+		            <h:outputText value="#{DataNoticia.amarillas_1}" />
+		            <h:outputText value="#{DataNoticia.amarillas_2}" />
+		            
+		            <h:outputText value="Rojas" />
+		            <h:outputText value="#{DataNoticia.rojas_1}" />
+		            <h:outputText value="#{DataNoticia.rojas_2}" />
+		            
+		            <h:outputText value="Estadio" />
+		            <h:outputText value="#{DataNoticia.nomEstadio}" />
+		            
+		        </h:panelGrid>
+		 
+		        <f:facet name="footer">
+		               
+		        </f:facet>
+	    	</p:carousel>
+			
+			
+		</div><!-- cB -->
+		<div class="Cpad">
+			<br class="clear" /><div class="Cbottomleft"></div><div class="Cbottom"></div><div class="Cbottomright"></div>
+		</div><!-- Cpad -->
+	</div><!-- content -->
+	<div id="properspace"></div><!-- properspace -->
+		<p:ajaxStatus id="startAjax" >
+	          <f:facet name="start">
+		       <div class="ui-widget-overlay">						                	
+			      <h:graphicImage style="position: absolute;
+					left: 50%;
+				 	top: 50%;"		 
+				     value="../../resources/images/ajax-loader.gif">
+		        </h:graphicImage>
+		          </div>					                     
+		     </f:facet>							         
+		 </p:ajaxStatus>	
+</div><!-- daddy -->
+	<ui:insert name="footer_user" >
+	   <ui:include src="/resources/templates/footer_user.xhtml"/>
+	</ui:insert> <!--footer -->			 
+</h:body>
+	<!-- <p:socket onMessage="handleMessage" channel="/{room}" autoConnect="false" widgetVar='subscriber' /> -->
+</html>

@@ -5,7 +5,10 @@ import java.util.*;
 import javax.ejb.*;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import com.google.gson.Gson;
 
 import dominio.Equipo;
 import dominio.Estadio;
@@ -13,7 +16,14 @@ import dominio.Jugador;
 import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
 import persistencia.JugadorDAO;
+import tipos.DataJugador;
+import tipos.DataListaCampeonato;
 import tipos.DataListaEquipo;
+import tipos.DataListaJugador;
+import tipos.DataListaPosicion;
+import tipos.DataPosicion;
+import tipos.DataListaOferta;
+
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -174,10 +184,93 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
+	public JSONObject realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario) 
 	{	
 		return this.equipoDAO.realizarOfertaJugador(nomUsuario, idJugador, precio, comentario);
 		
 	}
-	
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaOferta obtenerOfertasData(String nomUsuario) 
+	{
+		return this.equipoDAO.obtenerOfertas(nomUsuario);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public String obtenerJugadoresTitulares(String nomEquipo) throws JSONException {
+		Equipo e = this.equipoDAO.encontrarEquipo(nomEquipo);
+		if (e == null){
+			JSONObject j = new JSONObject();
+			j.put("Error", true);
+			return j.toString();
+		}
+		else{
+			Collection<Jugador> jugadores = e.getJugadores();
+			Iterator<Jugador> i = jugadores.iterator();
+			DataListaJugador dlj = new DataListaJugador();
+			while (i.hasNext()){
+				Jugador j = i.next();
+				if (j.getEstado_jugador().compareTo(CONST_TITULAR) == 0){
+					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
+														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
+					dlj.addDataJugador(dj);
+					
+				}
+			}
+			Gson g = new Gson();
+			return g.toJson(dlj);
+		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public String obtenerJugadoresSuplentes(String nomEquipo) throws JSONException {
+		Equipo e = this.equipoDAO.encontrarEquipo(nomEquipo);
+		if (e == null){
+			JSONObject j = new JSONObject();
+			j.put("Result", false);
+			return j.toString();
+		}
+		else{
+			Collection<Jugador> jugadores = e.getJugadores();
+			Iterator<Jugador> i = jugadores.iterator();
+			DataListaJugador dlj = new DataListaJugador();
+			while (i.hasNext()){
+				Jugador j = i.next();
+				if (j.getEstado_jugador().compareTo(CONST_SUPLENTE) == 0){
+					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
+														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
+					dlj.addDataJugador(dj);
+					
+				}
+			}
+			Gson g = new Gson();
+			return g.toJson(dlj);
+		}	
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean modificarJugadoresTitulares(String nomEquipo, DataListaPosicion titulares) throws JSONException {
+		Equipo e = this.equipoDAO.encontrarEquipo(nomEquipo);
+		if (e == null){
+			JSONObject j = new JSONObject();
+			j.put("Result", false);
+			return false;
+		}
+		else{
+			Collection<Jugador> jugadores = e.getJugadores();
+			Iterator<Jugador> i = jugadores.iterator();
+			while (i.hasNext()){
+				Jugador j = i.next();
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_SUPLENTE);
+			}
+			Iterator<DataPosicion> idp = titulares.listPosiciones.iterator();
+			while (idp.hasNext()){
+				DataPosicion dp = idp.next();
+				jugadorDAO.setearEstadoJugador(dp.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearPosicion(dp.getIdJugador(), dp.getPosicion());
+			}
+			return true;		
+		}
+		
+	}
 }
