@@ -29,6 +29,16 @@ public class Cambio implements java.io.Serializable
 		this.partido 		   = partido;
 	}
 	
+	public Integer getIdCambio() 
+	{
+		return idCambio;
+	}
+
+	public void setIdCambio(Integer idCambio)
+	{
+		this.idCambio = idCambio;
+	}
+	
 	public Integer getIdJugadorEntrante() 
 	{
 		return idJugadorEntrante;
