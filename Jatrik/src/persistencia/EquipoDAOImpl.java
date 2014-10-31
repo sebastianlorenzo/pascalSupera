@@ -183,9 +183,9 @@ public class EquipoDAOImpl implements EquipoDAO
 		return dlequipos;
 	}
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	// Pone tarjetas amarillas de los jugadores y cantidad de cambios realizados por el equipo en 0.
 	// Además, restablece el valor del estado del jugador como estaba antes de jugarse el partido
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void restablecerEquipoLuegoPartido(String nomEquipo, List<Jugador> jugadoresAntes)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
@@ -195,7 +195,7 @@ public class EquipoDAOImpl implements EquipoDAO
         {
         	Jugador j = it.next();
         	j.setCant_tarjetas_amarillas(0);
-<<<<<<< HEAD
+
         	Iterator<Jugador> itj = jugadoresAntes.iterator();
         	String estado = null;
         	while (itj.hasNext())
@@ -208,9 +208,6 @@ public class EquipoDAOImpl implements EquipoDAO
 	        	}
         	}
 	        j.setEstado_jugador(estado); /** Cambiar esto!!!!!!!!!! **/
-=======
-        	j.setEstado_jugador(Constantes.CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
->>>>>>> 7fcc4178d9256b4c9867ed7a97e2364614f0f2d4
         }
         e.setCant_cambios_realizados(0);
 		em.merge(e);

@@ -1,6 +1,5 @@
 package persistencia;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.*;

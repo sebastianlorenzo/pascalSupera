@@ -1,5 +1,7 @@
 package persistencia;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -8,6 +10,7 @@ import org.codehaus.jettison.json.JSONObject;
 import tipos.DataListaEquipo;
 import tipos.DataListaOferta;
 import dominio.Equipo;
+import dominio.Jugador;
 
 @Local
 public interface EquipoDAO
