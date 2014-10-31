@@ -20,6 +20,8 @@ import dominio.Oferta;
 import dominio.Pais;
 import dominio.Usuario;
 
+
+
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class EquipoDAOImpl implements EquipoDAO
