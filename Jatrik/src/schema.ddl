@@ -16,12 +16,12 @@
 
     create table public.equipo_ofertas_realizadas (
         equipo_equipo varchar(255) not null,
-        ofertasRealizadas_idOferta int8 not null
+        ofertasRealizadas_idOferta int4 not null
     );
 
     create table public.equipo_ofertas_recibidas (
         equipo_equipo varchar(255) not null,
-        ofertasRecibidas_idOferta int8 not null
+        ofertasRecibidas_idOferta int4 not null
     );
 
     create table public.equipo_partido (
@@ -36,7 +36,7 @@
 
     create table public.oferta_jugadores (
         jugador_idJugador int4 not null,
-        oferta_jugadores_idOferta int8 not null
+        oferta_jugadores_idOferta int4 not null
     );
 
     create table public.cambio (
@@ -103,7 +103,7 @@
     );
 
     create table public.oferta (
-        idOferta int8 not null,
+        idOferta int4 not null,
         comentario varchar(255),
         comentario_acepta varchar(255),
         estado_oferta varchar(255),

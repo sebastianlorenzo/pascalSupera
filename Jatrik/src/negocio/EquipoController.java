@@ -272,4 +272,10 @@ public class EquipoController implements IEquipoController
 		}
 		
 	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta) 
+	{
+		return this.equipoDAO.aceptarOferta(nomUsuario, comentario, idOferta);
+	}
 }

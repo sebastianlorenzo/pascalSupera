@@ -226,5 +226,20 @@ public class EquipoWS
 		DataListaOferta dataOf = this.iEquipoController.obtenerOfertasData(nomUsuario);
 		return g.toJson(dataOf);	
 	}
+	
+	@POST
+	@Path("aceptarOferta")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String aceptarOferta(String datos) throws JSONException
+	{
+		JSONObject datosOferta = new JSONObject(datos);
+		String nomUsuario = datosOferta.getString("nomUsuario"); //Logueado
+		String comentario = datosOferta.getString("comentario");
+		Integer idOferta = Integer.parseInt(datosOferta.getString("idOferta"));
+		
+		return this.iEquipoController.aceptarOferta(nomUsuario, comentario, idOferta).toString();
+		
+	}
 		
 }

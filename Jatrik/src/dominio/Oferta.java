@@ -16,7 +16,7 @@ public class Oferta implements java.io.Serializable
 	
 	@Id
 	@GeneratedValue
-	private long idOferta;	
+	private Integer idOferta;	
 	private String estado_oferta; // aceptada, rechazada, pendiente	
 	private Integer precio;	
 	private Date fecha_oferta;
@@ -47,7 +47,7 @@ public class Oferta implements java.io.Serializable
 		return idOferta;
 	}
 
-	public void setIdOferta(long idOferta) {
+	public void setIdOferta(Integer idOferta) {
 		this.idOferta = idOferta;
 	}
 

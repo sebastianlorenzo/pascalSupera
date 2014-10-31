@@ -355,4 +355,71 @@ public class EquipoDAOImpl implements EquipoDAO
 		em.merge(e);
 	}
 	
+	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta)
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Oferta oferta = em.find(Oferta.class, idOferta);
+		
+		JSONObject respuesta = new JSONObject();		
+		if ((us == null) || (oferta == null)) {
+			try
+			{
+				respuesta.put("Oferta aceptada", false);
+				respuesta.put("mensaje", "ERROR. Usuario u Oferta no existen en el sistema.");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else{
+			
+			Equipo miEquipo = us.getEquipo();
+			Equipo eqDestino = oferta.getEquipoDestino();
+			Usuario usComprador = eqDestino.getUsuario();
+			Jugador jug = oferta.getJugadorEnVenta();		
+			
+			Integer precio = oferta.getPrecio();
+			Integer micapital = us.getCapital();
+			us.setCapital(micapital + precio);
+			
+			Integer capitalComprador = usComprador.getCapital();
+			usComprador.setCapital(capitalComprador - precio);
+			
+			Collection<Oferta> ofertasRecibidas = miEquipo.getOfertasRecibidas();
+			Iterator<Oferta> iter = ofertasRecibidas.iterator();
+			
+			Integer idJug = jug.getIdJugador();
+			
+			while(iter.hasNext()){
+				Oferta of = iter.next();
+				Integer id = of.getJugadorEnVenta().getIdJugador();
+				if(id == idJug){
+					of.setEstado_oferta("rechazar");
+					of.setComentario_acepta("Oferta rechazada, el jugador ya fue vendido a otro equipo.");
+				}
+			}
+			
+			Collection<Jugador> misJugadores = miEquipo.getJugadores();
+			misJugadores.remove(jug);
+			
+			Collection<Jugador> jugadoresDeEqDestino = eqDestino.getJugadores();
+			jugadoresDeEqDestino.add(jug);
+					
+			oferta.setEstado_oferta("aceptar");
+			oferta.setComentario_acepta(comentario);
+			
+			try
+			{
+				respuesta.put("Oferta aceptada", true);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return respuesta;
+	}
+	
 }

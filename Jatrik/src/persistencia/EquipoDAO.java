@@ -53,6 +53,7 @@ public interface EquipoDAO
 	public Boolean puedeRealizarCambios(String nomEquipo);
 	
 	public void sumarCambio(String nomEquipo);
-
-
+	
+	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta);
+	
 }

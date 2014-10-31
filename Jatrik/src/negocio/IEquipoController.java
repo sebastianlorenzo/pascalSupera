@@ -1,9 +1,11 @@
 package negocio;
 
 import javax.ejb.Local;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import tipos.DataListaEquipo;
 import tipos.DataListaPosicion;
 import tipos.DataListaOferta;
@@ -40,5 +42,7 @@ public interface IEquipoController
 	public JSONObject realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 
 	public DataListaOferta obtenerOfertasData(String nomUsuario);
+	
+	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta);
 	
 }
