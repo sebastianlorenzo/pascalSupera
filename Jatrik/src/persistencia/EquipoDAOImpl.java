@@ -358,6 +358,7 @@ public class EquipoDAOImpl implements EquipoDAO
 		em.merge(e);
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta)
 	{
 		Usuario us = em.find(Usuario.class, nomUsuario);
@@ -419,6 +420,44 @@ public class EquipoDAOImpl implements EquipoDAO
 			{
 				respuesta.put("Oferta aceptada", true);
 				respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return respuesta;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		Oferta oferta = em.find(Oferta.class, idOferta);
+		
+		JSONObject respuesta = new JSONObject();		
+		if ((us == null) || (oferta == null)) {
+			try
+			{
+				respuesta.put("Oferta rechazada", false);
+				respuesta.put("mensaje", "ERROR. Usuario u Oferta no existen en el sistema.");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else{
+			
+			oferta.setEstado_oferta("rechazar");
+			if (!comentario.equals(""))
+				oferta.setComentario_acepta(comentario);
+			
+			try
+			{
+				respuesta.put("Oferta aceptada", true);
+				respuesta.put("mensaje", "La oferta fue rechazada correctamente.");
 			} 
 			catch (Exception e) 
 			{

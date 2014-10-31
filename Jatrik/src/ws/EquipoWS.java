@@ -241,5 +241,20 @@ public class EquipoWS
 		return this.iEquipoController.aceptarOferta(nomUsuario, comentario, idOferta).toString();
 		
 	}
+	
+	@POST
+	@Path("rechazarOferta")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String rechazarOferta(String datos) throws JSONException
+	{
+		JSONObject datosOferta = new JSONObject(datos);
+		String nomUsuario = datosOferta.getString("nomUsuario"); //Logueado
+		String comentario = datosOferta.getString("comentario");
+		Integer idOferta = Integer.parseInt(datosOferta.getString("idOferta"));
+		
+		return this.iEquipoController.rechazarOferta(nomUsuario, comentario, idOferta).toString();
+		
+	}
 		
 }

@@ -55,5 +55,7 @@ public interface EquipoDAO
 	public void sumarCambio(String nomEquipo);
 	
 	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta);
+
+	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta);
 	
 }

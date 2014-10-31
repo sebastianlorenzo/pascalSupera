@@ -44,5 +44,7 @@ public interface IEquipoController
 	public DataListaOferta obtenerOfertasData(String nomUsuario);
 	
 	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta);
+
+	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta);
 	
 }

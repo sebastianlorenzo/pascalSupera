@@ -278,4 +278,10 @@ public class EquipoController implements IEquipoController
 	{
 		return this.equipoDAO.aceptarOferta(nomUsuario, comentario, idOferta);
 	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta) 
+	{
+		return this.equipoDAO.rechazarOferta(nomUsuario, comentario, idOferta);
+	}
 }
