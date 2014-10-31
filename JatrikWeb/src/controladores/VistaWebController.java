@@ -21,6 +21,7 @@ public class VistaWebController {
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
 	private String ANOTARME_CAMPEONATO_PATH = "campeonatos/inscribirse";
+	private String CAMPEONATO_EN_EJECUCION_PATH = "campeonatos/campeonatosEnEjecucion";
 	
 	// LOGIN USUARIO	*******************************************************************************
 	public String login (String nom, String pwd) {
@@ -29,9 +30,6 @@ public class VistaWebController {
 				"login"+":"+nom+","+
 				"password"+":"+pwd+
 			   "}";		
-		
-		System.out.println(envio);
-		
 		Client client = ClientBuilder.newClient();		
 		WebTarget target = client.target(REST_URI_PATH+LOGIN_PATH);	 
 		String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
@@ -46,8 +44,6 @@ public class VistaWebController {
 		String envio= "{"+
 				"logout"+":"+nom+
 			   "}";		
-		System.out.println(envio);
-		
 		Client client = ClientBuilder.newClient();		
 		WebTarget target = client.target(REST_URI_PATH+LOGOUT_PATH);	 
 		String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
@@ -90,15 +86,10 @@ public class VistaWebController {
 						"nombreEstadio"+":"+nomEstadio+
 					   "}";
 		String respuesta_bean;
-		System.out.println(envio);
-		
 		Client client = ClientBuilder.newClient();		
 	    WebTarget target = client.target(REST_URI_PATH+REGISTRO_PATH);	 
-	    String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
-	
-	    System.out.println(respuesta);   
-	    JSONObject json=null;
-			
+	    String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);  
+	    JSONObject json=null;			
 		try {
 			json = new JSONObject(respuesta);
 			boolean ok = json.getBoolean("registrado");
@@ -135,7 +126,6 @@ public class VistaWebController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");			
 			String fecha = sdf.format(fechaInicio);
-			System.out.println(fecha);
 			String dia = fecha.substring(0, fecha.indexOf("/"));
 			String mes = fecha.substring(fecha.indexOf("/")+1, fecha.lastIndexOf("/"));
 			String anio = fecha.substring(fecha.lastIndexOf("/")+1,fecha.length());
@@ -145,9 +135,7 @@ public class VistaWebController {
 					"mes"+":"+mes+","+
 					"anio"+":"+anio+","+
 					"cantidadEquipos"+":"+cantidadEquipos.toString()+
-				   "}";		
-			
-			System.out.println(envio);
+				   "}";					
 			
 			Client client = ClientBuilder.newClient();		
 			WebTarget target = client.target(REST_URI_PATH+CREAR_CAMPEONATO_PATH);	 
@@ -163,7 +151,6 @@ public class VistaWebController {
 					Client client = ClientBuilder.newClient();		
 					WebTarget target = client.target(REST_URI_PATH+LISTAR_CAMPEONATOS_PATH);	 
 					String respuesta=target.request().get(String.class);
-					System.out.println(respuesta);
 				    return respuesta;
 					
 				}
@@ -175,9 +162,7 @@ public class VistaWebController {
 							"nomUsuario"+":"+nomUsr+","+
 							"nomCampeonato"+":"+nomCampeonato+
 						   "}";		
-					
-					System.out.println(envio);
-					
+										
 					Client client = ClientBuilder.newClient();		
 					WebTarget target = client.target(REST_URI_PATH+ANOTARME_CAMPEONATO_PATH);	 
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
@@ -185,5 +170,15 @@ public class VistaWebController {
 				    return respuesta;
 					
 			}
+				
+			// LISTAR CAMPEONATOS	**************************************************************************************
+				public String campeonatosEnEjecucion () {
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+CAMPEONATO_EN_EJECUCION_PATH);	 
+					String respuesta=target.request().get(String.class);
+				    return respuesta;
+					
+				}
 
 }

@@ -10,10 +10,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 @ApplicationScoped
 public class ChatUsers implements Serializable {
-     
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private List<String> users;
      

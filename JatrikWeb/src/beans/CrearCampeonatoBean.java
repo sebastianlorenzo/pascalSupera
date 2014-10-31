@@ -6,6 +6,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.validation.constraints.Future;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -19,6 +20,7 @@ public class CrearCampeonatoBean {
 	
 	private String nombreCampeonato;
 	private Integer cantidadEquipos;
+	@Future(message="No puede ser una fecha pasada.")
 	private Date fechaInicio;
 	
 	public CrearCampeonatoBean(){

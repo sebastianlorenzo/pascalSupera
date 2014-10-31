@@ -1,6 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,13 +11,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.primefaces.component.accordionpanel.AccordionPanel;
-import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
 
@@ -39,18 +36,7 @@ public class AnotarseCampeonatoBean {
 		VistaWebController vwc = new VistaWebController();
 		Gson g = new Gson();
 		DataListaCampeonato dlc = g.fromJson(vwc.listarCampeonatos(), DataListaCampeonato.class);
-		this.campeonatos= dlc.getListCampeonatos();
-		String nomCampeonato= "apertura";
-		String fechaInicio= "27/3/2014";
-		List<String> equiposCampeonato = new ArrayList<String>();
-		equiposCampeonato.add("eqiopo1");
-		equiposCampeonato.add("eqiopo2");
-		equiposCampeonato.add("eqiopo3");
-		equiposCampeonato.add("eqiopo4");
-		equiposCampeonato.add("eqiopo5");		
-		DataCampeonato dc = new DataCampeonato(nomCampeonato,fechaInicio,6,equiposCampeonato);
-		this.campeonatos.add(dc);
-		
+		this.campeonatos= dlc.getListCampeonatos();		
 	}
 	
 	@PostConstruct

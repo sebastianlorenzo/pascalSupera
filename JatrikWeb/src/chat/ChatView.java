@@ -1,25 +1,35 @@
 package chat;
 
 import java.io.Serializable;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
  
+
+
+
+
+
+import beans.LoginBean;
+
+import javax.annotation.PostConstruct;
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
  
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ChatView implements Serializable {
      
     //private final PushContext pushContext = PushContextFactory.getDefault().getPushContext();
  
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
@@ -37,7 +47,25 @@ public class ChatView implements Serializable {
      
     private String privateUser;
      
-    private final static String CHANNEL = "/{room}/";
+    private final static String CHANNEL = "/Jatrik/";
+    
+    private boolean paso;
+    
+    @PostConstruct
+	public void init(){
+    	
+    	FacesContext context = FacesContext.getCurrentInstance();
+		ELContext contextoEL = context.getELContext( );
+		Application apli  = context.getApplication( );		 
+		ExpressionFactory ef = apli.getExpressionFactory( );
+		ValueExpression ve = ef.createValueExpression(contextoEL, "#{loginBean}",LoginBean.class);
+		LoginBean bean = (LoginBean) ve.getValue(contextoEL);
+		String nombre= bean.getNombre();
+		this.username=nombre;	
+		this.users.add(nombre);
+        this.loggedIn=true;
+        this.paso=false;
+	}
  
     public ChatUsers getUsers() {
         return users;
@@ -83,17 +111,23 @@ public class ChatView implements Serializable {
     }
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
-    }
+    }    
  
-    public void sendGlobal() {
-        eventBus.publish(CHANNEL + "*", username + ": " + globalMessage);
-         
+    public boolean isPaso() {
+		return paso;
+	}
+
+	public void setPaso(boolean paso) {
+		this.paso = paso;
+	}
+
+	public void sendGlobal() {
+        eventBus.publish(CHANNEL + "*", username + ": " + globalMessage);         
         globalMessage = null;
     }
      
     public void sendPrivate() {
-        eventBus.publish(CHANNEL + privateUser, "[PM] " + username + ": " + privateMessage);
-         
+        eventBus.publish(CHANNEL + privateUser, "[PM]" + username + ": " + privateMessage); 
         privateMessage = null;
     }
      
@@ -118,10 +152,15 @@ public class ChatView implements Serializable {
         RequestContext.getCurrentInstance().update("form:users");
          
         //push leave information
-        eventBus.publish(CHANNEL + "*", username + " left the channel.");
+        eventBus.publish(CHANNEL + "*","<a Style=\"color:red\">" +username + " dejo la sala.</a>");
          
         //reset state
         loggedIn = false;
         username = null;
+    }    
+    
+    public void apretar(){
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('subscriber').connect('/" + this.username + "')");    	
     }
 }

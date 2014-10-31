@@ -32,8 +32,11 @@ xmlns:p="http://primefaces.org/ui">
 						<p:outputLabel>#{loginBean.nombre}</p:outputLabel>
 					</div>				 
 				    <p:menubar>
-				    	<p:menuitem value="Menu Principal" url="home_user.xhtml"/>				        
-				        <p:menuitem action="#{anotarseCampeonatoBean.listarCampeonatos()}" value="Anotarme a Campeonato" />				        				 		
+				    	<p:menuitem value="Menu Principal" url="home_user.xhtml"/>			        	
+				        <p:submenu label="Campeonatos" icon="ui-icon-gear">
+				        	<p:menuitem action="#{anotarseCampeonatoBean.listarCampeonatos()}" value="Anotarme a Campeonato" />
+				        	<p:menuitem action="#{campeonatosEnEjecucionBean.listarCampeonatos()}" value="Listar Campeonatos en Ejecución" />				            
+				        </p:submenu>				        				 		
 				        <p:submenu label="Mi equipo" icon="ui-icon-gear">
 				            <p:submenu label="Gestion" icon="ui-icon-refresh">
 				                <p:menuitem value="Táctica" actionListener="#{menuView.save}" icon="ui-icon-disk" update="messages"/>				                

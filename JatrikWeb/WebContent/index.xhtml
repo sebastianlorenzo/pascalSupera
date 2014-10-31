@@ -29,7 +29,7 @@ xmlns:p="http://primefaces.org/ui">
 		
 		<div id="menu">
 			
-				
+					<p:growl id="growl" showDetail="true" />   
 					<h:form id="formulario_login">
 								<div id = "row_div"> 
 									<div id = "col_div"> 
@@ -41,7 +41,9 @@ xmlns:p="http://primefaces.org/ui">
 								 </div>
 								 <div id = "row_div"> 
 									<div id = "col_div"> 
-										<p:inputText id="nomLogin" value="#{loginBean.nombre}"></p:inputText>	
+										<p:inputText id="nomLogin" value="#{loginBean.nombre}">
+										<f:validateLength minimum="1">Debe ingresar un Nombre</f:validateLength>
+										</p:inputText>	
 									</div> 								
 									<div id = "col_div"> 
 										<p:password id="pwdLogin" value="#{loginBean.pwd}">

@@ -28,7 +28,11 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	        if(message.updateList) {
 	            updateList();
 	        }
-	    }
+	    }	 
+	       
+	    function apretar_boton(){
+	    	    $("#form:boton_apretar").hide();
+	   	};
 	</script>
 </h:head>
 <h:body>			
@@ -41,58 +45,51 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	<div id="content">
 		<div id="cA">
 			<div class="Ctopleft"></div>
-										<!-- CHATTTTT -->
-			  <p:growl id="growl" showDetail="true" /> 
-				<h:form id="form">
-				    <p:remoteCommand name="updateList" update="users" process="@this" />
-				 
-				    <p:fieldset id="container" legend="PrimeChat" toggleable="true">
-				 
-				        <h:panelGroup rendered="#{chatView.loggedIn}">
-				            <h:panelGrid columns="2" columnClasses="publicColumn,usersColumn" style="width:100%">
-				                <p:outputPanel id="public" layout="block" styleClass="ui-corner-all ui-widget-content chatlogs" />
-				 
-				                <p:dataList id="users" var="user" value="#{chatUsers.users}" styleClass="usersList">
-				                    <f:facet name="header">
-				                        Users
+			<!-- CHATTTTT -->
+			<p:growl id="growl" showDetail="true" />   
+			<h:form id="form">
+			    <p:remoteCommand name="updateList" update="users" process="@this" />
+			 
+			   
+			    	<p:commandButton id="boton_apretar" value="Ingresar a sala" action="#{loginBean.apretar}"/>
+			        <h:panelGroup rendered="#{loginBean.loggedIn}">
+			            <h:panelGrid style="width:100%">
+			            	<p:row>
+			            		<p:outputPanel id="public" layout="block" styleClass="ui-corner-all ui-widget-content chatlogs" />
+			            	</p:row>
+			                <p:row>
+			                	<p:dataList id="users" var="user" value="#{chatUsers.users}" styleClass="usersList">
+				                    <f:facet id="titulo_conectados" name="header">
+				                        Conectados
 				                    </f:facet>
 				 
 				                    <p:commandButton title="Chat" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update=":form:privateChatContainer">
-				                        <f:setPropertyActionListener value="#{user}" target="#{chatView.privateUser}" />
+				                        <f:setPropertyActionListener value="#{user}" target="#{loginBean.privateUser}" />
 				                    </p:commandButton>
 				                    #{user}
-				                </p:dataList>
-				            </h:panelGrid>
-				 
-				            <p:separator />
-				 
-				            <p:inputText value="#{chatView.globalMessage}" styleClass="messageInput" />
-				            <p:spacer width="5" />
-				            <p:commandButton value="Send" actionListener="#{chatView.sendGlobal}" oncomplete="$('.messageInput').val('').focus()" />
-				            <p:spacer width="5" />
-				            <p:commandButton value="Disconnect" actionListener="#{chatView.disconnect}" global="false" update="container" />
-				        </h:panelGroup>
-				 
-				        <h:panelGroup rendered="#{not chatView.loggedIn}" >
-				            Username: <p:inputText value="#{chatView.username}" disabled="false" />
-				 
-				            <p:spacer width="5" />
-				            <p:commandButton value="Login" actionListener="#{chatView.login}" update="container"
-				                             icon="ui-icon-person" disabled="false" />
-				        </h:panelGroup>
-				 
-				    </p:fieldset>
-				 
-				    <p:dialog widgetVar="pChat" header="Private Chat" modal="true" showEffect="fade" hideEffect="fade">
-				        <h:panelGrid id="privateChatContainer" columns="2" columnClasses="vtop,vtop">
-				            <p:outputLabel for="pChatInput" value="To: #{chatView.privateUser}" />
-				            <p:inputTextarea id="pChatInput" value="#{chatView.privateMessage}" rows="5" cols="30" />
-				 
-				            <p:spacer />
-				            <p:commandButton value="Send" actionListener="#{chatView.sendPrivate}" oncomplete="PF('pChat').hide()" />
-				        </h:panelGrid>
-				    </p:dialog>
-				</h:form>
+			                	</p:dataList>
+			                </p:row>		                
+			            </h:panelGrid>
+			 
+			            
+			        </h:panelGroup>
+			 			 			 
+			    <p:dialog widgetVar="pChat" header="Private Chat" modal="true" showEffect="fade" hideEffect="fade">
+			        <h:panelGrid id="privateChatContainer" columns="2" columnClasses="vtop,vtop">
+			            <p:outputLabel for="pChatInput" value="To: #{loginBean.privateUser}" />
+			            <p:inputTextarea id="pChatInput" value="#{loginBean.privateMessage}" rows="5" cols="30" />
+			 
+			            <p:spacer />
+			            <p:commandButton value="Send" actionListener="#{loginBean.sendPrivate}" oncomplete="PF('pChat').hide()" />
+			        </h:panelGrid>
+			    </p:dialog>
+			</h:form>
+			<h:form>
+			<p:separator />
+			   <p:inputText value="#{loginBean.globalMessage}" styleClass="messageInput" />
+			   <p:spacer width="5" />
+	           <p:commandButton value="Enviar" actionListener="#{loginBean.sendGlobal}" oncomplete="$('.messageInput').val('').focus()" />
+			</h:form>
 				
 		</div><!-- cA -->
 		<div id="cB" >
@@ -153,5 +150,5 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	   <ui:include src="/resources/templates/footer_user.xhtml"/>
 	</ui:insert> <!--footer -->			 
 </h:body>
-	<!-- <p:socket onMessage="handleMessage" channel="/{room}" autoConnect="false" widgetVar='subscriber' /> -->
+	<p:socket onMessage="handleMessage" channel="/Jatrik" autoConnect="false" widgetVar='subscriber' />
 </html>

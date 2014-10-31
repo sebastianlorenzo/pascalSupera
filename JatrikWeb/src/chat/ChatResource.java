@@ -9,6 +9,9 @@ import org.primefaces.push.annotation.PathParam;
 import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.annotation.Singleton;
  
+
+import beans.LoginBean;
+
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
  
@@ -27,8 +30,7 @@ public class ChatResource {
  
     @OnOpen
     public void onOpen(RemoteEndpoint r, EventBus eventBus) {
- 
-        eventBus.publish(room + "/*", new Message(String.format("%s has entered the room '%s'",  username, room), true));
+    	eventBus.publish(room + "/*", new Message(String.format("<a Style=\"color:#173B0D\">%s ha entrado a la sala '%s'</a>",  username, room), true));
     }
  
     @OnClose
@@ -36,7 +38,7 @@ public class ChatResource {
         ChatUsers users= (ChatUsers) ctx.getAttribute("chatUsers");
         users.remove(username);
          
-        eventBus.publish(room + "/*", new Message(String.format("%s has left the room", username), true));
+        eventBus.publish(room + "/*", new Message(String.format("<a Style=\"color:red\">%s ha abandonado la sala</a>", username), true));
     }
  
     @OnMessage(decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})

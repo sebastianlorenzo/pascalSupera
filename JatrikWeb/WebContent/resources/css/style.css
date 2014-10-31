@@ -16,12 +16,33 @@
 	border-width: 2px; 
 }
 
-#name_login {
+#form:titulo_conectados{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.chatlogs {
+    height: 210px !important;
+    max-height: 210px !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+ }
+ .ui-datalist-data {
+    height: 210px !important;
+    max-height: 210px !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+ }
+ #name_login {
 	position: absolute !important;
 	font-weight:bold;
 	color: #2B4715;
 	right: 189px;
 	z-index: 2;
+}
+ #form:boton_apretar {
+ 	height: 30px;
+	width: 150px;
 }
 
 #j_idt27:form_crearCampeonato_content {

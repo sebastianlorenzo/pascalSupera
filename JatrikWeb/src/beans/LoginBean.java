@@ -1,26 +1,52 @@
 package beans;
 
+import java.io.Serializable;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.primefaces.context.RequestContext;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
+import chat.ChatUsers;
 import controladores.VistaWebController;
 
 
 
 @ManagedBean
 @SessionScoped
-public class LoginBean {
+public class LoginBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
+	@Size(min=1, message="EL nombre no puede ser vacío")
 	private String nombre;
-	
-	private String pwd;
-	
+	@Size(min=1, message="La contraseña no puede ser vacía")
+	private String pwd;	
 	private boolean admin;
-	
+	private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
+	 
+    @ManagedProperty("#{chatUsers}")
+    private ChatUsers users;
+ 
+    private String privateMessage;
+     
+    private String globalMessage;
+     
+    private boolean loggedIn;
+     
+    private String privateUser;
+     
+    private final static String CHANNEL = "/Jatrik/";
+     
     public LoginBean() {
         // TODO Auto-generated constructor stub
     }
@@ -56,12 +82,68 @@ public class LoginBean {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
+	
+	 public ChatUsers getUsers() {
+	        return users;
+	    }
+	 
+	    public void setUsers(ChatUsers users) {
+	        this.users = users;
+	    }
+	     
+	    public String getPrivateUser() {
+	        return privateUser;
+	    }
+	 
+	    public void setPrivateUser(String privateUser) {
+	        this.privateUser = privateUser;
+	    }
+	 
+	    public String getGlobalMessage() {
+	        return globalMessage;
+	    }
+	 
+	    public void setGlobalMessage(String globalMessage) {
+	        this.globalMessage = globalMessage;
+	    }
+	 
+	    public String getPrivateMessage() {
+	        return privateMessage;
+	    }
+	 
+	    public void setPrivateMessage(String privateMessage) {
+	        this.privateMessage = privateMessage;
+	    }
+	     
+	    public boolean isLoggedIn() {
+	        return loggedIn;
+	    }
+	    public void setLoggedIn(boolean loggedIn) {
+	        this.loggedIn = loggedIn;
+	    }
+	 
+	    public void sendGlobal() {
+	        eventBus.publish(CHANNEL + "*", nombre + ": " + globalMessage);
+	         
+	        globalMessage = null;
+	    }
+	     
+	    public void sendPrivate() {
+	        eventBus.publish(CHANNEL + privateUser, "[PM] " + nombre + ": " + privateMessage);
+	         
+	        privateMessage = null;
+	    }
 
 
 	public String salir() {
 		
 		  VistaWebController v = new VistaWebController();
 		  if (v.logout(this.nombre)){
+			  //remove user and update ui
+		        users.remove(nombre);
+		        RequestContext.getCurrentInstance().update("form:users");		         
+		        //push leave information
+		        eventBus.publish(CHANNEL + "*", nombre + " left the channel.");
 			  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 			  return "/index.xhtml?faces-redirect=true";
 		  }
@@ -80,18 +162,37 @@ public class LoginBean {
 				return "/paginas/administrador/home_admin.xhtml?faces-redirect=true";
 			}
 				
-			else
-				return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
-		  	 
+			else{
+				 RequestContext requestContext = RequestContext.getCurrentInstance();
+				 users.add(nombre);
+		         requestContext.execute("PF('subscriber').connect('/" + nombre + "')");
+		         loggedIn = true;
+		         return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
+		   }	  	 
 		  }
-		else 
-			return "/index.xhtml?faces-redirect=true";
+		else {
+				RequestContext requestContext = RequestContext.getCurrentInstance();
+				String cabecera="Ha ocurrido un error";
+				Severity icono=FacesMessage.SEVERITY_ERROR;
+		    	String mensaje_box="Compruebe nombre de usuario o contraseña.";
+		    	FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje_box);
+		        FacesContext.getCurrentInstance().addMessage(null, message);
+	            requestContext.update("growl");
+		        return "/index.xhtml?faces-redirect=true";		        
+		}
+			
 	}
+	
+	public void apretar(){
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('subscriber').connect('/" + this.nombre + "')");    	
+    }
 	
 	public String anotarmeCampeonato(){
 		
 		return "/paginas/usuario/anotarmeCampeonato_user.xhtml?faces-redirect=true";
 		
 	}
+	
     
 }
