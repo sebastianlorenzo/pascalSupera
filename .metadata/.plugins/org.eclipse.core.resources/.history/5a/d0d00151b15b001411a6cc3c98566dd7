@@ -1,9 +1,0 @@
-package negocio;
-
-import javax.ejb.Local;
-
-@Local
-public interface IChatController 
-{
-	public void enviarChat(String emisor, String receptor, String mensaje);
-}
