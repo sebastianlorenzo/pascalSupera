@@ -172,48 +172,7 @@ public class EquipoWS
 		
 	}
 	
-	@POST
-	@Path("obtenerJugadoresTitulares")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String obtenerJugadoresTitulares(String datos) throws JSONException
-	{
-		JSONObject datosEquipo = new JSONObject(datos);
-		String nombreEquipo = datosEquipo.getString("Nombre");
-		return iEquipoController.obtenerJugadoresTitulares(nombreEquipo);		
-	}
-	
-	@POST
-	@Path("obtenerJugadoresSuplentes")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String obtenerJugadoresSuplentes(String datos) throws JSONException
-	{
-		JSONObject datosEquipo = new JSONObject(datos);
-		String nombreEquipo = datosEquipo.getString("Nombre");
-		return iEquipoController.obtenerJugadoresSuplentes(nombreEquipo);		
-	}
-	
-	@POST
-	@Path("modificarJugadoresTitulares")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String modificarJugadoresTitulares(String datos) throws JSONException
-	{
-		JSONObject datosJson = new JSONObject(datos);
-		String nomEquipo = datosJson.getString("Nombre");
-		String posiciones = datosJson.getString("Posiciones");
-		Gson g = new Gson();
-		DataListaPosicion dlp = g.fromJson(posiciones, DataListaPosicion.class);
-		JSONObject respuesta = new JSONObject();
-		if (iEquipoController.modificarJugadoresTitulares(nomEquipo, dlp))
-			respuesta.put("Resultado", true);
-		else 
-			respuesta.put("Resultado", false);
-		return respuesta.toString();
-	}
-	
-	//Obtengo las ofertas realizadas a los jugadores pertenecientes a mi equipo
+	//Obtengo las ofertas hechas a mis jugadores, ofertas recibidas
 	@POST
 	@Path("obtenerOfertas")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -255,6 +214,60 @@ public class EquipoWS
 		
 		return this.iEquipoController.rechazarOferta(nomUsuario, comentario, idOferta).toString();
 		
+	}
+	
+	@POST
+	@Path("obtenerOfertasRealizadas")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String obtenerOfertasRealizadas(String datos) throws JSONException
+	{
+		JSONObject datosOferta = new JSONObject(datos);
+		String nomUsuario = datosOferta.getString("nomUsuario"); //Logueado
+		Gson g = new Gson();
+		DataListaOferta dataOf = this.iEquipoController.obtenerOfertasRealizadas(nomUsuario);
+		return g.toJson(dataOf);		
+	}
+		
+	@POST
+	@Path("obtenerJugadoresTitulares")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String obtenerJugadoresTitulares(String datos) throws JSONException
+	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEquipo = datosEquipo.getString("Nombre");
+		return iEquipoController.obtenerJugadoresTitulares(nombreEquipo);		
+	}
+	
+	@POST
+	@Path("obtenerJugadoresSuplentes")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String obtenerJugadoresSuplentes(String datos) throws JSONException
+	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEquipo = datosEquipo.getString("Nombre");
+		return iEquipoController.obtenerJugadoresSuplentes(nombreEquipo);		
+	}
+	
+	@POST
+	@Path("modificarJugadoresTitulares")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String modificarJugadoresTitulares(String datos) throws JSONException
+	{
+		JSONObject datosJson = new JSONObject(datos);
+		String nomEquipo = datosJson.getString("Nombre");
+		String posiciones = datosJson.getString("Posiciones");
+		Gson g = new Gson();
+		DataListaPosicion dlp = g.fromJson(posiciones, DataListaPosicion.class);
+		JSONObject respuesta = new JSONObject();
+		if (iEquipoController.modificarJugadoresTitulares(nomEquipo, dlp))
+			respuesta.put("Resultado", true);
+		else 
+			respuesta.put("Resultado", false);
+		return respuesta.toString();
 	}
 		
 }

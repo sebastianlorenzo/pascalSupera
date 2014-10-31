@@ -12,6 +12,10 @@ public class DataOferta
 	public Integer idJugador;
 	public Integer idOferta;
 	
+	public String usuarioActual;//Dueño
+	public String equipoActual;
+	public String estado;
+
 	public DataOferta(){}
 	
 	public DataOferta(String equipoOferente, String jugador, Integer idJugador, Integer precio, String fecha) 
@@ -22,6 +26,15 @@ public class DataOferta
 		this.fecha = fecha;
 		this.idJugador = idJugador;
 	}
+	
+	public DataOferta(String jugador, Integer precio, String fecha, String estado) 
+	{
+		this.jugador = jugador;
+		this.precio = precio;
+		this.fecha = fecha;
+		this.estado = estado;
+	}
+	
 	
 	public String getUsuarioOferente() 
 	{
@@ -94,12 +107,44 @@ public class DataOferta
 	}
 	
 	
-	public Integer getIdOferta() {
+	public Integer getIdOferta() 
+	{
 		return idOferta;
 	}
 
-	public void setIdOferta(Integer idOferta) {
+	public void setIdOferta(Integer idOferta) 
+	{
 		this.idOferta = idOferta;
+	}
+	
+	public String getUsuarioActual() 
+	{
+		return usuarioActual;
+	}
+
+	public void setUsuarioActual(String usuarioActual) 
+	{
+		this.usuarioActual = usuarioActual;
+	}
+
+	public String getEquipoActual() 
+	{
+		return equipoActual;
+	}
+
+	public void setEquipoActual(String equipoActual) 
+	{
+		this.equipoActual = equipoActual;
+	}
+
+	public String getEstado() 
+	{
+		return estado;
+	}
+
+	public void setEstado(String estado) 
+	{
+		this.estado = estado;
 	}
 
 }

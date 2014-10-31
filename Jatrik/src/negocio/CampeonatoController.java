@@ -20,6 +20,7 @@ import persistencia.CampeonatoDAO;
 import persistencia.CampeonatoDAOImpl;
 import persistencia.PartidoDAO;
 import persistencia.PartidoDAOImpl;
+import tipos.Constantes;
 import tipos.DataListaCampeonato;
 
 @Stateless
@@ -31,9 +32,6 @@ public class CampeonatoController implements ICampeonatoController
 	@EJB
 	private PartidoDAO partidoDAO;
 	
-	static final int DIAS_ENTRE_PARTIDOS = 7;
-	static final int HORA_PARTIDOS = 18;
-		
 	public CampeonatoController()
 	{
 		this.campeonatoDAO = new CampeonatoDAOImpl();
@@ -83,9 +81,9 @@ public class CampeonatoController implements ICampeonatoController
 			int cant;
 			Date fecha = inicioCampeonato;
 			for(cant=1; cant<=cantidadEquipos*(cantidadEquipos-1); cant++){
-				fecha = sumarHorasFecha(fecha, HORA_PARTIDOS);
+				fecha = sumarHorasFecha(fecha, Constantes.HORA_PARTIDOS);
 				Partido partido_nuevo = new Partido(nomCampeonato+"_partido_"+cant, null, null, fecha, null, null, null, null);
-				fecha = sumarDiasFecha(fecha, DIAS_ENTRE_PARTIDOS);
+				fecha = sumarDiasFecha(fecha, Constantes.DIAS_ENTRE_PARTIDOS);
 				this.partidoDAO.insertarPartido(partido_nuevo);				
 				partidos.add(partido_nuevo);
 			}

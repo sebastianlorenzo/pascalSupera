@@ -46,5 +46,7 @@ public interface IEquipoController
 	public JSONObject aceptarOferta(String nomUsuario, String comentario, Integer idOferta);
 
 	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta);
-	
+
+	public DataListaOferta obtenerOfertasRealizadas(String nomUsuario);
+		
 }
