@@ -10,9 +10,12 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaMensaje;
+import tipos.DataListaNotificacion;
 import tipos.DataMensaje;
+import tipos.DataNotificacion;
 import dominio.Equipo;
 import dominio.Mensaje;
+import dominio.Notificacion;
 import dominio.Usuario;
 
 @Stateless
@@ -230,6 +233,32 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		Usuario u = em.find(Usuario.class, login);
 		String eq = u.getEquipo().getEquipo();
 		return eq;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaNotificacion obtenerNotificaciones(String login) 
+	{
+		Usuario u = em.find(Usuario.class, login);
+		Collection<Notificacion> notificaciones = u.getNotificacionesRecibidas();
+		Iterator<Notificacion> iter = notificaciones.iterator();
+		
+		DataListaNotificacion dln = new DataListaNotificacion();
+		DataNotificacion dn = null;
+		
+		while(iter.hasNext()){
+			Notificacion n = iter.next();
+			if(n.getVista() == false)
+			{	
+				dn = new DataNotificacion();
+				dn.setTexto(n.getTexto());
+				
+				n.setVista(true); //Notificacion recibida				
+			}
+			if(dn != null)
+				dln.addDataNotificacion(dn);
+		}
+		
+		return dln;
 	}
 	
 }

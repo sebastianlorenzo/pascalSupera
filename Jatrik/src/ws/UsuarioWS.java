@@ -9,8 +9,12 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import tipos.DataListaMensaje;
+import tipos.DataListaNotificacion;
+
 import com.google.gson.Gson;
+
 import negocio.IUsuarioController;
 
 @ManagedBean
@@ -156,6 +160,20 @@ public class UsuarioWS
 	    }
 		
 	    return json.toString();
+    }
+    
+
+    @POST
+	@Path("verNotificaciones")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String verNotificaciones(String datos) throws JSONException
+    {
+    	JSONObject datosNotificacion = new JSONObject(datos);
+		String nomUsuario = datosNotificacion.getString("nomUsuario"); //Logueado
+		Gson g = new Gson();
+		DataListaNotificacion dataNotif = this.iUsuarioController.verNotificaciones(nomUsuario);
+		return g.toJson(dataNotif);
     }
       
 }

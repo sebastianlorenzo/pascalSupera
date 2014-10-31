@@ -6,6 +6,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaMensaje;
+import tipos.DataListaNotificacion;
 
 @Local
 public interface IUsuarioController 
@@ -31,5 +32,7 @@ public interface IUsuarioController
 	public DataListaMensaje obtenerMensajes(String receptor);
 
 	public String obtenerEquipo(String login);
-	
+
+	public DataListaNotificacion verNotificaciones(String nomUsuario);
+		
 }

@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONArray;
 
 import tipos.DataListaMensaje;
+import tipos.DataListaNotificacion;
 import dominio.Equipo;
 import dominio.Usuario;
 
@@ -43,5 +44,7 @@ public interface UsuarioDAO
 	public JSONArray obtenerDesconectados();
 
 	public String obtenerNombreEq(String login);
-		
+
+	public DataListaNotificacion obtenerNotificaciones(String login);
+	
 }

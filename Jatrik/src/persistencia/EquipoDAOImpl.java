@@ -16,11 +16,10 @@ import tipos.DataListaOferta;
 import tipos.DataOferta;
 import dominio.Equipo;
 import dominio.Jugador;
+import dominio.Notificacion;
 import dominio.Oferta;
 import dominio.Pais;
 import dominio.Usuario;
-
-
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -403,6 +402,14 @@ public class EquipoDAOImpl implements EquipoDAO
 			if (!comentario.equals(""))
 				oferta.setComentarioAcepta(comentario);
 			
+			Collection<Notificacion> notificacionesRecibidas = usComprador.getNotificacionesRecibidas();
+			String mensaje= "La oferta realizada por el jugador "+jug.getJugador()+" perteneciente al equipo "+miEquipo.getEquipo()+" fue aceptada";
+			Notificacion not = new Notificacion(usComprador, mensaje);
+			em.persist(not);
+			
+			notificacionesRecibidas.add(not);
+			usComprador.setNotificacionesRecibidas(notificacionesRecibidas);			
+			
 			try
 			{
 				respuesta.put("Oferta aceptada", true);
@@ -440,6 +447,18 @@ public class EquipoDAOImpl implements EquipoDAO
 			oferta.setEstado_oferta("rechazada");
 			if (!comentario.equals(""))
 				oferta.setComentarioAcepta(comentario);
+			
+			Usuario usOferente = oferta.getEquipoDestino().getUsuario();
+			String NomJug = oferta.getJugadorEnVenta().getJugador();
+			String NomEqJug = oferta.getEquipoOrigen().getEquipo();
+			
+			Collection<Notificacion> notificacionesRecibidas = usOferente.getNotificacionesRecibidas();
+			String mensaje= "La oferta realizada por el jugador "+NomJug+" perteneciente al equipo "+NomEqJug+" fue rechazada.";
+			Notificacion not = new Notificacion(usOferente, mensaje);
+			em.persist(not);
+			
+			notificacionesRecibidas.add(not);
+			usOferente.setNotificacionesRecibidas(notificacionesRecibidas);
 			
 			try
 			{

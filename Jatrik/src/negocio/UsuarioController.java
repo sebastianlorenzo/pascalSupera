@@ -9,6 +9,7 @@ import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import tipos.Constantes;
 import tipos.DataListaMensaje;
+import tipos.DataListaNotificacion;
 import dominio.Equipo;
 import dominio.Usuario;
 
@@ -160,5 +161,11 @@ public class UsuarioController implements IUsuarioController
 	public String obtenerEquipo(String login) 
 	{
 		return this.usuarioDAO.obtenerNombreEq(login);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaNotificacion verNotificaciones(String login) 
+	{
+		return this.usuarioDAO.obtenerNotificaciones(login);
 	}
 }
