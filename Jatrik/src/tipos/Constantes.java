@@ -10,6 +10,7 @@ public class Constantes {
 	public static final String CONST_PORTERO 		= "portero";
 	public static final String CONST_TITULAR		= "titular";
 	public static final String CONST_SUPLENTE		= "suplente";
+	public static final String CONST_LESIONADO		= "lesionado";
 	public static final String CONST_EXPULSADO		= "expulsado";
 	
 	/* Partido */

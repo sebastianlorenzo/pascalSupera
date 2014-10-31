@@ -50,7 +50,7 @@ public class PartidoWS
 		JSONObject datosPartido = new JSONObject(datos);
 		Gson g = new Gson();
 		String partido = datosPartido.getString("partido");
-		DataCambio cambio1 = g.fromJson(datosPartido.getString("cambio1"), DataCambio.class);
+		DataCambio cambio1 = g.fromJson(datosPartido.getString("cambio1"), DataCambio.class); // Setear el partido para todos estos
 		DataCambio cambio2 = g.fromJson(datosPartido.getString("cambio2"), DataCambio.class);
 		DataCambio cambio3 = g.fromJson(datosPartido.getString("cambio3"), DataCambio.class);
 		DataCambio[] cambios = {cambio1, cambio2, cambio3};

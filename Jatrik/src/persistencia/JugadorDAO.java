@@ -31,4 +31,6 @@ public interface JugadorDAO
 	
 	public void cambiarEstadoJugador(Integer idJugador, String estado_jugador);
 	
+	public String getPosicionJugador(Integer idJugador);
+	
 }

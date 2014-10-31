@@ -138,4 +138,15 @@ public class JugadorDAOImpl implements JugadorDAO
 		}
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String getPosicionJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			return j.getPosicion();
+		}
+		return null;
+	}
+	
 }

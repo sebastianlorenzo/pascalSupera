@@ -1,11 +1,9 @@
 package persistencia;
 
 import java.util.List;
-
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Partido;
@@ -25,8 +23,7 @@ public class PartidoDAOImpl implements PartidoDAO
 		Partido p = em.find(Partido.class, partido);
 		return p;
 	}
-
-
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Partido insertarPartido(Partido p)
 	{
@@ -85,7 +82,7 @@ public class PartidoDAOImpl implements PartidoDAO
 			{
 				p.setCambiosVisitante(cambios);
 			}
-			em.merge(p);
+			em.persist(p);
 		}
 	}
 	
