@@ -6,10 +6,7 @@ public class DataMensaje
 	
 	private String emisor;
 
-	public DataMensaje()
-	{
-		
-	}
+	public DataMensaje(){}
 	
 	public DataMensaje(String texto, String emisor)
 	{
@@ -17,19 +14,23 @@ public class DataMensaje
 		this.emisor = emisor;
 	}
 	
-	public String getTexto() {
+	public String getTexto() 
+	{
 		return texto;
 	}
 
-	public void setTexto(String texto) {
+	public void setTexto(String texto) 
+	{
 		this.texto = texto;
 	}
 
-	public String getEmisor() {
+	public String getEmisor() 
+	{
 		return emisor;
 	}
 
-	public void setEmisor(String emisor) {
+	public void setEmisor(String emisor) 
+	{
 		this.emisor = emisor;
 	}
 	

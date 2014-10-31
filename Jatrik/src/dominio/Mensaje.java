@@ -11,10 +11,8 @@ public class Mensaje implements java.io.Serializable
 	
 	@Id
 	@GeneratedValue
-	private long idMensaje;
-	
-	private String texto;
-	
+	private long idMensaje;	
+	private String texto;	
 	private Boolean leido;
 	
 	@ManyToOne
