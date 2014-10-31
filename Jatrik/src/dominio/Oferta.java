@@ -43,7 +43,7 @@ public class Oferta implements java.io.Serializable
 	
 	public Oferta (){}
 
-	public long getIdOferta() {
+	public Integer getIdOferta() {
 		return idOferta;
 	}
 

@@ -330,6 +330,9 @@ public class EquipoDAOImpl implements EquipoDAO
 			    dof = new DataOferta(eqDestino, nomJugador, idJugador, precio, fechaOf);
 			    dof.setUsuarioOferente(usuarioOferente);
 			    
+			    Integer idOferta = of.getIdOferta();
+			    dof.setIdOferta(idOferta);
+			    
 			    String comentario = of.getComentario();
 			    if (!comentario.equals(""))
 			    	dof.setComentario(comentario);
@@ -405,13 +408,17 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			Collection<Jugador> jugadoresDeEqDestino = eqDestino.getJugadores();
 			jugadoresDeEqDestino.add(jug);
-					
+			
+			jug.setEquipo(eqDestino);
+								
 			oferta.setEstado_oferta("aceptar");
-			oferta.setComentario_acepta(comentario);
+			if (!comentario.equals(""))
+				oferta.setComentario_acepta(comentario);
 			
 			try
 			{
 				respuesta.put("Oferta aceptada", true);
+				respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
 			} 
 			catch (Exception e) 
 			{

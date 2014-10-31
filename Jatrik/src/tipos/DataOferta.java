@@ -5,10 +5,12 @@ public class DataOferta
 	public String usuarioOferente;
 	public String equipoOferente;
 	public String jugador;//nombre
-	public Integer idJugador;
 	public Integer precio;
 	public String fecha;
 	public String comentario;
+
+	public Integer idJugador;
+	public Integer idOferta;
 	
 	public DataOferta(){}
 	
@@ -89,6 +91,15 @@ public class DataOferta
 	public void setIdJugador(Integer idJugador) 
 	{
 		this.idJugador = idJugador;
+	}
+	
+	
+	public Integer getIdOferta() {
+		return idOferta;
+	}
+
+	public void setIdOferta(Integer idOferta) {
+		this.idOferta = idOferta;
 	}
 
 }
