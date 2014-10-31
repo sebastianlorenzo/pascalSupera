@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import org.codehaus.jettison.json.*;
 
+import tipos.Constantes;
 import tipos.DataEquipo;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
@@ -213,7 +214,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	// Pone tarjetas amarillas de los jugadores y cantidad de cambios realizados por el equipo en 0.
 	// Además, restablece el valor del estado del jugador como estaba antes de jugarse el partido
-	public void restablecerEquipoLuegoPartido(String nomEquipo)
+	public void restablecerEquipoLuegoPartido(String nomEquipo, List<Jugador> jugadoresAntes)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
 		List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
@@ -222,7 +223,18 @@ public class EquipoDAOImpl implements EquipoDAO
         {
         	Jugador j = it.next();
         	j.setCant_tarjetas_amarillas(0);
-        	j.setEstado_jugador(CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
+        	Iterator<Jugador> itj = jugadoresAntes.iterator();
+        	String estado = null;
+        	while (itj.hasNext())
+        	{
+        		Jugador ja = itj.next();
+	        	if (ja.getIdJugador().equals(j.getIdJugador()))
+	        	{
+	        		estado = ja.getEstado_jugador();
+	        		break;
+	        	}
+        	}
+	        j.setEstado_jugador(estado); /** Cambiar esto!!!!!!!!!! **/
         }
         e.setCant_cambios_realizados(0);
 		em.merge(e);

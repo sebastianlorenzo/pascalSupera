@@ -1,9 +1,12 @@
 package persistencia;
 
+import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Partido;
@@ -84,6 +87,12 @@ public class PartidoDAOImpl implements PartidoDAO
 			}
 			em.persist(p);
 		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void eliminarCambiosHechosDurantePartido(Partido p)
+	{
+		em.createQuery("DELETE FROM Cambio c WHERE c.partido = '" + p + "'").executeUpdate();
 	}
 	
 }

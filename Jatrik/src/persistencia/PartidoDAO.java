@@ -20,4 +20,6 @@ public interface PartidoDAO
 	
 	public void setearCambios(Partido p, List<Cambio> cambios, boolean local);
 	
+	public void eliminarCambiosHechosDurantePartido(Partido p);
+	
 }

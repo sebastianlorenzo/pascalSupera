@@ -44,7 +44,9 @@ public interface EquipoDAO
 
 	public DataListaEquipo equiposData(String nomEquipo);
 
-	public void restablecerEquipoLuegoPartido(String nomEquipo); // Pone tarjetas amarillas de los jugadores en 0
+	// Pone tarjetas amarillas de los jugadores y cantidad de cambios realizados por el equipo en 0.
+	// Además, restablece el valor del estado del jugador como estaba antes de jugarse el partido
+	public void restablecerEquipoLuegoPartido(String nomEquipo, List<Jugador> jugadoresAntes);
 	
 	public JSONObject realizarOfertaJugador(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 

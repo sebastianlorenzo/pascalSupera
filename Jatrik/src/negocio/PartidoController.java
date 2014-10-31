@@ -77,6 +77,10 @@ public class PartidoController implements IPartidoController
 		// Obtener el partido que vamos a simular
 		Partido partido = partidoDAO.getPartido(idPartido);
 		
+		// Hago un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido
+		List<Jugador> jugadoresLocal     = (List<Jugador>) partido.getEquipoLocal().getJugadores();
+		List<Jugador> jugadoresVisitante = (List<Jugador>) partido.getEquipoVisitante().getJugadores();
+		
 		// Obtener los cambios programados
 		List<Cambio> cambiosProgramadosEquipoLocal = (List<Cambio>) partido.getCambiosLocal();
 		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partido.getCambiosVisitante();
@@ -202,8 +206,11 @@ public class PartidoController implements IPartidoController
 		}
 		
 		// Restauro los atributos de los jugadores (cant_tarjetas_amarillas y ¿estado_jugador?)
-		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoLocal().getEquipo());
-		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoVisitante().getEquipo());
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoLocal().getEquipo(), jugadoresLocal);
+		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoVisitante().getEquipo(), jugadoresVisitante);
+		
+		// Elimino de la BD los cambios prestablecidos para el partido
+		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
@@ -296,8 +303,8 @@ public class PartidoController implements IPartidoController
         }
 		
 		// Factores aleatorios
-		float factor_ataque  = (float) Math.random(); //*10;
-		float factor_portero = (float) Math.random(); //*10;
+		float factor_ataque  = (float) Math.random()*10;
+		float factor_portero = (float) Math.random()*10;
 		
 		// Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100
 		float probGol = (probJugadaGol * ((tiro_jugador * factor_ataque) - (habilidad_portero * factor_portero))) / 100;
@@ -331,7 +338,7 @@ public class PartidoController implements IPartidoController
         }
 		
 		// Probabilidad de tarjeta = Oportunidad de gol x (promedio potencia de jugadores defensores y mediocampistas)
-		float probTarjeta = probGolParaJugada * (potencia / cant_mediocampistas_y_defensas)/100;
+		float probTarjeta = (probGolParaJugada * (potencia / cant_mediocampistas_y_defensas))/100;
 		
 		return probTarjeta;
 	}
