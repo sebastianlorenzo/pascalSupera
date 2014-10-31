@@ -27,5 +27,4 @@ public class DataListaCampeonato
 		listCampeonatos.add(dca);
 	}
 
-
 }

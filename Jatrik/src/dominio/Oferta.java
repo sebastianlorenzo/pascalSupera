@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,7 +16,7 @@ public class Oferta implements java.io.Serializable
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue (strategy= GenerationType.AUTO)
 	private Integer idOferta;	
 	private String estado_oferta; // aceptada, rechazada, pendiente	
 	private Integer precio;	
@@ -100,19 +101,23 @@ public class Oferta implements java.io.Serializable
 		this.equipoOrigen = equipoOrigen;
 	}
 
-	public Equipo getEquipoDestino() {
+	public Equipo getEquipoDestino() 
+	{
 		return equipoDestino;
 	}
 
-	public void setEquipoDestino(Equipo equipoDestino) {
+	public void setEquipoDestino(Equipo equipoDestino) 
+	{
 		this.equipoDestino = equipoDestino;
 	}
 
-	public String getComentario_acepta() {
+	public String getComentarioAcepta() 
+	{
 		return comentario_acepta;
 	}
 
-	public void setComentario_acepta(String comentario_acepta) {
+	public void setComentarioAcepta(String comentario_acepta) 
+	{
 		this.comentario_acepta = comentario_acepta;
 	}
 

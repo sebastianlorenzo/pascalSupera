@@ -102,6 +102,14 @@
         primary key (idMensaje)
     );
 
+    create table public.notificacion (
+        idNotificacion int8 not null,
+        texto varchar(255),
+        vista boolean,
+        receptorNotificacion_login varchar(255),
+        primary key (idNotificacion)
+    );
+
     create table public.oferta (
         idOferta int4 not null,
         comentario varchar(255),
@@ -142,6 +150,11 @@
         primary key (login)
     );
 
+    create table public.usuario_amigos (
+        usuario_login varchar(255) not null,
+        misAmigosChat_login varchar(255) not null
+    );
+
     create table public.usuario_mensajesEnviados (
         usuario_login varchar(255) not null,
         mensajesEnviados_idMensaje int8 not null
@@ -150,6 +163,11 @@
     create table public.usuario_mensajesRecibidos (
         usuario_login varchar(255) not null,
         mensajesRecibidos_idMensaje int8 not null
+    );
+
+    create table public.usuario_notificaciones (
+        usuario_login varchar(255) not null,
+        notificacionesRecibidas_idNotificacion int8 not null
     );
 
     alter table public.campeonato_partido 
@@ -173,11 +191,17 @@
     alter table public.oferta_jugadores 
         add constraint UK_84ki5xvluuaj6u5sfnc5nwy5q  unique (oferta_jugadores_idOferta);
 
+    alter table public.usuario_amigos 
+        add constraint UK_h950hjw7aaf98ngiyyjl8ej6h  unique (misAmigosChat_login);
+
     alter table public.usuario_mensajesEnviados 
         add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
 
     alter table public.usuario_mensajesRecibidos 
         add constraint UK_hrqjp7i4k5ujfksrh4gsbyvak  unique (mensajesRecibidos_idMensaje);
+
+    alter table public.usuario_notificaciones 
+        add constraint UK_89iq8heaqmye4v93kmxnkan7f  unique (notificacionesRecibidas_idNotificacion);
 
     alter table public.campeonato_equipo 
         add constraint FK_k7mcfwfovv12itg9awsyblm8d 
@@ -294,6 +318,11 @@
         foreign key (receptorMensaje_login) 
         references public.usuario;
 
+    alter table public.notificacion 
+        add constraint FK_mxmpawgraugjxkqj2t5u04oe8 
+        foreign key (receptorNotificacion_login) 
+        references public.usuario;
+
     alter table public.oferta 
         add constraint FK_8d2cj49xk01bjwuw1kne6ocbh 
         foreign key (equipoDestino_equipo) 
@@ -334,6 +363,16 @@
         foreign key (equipo) 
         references public.equipo;
 
+    alter table public.usuario_amigos 
+        add constraint FK_h950hjw7aaf98ngiyyjl8ej6h 
+        foreign key (misAmigosChat_login) 
+        references public.usuario;
+
+    alter table public.usuario_amigos 
+        add constraint FK_ldj7x4e2mimni3q1pa5s5i0co 
+        foreign key (usuario_login) 
+        references public.usuario;
+
     alter table public.usuario_mensajesEnviados 
         add constraint FK_8h29hety033e3pfj8054fwkbr 
         foreign key (mensajesEnviados_idMensaje) 
@@ -351,6 +390,16 @@
 
     alter table public.usuario_mensajesRecibidos 
         add constraint FK_r3v7ljoc36f539pmfbikbtxg8 
+        foreign key (usuario_login) 
+        references public.usuario;
+
+    alter table public.usuario_notificaciones 
+        add constraint FK_89iq8heaqmye4v93kmxnkan7f 
+        foreign key (notificacionesRecibidas_idNotificacion) 
+        references public.notificacion;
+
+    alter table public.usuario_notificaciones 
+        add constraint FK_roosx8u65m5nps0pgjpefktlq 
         foreign key (usuario_login) 
         references public.usuario;
 

@@ -12,6 +12,7 @@ import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import tipos.Constantes;
 import tipos.DataCampeonato;
 import tipos.DataListaCampeonato;
 import dominio.Campeonato;
@@ -23,8 +24,6 @@ import dominio.Usuario;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CampeonatoDAOImpl implements CampeonatoDAO
 {
-	static final int DIAS_APLAZO = 15;
-	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
 	
@@ -104,14 +103,14 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			if ((fecha_campeonato.compareTo(fecha_hoy) < 0)  &&
 					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
 			{
-				Date dateIni = sumarDiasFecha(c.getInicioCampeonato(), DIAS_APLAZO);
+				Date dateIni = sumarDiasFecha(c.getInicioCampeonato(), Constantes.DIAS_APLAZO);
 				c.setInicioCampeonato(dateIni);
 				em.merge(c);
 				Collection<Partido> partidos = c.getPartidos();
 				Iterator<Partido> iterador = partidos.iterator();
 				while(iterador.hasNext()){
 					Partido p = iterador.next();
-					Date fechaPartido = sumarDiasFecha(p.getFechaPartido(), DIAS_APLAZO);
+					Date fechaPartido = sumarDiasFecha(p.getFechaPartido(), Constantes.DIAS_APLAZO);
 					p.setFechaPartido(fechaPartido);
 					em.merge(p);
 				}				

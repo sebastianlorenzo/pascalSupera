@@ -14,23 +14,17 @@ import tipos.DataJugador;
 import tipos.DataListaEquipo;
 import tipos.DataListaOferta;
 import tipos.DataOferta;
-import dominio.Campeonato;
 import dominio.Equipo;
-import dominio.Estadio;
 import dominio.Jugador;
 import dominio.Oferta;
 import dominio.Pais;
-import dominio.Partido;
 import dominio.Usuario;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class EquipoDAOImpl implements EquipoDAO
 {
-	
-	static final String CONST_TITULAR = "titular";
-	static final Integer CONST_CANT_MAX_CAMBIOS = 3;
-	
+
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
 
@@ -47,28 +41,6 @@ public class EquipoDAOImpl implements EquipoDAO
 			System.out.println("EXCEPCIÓN: " + ex.getClass());
             return null;
 		}
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Boolean actualizarEquipo(String equipo, String pais, String localidad,
-									Estadio estadio, Usuario usuario, Collection<Jugador> jugadores,
-									Collection<Partido> partidos, Collection<Campeonato> campeonatos) 
-	{
-		Equipo e = em.find(Equipo.class, equipo);
-		if (e != null)
-		{
-			e.setEquipo(equipo);
-			e.setPais(pais);
-			e.setLocalidad(localidad);
-			e.setEstadio(estadio);
-			e.setUsuario(usuario);
-			e.setJugadores(jugadores);
-			e.setPartidos(partidos);
-			e.setCampeonatos(campeonatos);
-			em.merge(e);
-			return true;
-		}
-		return false;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -223,6 +195,7 @@ public class EquipoDAOImpl implements EquipoDAO
         {
         	Jugador j = it.next();
         	j.setCant_tarjetas_amarillas(0);
+<<<<<<< HEAD
         	Iterator<Jugador> itj = jugadoresAntes.iterator();
         	String estado = null;
         	while (itj.hasNext())
@@ -235,6 +208,9 @@ public class EquipoDAOImpl implements EquipoDAO
 	        	}
         	}
 	        j.setEstado_jugador(estado); /** Cambiar esto!!!!!!!!!! **/
+=======
+        	j.setEstado_jugador(Constantes.CONST_TITULAR); /** Cambiar esto!!!!!!!!!! **/
+>>>>>>> 7fcc4178d9256b4c9867ed7a97e2364614f0f2d4
         }
         e.setCant_cambios_realizados(0);
 		em.merge(e);
@@ -360,7 +336,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	public Boolean puedeRealizarCambios(String nomEquipo)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
-		return (e.getCant_cambios_realizados() < CONST_CANT_MAX_CAMBIOS);
+		return (e.getCant_cambios_realizados() < Constantes.CONST_CANT_MAX_CAMBIOS);
 	}
 	
 	public void sumarCambio(String nomEquipo)
@@ -411,8 +387,8 @@ public class EquipoDAOImpl implements EquipoDAO
 				Oferta of = iter.next();
 				Integer id = of.getJugadorEnVenta().getIdJugador();
 				if(id == idJug){
-					of.setEstado_oferta("rechazar");
-					of.setComentario_acepta("Oferta rechazada, el jugador ya fue vendido a otro equipo.");
+					of.setEstado_oferta("rechazada");
+					of.setComentarioAcepta("Oferta rechazada, el jugador ya fue vendido a otro equipo.");
 				}
 			}
 			
@@ -424,9 +400,9 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			jug.setEquipo(eqDestino);
 								
-			oferta.setEstado_oferta("aceptar");
+			oferta.setEstado_oferta("aceptada");
 			if (!comentario.equals(""))
-				oferta.setComentario_acepta(comentario);
+				oferta.setComentarioAcepta(comentario);
 			
 			try
 			{
@@ -462,9 +438,9 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		else{
 			
-			oferta.setEstado_oferta("rechazar");
+			oferta.setEstado_oferta("rechazada");
 			if (!comentario.equals(""))
-				oferta.setComentario_acepta(comentario);
+				oferta.setComentarioAcepta(comentario);
 			
 			try
 			{
@@ -478,6 +454,58 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		
 		return respuesta;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaOferta obtenerMisOfertas(String nomUsuario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		
+		Equipo miEquipo = us.getEquipo();
+		Collection<Oferta> ofertasRealizadas = miEquipo.getOfertasRealizadas();
+		Iterator<Oferta> iter = ofertasRealizadas.iterator();
+		
+		DataListaOferta dlo = new DataListaOferta();
+		DataOferta dof = null;
+		
+		while(iter.hasNext()){
+			
+			Oferta of = iter.next();
+			String estadoOf = of.getEstado_oferta();
+			if(estadoOf.equals("pendiente") || estadoOf.equals("rechazada"))
+			{	
+				Date fechaOferta = of.getFecha_oferta();
+				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			    String fechaOf = formateador.format(fechaOferta);
+			    
+			    Equipo eqOrigen = of.getEquipoOrigen();
+			    String nomEqActual = eqOrigen.getEquipo();
+			    String usActual = eqOrigen.getUsuario().getLogin();
+
+			    Jugador jugadorEnVenta = of.getJugadorEnVenta();
+			    String 	nomJugador = jugadorEnVenta.getJugador();
+			    
+			    Integer precio = of.getPrecio();
+			    
+			    dof = new DataOferta(nomJugador, precio, fechaOf, estadoOf);
+			    
+			    dof.setEquipoActual(nomEqActual);
+			    dof.setUsuarioActual(usActual);			    
+			    
+			    Integer idOferta = of.getIdOferta();
+			    dof.setIdOferta(idOferta);
+			    
+			    String comentario = of.getComentarioAcepta();
+			    if (comentario != null && !comentario.equals(""))
+			    	dof.setComentario(comentario);
+			    
+			if(dof != null)
+				dlo.addDataOferta(dof);
+			}
+
+		}
+		return dlo;
+
 	}
 	
 }

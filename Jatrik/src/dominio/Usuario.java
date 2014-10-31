@@ -12,16 +12,12 @@ public class Usuario implements java.io.Serializable
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	private String login;
-	
+	private String login;	
 	private String password;
 	
 	private String mail;
-	
-	private Integer capital;
-	
-	private Boolean conectado;
-	
+	private Integer capital;	
+	private Boolean conectado;	
 	private Boolean es_admin;
 	
 	@OneToOne(fetch = FetchType.LAZY)
@@ -36,8 +32,16 @@ public class Usuario implements java.io.Serializable
 	@JoinTable(name="usuario_mensajesRecibidos")
 	private Collection<Mensaje> mensajesRecibidos;
 	
-	public Usuario(){}
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="usuario_notificaciones")
+	private Collection<Notificacion> notificacionesRecibidas;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="usuario_amigos")
+	private Collection<Usuario> misAmigosChat;
+	
+	public Usuario(){}
+
 	public Usuario(String login, String password, String mail, Integer capital) 
 	{
 		this.login = login;
@@ -137,6 +141,24 @@ public class Usuario implements java.io.Serializable
 	public void setMensajesRecibidos(Collection<Mensaje> mensajesRecibidos) 
 	{
 		this.mensajesRecibidos = mensajesRecibidos;
+	}
+		
+	public Collection<Notificacion> getNotificacionesRecibidas()
+	{
+		return notificacionesRecibidas;
+	}
+
+	public void setNotificacionesRecibidas(Collection<Notificacion> notificacionesRecibidas)
+	{
+		this.notificacionesRecibidas = notificacionesRecibidas;
+	}
+
+	public Collection<Usuario> getMisAmigosChat() {
+		return misAmigosChat;
+	}
+
+	public void setMisAmigosChat(Collection<Usuario> misAmigosChat) {
+		this.misAmigosChat = misAmigosChat;
 	}
 	
 }

@@ -16,6 +16,7 @@ import dominio.Jugador;
 import persistencia.EquipoDAO;
 import persistencia.EstadioDAO;
 import persistencia.JugadorDAO;
+import tipos.Constantes;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
 import tipos.DataListaJugador;
@@ -28,17 +29,6 @@ import tipos.DataListaOferta;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class EquipoController implements IEquipoController
 {
-	
-	static final int MAX_CAPACIDAD = 10000;
-	static final int MAX_ALTURA_ESTADIO = 4500;
-	static final int MIN_ALTURA_ESTADIO = 0;
-	
-	static final int MAX_CANT_PORTEROS = 2;
-	static final int MAX_CANT_DEFENSAS = 6;
-	static final int MAX_CANT_MEDIOCAMPISTAS = 6;
-	static final int MAX_CANT_DELANTEROS = 4;
-	static final String CONST_TITULAR		= "titular";
-	static final String CONST_SUPLENTE		= "suplente";
 	
 	@EJB
 	private EquipoDAO equipoDAO;
@@ -59,8 +49,8 @@ public class EquipoController implements IEquipoController
 	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio)
 	{
 		Equipo e = new Equipo(equipo, pais, localidad);
-		int capacidad = MAX_CAPACIDAD;
-		int altura = (int) (Math.random() * (MAX_ALTURA_ESTADIO - MIN_ALTURA_ESTADIO + 1) + MIN_ALTURA_ESTADIO);
+		int capacidad = Constantes.MAX_CAPACIDAD;
+		int altura = (int) (Math.random() * (Constantes.MAX_ALTURA_ESTADIO - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
 		Estadio estadio = new Estadio(nomestadio, capacidad, altura);
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
@@ -77,37 +67,37 @@ public class EquipoController implements IEquipoController
 		Iterator<Jugador> iterDelanteros = jugadoresDelanteros.iterator();
 		
 		int i = 0;
-		while(iterPorteros.hasNext() && (i< MAX_CANT_PORTEROS)){
+		while(iterPorteros.hasNext() && (i< Constantes.MAX_CANT_PORTEROS)){
 			Jugador j = iterPorteros.next();
 			if (i == 0)
-				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), Constantes.CONST_TITULAR);
 			jug.add(j);
 			i++;
 		}
 		
 		i = 0;
-		while(iterDefensas.hasNext() && (i< MAX_CANT_DEFENSAS)){
+		while(iterDefensas.hasNext() && (i< Constantes.MAX_CANT_DEFENSAS)){
 			Jugador j = iterDefensas.next();
 			if (i<4)
-				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), Constantes.CONST_TITULAR);
 			jug.add(j);	
 			i++;
 		}
 		
 		i = 0;
-		while(iterMediocampistas.hasNext() && (i< MAX_CANT_MEDIOCAMPISTAS)){
+		while(iterMediocampistas.hasNext() && (i< Constantes.MAX_CANT_MEDIOCAMPISTAS)){
 			Jugador j = iterMediocampistas.next();
 			if (i<4)
-				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), Constantes.CONST_TITULAR);
 			jug.add(j);
 			i++;
 		}
 		
 		i = 0;
-		while(iterDelanteros.hasNext() && (i< MAX_CANT_DELANTEROS)){
+		while(iterDelanteros.hasNext() && (i< Constantes.MAX_CANT_DELANTEROS)){
 			Jugador j = iterDelanteros.next();
 			if (i<2)
-				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), Constantes.CONST_TITULAR);
 			jug.add(j);	
 			i++;
 		}
@@ -209,7 +199,7 @@ public class EquipoController implements IEquipoController
 			DataListaJugador dlj = new DataListaJugador();
 			while (i.hasNext()){
 				Jugador j = i.next();
-				if (j.getEstado_jugador().compareTo(CONST_TITULAR) == 0){
+				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) == 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
 														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
 					dlj.addDataJugador(dj);
@@ -235,7 +225,7 @@ public class EquipoController implements IEquipoController
 			DataListaJugador dlj = new DataListaJugador();
 			while (i.hasNext()){
 				Jugador j = i.next();
-				if (j.getEstado_jugador().compareTo(CONST_SUPLENTE) == 0){
+				if (j.getEstado_jugador().compareTo(Constantes.CONST_SUPLENTE) == 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
 														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
 					dlj.addDataJugador(dj);
@@ -260,12 +250,12 @@ public class EquipoController implements IEquipoController
 			Iterator<Jugador> i = jugadores.iterator();
 			while (i.hasNext()){
 				Jugador j = i.next();
-				jugadorDAO.setearEstadoJugador(j.getIdJugador(), CONST_SUPLENTE);
+				jugadorDAO.setearEstadoJugador(j.getIdJugador(), Constantes.CONST_SUPLENTE);
 			}
 			Iterator<DataPosicion> idp = titulares.listPosiciones.iterator();
 			while (idp.hasNext()){
 				DataPosicion dp = idp.next();
-				jugadorDAO.setearEstadoJugador(dp.getIdJugador(), CONST_TITULAR);
+				jugadorDAO.setearEstadoJugador(dp.getIdJugador(), Constantes.CONST_TITULAR);
 				jugadorDAO.setearPosicion(dp.getIdJugador(), dp.getPosicion());
 			}
 			return true;		
@@ -283,5 +273,11 @@ public class EquipoController implements IEquipoController
 	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta) 
 	{
 		return this.equipoDAO.rechazarOferta(nomUsuario, comentario, idOferta);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaOferta obtenerOfertasRealizadas(String nomUsuario) 
+	{
+		return this.equipoDAO.obtenerMisOfertas(nomUsuario);
 	}
 }

@@ -1,7 +1,5 @@
 package persistencia;
 
-import java.util.List;
-
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 
@@ -29,31 +27,6 @@ public class EstadioDAOImpl implements EstadioDAO {
 		}
 	}
 
-	@Override
-	public void update(Estadio entity) {
-		
-	}
-
-	@Override
-	public void delete(Estadio entity) {
-		
-	}
-
-	@Override
-	public void delete(Integer id) {
-		
-	}
-
-	@Override
-	public Estadio findById(Integer id) {
-		return null;
-	}
-
-	@Override
-	public List<Estadio> findAll() {
-		return null;
-	}
-	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Boolean existeEstadio(String estadio)
 	{
