@@ -1,19 +1,26 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
+
 import dominio.Cambio;
 import dominio.Equipo;
 import dominio.Jugador;
+import dominio.Notificacion;
 import dominio.Partido;
+import dominio.Usuario;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
 import persistencia.JugadorDAO;
 import persistencia.JugadorDAOImpl;
 import persistencia.PartidoDAO;
 import persistencia.PartidoDAOImpl;
+import persistencia.UsuarioDAO;
+import persistencia.UsuarioDAOImpl;
 import tipos.DataCambio;
 import tipos.DataResumenPartido;
 import tipos.Constantes;
@@ -31,12 +38,16 @@ public class PartidoController implements IPartidoController
 	
 	@EJB
 	private JugadorDAO jugadorDAO;
+	
+	@EJB
+	private UsuarioDAO usuarioDAO;
 		
 	public PartidoController()
 	{
 		this.partidoDAO = new PartidoDAOImpl();
 		this.equipoDAO  = new EquipoDAOImpl();
 		this.jugadorDAO = new JugadorDAOImpl();
+		this.usuarioDAO = new UsuarioDAOImpl();
 	}
 
 	// Se asume que se mandan cambios para un equipo solo, no para los dos a la vez
@@ -200,6 +211,24 @@ public class PartidoController implements IPartidoController
 		
 		// Elimino de la BD los cambios prestablecidos para el partido
 		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
+		
+		// Enviar notificaciones a los equipos local y visitante
+		Date fecha_partido          = partido.getFechaPartido();
+		String nom_equipo_local     = partido.getEquipoLocal().getEquipo();
+		String nom_equipo_visitante = partido.getEquipoVisitante().getEquipo();
+		
+		String notificacionEquipoLocal     = ((goles[0] >  goles[1]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
+											  ((goles[0] == goles[1]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
+											                           getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))   + 
+											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
+		
+		String notificacionEquipoVisitante = ((goles[1] >  goles[0]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
+										      ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
+																	   getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))   + 
+											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
+		
+		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
+		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
@@ -458,6 +487,33 @@ public class PartidoController implements IPartidoController
 			}
 		}
 		return null;
+	}
+	
+	private String getMensajeGanadorPartido(Date fecha_partido, String nom_equipo)
+	{
+		return "FELICITACIONES! Ha ganado el partido jugado en la fecha " + fecha_partido + 
+			   " contra el equipo " + nom_equipo + ".\n";
+	}
+	
+	private String getMensajeEmpatePartido(Date fecha_partido, String nom_equipo)
+	{
+		return "El partido jugado en la fecha " + fecha_partido + 
+				   " contra el equipo " + nom_equipo + " ha finalizado con un empate.\n";
+	}
+	
+	private String getMensajePerdedorPartido(Date fecha_partido, String nom_equipo)
+	{
+		return "El partido jugado en la fecha " + fecha_partido + 
+			       " contra el equipo " + nom_equipo + " ha finalizado. Lamentablemente, ha sido derrotado.\n";
+	}
+	
+	private String getMensajeResumenPartido(String nom_equipo_local, String nom_equipo_visitante, int[] goles, int[] tarjetasAmarillas, int[] tarjetasRojas, int[] lesiones)
+	{
+		return "\nHa continuación se muestra el resumen del partido:\n\t"
+			     + nom_equipo_local     + "\n\t\tGoles: "          + goles[0]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[0] 
+			 				            + "\n\t\tTarjetas Rojas: " + tarjetasRojas[0] + "\n\t\tLesiones: "           + lesiones[0]          + "\n\n\t"
+			 	 + nom_equipo_visitante + "\n\t\tGoles: "          + goles[1]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[1]
+	 				                    + "\n\t\tTarjetas Rojas: " + tarjetasRojas[1] + "\n\t\tLesiones: "           + lesiones[1]          + "\n";
 	}
 	
 }

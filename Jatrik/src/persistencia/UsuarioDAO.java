@@ -8,6 +8,7 @@ import org.codehaus.jettison.json.JSONArray;
 
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
+import dominio.Notificacion;
 import dominio.Usuario;
 
 @Local
@@ -42,6 +43,8 @@ public interface UsuarioDAO
 
 	public String obtenerNombreEq(String login);
 
+	public void enviarNotificacion(String nom_usuario, String texto_notificacion);
+	
 	public DataListaNotificacion obtenerNotificaciones(String login);
 	
 }

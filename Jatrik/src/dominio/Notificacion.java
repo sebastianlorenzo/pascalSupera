@@ -11,6 +11,7 @@ public class Notificacion implements java.io.Serializable
 	@Id
 	@GeneratedValue
 	private long idNotificacion;
+	@Column(length=500)
 	private String texto;
 	private Boolean vista;
 	
