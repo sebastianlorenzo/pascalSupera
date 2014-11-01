@@ -8,9 +8,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Cambio;
 import dominio.Campeonato;
+import dominio.Equipo;
 import dominio.Partido;
 
 @Stateless
@@ -114,11 +117,28 @@ public class PartidoDAOImpl implements PartidoDAO
 	public JSONArray obtenerPartidosLugar(String nomCampeonato)
 	{
 		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
-		Collection<Partido> part = camp.getPartidos();
+		Collection<Partido> partidosList = camp.getPartidos();
 		
+		JSONArray jpartidos = new JSONArray();
 		//obtener partido, luego estadio, luego equipo para obtener lugar
-		
-		return null;
+		for (Partido p : partidosList) 
+		{
+			Equipo eq = p.getEstadio().getEquipo();
+			
+			JSONObject ob = new JSONObject();
+			try 
+			{
+				ob.put("partido", p.getPartido());
+				ob.put("pais", eq.getPais());
+				ob.put("localidad", eq.getLocalidad());
+			} 
+			catch (JSONException ex) 
+			{
+				ex.printStackTrace();
+			}
+			jpartidos.put(ob);
+		}
+		return jpartidos;
 	}
 	
 }
