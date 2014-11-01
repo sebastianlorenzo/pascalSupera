@@ -1,6 +1,5 @@
 package dominio;
 
-import java.sql.Time;
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +12,7 @@ public class Comentario  implements java.io.Serializable
 	@Id
 	@GeneratedValue
 	private Integer idComentario;
-	private Time hora;
+	private Integer minuto;
 	private String comentario;
 	
 	@ManyToOne
@@ -22,10 +21,9 @@ public class Comentario  implements java.io.Serializable
 	
 	public Comentario() {}
 	
-	public Comentario(Integer idComentario, Time hora, String comentario, PartidoResultado partidoResultado) 
+	public Comentario(Integer minuto, String comentario, PartidoResultado partidoResultado) 
 	{
-		this.idComentario     = idComentario;
-		this.hora             = hora;
+		this.minuto           = minuto;
 		this.comentario       = comentario;
 		this.partidoResultado = partidoResultado;
 	}
@@ -40,14 +38,14 @@ public class Comentario  implements java.io.Serializable
 		this.idComentario = idComentario;
 	}
 	
-	public Time getHora()
+	public Integer getMinuto()
 	{
-		return hora;
+		return minuto;
 	}
 	
-	public void setHora(Time hora)
+	public void setMinuto(Integer minuto)
 	{
-		this.hora = hora;
+		this.minuto = minuto;
 	}
 	
 	public String getComentario()

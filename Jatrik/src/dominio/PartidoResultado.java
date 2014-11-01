@@ -29,11 +29,10 @@ public class PartidoResultado implements java.io.Serializable
 	
 	public PartidoResultado() {}
 	
-	public PartidoResultado(Integer idPartidoResultado,	Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante,
-							Integer tarjetasRojasLocal, Integer tarjetasRojasVisitante,	Integer golesLocal, Integer golesVistiante,
+	public PartidoResultado(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, Integer tarjetasRojasLocal,
+							Integer tarjetasRojasVisitante,	Integer golesLocal, Integer golesVistiante,
 							Integer lesionesLocal, Integer lesionesVisitante, Collection<Comentario> comentarios) 
 	{
-		this.idPartidoResultado         = idPartidoResultado;
 		this.tarjetasAmarillasLocal     = tarjetasAmarillasLocal;
 		this.tarjetasAmarillasVisitante = tarjetasAmarillasVisitante;
 		this.tarjetasRojasLocal         = tarjetasRojasLocal;

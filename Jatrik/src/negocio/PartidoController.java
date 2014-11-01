@@ -2,6 +2,7 @@ package negocio;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,9 +11,11 @@ import javax.ejb.*;
 import org.codehaus.jettison.json.JSONArray;
 
 import dominio.Cambio;
+import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
+import dominio.PartidoResultado;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
 import persistencia.JugadorDAO;
@@ -86,7 +89,7 @@ public class PartidoController implements IPartidoController
 		// Obtener el partido que vamos a simular
 		Partido partido = partidoDAO.getPartido(idPartido);
 		
-		// Hago un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido
+		// Hacer un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido
 		List<Jugador> jugadoresLocal     = (List<Jugador>) partido.getEquipoLocal().getJugadores();
 		List<Jugador> jugadoresVisitante = (List<Jugador>) partido.getEquipoVisitante().getJugadores();
 		
@@ -96,6 +99,10 @@ public class PartidoController implements IPartidoController
 		
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (Constantes.MAX_JUGADAS_PARTIDO - Constantes.MIN_JUGADAS_PARTIDO + 1) + Constantes.MIN_JUGADAS_PARTIDO);
+		
+		// Inicializo el partidoResultado y la lista de comentarios
+		PartidoResultado partidoResultado = new PartidoResultado();
+		List <Comentario> comentarios = new ArrayList<Comentario>();
 		
 		// De 0 a cantidad_jugadas
 		for (int i = 0; i < cantidad_jugadas; i++)
@@ -167,6 +174,10 @@ public class PartidoController implements IPartidoController
 			if (probGolParaJugada >= Constantes.CONST_GOL)
 			{
 				goles[local_visitante]++;
+				String mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + "\n";				
+				Integer minuto = (cantidad_jugadas != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				Comentario comentario = new Comentario(minuto, mensaje, partidoResultado);
+				comentarios.add(comentario);
 			}
 			
 			// Hubo tarjeta
@@ -230,6 +241,17 @@ public class PartidoController implements IPartidoController
 		
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
+		
+		// Guardo los comentarios del partido
+		partidoResultado.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
+		partidoResultado.setTarjetasAmarillasVisitante(tarjetasAmarillas[1]);
+		partidoResultado.setTarjetasRojasLocal(tarjetasRojas[0]);
+		partidoResultado.setTarjetasRojasVisitante(tarjetasRojas[1]);
+		partidoResultado.setGolesLocal(goles[0]);
+		partidoResultado.setGolesVistiante(goles[1]);
+		partidoResultado.setLesionesLocal(lesiones[0]);
+		partidoResultado.setLesionesVisitante(lesiones[1]);
+		partidoResultado.setComentarios(comentarios);
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
