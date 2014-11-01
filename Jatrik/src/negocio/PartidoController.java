@@ -292,8 +292,8 @@ public class PartidoController implements IPartidoController
         }
 		
 		// Factores aleatorios
-		float factor_ataque  = (float) Math.random()*10;
-		float factor_portero = (float) Math.random()*10;
+		float factor_ataque  = (float) Math.random();
+		float factor_portero = (float) Math.random();
 		
 		// Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100
 		float probGol = (probJugadaGol * ((tiro_jugador * factor_ataque) - (habilidad_portero * factor_portero))) / 100;
