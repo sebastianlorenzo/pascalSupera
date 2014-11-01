@@ -36,7 +36,7 @@ public class Usuario implements java.io.Serializable
 	@JoinTable(name="usuario_notificaciones")
 	private Collection<Notificacion> notificacionesRecibidas;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="usuario_amigos")
 	private Collection<Usuario> misAmigosChat;
 	

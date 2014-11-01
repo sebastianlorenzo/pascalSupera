@@ -251,4 +251,21 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		}
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void setearAmigos(String nomUsuario, List<String> listUs) 
+	{
+		Usuario u = em.find(Usuario.class, nomUsuario);
+		Collection<Usuario> amigos = u.getMisAmigosChat();
+		
+		for(String nomUs : listUs)
+		{
+			Usuario usAmigoNuevo = em.find(Usuario.class, nomUs);
+			boolean esta = amigos.contains(usAmigoNuevo);
+			if (esta == false){
+				amigos = u.getMisAmigosChat();
+				amigos.add(usAmigoNuevo);
+				u.setMisAmigosChat(amigos);
+			}
+		}
+	}	
 }

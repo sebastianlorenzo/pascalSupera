@@ -43,5 +43,7 @@ public interface UsuarioDAO
 	public String obtenerNombreEq(String login);
 
 	public DataListaNotificacion obtenerNotificaciones(String login);
+
+	public void setearAmigos(String nomUsuario, List<String> listUs);
 	
 }

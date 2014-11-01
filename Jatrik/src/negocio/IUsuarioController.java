@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -34,5 +36,7 @@ public interface IUsuarioController
 	public String obtenerEquipo(String login);
 
 	public DataListaNotificacion verNotificaciones(String nomUsuario);
+
+	public void setearNuevosAmigos(String nomUsuario, List<String> listUs);
 		
 }

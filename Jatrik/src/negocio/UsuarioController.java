@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 import javax.ejb.*;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -167,5 +169,11 @@ public class UsuarioController implements IUsuarioController
 	public DataListaNotificacion verNotificaciones(String login) 
 	{
 		return this.usuarioDAO.obtenerNotificaciones(login);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void setearNuevosAmigos(String nomUsuario, List<String> listUs) 
+	{
+		this.usuarioDAO.setearAmigos(nomUsuario, listUs);
 	}
 }
