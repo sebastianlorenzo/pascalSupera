@@ -25,7 +25,7 @@ public interface IUsuarioController
 	
 	public Boolean esAdmin(String login);
 
-	public JSONArray obtenerDesconectados();
+	public JSONArray obtenerDesconectados(String login);
 	
 	public Boolean enviarChat(String emisor, String receptor, String mensaje);
 

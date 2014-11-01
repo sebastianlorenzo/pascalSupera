@@ -141,9 +141,9 @@ public class UsuarioController implements IUsuarioController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray obtenerDesconectados()
+	public JSONArray obtenerDesconectados(String login)
 	{
-		return this.usuarioDAO.obtenerDesconectados();
+		return this.usuarioDAO.obtenerDesconectados(login);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

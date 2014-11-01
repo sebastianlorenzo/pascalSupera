@@ -86,7 +86,6 @@ public class UsuarioWS
     	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, localidad, nombreEstadio).toString();    	
     }
     
-    
     @POST
 	@Path("logout")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -115,16 +114,20 @@ public class UsuarioWS
 	    return json.toString();
     }
     
-    @GET
+    @POST
 	@Path("listarDesconectados")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String listarDesconectados()
-	{
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String listarDesconectados(String datos) throws JSONException
+    {
+    	JSONObject datosUsr = new JSONObject(datos);
+		String nomUsuario   = datosUsr.getString("nomUsuario");
+		
 		JSONObject respuesta = new JSONObject();		
 		try 
 		{
 			JSONArray jdesconectados = null;
-			jdesconectados = iUsuarioController.obtenerDesconectados();
+			jdesconectados = iUsuarioController.obtenerDesconectados(nomUsuario);
 			respuesta.put("desconectados", jdesconectados);
 
 		} 

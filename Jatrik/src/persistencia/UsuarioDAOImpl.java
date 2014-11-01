@@ -13,7 +13,6 @@ import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
 import tipos.DataMensaje;
 import tipos.DataNotificacion;
-import dominio.Equipo;
 import dominio.Mensaje;
 import dominio.Notificacion;
 import dominio.Usuario;
@@ -41,22 +40,6 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		}
 	}
 	
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Boolean actualizarUsuario(String login, String password, String mail, Equipo equipo, Boolean conectado)
-	{
-		Usuario u = em.find(Usuario.class, login);
-		if (u != null)
-		{
-			u.setPassword(password);
-			u.setMail(mail);
-			u.setEquipo(equipo);
-			u.setConectado(conectado);
-			em.merge(u);
-			return true;
-		}
-		return false;
-	}
-
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void borrarUsuario(Usuario u)
 	{
@@ -199,15 +182,17 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		return dlm;
 	}
 
-	@SuppressWarnings("unchecked")
+	//Obtener los usuarios amigos y desconectados
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public JSONArray obtenerDesconectados() 
-	{	Query query = em.createQuery("SELECT us FROM Usuario us");
-		List<Usuario> usuarios = query.getResultList();		
+	public JSONArray obtenerDesconectados(String login) 
+	{	
+		Usuario us =  em.find(Usuario.class, login);
+		Collection<Usuario> misAmigosDesconectados = us.getMisAmigosChat();
+		
 		JSONArray jdesconectados = new JSONArray();
 		JSONObject ob;
 	
-		for (Usuario u : usuarios) 
+		for (Usuario u : misAmigosDesconectados) 
 		{
 			try 
 			{	
@@ -224,6 +209,7 @@ public class UsuarioDAOImpl implements UsuarioDAO
 			}
 			
 		}
+		
 		return jdesconectados;
 	}
 
@@ -239,26 +225,30 @@ public class UsuarioDAOImpl implements UsuarioDAO
 	public DataListaNotificacion obtenerNotificaciones(String login) 
 	{
 		Usuario u = em.find(Usuario.class, login);
-		Collection<Notificacion> notificaciones = u.getNotificacionesRecibidas();
-		Iterator<Notificacion> iter = notificaciones.iterator();
-		
-		DataListaNotificacion dln = new DataListaNotificacion();
-		DataNotificacion dn = null;
-		
-		while(iter.hasNext()){
-			Notificacion n = iter.next();
-			if(n.getVista() == false)
-			{	
-				dn = new DataNotificacion();
-				dn.setTexto(n.getTexto());
-				
-				n.setVista(true); //Notificacion recibida				
+		if(u != null){
+			Collection<Notificacion> notificaciones = u.getNotificacionesRecibidas();
+			Iterator<Notificacion> iter = notificaciones.iterator();
+			
+			DataListaNotificacion dln = new DataListaNotificacion();
+			DataNotificacion dn = null;
+			
+			while(iter.hasNext()){
+				Notificacion n = iter.next();
+				if(n.getVista() == false)
+				{	
+					dn = new DataNotificacion();
+					dn.setTexto(n.getTexto());
+					
+					n.setVista(true); //Notificacion recibida				
+				}
+				if(dn != null)
+					dln.addDataNotificacion(dn);
 			}
-			if(dn != null)
-				dln.addDataNotificacion(dn);
+			
+			return dln;
+		}else{
+			return null;
 		}
-		
-		return dln;
 	}
 	
 }

@@ -8,7 +8,6 @@ import org.codehaus.jettison.json.JSONArray;
 
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
-import dominio.Equipo;
 import dominio.Usuario;
 
 @Local
@@ -16,9 +15,7 @@ public interface UsuarioDAO
 {
 	
 	public Usuario insertarUsuario(Usuario u);
-	
-	public Boolean actualizarUsuario(String login, String password,String mail, Equipo equipo, Boolean conectado);
-	
+		
 	public void borrarUsuario(Usuario u);
 		
 	public Usuario obtenerUsuario(String login);
@@ -41,7 +38,7 @@ public interface UsuarioDAO
 
 	public DataListaMensaje recibirChat(String receptor);
 
-	public JSONArray obtenerDesconectados();
+	public JSONArray obtenerDesconectados(String login);
 
 	public String obtenerNombreEq(String login);
 

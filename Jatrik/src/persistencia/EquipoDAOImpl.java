@@ -378,17 +378,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			Collection<Oferta> ofertasRecibidas = miEquipo.getOfertasRecibidas();
 			Iterator<Oferta> iter = ofertasRecibidas.iterator();
-			
 			Integer idJug = jug.getIdJugador();
-			
-			while(iter.hasNext()){
-				Oferta of = iter.next();
-				Integer id = of.getJugadorEnVenta().getIdJugador();
-				if(id == idJug){
-					of.setEstado_oferta("rechazada");
-					of.setComentarioAcepta("Oferta rechazada, el jugador ya fue vendido a otro equipo.");
-				}
-			}
 			
 			Collection<Jugador> misJugadores = miEquipo.getJugadores();
 			misJugadores.remove(jug);
@@ -399,17 +389,48 @@ public class EquipoDAOImpl implements EquipoDAO
 			jug.setEquipo(eqDestino);
 								
 			oferta.setEstado_oferta("aceptada");
-			if (!comentario.equals(""))
-				oferta.setComentarioAcepta(comentario);
-			
+						
 			Collection<Notificacion> notificacionesRecibidas = usComprador.getNotificacionesRecibidas();
-			String mensaje= "La oferta realizada por el jugador "+jug.getJugador()+" perteneciente al equipo "+miEquipo.getEquipo()+" fue aceptada";
-			Notificacion not = new Notificacion(usComprador, mensaje);
+			String mensaje= "La oferta realizada por el jugador "+jug.getJugador()+" perteneciente al equipo "
+							+miEquipo.getEquipo()+" fue aceptada.";
+			Notificacion not = new Notificacion();
+			not.setReceptorNotificacion(usComprador);
+			not.setVista(false);
+			
+			if (!comentario.equals("")){
+				oferta.setComentarioAcepta(comentario);
+				not.setTexto(mensaje+" "+comentario);
+			}else{
+				not.setTexto(mensaje);
+			}
 			em.persist(not);
 			
 			notificacionesRecibidas.add(not);
 			usComprador.setNotificacionesRecibidas(notificacionesRecibidas);			
 			
+			while(iter.hasNext())
+			{
+				Oferta of = iter.next();
+				Integer id = of.getJugadorEnVenta().getIdJugador();
+				String estadoOf = of.getEstado_oferta();
+				
+				if(id == idJug && estadoOf.equals("pendiente"))
+				{
+					of.setEstado_oferta("rechazada");
+					of.setComentarioAcepta("Oferta rechazada, el jugador ya fue vendido a otro equipo.");
+					
+					Usuario uRech = of.getEquipoDestino().getUsuario();
+					Collection<Notificacion> notificacionesRecibidasUR = uRech.getNotificacionesRecibidas();
+						String msj= "La oferta ha sido rechazada, pues el jugador "+of.getJugadorEnVenta().getJugador()+
+								" fue vendido.";
+						Notificacion noti = new Notificacion(uRech, msj);
+						em.persist(noti);
+						
+					notificacionesRecibidasUR.add(noti);
+					uRech.setNotificacionesRecibidas(notificacionesRecibidasUR);	
+				}
+			}
+						
 			try
 			{
 				respuesta.put("Oferta aceptada", true);
@@ -445,16 +466,24 @@ public class EquipoDAOImpl implements EquipoDAO
 		else{
 			
 			oferta.setEstado_oferta("rechazada");
-			if (!comentario.equals(""))
-				oferta.setComentarioAcepta(comentario);
 			
 			Usuario usOferente = oferta.getEquipoDestino().getUsuario();
 			String NomJug = oferta.getJugadorEnVenta().getJugador();
 			String NomEqJug = oferta.getEquipoOrigen().getEquipo();
 			
 			Collection<Notificacion> notificacionesRecibidas = usOferente.getNotificacionesRecibidas();
-			String mensaje= "La oferta realizada por el jugador "+NomJug+" perteneciente al equipo "+NomEqJug+" fue rechazada.";
-			Notificacion not = new Notificacion(usOferente, mensaje);
+			String mensajeUno= "La oferta realizada por el jugador "+NomJug+" perteneciente al equipo "+NomEqJug+" fue rechazada.";
+			
+			Notificacion not = new Notificacion();
+			not.setReceptorNotificacion(usOferente);
+			not.setVista(false);
+			
+			if (!comentario.equals("")){
+				oferta.setComentarioAcepta(comentario);
+				not.setTexto(mensajeUno+" "+comentario);
+			}else{
+				not.setTexto(mensajeUno);
+			}
 			em.persist(not);
 			
 			notificacionesRecibidas.add(not);
