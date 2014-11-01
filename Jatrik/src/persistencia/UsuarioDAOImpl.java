@@ -251,6 +251,16 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		}
 	}
 	
+	public void enviarNotificacion(String nom_usuario, String texto_notificacion)
+	{
+		Usuario usuario = em.find(Usuario.class, nom_usuario);
+		Notificacion notificacion = new Notificacion(usuario, texto_notificacion);
+		em.persist(notificacion);
+		Collection<Notificacion> notificacionesRecibidas = usuario.getNotificacionesRecibidas();
+		notificacionesRecibidas.add(notificacion);
+		usuario.setNotificacionesRecibidas(notificacionesRecibidas);
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void setearAmigos(String nomUsuario, List<String> listUs) 
 	{
@@ -268,4 +278,5 @@ public class UsuarioDAOImpl implements UsuarioDAO
 			}
 		}
 	}	
+	
 }

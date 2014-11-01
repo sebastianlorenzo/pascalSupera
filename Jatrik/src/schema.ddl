@@ -104,7 +104,7 @@
 
     create table public.notificacion (
         idNotificacion int8 not null,
-        texto varchar(255),
+        texto varchar(500),
         vista boolean,
         receptorNotificacion_login varchar(255),
         primary key (idNotificacion)
