@@ -17,7 +17,8 @@ public class VistaWebController {
 	private String REST_URI_PATH="http://localhost:8080/Jatrik/rest/";
 	private String LOGIN_PATH = "usuarios/login";
 	private String LOGOUT_PATH = "usuarios/logout";
-	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";	
+	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";
+	private String ENVIAR_CHAT_PATH = "usuarios/enviarChat";
 	private String REGISTRO_PATH = "usuarios/registrar";
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
@@ -120,6 +121,21 @@ public class VistaWebController {
 				"}";
 		
 	}
+	
+	// ENVIAR CHAT USUARIO	*******************************************************************************
+		public String enviarChat (String emisor, String receptor, String mensaje) {
+			
+			String envio= "{"+
+					"emisor"+":"+emisor+","+
+					"receptor"+":"+receptor+","+
+					"mensaje"+":"+mensaje+
+				   "}";		
+			Client client = ClientBuilder.newClient();		
+			WebTarget target = client.target(REST_URI_PATH+ENVIAR_CHAT_PATH);	 
+			String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);			 
+		    return respuesta;
+			
+		}
 	
 	// CREAR CAMPEONATO	**************************************************************************************
 		public String crearCampeonato (String nombre,Integer cantidadEquipos ,Date fechaInicio) {

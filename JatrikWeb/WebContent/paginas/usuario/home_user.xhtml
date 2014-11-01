@@ -47,11 +47,10 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 			<div class="Ctopleft"></div>
 			<!-- CHATTTTT -->
 			<p:growl id="growl" showDetail="true" />   
+			
 			<h:form id="form">
-			    <p:remoteCommand name="updateList" update="users" process="@this" />
-			 
-			   
-			    	<p:commandButton id="boton_apretar" value="Ingresar a sala" action="#{loginBean.apretar}"/>
+			    	<p:commandButton id="boton_apretar" value="Ingresar a sala" action="#{loginBean.apretar()}"/>
+			    	<p:commandButton id="boton_obtenerMensajes" value="Obtener Mensajes" action="#{loginBean.obtenerMensajes()}"/>	    	
 			        <h:panelGroup rendered="#{loginBean.loggedIn}">
 			            <h:panelGrid style="width:100%">
 			            	<p:row>
@@ -90,7 +89,33 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 			   <p:spacer width="5" />
 	           <p:commandButton value="Enviar" actionListener="#{loginBean.sendGlobal}" oncomplete="$('.messageInput').val('').focus()" />
 			</h:form>
-				
+			
+			
+			<h:form id="form_desconectados">
+			  <p:accordionPanel>
+				<p:ajax event="tabChange" listener="#{loginBean.onTabShowDesconectados()}" update="usersDesconectados"/>				
+        		<p:tab value="Usuarios Desconectados">	
+			      <p:remoteCommand name="updateListDesconectados" update="usersDesconectados" process="@this" />
+			        <h:panelGroup rendered="#{loginBean.loggedIn}">
+			            <h:panelGrid style="width:100%">
+			                <p:row>
+			                	<p:dataList id="usersDesconectados" var="userDesconectados" value="#{loginBean.usuariosDesconectados}" styleClass="usersList">
+				                    <f:facet id="titulo_desconectados" name="header">
+				                        Desconectados
+				                    </f:facet>
+				 
+				                    <p:commandButton title="Chat" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update=":form:privateChatContainer">
+				                        <f:setPropertyActionListener value="#{userDesconectados}" target="#{loginBean.privateUser}" />
+				                    </p:commandButton>
+				                    #{userDesconectados}
+			                	</p:dataList>
+			                </p:row>		                
+			            </h:panelGrid>			            
+			        </h:panelGroup>
+			    </p:tab>
+			   </p:accordionPanel> 
+			</h:form>
+			
 		</div><!-- cA -->
 		<div id="cB" >
 			<div class="Ctopright"></div>
