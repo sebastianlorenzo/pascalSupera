@@ -125,7 +125,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				String nomCampeonato = c.getCampeonato();
 				dca.setNomCampeonato(nomCampeonato);
 				Date fechaCamp = c.getInicioCampeonato();
-				formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 			    String fechaInicio = formateador.format(fechaCamp);
 				dca.setFechaInicio(fechaInicio);
 				Integer bacantes = (c.getCantEquipos() - c.getEquipos().size());
@@ -237,7 +237,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				String nomCampeonato = c.getCampeonato();
 				dca.setNomCampeonato(nomCampeonato);
 				Date fechaCamp = c.getInicioCampeonato();
-				formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 			    String fechaInicio = formateador.format(fechaCamp);
 				dca.setFechaInicio(fechaInicio);
 				

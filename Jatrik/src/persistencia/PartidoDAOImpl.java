@@ -1,13 +1,19 @@
 package persistencia;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import dominio.Cambio;
 import dominio.Campeonato;
+import dominio.Equipo;
 import dominio.Partido;
 
 @Stateless
@@ -105,6 +111,36 @@ public class PartidoDAOImpl implements PartidoDAO
 		Query query = em.createQuery("SELECT " + select + " FROM Partido p WHERE p.partido = '" + partido + "'");
 		List<Cambio> resultListP = query.getResultList();
 		return resultListP;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerPartidosLugar(String nomCampeonato)
+	{
+		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
+		Collection<Partido> partidosList = camp.getPartidos();
+		
+		JSONArray jpartidos = new JSONArray();
+		//obtener partido, luego estadio, luego equipo para obtener lugar
+		for (Partido p : partidosList) 
+		{
+			Equipo eq = p.getEstadio().getEquipo();
+			String eqLocal = p.getEquipoLocal().getEquipo();
+			String eqVisitante = p.getEquipoVisitante().getEquipo();
+			
+			JSONObject ob = new JSONObject();
+			try 
+			{
+				ob.put("partido", eqLocal+" vs. "+eqVisitante);
+				ob.put("pais", eq.getPais());
+				ob.put("localidad", eq.getLocalidad());
+			} 
+			catch (JSONException ex) 
+			{
+				ex.printStackTrace();
+			}
+			jpartidos.put(ob);
+		}
+		return jpartidos;
 	}
 	
 }

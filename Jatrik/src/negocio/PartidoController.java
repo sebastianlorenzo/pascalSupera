@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.ejb.*;
 
+import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Cambio;
 import dominio.Equipo;
 import dominio.Jugador;
@@ -487,6 +489,12 @@ public class PartidoController implements IPartidoController
 			}
 		}
 		return null;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerPartidosPorZona(String nomCampeonato) 
+	{
+		return this.partidoDAO.obtenerPartidosLugar(nomCampeonato);
 	}
 	
 	private String getMensajeGanadorPartido(String fecha_partido, String nom_equipo)

@@ -8,10 +8,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import negocio.IPartidoController;
+
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import com.google.gson.Gson;
+
 import tipos.DataCambio;
 import tipos.DataResumenPartido;
 
@@ -67,6 +72,31 @@ public class PartidoWS
 		}
 		
 		return json.toString();
+	}
+	
+	//Previamente obtener el nombre del campeonato en ejecución
+	@POST
+	@Path("listarPartidosMapa")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String listarPartidosMapa(String datos) throws JSONException
+	{
+		JSONObject datosPartido = new JSONObject(datos);
+		String nomCampeonato          = datosPartido.getString("nomCampeonato");
+		
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray partidos = null;
+			partidos = iPartidoController.obtenerPartidosPorZona(nomCampeonato);
+			respuesta.put("partidos", partidos);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return respuesta.toString();
 	}
 	
 }
