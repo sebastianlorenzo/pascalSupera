@@ -124,11 +124,13 @@ public class PartidoDAOImpl implements PartidoDAO
 		for (Partido p : partidosList) 
 		{
 			Equipo eq = p.getEstadio().getEquipo();
+			String eqLocal = p.getEquipoLocal().getEquipo();
+			String eqVisitante = p.getEquipoVisitante().getEquipo();
 			
 			JSONObject ob = new JSONObject();
 			try 
 			{
-				ob.put("partido", p.getPartido());
+				ob.put("partido", eqLocal+" vs. "+eqVisitante);
 				ob.put("pais", eq.getPais());
 				ob.put("localidad", eq.getLocalidad());
 			} 
