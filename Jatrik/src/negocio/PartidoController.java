@@ -3,9 +3,7 @@ package negocio;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
-
 import dominio.Cambio;
 import dominio.Equipo;
 import dominio.Jugador;
@@ -82,17 +80,8 @@ public class PartidoController implements IPartidoController
 		List<Jugador> jugadoresVisitante = (List<Jugador>) partido.getEquipoVisitante().getJugadores();
 		
 		// Obtener los cambios programados
-		List<Cambio> cambiosProgramadosEquipoLocal = (List<Cambio>) partido.getCambiosLocal();
-		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partido.getCambiosVisitante();
-
-		System.out.println("*************************** cambiosProgramadosEquipoLocal ******************************");
-		Iterator<Cambio> it = cambiosProgramadosEquipoLocal.iterator();
-		while (it.hasNext())
-		{
-			Cambio c = it.next();
-			System.out.println("Minuto " + c.getMinutoCambio() + " - Entra " + c.getIdJugadorEntrante() + " - Sale " + c.getIdJugadorSaliente());
-		}
-		System.out.println("************************************************************************");
+		List<Cambio> cambiosProgramadosEquipoLocal = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, true);
+		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, false);
 		
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (Constantes.MAX_JUGADAS_PARTIDO - Constantes.MIN_JUGADAS_PARTIDO + 1) + Constantes.MIN_JUGADAS_PARTIDO);

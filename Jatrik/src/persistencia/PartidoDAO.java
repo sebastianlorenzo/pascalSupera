@@ -22,4 +22,5 @@ public interface PartidoDAO
 	
 	public void eliminarCambiosHechosDurantePartido(Partido p);
 	
+	public List<Cambio> getCambiosPartido(String partido, boolean local);
 }

@@ -15,7 +15,7 @@ public class Cambio implements java.io.Serializable
 	private Integer idJugadorSaliente;
 	private Integer minutoCambio;
 	
-	@ManyToOne()
+	@ManyToOne
 	private Partido partido;
 
 	

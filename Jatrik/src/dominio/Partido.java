@@ -33,11 +33,11 @@ public class Partido implements java.io.Serializable
 	private Campeonato campeonato;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable=true)
 	private Collection<Cambio> cambiosLocal;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable=true)
 	private Collection<Cambio> cambiosVisitante;
 	
 	public Partido(){}

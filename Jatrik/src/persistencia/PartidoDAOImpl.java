@@ -1,7 +1,5 @@
 package persistencia;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.*;
@@ -10,7 +8,6 @@ import javax.persistence.Query;
 
 import dominio.Cambio;
 import dominio.Campeonato;
-import dominio.Jugador;
 import dominio.Partido;
 
 @Stateless
@@ -95,6 +92,19 @@ public class PartidoDAOImpl implements PartidoDAO
 	public void eliminarCambiosHechosDurantePartido(Partido p)
 	{
 		em.createQuery("DELETE FROM Cambio c WHERE c.partido = '" + p.getPartido() +"'").executeUpdate();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Cambio> getCambiosPartido(String partido, boolean local)
+	{
+		String select = "p.cambiosLocal";
+		if (!local)
+		{
+			select = "p.cambiosVisitante";
+		}
+		Query query = em.createQuery("SELECT " + select + " FROM Partido p WHERE p.partido = '" + partido + "'");
+		List<Cambio> resultListP = query.getResultList();
+		return resultListP;
 	}
 	
 }
