@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.primefaces.context.RequestContext;
@@ -153,7 +154,13 @@ public class LoginBean implements Serializable {
 	public String login() throws JSONException {
 		
 		VistaWebController v = new VistaWebController();
-		String respuesta = v.login(nombre, pwd);		
+		String respuesta = v.login(nombre, pwd);
+		String r_desconectados= v.listarDesconectados();		
+		System.out.println(r_desconectados);
+		JSONObject desconectados = new JSONObject(r_desconectados);	
+		System.out.println(desconectados);
+		JSONArray lista_desconectados= desconectados.getJSONArray("desconectados");
+		System.out.println(lista_desconectados);
 		JSONObject json = new JSONObject(respuesta);
 		if (json.getBoolean("login")){
 			  
@@ -164,8 +171,17 @@ public class LoginBean implements Serializable {
 				
 			else{
 				 RequestContext requestContext = RequestContext.getCurrentInstance();
-				 users.add(nombre);
+				 users.add(nombre);				 
 		         requestContext.execute("PF('subscriber').connect('/" + nombre + "')");
+		         if (lista_desconectados !=null){
+		        	 for (int i=0;i<lista_desconectados.length() ;i++){
+		        		 JSONObject ob= lista_desconectados.getJSONObject(i);
+		        		 String usuario=ob.get("desconectado").toString();
+		        		 System.out.println(usuario);
+		        		 if (!users.contains(usuario))
+		        			 users.add(usuario);
+		        	 }
+		         }
 		         loggedIn = true;
 		         return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
 		   }	  	 

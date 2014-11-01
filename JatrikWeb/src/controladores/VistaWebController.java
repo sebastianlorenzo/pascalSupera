@@ -17,6 +17,7 @@ public class VistaWebController {
 	private String REST_URI_PATH="http://localhost:8080/Jatrik/rest/";
 	private String LOGIN_PATH = "usuarios/login";
 	private String LOGOUT_PATH = "usuarios/logout";
+	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";	
 	private String REGISTRO_PATH = "usuarios/registrar";
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
@@ -176,6 +177,15 @@ public class VistaWebController {
 					
 					Client client = ClientBuilder.newClient();		
 					WebTarget target = client.target(REST_URI_PATH+CAMPEONATO_EN_EJECUCION_PATH);	 
+					String respuesta=target.request().get(String.class);
+				    return respuesta;
+					
+				}
+			// LISTAR CAMPEONATOS	**************************************************************************************
+				public String listarDesconectados () {
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTA_DESCONECTADOS_PATH);	 
 					String respuesta=target.request().get(String.class);
 				    return respuesta;
 					

@@ -8,9 +8,6 @@ import org.primefaces.push.annotation.OnOpen;
 import org.primefaces.push.annotation.PathParam;
 import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.annotation.Singleton;
- 
-
-import beans.LoginBean;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
