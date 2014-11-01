@@ -1,5 +1,6 @@
 package negocio;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -211,7 +212,8 @@ public class PartidoController implements IPartidoController
 		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
 		
 		// Enviar notificaciones a los equipos local y visitante
-		Date fecha_partido          = partido.getFechaPartido();
+		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd--MM-yyyy hh:mm");
+		String fecha_partido = formato_fecha.format(partido.getFechaPartido());
 		String nom_equipo_local     = partido.getEquipoLocal().getEquipo();
 		String nom_equipo_visitante = partido.getEquipoVisitante().getEquipo();
 		
@@ -487,19 +489,19 @@ public class PartidoController implements IPartidoController
 		return null;
 	}
 	
-	private String getMensajeGanadorPartido(Date fecha_partido, String nom_equipo)
+	private String getMensajeGanadorPartido(String fecha_partido, String nom_equipo)
 	{
 		return "FELICITACIONES! Ha ganado el partido jugado en la fecha " + fecha_partido + 
 			   " contra el equipo " + nom_equipo + ".\n";
 	}
 	
-	private String getMensajeEmpatePartido(Date fecha_partido, String nom_equipo)
+	private String getMensajeEmpatePartido(String fecha_partido, String nom_equipo)
 	{
 		return "El partido jugado en la fecha " + fecha_partido + 
 				   " contra el equipo " + nom_equipo + " ha finalizado con un empate.\n";
 	}
 	
-	private String getMensajePerdedorPartido(Date fecha_partido, String nom_equipo)
+	private String getMensajePerdedorPartido(String fecha_partido, String nom_equipo)
 	{
 		return "El partido jugado en la fecha " + fecha_partido + 
 			       " contra el equipo " + nom_equipo + " ha finalizado. Lamentablemente, ha sido derrotado.\n";

@@ -39,6 +39,11 @@
         oferta_jugadores_idOferta int4 not null
     );
 
+    create table public.partidoResultado_comentario (
+        partidoResultado_idPartidoResultado int4 not null,
+        comentarios_idComentario int4 not null
+    );
+
     create table public.cambio (
         idCambio int4 not null,
         idJugadorEntrante int4,
@@ -55,6 +60,14 @@
         cantEquipos int4,
         inicioCampeonato timestamp,
         primary key (campeonato)
+    );
+
+    create table public.comentario (
+        idComentario int4 not null,
+        comentario varchar(255),
+        hora time,
+        partidoResultado_idPartidoResultado int4,
+        primary key (idComentario)
     );
 
     create table public.equipo (
@@ -139,6 +152,19 @@
         primary key (partido)
     );
 
+    create table public.partidoResultado (
+        idPartidoResultado int4 not null,
+        golesLocal int4,
+        golesVistiante int4,
+        lesionesLocal int4,
+        lesionesVisitante int4,
+        tarjetasAmarillasLocal int4,
+        tarjetasAmarillasVisitante int4,
+        tarjetasRojasLocal int4,
+        tarjetasRojasVisitante int4,
+        primary key (idPartidoResultado)
+    );
+
     create table public.usuario (
         login varchar(255) not null,
         capital int4,
@@ -190,6 +216,9 @@
 
     alter table public.oferta_jugadores 
         add constraint UK_84ki5xvluuaj6u5sfnc5nwy5q  unique (oferta_jugadores_idOferta);
+
+    alter table public.partidoResultado_comentario 
+        add constraint UK_tapbc8xfpuikjxg8otxm7yxwy  unique (comentarios_idComentario);
 
     alter table public.usuario_mensajesEnviados 
         add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
@@ -280,6 +309,16 @@
         foreign key (jugador_idJugador) 
         references public.jugador;
 
+    alter table public.partidoResultado_comentario 
+        add constraint FK_tapbc8xfpuikjxg8otxm7yxwy 
+        foreign key (comentarios_idComentario) 
+        references public.comentario;
+
+    alter table public.partidoResultado_comentario 
+        add constraint FK_rnyts9yx3wyqvyt2kl9goeft3 
+        foreign key (partidoResultado_idPartidoResultado) 
+        references public.partidoResultado;
+
     alter table public.cambio 
         add constraint FK_db2khxvpib5xmrjhspw6g3ade 
         foreign key (partido_partido) 
@@ -294,6 +333,11 @@
         add constraint FK_14owakocop4k2t8f7akhjxnp5 
         foreign key (cambiosLocal_partido) 
         references public.partido;
+
+    alter table public.comentario 
+        add constraint FK_7mu5keanfphjqu8oinp9egx7a 
+        foreign key (partidoResultado_idPartidoResultado) 
+        references public.partidoResultado;
 
     alter table public.estadio 
         add constraint FK_es3pkcufchab44tdwagonlbvc 
