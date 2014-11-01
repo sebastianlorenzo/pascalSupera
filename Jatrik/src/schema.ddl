@@ -191,9 +191,6 @@
     alter table public.oferta_jugadores 
         add constraint UK_84ki5xvluuaj6u5sfnc5nwy5q  unique (oferta_jugadores_idOferta);
 
-    alter table public.usuario_amigos 
-        add constraint UK_h950hjw7aaf98ngiyyjl8ej6h  unique (misAmigosChat_login);
-
     alter table public.usuario_mensajesEnviados 
         add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
 

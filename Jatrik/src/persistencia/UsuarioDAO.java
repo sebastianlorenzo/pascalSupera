@@ -1,14 +1,10 @@
 package persistencia;
 
 import java.util.List;
-
 import javax.ejb.Local;
-
 import org.codehaus.jettison.json.JSONArray;
-
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
-import dominio.Notificacion;
 import dominio.Usuario;
 
 @Local
@@ -46,5 +42,7 @@ public interface UsuarioDAO
 	public void enviarNotificacion(String nom_usuario, String texto_notificacion);
 	
 	public DataListaNotificacion obtenerNotificaciones(String login);
+
+	public void setearAmigos(String nomUsuario, List<String> listUs);
 	
 }

@@ -1,5 +1,8 @@
 package ws;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -94,6 +97,18 @@ public class UsuarioWS
     {
     	JSONObject datosUsr = new JSONObject(datos);
 		String nomUsuario   = datosUsr.getString("logout");
+		JSONArray amigos = datosUsr.getJSONArray("desconectados");
+		
+		if (amigos != null){
+			List<String> listUs = new ArrayList<String>();
+			int i;
+			for (i=0; i < amigos.length(); i++){
+				JSONObject jsonObject = amigos.getJSONObject(i);
+				String us = jsonObject.getString("desconectado");
+				listUs.add(us);	
+			}
+			iUsuarioController.setearNuevosAmigos(nomUsuario, listUs);
+		}
 		
 		Boolean conectadoUsr =  iUsuarioController.estaConectadoUsuario(nomUsuario);
     	if (conectadoUsr)
