@@ -1,10 +1,13 @@
 package persistencia;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.codehaus.jettison.json.JSONArray;
 
 import dominio.Cambio;
 import dominio.Campeonato;
@@ -105,6 +108,17 @@ public class PartidoDAOImpl implements PartidoDAO
 		Query query = em.createQuery("SELECT " + select + " FROM Partido p WHERE p.partido = '" + partido + "'");
 		List<Cambio> resultListP = query.getResultList();
 		return resultListP;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerPartidosLugar(String nomCampeonato)
+	{
+		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
+		Collection<Partido> part = camp.getPartidos();
+		
+		//obtener partido, luego estadio, luego equipo para obtener lugar
+		
+		return null;
 	}
 	
 }

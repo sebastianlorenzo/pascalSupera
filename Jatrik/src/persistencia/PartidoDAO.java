@@ -1,6 +1,9 @@
 package persistencia;
 
 import java.util.List;
+
+import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Partido;
@@ -23,4 +26,6 @@ public interface PartidoDAO
 	public void eliminarCambiosHechosDurantePartido(Partido p);
 	
 	public List<Cambio> getCambiosPartido(String partido, boolean local);
+
+	public JSONArray obtenerPartidosLugar(String nomCampeonato);
 }
