@@ -1,5 +1,6 @@
 package negocio;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +13,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
@@ -120,13 +122,45 @@ public class CampeonatoController implements ICampeonatoController
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario) 
 	{
-		return this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
+		Boolean ok= this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
+		
+		boolean lleno = this.campeonatoDAO.campeonatoCompleto(nomCampeonato);
+		
+		if(lleno){
+		//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
+			boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
+System.out.println("creoCamp:"+ creoCampeonato);
+			if(creoCampeonato){
+				Date hoy = new Date();
+				Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
+				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+				String fecha = formateador.format(inicioCampeonato);
+				String nomCamp = "campeonato"+fecha;
+				
+				JSONObject ob = crearCampeonato(nomCamp, inicioCampeonato, 2);
+				try{
+					ob.put("camp",nomCamp);
+				}
+		        catch(Exception ex)
+				{
+		            ex.printStackTrace();
+		        }
+			}
+		}
+		return ok;
 	}
 
 	//obtengo todos los campeonatos en ejecución
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataListaCampeonato campeonatosEnEjecucion() {
+	public DataListaCampeonato campeonatosEnEjecucion() 
+	{
 		return this.campeonatoDAO.listarCampeonatosEnEjecucion();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray listarCampEnEjecucionYFinalizados() 
+	{
+		return this.campeonatoDAO.listarCampEnEjecucionYFinalizados();
 	}
 
 }

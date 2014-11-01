@@ -12,6 +12,10 @@ import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import tipos.Constantes;
 import tipos.DataCampeonato;
 import tipos.DataListaCampeonato;
@@ -147,6 +151,21 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		
 		return dlcampeonatos;		
 	}
+	
+	//funcion auxiliar que permite saber si debemos crear un nuevo campeonato automáticamente.
+	@SuppressWarnings("unchecked")
+	public boolean hayCampeonatosDisponibles()
+	{
+		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		List<Campeonato> campeonatosList = query.getResultList();
+		
+		for (Campeonato c : campeonatosList) 
+		{
+			if (c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos())
+				return false;
+		}
+		return true;
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario) 
@@ -202,7 +221,6 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 						}
 					}
 				}
-				
 			}
 			return true;
 		}
@@ -255,6 +273,53 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			}	
 		}		
 		return dlcampeonatos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray listarCampEnEjecucionYFinalizados() 
+	{	
+		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		List<Campeonato> campeonatos = query.getResultList();
+		JSONArray jcampeonatos = new JSONArray();
+		JSONObject obj;
+
+		Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    String fecha_hoy = formateador.format(ahora);
+	    
+		for (Campeonato c : campeonatos) 
+		{	
+			String fecha_campeonato = c.getInicioCampeonato().toString();
+			
+			if (fecha_campeonato.compareTo(fecha_hoy) < 0)
+			{
+				try 
+				{	
+					String nomCamp = c.getCampeonato();
+					obj = new JSONObject();
+					obj.put("nomCampeonato", nomCamp);
+					jcampeonatos.put(obj);
+				} 
+				catch (JSONException e) 
+				{
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		return jcampeonatos;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public boolean campeonatoCompleto(String nomCampeonato) 
+	{
+		Campeonato c = em.find(Campeonato.class, nomCampeonato);
+		Collection<Equipo> listEquipos = c.getEquipos();
+		if(listEquipos.size() < c.getCantEquipos())
+			return false;
+		else
+			return true;
 	}
 
 }
