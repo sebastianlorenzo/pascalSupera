@@ -33,4 +33,6 @@ public interface JugadorDAO
 	
 	public String getPosicionJugador(Integer idJugador);
 	
+	public String getNombreJugador(Integer idJugador);
+	
 }

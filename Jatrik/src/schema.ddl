@@ -65,7 +65,7 @@
     create table public.comentario (
         idComentario int4 not null,
         comentario varchar(255),
-        hora time,
+        minuto int4,
         partidoResultado_idPartidoResultado int4,
         primary key (idComentario)
     );

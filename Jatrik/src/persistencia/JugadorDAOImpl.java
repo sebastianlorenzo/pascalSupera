@@ -149,4 +149,14 @@ public class JugadorDAOImpl implements JugadorDAO
 		return null;
 	}
 	
+	public String getNombreJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			return j.getJugador();
+		}
+		return null;
+	}
+	
 }
