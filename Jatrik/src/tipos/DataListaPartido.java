@@ -5,24 +5,24 @@ import java.util.List;
 
 public class DataListaPartido 
 {
-	private  List<DataPartido> lstPartidos;
+	private  List<DataResumenPartido> lstPartidos;
 		
 	public DataListaPartido()
 	{
-		this.lstPartidos = new ArrayList<DataPartido>();
+		this.lstPartidos = new ArrayList<DataResumenPartido>();
 	}
 	
-	public List<DataPartido> getLstPartidos() 
+	public List<DataResumenPartido> getLstPartidos() 
 	{
 		return lstPartidos;
 	}
 	
-	public void setLstPartidos(List<DataPartido> lstPartidos)
+	public void setLstPartidos(List<DataResumenPartido> lstPartidos)
 	{
 		this.lstPartidos = lstPartidos;
 	}
 	
-	public void addDataPartido(DataPartido dp)
+	public void addDataPartido(DataResumenPartido dp)
 	{
 		lstPartidos.add(dp);
 	}

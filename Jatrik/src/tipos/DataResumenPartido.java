@@ -2,12 +2,33 @@ package tipos;
 
 public class DataResumenPartido 
 {
+	public String nomPartido; //para mostrar es eqLocal vs. eqVisitante
+	public String eqLocal;
+	public String eqVisitante;
+	public String campeonato;
+	public String fecha;
 	
 	public Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante = new Integer[2];
 	public Integer[] tarjetasRojasEquipoLocalEquipoVisitante 	 = new Integer[2];
 	public Integer[] golesEquipoLocalEquipoVisitante 			 = new Integer[2];
 	public Integer[] lesionesEquipoLocalEquipoVisitante 		 = new Integer[2];
 	
+	public String detalle;
+	
+	public DataResumenPartido(String nomPartido, String eqLocal, String eqVisitante, String campeonato, String fecha,
+			Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante, Integer[] tarjetasRojasEquipoLocalEquipoVisitante,
+			Integer[] golesEquipoLocalEquipoVisitante, Integer[] lesionesEquipoLocalEquipoVisitante) 
+	{
+		this.nomPartido = nomPartido;
+		this.eqLocal = eqLocal;
+		this.eqVisitante = eqVisitante;
+		this.campeonato = campeonato;
+		this.fecha = fecha;
+		this.tarjetasAmarillasEquipoLocalEquipoVisitante = tarjetasAmarillasEquipoLocalEquipoVisitante;
+		this.tarjetasRojasEquipoLocalEquipoVisitante = tarjetasRojasEquipoLocalEquipoVisitante;
+		this.golesEquipoLocalEquipoVisitante = golesEquipoLocalEquipoVisitante;
+		this.lesionesEquipoLocalEquipoVisitante = lesionesEquipoLocalEquipoVisitante;
+	}
 	
 	public DataResumenPartido(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 
 							  Integer tarjetasRojasLocal, Integer tarjetasRojasVisitante,
@@ -64,4 +85,65 @@ public class DataResumenPartido
 		this.lesionesEquipoLocalEquipoVisitante = lesionesEquipoLocalEquipoVisitante;
 	}
 	
+	
+	public String getNomPartido()
+	{
+		return nomPartido;
+	}
+
+	public void setNomPartido(String nomPartido)
+	{
+		this.nomPartido = nomPartido;
+	}
+
+	public String getEqLocal()
+	{
+		return eqLocal;
+	}
+
+	public void setEqLocal(String eqLocal)
+	{
+		this.eqLocal = eqLocal;
+	}
+
+	public String getEqVisitante()
+	{
+		return eqVisitante;
+	}
+
+	public void setEqVisitante(String eqVisitante)
+	{
+		this.eqVisitante = eqVisitante;
+	}
+
+	public String getCampeonato()
+	{
+		return campeonato;
+	}
+
+	public void setCampeonato(String campeonato)
+	{
+		this.campeonato = campeonato;
+	}
+
+	public String getFecha()
+	{
+		return fecha;
+	}
+
+	public void setFecha(String fecha)
+	{
+		this.fecha = fecha;
+	}
+	
+	
+	public String getDetalle()
+	{
+		return detalle;
+	}
+
+	public void setDetalle(String detalle)
+	{
+		this.detalle = detalle;
+	}
 }

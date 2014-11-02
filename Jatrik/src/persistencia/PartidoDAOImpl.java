@@ -1,8 +1,6 @@
 package persistencia;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.*;
@@ -12,7 +10,6 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import tipos.DataListaPartido;
-import tipos.DataPartido;
 import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Comentario;
