@@ -158,8 +158,7 @@ public class PartidoDAOImpl implements PartidoDAO
 		while (it.hasNext())
 		{
 			Comentario c = it.next();
-			c.setPartido(partido);
-			em.merge(c);
+			em.persist(c);
 		}
 		
 		partido.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
@@ -171,6 +170,7 @@ public class PartidoDAOImpl implements PartidoDAO
 		partido.setLesionesLocal(lesiones[0]);
 		partido.setLesionesVisitante(lesiones[1]);
 		partido.setComentarios(comentarios);
+		em.merge(partido);
 	}
 
 

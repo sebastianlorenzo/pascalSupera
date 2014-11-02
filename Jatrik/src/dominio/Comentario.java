@@ -15,7 +15,7 @@ public class Comentario  implements java.io.Serializable
 	private Integer minuto;
 	private String comentario;
 	
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	private Partido partido;
 	
 	

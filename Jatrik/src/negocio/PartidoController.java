@@ -181,7 +181,7 @@ public class PartidoController implements IPartidoController
 				mensaje = getMensajeComentarioJugadaErrada(jugadorDAO.getRegateJugador(idJugadorGol));
 			}
 			Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-			Comentario comentario = new Comentario(minuto, mensaje, null);
+			Comentario comentario = new Comentario(minuto, mensaje, partido);
 			comentarios.add(comentario);
 			
 			// Hubo tarjeta
