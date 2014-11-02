@@ -66,6 +66,7 @@
         idComentario int4 not null,
         comentario varchar(255),
         minuto int4,
+        mostrarJugados boolean,
         partido_partido varchar(255),
         primary key (idComentario)
     );

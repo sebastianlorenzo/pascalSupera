@@ -14,6 +14,7 @@ public class Comentario  implements java.io.Serializable
 	private Integer idComentario;
 	private Integer minuto;
 	private String comentario;
+	private Boolean mostrarJugados;
 	
 	@ManyToOne
 	private Partido partido;
@@ -26,6 +27,7 @@ public class Comentario  implements java.io.Serializable
 		this.minuto     = minuto;
 		this.comentario = comentario;
 		this.partido    = partido;
+		this.mostrarJugados = true;
 	}
 
 	public Integer getIdComentario() 
@@ -67,5 +69,15 @@ public class Comentario  implements java.io.Serializable
 	{
 		this.partido = partido;
 	}
-	
+
+	public Boolean getMostrarJugados() 
+	{
+		return mostrarJugados;
+	}
+
+	public void setMostrarJugados(Boolean mostrarJugados) 
+	{
+		this.mostrarJugados = mostrarJugados;
+	}
+		
 }

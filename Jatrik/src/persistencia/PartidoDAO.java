@@ -12,9 +12,7 @@ public interface PartidoDAO
 {
 	
 	public Partido insertarPartido(Partido p);
-	
-	public void insertarPartidoResultado(Partido partido, Comentario comentario);
-	
+		
 	public Partido getPartido(String partido);
 		
 	public void borrarPartido(Partido p);
