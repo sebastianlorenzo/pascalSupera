@@ -14,7 +14,7 @@ xmlns:p="http://primefaces.org/ui">
 	<meta name="Robots" content="index,follow" />
 	<meta http-equiv="imagetoolbar" content="no" />
 </h:head>
-<h:body>		
+<h:body>	
 	<div id="header">
 		<div id="logo">
 			<a href="../">
@@ -39,7 +39,8 @@ xmlns:p="http://primefaces.org/ui">
 				        </p:submenu>				        				 		
 				        <p:submenu label="Mi equipo" icon="ui-icon-gear">
 				            <p:submenu label="Gestion" icon="ui-icon-refresh">
-				                <p:menuitem value="Táctica" actionListener="#{menuView.save}" icon="ui-icon-disk" update="messages"/>				                
+				                <p:menuitem value="Ver Táctica" url="tactica_user.xhtml" icon="ui-icon-disk"/>
+				                <p:menuitem value="Entrenar Equipo" url="entrenarEquipo_user.xhtml" icon="ui-icon-disk"/>				                
 				            </p:submenu>
 				            <p:menuitem value="Ofertas recibidas" actionListener="#{menuView.save}" icon="ui-icon-refresh" update="messages"/>
 				            <p:menuitem value="Realizar oferta" actionListener="#{menuView.save}" icon="ui-icon-refresh" update="messages"/>

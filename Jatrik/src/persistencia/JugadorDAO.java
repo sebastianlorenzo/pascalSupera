@@ -35,4 +35,6 @@ public interface JugadorDAO
 	
 	public String getNombreJugador(Integer idJugador);
 	
+	public Integer getRegateJugador(Integer idJugador);
+	
 }

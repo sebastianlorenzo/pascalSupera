@@ -133,7 +133,7 @@ public class RegistroBean {
 		String cabecera;
 		Severity icono;
 		if (json.getBoolean("ok")){
-			cabecera="Enhorabuena!";
+			cabecera="Bienvenido!";
 			icono=FacesMessage.SEVERITY_INFO;
 		}			
 		else{

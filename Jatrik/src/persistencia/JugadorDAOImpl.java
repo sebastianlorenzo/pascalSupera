@@ -1,8 +1,10 @@
 package persistencia;
 
 import java.util.ArrayList;
+
 import javax.ejb.*;
 import javax.persistence.*;
+
 import tipos.Constantes;
 import dominio.Equipo;
 import dominio.Jugador;
@@ -147,6 +149,16 @@ public class JugadorDAOImpl implements JugadorDAO
 		if (j != null)
 		{
 			return j.getJugador();
+		}
+		return null;
+	}
+	
+	public Integer getRegateJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			return (j.getTecnica() + j.getVelocidad());
 		}
 		return null;
 	}
