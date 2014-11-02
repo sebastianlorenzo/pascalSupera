@@ -1,5 +1,7 @@
 package tipos;
 
+import java.util.List;
+
 public class DataResumenPartido 
 {
 	public String nomPartido; //para mostrar es eqLocal vs. eqVisitante
@@ -13,21 +15,27 @@ public class DataResumenPartido
 	public Integer[] golesEquipoLocalEquipoVisitante 			 = new Integer[2];
 	public Integer[] lesionesEquipoLocalEquipoVisitante 		 = new Integer[2];
 	
-	public String detalle;
+	public List<String> detalle;
 	
 	public DataResumenPartido(String nomPartido, String eqLocal, String eqVisitante, String campeonato, String fecha,
-			Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante, Integer[] tarjetasRojasEquipoLocalEquipoVisitante,
-			Integer[] golesEquipoLocalEquipoVisitante, Integer[] lesionesEquipoLocalEquipoVisitante) 
+			Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 
+			  Integer tarjetasRojasLocal, Integer tarjetasRojasVisitante,
+			  Integer golesLocal,Integer golesVisitante,
+			  Integer lesionesLocal, Integer lesionesVisitante) 
 	{
 		this.nomPartido = nomPartido;
 		this.eqLocal = eqLocal;
 		this.eqVisitante = eqVisitante;
 		this.campeonato = campeonato;
 		this.fecha = fecha;
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante = tarjetasAmarillasEquipoLocalEquipoVisitante;
-		this.tarjetasRojasEquipoLocalEquipoVisitante = tarjetasRojasEquipoLocalEquipoVisitante;
-		this.golesEquipoLocalEquipoVisitante = golesEquipoLocalEquipoVisitante;
-		this.lesionesEquipoLocalEquipoVisitante = lesionesEquipoLocalEquipoVisitante;
+		this.tarjetasAmarillasEquipoLocalEquipoVisitante[0] = tarjetasAmarillasLocal;
+		this.tarjetasAmarillasEquipoLocalEquipoVisitante[1] = tarjetasAmarillasVisitante;
+		this.tarjetasRojasEquipoLocalEquipoVisitante[0]     = tarjetasRojasLocal;
+		this.tarjetasRojasEquipoLocalEquipoVisitante[1]     = tarjetasRojasVisitante;
+		this.golesEquipoLocalEquipoVisitante[0]             = golesLocal;
+		this.golesEquipoLocalEquipoVisitante[1]             = golesVisitante;
+		this.lesionesEquipoLocalEquipoVisitante[0]          = lesionesLocal;
+		this.lesionesEquipoLocalEquipoVisitante[1]          = lesionesVisitante;
 	}
 	
 	public DataResumenPartido(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 
@@ -135,15 +143,15 @@ public class DataResumenPartido
 	{
 		this.fecha = fecha;
 	}
-	
-	
-	public String getDetalle()
+
+	public List<String> getDetalle()
 	{
 		return detalle;
 	}
 
-	public void setDetalle(String detalle)
+	public void setDetalle(List<String> detalle) 
 	{
 		this.detalle = detalle;
 	}
+	
 }
