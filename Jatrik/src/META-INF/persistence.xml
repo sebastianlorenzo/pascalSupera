@@ -13,7 +13,6 @@
 		<class>dominio.Oferta</class>
 		<class>dominio.Cambio</class>
 		<class>dominio.Notificacion</class>
-		<class>dominio.PartidoResultado</class>
 		<class>dominio.Comentario</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>

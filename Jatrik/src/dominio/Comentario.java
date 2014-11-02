@@ -16,16 +16,16 @@ public class Comentario  implements java.io.Serializable
 	private String comentario;
 	
 	@ManyToOne(cascade = {CascadeType.ALL})
-	private PartidoResultado partidoResultado;
+	private Partido partido;
 	
 	
 	public Comentario() {}
 	
-	public Comentario(Integer minuto, String comentario, PartidoResultado partidoResultado) 
+	public Comentario(Integer minuto, String comentario, Partido partido) 
 	{
-		this.minuto           = minuto;
-		this.comentario       = comentario;
-		this.partidoResultado = partidoResultado;
+		this.minuto     = minuto;
+		this.comentario = comentario;
+		this.partido    = partido;
 	}
 
 	public Integer getIdComentario() 
@@ -58,14 +58,14 @@ public class Comentario  implements java.io.Serializable
 		this.comentario = comentario;
 	}
 	
-	public PartidoResultado getPartidoResultado() 
+	public Partido getPartido() 
 	{
-		return partidoResultado;
+		return partido;
 	}
 
-	public void setPartidoResultado(PartidoResultado partidoResultado)
+	public void setPartido(Partido partido)
 	{
-		this.partidoResultado = partidoResultado;
+		this.partido = partido;
 	}
 	
 }

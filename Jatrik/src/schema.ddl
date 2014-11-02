@@ -39,8 +39,8 @@
         oferta_jugadores_idOferta int4 not null
     );
 
-    create table public.partidoResultado_comentario (
-        partidoResultado_idPartidoResultado int4 not null,
+    create table public.partido_comentario (
+        partido_partido varchar(255) not null,
         comentarios_idComentario int4 not null
     );
 
@@ -66,7 +66,7 @@
         idComentario int4 not null,
         comentario varchar(255),
         minuto int4,
-        partidoResultado_idPartidoResultado int4,
+        partido_partido varchar(255),
         primary key (idComentario)
     );
 
@@ -145,15 +145,6 @@
     create table public.partido (
         partido varchar(255) not null,
         fechaPartido timestamp,
-        campeonato_campeonato varchar(255),
-        equipoLocal_equipo varchar(255),
-        equipoVisitante_equipo varchar(255),
-        estadio_estadio varchar(255),
-        primary key (partido)
-    );
-
-    create table public.partidoResultado (
-        idPartidoResultado int4 not null,
         golesLocal int4,
         golesVisitante int4,
         lesionesLocal int4,
@@ -162,7 +153,11 @@
         tarjetasAmarillasVisitante int4,
         tarjetasRojasLocal int4,
         tarjetasRojasVisitante int4,
-        primary key (idPartidoResultado)
+        campeonato_campeonato varchar(255),
+        equipoLocal_equipo varchar(255),
+        equipoVisitante_equipo varchar(255),
+        estadio_estadio varchar(255),
+        primary key (partido)
     );
 
     create table public.usuario (
@@ -217,8 +212,8 @@
     alter table public.oferta_jugadores 
         add constraint UK_84ki5xvluuaj6u5sfnc5nwy5q  unique (oferta_jugadores_idOferta);
 
-    alter table public.partidoResultado_comentario 
-        add constraint UK_tapbc8xfpuikjxg8otxm7yxwy  unique (comentarios_idComentario);
+    alter table public.partido_comentario 
+        add constraint UK_a3utqtwk0ue9wurf5yvdcvred  unique (comentarios_idComentario);
 
     alter table public.usuario_mensajesEnviados 
         add constraint UK_8h29hety033e3pfj8054fwkbr  unique (mensajesEnviados_idMensaje);
@@ -309,15 +304,15 @@
         foreign key (jugador_idJugador) 
         references public.jugador;
 
-    alter table public.partidoResultado_comentario 
-        add constraint FK_tapbc8xfpuikjxg8otxm7yxwy 
+    alter table public.partido_comentario 
+        add constraint FK_a3utqtwk0ue9wurf5yvdcvred 
         foreign key (comentarios_idComentario) 
         references public.comentario;
 
-    alter table public.partidoResultado_comentario 
-        add constraint FK_rnyts9yx3wyqvyt2kl9goeft3 
-        foreign key (partidoResultado_idPartidoResultado) 
-        references public.partidoResultado;
+    alter table public.partido_comentario 
+        add constraint FK_nivpt9par78n1u3ui7g39uu3p 
+        foreign key (partido_partido) 
+        references public.partido;
 
     alter table public.cambio 
         add constraint FK_db2khxvpib5xmrjhspw6g3ade 
@@ -335,9 +330,9 @@
         references public.partido;
 
     alter table public.comentario 
-        add constraint FK_7mu5keanfphjqu8oinp9egx7a 
-        foreign key (partidoResultado_idPartidoResultado) 
-        references public.partidoResultado;
+        add constraint FK_h2nl0oqakub946p3ae4967peu 
+        foreign key (partido_partido) 
+        references public.partido;
 
     alter table public.estadio 
         add constraint FK_es3pkcufchab44tdwagonlbvc 

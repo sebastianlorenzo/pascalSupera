@@ -5,15 +5,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import tipos.DataListaPartido;
 import tipos.DataPartido;
 import dominio.Cambio;
@@ -21,7 +18,6 @@ import dominio.Campeonato;
 import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Partido;
-import dominio.PartidoResultado;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -55,10 +51,10 @@ public class PartidoDAOImpl implements PartidoDAO
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void insertarPartidoResultado(PartidoResultado pres, Comentario com) 
+	public void insertarPartidoResultado(Partido partido, Comentario comentario)
 	{
-		em.persist(com);
-		em.persist(pres);				
+		em.persist(comentario);
+		em.persist(partido);				
 	}
 
 
@@ -158,27 +154,26 @@ public class PartidoDAOImpl implements PartidoDAO
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void guardarResultadoPartido(int[] tarjetasAmarillas, int[] tarjetasRojas, int[] goles, int[] lesiones, List<Comentario> comentarios)
+	public void guardarResultadoPartido(int[] tarjetasAmarillas, int[] tarjetasRojas, int[] goles, int[] lesiones, Partido partido, List<Comentario> comentarios)
 	{
-		PartidoResultado partidoResultado = new PartidoResultado();
 		
 		Iterator<Comentario> it = comentarios.iterator();
 		while (it.hasNext())
 		{
 			Comentario c = it.next();
-			c.setPartidoResultado(partidoResultado);
+			c.setPartido(partido);
 			em.persist(c);
 		}
 		
-		partidoResultado.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
-		partidoResultado.setTarjetasAmarillasVisitante(tarjetasAmarillas[1]);
-		partidoResultado.setTarjetasRojasLocal(tarjetasRojas[0]);
-		partidoResultado.setTarjetasRojasVisitante(tarjetasRojas[1]);
-		partidoResultado.setGolesLocal(goles[0]);
-		partidoResultado.setGolesVisitante(goles[1]);
-		partidoResultado.setLesionesLocal(lesiones[0]);
-		partidoResultado.setLesionesVisitante(lesiones[1]);
-		partidoResultado.setComentarios(comentarios);
+		partido.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
+		partido.setTarjetasAmarillasVisitante(tarjetasAmarillas[1]);
+		partido.setTarjetasRojasLocal(tarjetasRojas[0]);
+		partido.setTarjetasRojasVisitante(tarjetasRojas[1]);
+		partido.setGolesLocal(goles[0]);
+		partido.setGolesVisitante(goles[1]);
+		partido.setLesionesLocal(lesiones[0]);
+		partido.setLesionesVisitante(lesiones[1]);
+		partido.setComentarios(comentarios);
 	}
 
 

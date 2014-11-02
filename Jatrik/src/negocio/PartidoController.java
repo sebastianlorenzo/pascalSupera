@@ -253,7 +253,7 @@ public class PartidoController implements IPartidoController
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
 		// Guardo los comentarios del partido
-		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, comentarios);
+		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, partido, comentarios);
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 

@@ -40,10 +40,17 @@ public class Partido implements java.io.Serializable
 	@JoinColumn(nullable=true)
 	private Collection<Cambio> cambiosVisitante;
 	
-	/*
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "partido", nullable = true)
-	private PartidoResultado partidoResultado;*/
+	// Para el resultado del partido
+	private Integer tarjetasAmarillasLocal;
+	private Integer tarjetasAmarillasVisitante;
+	private Integer tarjetasRojasLocal;
+	private Integer tarjetasRojasVisitante;
+	private Integer golesLocal;
+	private Integer golesVisitante;
+	private Integer lesionesLocal;
+	private Integer lesionesVisitante;	
+	@OneToMany
+	private Collection<Comentario> comentarios;
 	
 	
 	public Partido(){}
@@ -59,7 +66,15 @@ public class Partido implements java.io.Serializable
 		this.campeonato = campeonato;
 		this.cambiosLocal     = cambiosLocal;
 		this.cambiosVisitante = cambiosVisitante;
-//		this.partidoResultado = null;
+		this.tarjetasAmarillasLocal     = 0;
+		this.tarjetasAmarillasVisitante = 0;
+		this.tarjetasRojasLocal         = 0;
+		this.tarjetasRojasVisitante     = 0;
+		this.golesLocal                 = 0;
+		this.golesVisitante             = 0;
+		this.lesionesLocal              = 0;
+		this.lesionesVisitante          = 0;
+		this.comentarios                = null;
 	}
 	
 	public String getPartido() 
@@ -141,13 +156,95 @@ public class Partido implements java.io.Serializable
 	{
 		this.cambiosVisitante = cambiosVisitante;
 	}
-	/*
-	public PartidoResultado getPartidoResultado() {
-		return partidoResultado;
+	
+	public Integer getTarjetasAmarillasLocal() 
+	{
+		return tarjetasAmarillasLocal;
 	}
-
-	public void setPartidoResultado(PartidoResultado partidoResultado) {
-		this.partidoResultado = partidoResultado;
-	}*/
+	
+	public void setTarjetasAmarillasLocal(Integer tarjetasAmarillasLocal)
+	{
+		this.tarjetasAmarillasLocal = tarjetasAmarillasLocal;
+	}
+	
+	public Integer getTarjetasAmarillasVisitante() 
+	{
+		return tarjetasAmarillasVisitante;
+	}
+	
+	public void setTarjetasAmarillasVisitante(Integer tarjetasAmarillasVisitante)
+	{
+		this.tarjetasAmarillasVisitante = tarjetasAmarillasVisitante;
+	}
+	
+	public Integer getTarjetasRojasLocal() 
+	{
+		return tarjetasRojasLocal;
+	}
+	
+	public void setTarjetasRojasLocal(Integer tarjetasRojasLocal)
+	{
+		this.tarjetasRojasLocal = tarjetasRojasLocal;
+	}
+	
+	public Integer getTarjetasRojasVisitante()
+	{
+		return tarjetasRojasVisitante;
+	}
+	
+	public void setTarjetasRojasVisitante(Integer tarjetasRojasVisitante) 
+	{
+		this.tarjetasRojasVisitante = tarjetasRojasVisitante;
+	}
+	
+	public Integer getGolesLocal()
+	{
+		return golesLocal;
+	}
+	
+	public void setGolesLocal(Integer golesLocal)
+	{
+		this.golesLocal = golesLocal;
+	}
+	
+	public Integer getGolesVisitante()
+	{
+		return golesVisitante;
+	}
+	
+	public void setGolesVisitante(Integer golesVisitante) 
+	{
+		this.golesVisitante = golesVisitante;
+	}
+	
+	public Integer getLesionesLocal() 
+	{
+		return lesionesLocal;
+	}
+	
+	public void setLesionesLocal(Integer lesionesLocal)
+	{
+		this.lesionesLocal = lesionesLocal;
+	}
+	
+	public Integer getLesionesVisitante() 
+	{
+		return lesionesVisitante;
+	}
+	
+	public void setLesionesVisitante(Integer lesionesVisitante) 
+	{
+		this.lesionesVisitante = lesionesVisitante;
+	}
+	
+	public Collection<Comentario> getComentarios() 
+	{
+		return comentarios;
+	}
+	
+	public void setComentarios(Collection<Comentario> comentarios) 
+	{
+		this.comentarios = comentarios;
+	}
 		
 }
