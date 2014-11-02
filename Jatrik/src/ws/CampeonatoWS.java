@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -100,6 +101,26 @@ public class CampeonatoWS
 		
 		return json.toString();
 		
+	}
+	
+	@GET
+	@Path("listarCampeonatosEnEjecucionYFinalizados")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarCampeonatosEnEjecucionYFinalizados()
+	{	
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray jcampeonatos = null;
+			jcampeonatos = iCampeonatoController.listarCampEnEjecucionYFinalizados();
+			respuesta.put("campeonatos", jcampeonatos);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return respuesta.toString();
 	}
 
 }
