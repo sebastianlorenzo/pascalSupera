@@ -161,7 +161,7 @@ public class PartidoDAOImpl implements PartidoDAO
 		partidoResultado.setTarjetasRojasLocal(tarjetasRojas[0]);
 		partidoResultado.setTarjetasRojasVisitante(tarjetasRojas[1]);
 		partidoResultado.setGolesLocal(goles[0]);
-		partidoResultado.setGolesVistiante(goles[1]);
+		partidoResultado.setGolesVisitante(goles[1]);
 		partidoResultado.setLesionesLocal(lesiones[0]);
 		partidoResultado.setLesionesVisitante(lesiones[1]);
 		partidoResultado.setComentarios(comentarios);

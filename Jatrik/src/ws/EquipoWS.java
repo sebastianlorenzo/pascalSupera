@@ -23,28 +23,6 @@ public class EquipoWS
 	@EJB
 	private  IEquipoController iEquipoController;
 	
-	/*
-	@GET
-	@Path("listarPaises")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String listarPaises()
-	{
-		JSONObject respuesta = new JSONObject();		
-		try 
-		{
-			JSONArray jpaises = null;
-			jpaises = iEquipoController.obtenerPaisesInicial();
-			respuesta.put("paises", jpaises);
-
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return respuesta.toString();
-	}
-	*/
-	
 	@GET
 	@Path("listarEquiposMapa")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -152,7 +130,7 @@ public class EquipoWS
 		JSONObject datosEquipo = new JSONObject(datos);
 		String nombreEq = datosEquipo.getString("nombreEquipo");
 		Gson g = new Gson();
-		DataListaEquipo dataEq = this.iEquipoController.obtenerEquiposData(nombreEq);
+		DataListaEquipo dataEq = iEquipoController.obtenerEquiposData(nombreEq);
 		return g.toJson(dataEq);
 	}
 	
@@ -182,7 +160,7 @@ public class EquipoWS
 		JSONObject datosOferta = new JSONObject(datos);
 		String nomUsuario = datosOferta.getString("nomUsuario");
 		Gson g = new Gson();
-		DataListaOferta dataOf = this.iEquipoController.obtenerOfertasData(nomUsuario);
+		DataListaOferta dataOf = iEquipoController.obtenerOfertasData(nomUsuario);
 		return g.toJson(dataOf);	
 	}
 	
@@ -197,7 +175,7 @@ public class EquipoWS
 		String comentario = datosOferta.getString("comentario");
 		Integer idOferta = Integer.parseInt(datosOferta.getString("idOferta"));
 		
-		return this.iEquipoController.aceptarOferta(nomUsuario, comentario, idOferta).toString();
+		return iEquipoController.aceptarOferta(nomUsuario, comentario, idOferta).toString();
 		
 	}
 	
@@ -212,7 +190,7 @@ public class EquipoWS
 		String comentario = datosOferta.getString("comentario");
 		Integer idOferta = Integer.parseInt(datosOferta.getString("idOferta"));
 		
-		return this.iEquipoController.rechazarOferta(nomUsuario, comentario, idOferta).toString();
+		return iEquipoController.rechazarOferta(nomUsuario, comentario, idOferta).toString();
 		
 	}
 	
@@ -225,7 +203,7 @@ public class EquipoWS
 		JSONObject datosOferta = new JSONObject(datos);
 		String nomUsuario = datosOferta.getString("nomUsuario"); //Logueado
 		Gson g = new Gson();
-		DataListaOferta dataOf = this.iEquipoController.obtenerOfertasRealizadas(nomUsuario);
+		DataListaOferta dataOf = iEquipoController.obtenerOfertasRealizadas(nomUsuario);
 		return g.toJson(dataOf);		
 	}
 		

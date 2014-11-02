@@ -18,7 +18,7 @@ public class PartidoResultado implements java.io.Serializable
 	private Integer tarjetasRojasLocal;
 	private Integer tarjetasRojasVisitante;
 	private Integer golesLocal;
-	private Integer golesVistiante;
+	private Integer golesVisitante;
 	private Integer lesionesLocal;
 	private Integer lesionesVisitante;
 	
@@ -29,7 +29,7 @@ public class PartidoResultado implements java.io.Serializable
 	public PartidoResultado() {}
 	
 	public PartidoResultado(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, Integer tarjetasRojasLocal,
-							Integer tarjetasRojasVisitante,	Integer golesLocal, Integer golesVistiante,
+							Integer tarjetasRojasVisitante,	Integer golesLocal, Integer golesVisitante,
 							Integer lesionesLocal, Integer lesionesVisitante, Collection<Comentario> comentarios) 
 	{
 		this.tarjetasAmarillasLocal     = tarjetasAmarillasLocal;
@@ -37,7 +37,7 @@ public class PartidoResultado implements java.io.Serializable
 		this.tarjetasRojasLocal         = tarjetasRojasLocal;
 		this.tarjetasRojasVisitante     = tarjetasRojasVisitante;
 		this.golesLocal                 = golesLocal;
-		this.golesVistiante             = golesVistiante;
+		this.golesVisitante             = golesVisitante;
 		this.lesionesLocal              = lesionesLocal;
 		this.lesionesVisitante          = lesionesVisitante;
 		this.comentarios                = comentarios;
@@ -103,14 +103,14 @@ public class PartidoResultado implements java.io.Serializable
 		this.golesLocal = golesLocal;
 	}
 	
-	public Integer getGolesVistiante()
+	public Integer getGolesVisitante()
 	{
-		return golesVistiante;
+		return golesVisitante;
 	}
 	
-	public void setGolesVistiante(Integer golesVistiante) 
+	public void setGolesVisitante(Integer golesVisitante) 
 	{
-		this.golesVistiante = golesVistiante;
+		this.golesVisitante = golesVisitante;
 	}
 	
 	public Integer getLesionesLocal() 

@@ -155,7 +155,7 @@
     create table public.partidoResultado (
         idPartidoResultado int4 not null,
         golesLocal int4,
-        golesVistiante int4,
+        golesVisitante int4,
         lesionesLocal int4,
         lesionesVisitante int4,
         tarjetasAmarillasLocal int4,

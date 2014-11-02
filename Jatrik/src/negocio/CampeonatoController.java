@@ -1,6 +1,5 @@
 package negocio;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -124,27 +123,29 @@ public class CampeonatoController implements ICampeonatoController
 	{
 		Boolean ok= this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
 		
-		boolean lleno = this.campeonatoDAO.campeonatoCompleto(nomCampeonato);
-		
-		if(lleno){
-		//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
-			boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
-System.out.println("creoCamp:"+ creoCampeonato);
-			if(creoCampeonato){
-				Date hoy = new Date();
-				Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
-				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-				String fecha = formateador.format(inicioCampeonato);
-				String nomCamp = "campeonato"+fecha;
-				
-				JSONObject ob = crearCampeonato(nomCamp, inicioCampeonato, 2);
-				try{
-					ob.put("camp",nomCamp);
+		if (ok){
+			boolean lleno = this.campeonatoDAO.campeonatoCompleto(nomCampeonato);
+			
+			if(lleno){
+			//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
+				boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
+				if(creoCampeonato){
+					Date hoy = new Date();
+					Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
+					
+					int num=1;
+					while(this.campeonatoDAO.existeCampeonato(nomCampeonato+num))
+						num++;
+					
+					JSONObject ob = crearCampeonato(nomCampeonato+num, inicioCampeonato, 2);
+					try{
+						ob.put("camp",nomCampeonato+num);
+					}
+			        catch(Exception ex)
+					{
+			            ex.printStackTrace();
+			        }
 				}
-		        catch(Exception ex)
-				{
-		            ex.printStackTrace();
-		        }
 			}
 		}
 		return ok;
