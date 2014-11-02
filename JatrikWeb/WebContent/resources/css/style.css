@@ -8,6 +8,10 @@
 	border-widh3th: 2px; 
 }
 
+#row_jugadores{
+	display: table-row; 
+}
+
 #col_div { 
 	display: table-cell;
 	text-align: center; 
@@ -45,6 +49,10 @@
 	width: 150px;
 }
 
+.ui-datatable thead th{
+	padding:0px;
+}
+
 #j_idt27:form_crearCampeonato_content {
 	margin-left: auto;
     margin-right: auto;
@@ -60,6 +68,16 @@
 	font-size: 18px;
 	color:white;
 	text-align: left;
+}
+#letra_chica {
+	font-size: 12px;
+	color:white;
+	text-align: left;
+}
+
+.ui-growl {
+	left: 30%;
+	top: 30%;
 }
 
 .campeonato_lista_item {
