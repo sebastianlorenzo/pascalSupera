@@ -4,8 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
+
 import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Cambio;
 import dominio.Comentario;
 import dominio.Equipo;
@@ -20,6 +23,7 @@ import persistencia.PartidoDAOImpl;
 import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import tipos.DataCambio;
+import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 import tipos.Constantes;
 
@@ -542,6 +546,12 @@ public class PartidoController implements IPartidoController
 			 				            + "\n\t\tTarjetas Rojas: " + tarjetasRojas[0] + "\n\t\tLesiones: "           + lesiones[0]          + "\n\n\t"
 			 	 + nom_equipo_visitante + "\n\t\tGoles: "          + goles[1]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[1]
 	 				                    + "\n\t\tTarjetas Rojas: " + tarjetasRojas[1] + "\n\t\tLesiones: "           + lesiones[1]          + "\n";
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaPartido listarPartidosJugados(String nomCampeonato) 
+	{
+		return this.partidoDAO.listarJugados(nomCampeonato);
 	}
 	
 }

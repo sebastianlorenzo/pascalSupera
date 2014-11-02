@@ -1,14 +1,21 @@
 package persistencia;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import tipos.DataListaPartido;
+import tipos.DataPartido;
 import dominio.Cambio;
 import dominio.Campeonato;
 import dominio.Comentario;
@@ -45,6 +52,13 @@ public class PartidoDAOImpl implements PartidoDAO
 			System.out.println("EXCEPCIÓN: " + ex.getClass());
             return null;
 		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void insertarPartidoResultado(PartidoResultado pres, Comentario com) 
+	{
+		em.persist(com);
+		em.persist(pres);				
 	}
 
 
@@ -166,5 +180,37 @@ public class PartidoDAOImpl implements PartidoDAO
 		partidoResultado.setLesionesVisitante(lesiones[1]);
 		partidoResultado.setComentarios(comentarios);
 	}
-	
+
+
+	//Faltaría ver el tema de agregar detalle!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaPartido listarJugados(String nomCampeonato) 
+	{	
+		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
+		Collection<Partido> partidos = camp.getPartidos();
+		DataListaPartido dlpartidos = new DataListaPartido();
+		/*
+		for(Partido p: partidos)
+		{
+			if(p.getPartidoResultado() != null)
+			{
+				String nomEqLocal = p.getEquipoLocal().getEquipo();
+				String nomEqVisitante = p.getEquipoVisitante().getEquipo();
+				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
+				
+				Date fechaPartido = p.getFechaPartido();
+				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+			    String fecha = formateador.format(fechaPartido);
+						
+				Integer golesLocal = p.getPartidoResultado().getGolesLocal();
+				Integer golesVisitante = p.getPartidoResultado().getGolesVisitante();
+				
+				DataPartido dp = new DataPartido(nomPartido, nomEqLocal, nomEqVisitante,
+						nomCampeonato, fecha, golesLocal, golesVisitante);
+				dlpartidos.addDataPartido(dp);	
+			}
+		}*/
+		return dlpartidos;
+	}
+
 }

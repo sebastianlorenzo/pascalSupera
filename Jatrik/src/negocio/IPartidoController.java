@@ -5,6 +5,7 @@ import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONArray;
 
 import tipos.DataCambio;
+import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 
 @Local
@@ -16,5 +17,7 @@ public interface IPartidoController
 	public DataResumenPartido simularPartido(String partido);
 
 	public JSONArray obtenerPartidosPorZona(String nomCampeonato);
+
+	public DataListaPartido listarPartidosJugados(String nomCampeonato);
 	
 }

@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.Collection;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +12,7 @@ public class PartidoResultado implements java.io.Serializable
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue (strategy= GenerationType.AUTO)
 	private Integer idPartidoResultado;
 	private Integer tarjetasAmarillasLocal;
 	private Integer tarjetasAmarillasVisitante;
@@ -21,6 +22,10 @@ public class PartidoResultado implements java.io.Serializable
 	private Integer golesVisitante;
 	private Integer lesionesLocal;
 	private Integer lesionesVisitante;
+	
+	/*
+	@OneToOne(fetch = FetchType.LAZY)
+	private Partido partido;*/
 	
 	@OneToMany
 	private Collection<Comentario> comentarios;
@@ -142,5 +147,14 @@ public class PartidoResultado implements java.io.Serializable
 	{
 		this.comentarios = comentarios;
 	}
-	
+
+/*
+	public Partido getPartido() {
+		return partido;
+	}
+
+	public void setPartido(Partido partido) {
+		this.partido = partido;
+	}
+*/	
 }

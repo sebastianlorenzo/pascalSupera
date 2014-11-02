@@ -40,6 +40,12 @@ public class Partido implements java.io.Serializable
 	@JoinColumn(nullable=true)
 	private Collection<Cambio> cambiosVisitante;
 	
+	/*
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "partido", nullable = true)
+	private PartidoResultado partidoResultado;*/
+	
+	
 	public Partido(){}
 	
 	public Partido (String partido, Equipo equipoLocal, Equipo equipoVisitante, Date fechaPartido, Estadio estadio, 
@@ -53,6 +59,7 @@ public class Partido implements java.io.Serializable
 		this.campeonato = campeonato;
 		this.cambiosLocal     = cambiosLocal;
 		this.cambiosVisitante = cambiosVisitante;
+//		this.partidoResultado = null;
 	}
 	
 	public String getPartido() 
@@ -134,5 +141,13 @@ public class Partido implements java.io.Serializable
 	{
 		this.cambiosVisitante = cambiosVisitante;
 	}
-	
+	/*
+	public PartidoResultado getPartidoResultado() {
+		return partidoResultado;
+	}
+
+	public void setPartidoResultado(PartidoResultado partidoResultado) {
+		this.partidoResultado = partidoResultado;
+	}*/
+		
 }

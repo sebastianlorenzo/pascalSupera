@@ -18,6 +18,7 @@ import org.codehaus.jettison.json.JSONObject;
 import com.google.gson.Gson;
 
 import tipos.DataCambio;
+import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 
 @ManagedBean
@@ -97,6 +98,20 @@ public class PartidoWS
 			e.printStackTrace();
 		}
 		return respuesta.toString();
+	}
+	
+	@POST
+	@Path("listarPartidosCampeonato")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String listarPartidosCampeonato(String datos) throws JSONException
+	{
+		JSONObject datosPartido = new JSONObject(datos);
+		String nomCampeonato    = datosPartido.getString("nomCampeonato");
+		
+		Gson g = new Gson();
+		DataListaPartido dataPartidos = iPartidoController.listarPartidosJugados(nomCampeonato);
+		return g.toJson(dataPartidos);
 	}
 	
 }
