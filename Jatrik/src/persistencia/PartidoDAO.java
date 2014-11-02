@@ -1,11 +1,10 @@
 package persistencia;
 
 import java.util.List;
-
 import org.codehaus.jettison.json.JSONArray;
-
 import dominio.Cambio;
 import dominio.Campeonato;
+import dominio.Comentario;
 import dominio.Partido;
 
 public interface PartidoDAO 
@@ -28,4 +27,7 @@ public interface PartidoDAO
 	public List<Cambio> getCambiosPartido(String partido, boolean local);
 
 	public JSONArray obtenerPartidosLugar(String nomCampeonato);
+	
+	public void guardarResultadoPartido(int[] tarjetasAmarillas, int[] tarjetasRojas, int[] goles, int[] lesiones, List<Comentario> comentarios);
+	
 }

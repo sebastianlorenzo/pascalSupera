@@ -1,7 +1,6 @@
 package dominio;
 
 import java.util.Collection;
-
 import javax.persistence.*;
 
 @Entity

@@ -2,20 +2,15 @@ package negocio;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
-
 import org.codehaus.jettison.json.JSONArray;
-
 import dominio.Cambio;
 import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
-import dominio.PartidoResultado;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
 import persistencia.JugadorDAO;
@@ -44,7 +39,8 @@ public class PartidoController implements IPartidoController
 	
 	@EJB
 	private UsuarioDAO usuarioDAO;
-		
+	
+	
 	public PartidoController()
 	{
 		this.partidoDAO = new PartidoDAOImpl();
@@ -100,8 +96,7 @@ public class PartidoController implements IPartidoController
 		// Seleccionar aleatoriamente la cantidad de jugadas del partido
 		int cantidad_jugadas = (int) (Math.random() * (Constantes.MAX_JUGADAS_PARTIDO - Constantes.MIN_JUGADAS_PARTIDO + 1) + Constantes.MIN_JUGADAS_PARTIDO);
 		
-		// Inicializo el partidoResultado y la lista de comentarios
-		PartidoResultado partidoResultado = new PartidoResultado();
+		// Inicializo la lista de comentarios
 		List <Comentario> comentarios = new ArrayList<Comentario>();
 		
 		// De 0 a cantidad_jugadas
@@ -156,7 +151,6 @@ public class PartidoController implements IPartidoController
 			{
 				realizarCambiosEnEquipo(equipo.getEquipo(), es_local ? cambiosProgramadosEquipoLocal : cambiosProgramadosEquipoVisitante, 0, i, idJugadorGol);
 			}
-			
 
 			System.out.print("*************************\n");
 			System.out.print("***** JUGADA NRO. " + i + " *****\n");
@@ -174,9 +168,9 @@ public class PartidoController implements IPartidoController
 			if (probGolParaJugada >= Constantes.CONST_GOL)
 			{
 				goles[local_visitante]++;
-				String mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + "\n";				
-				Integer minuto = (cantidad_jugadas != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				Comentario comentario = new Comentario(minuto, mensaje, partidoResultado);
+				String mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
+				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				Comentario comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 			}
 			
@@ -185,18 +179,22 @@ public class PartidoController implements IPartidoController
 			{
 				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
 				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
+				String mensaje = "";
 				if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
 				{
 					// Las tarjetas van sobre el equipo contrario
 					tarjetasAmarillas[1 - local_visitante]++;
 					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
 					System.out.print(" - Tarjeta amarilla al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario");
+					mensaje = "Tarjeta amarilla para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ".";
 					if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 					{
 						penalizacion[1 - local_visitante] += (float) 0.1;
 						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
 						System.out.print(" => EXPULSADO");
+						mensaje += " El mismo ha sido expulsado del juego.";
 					}
+					mensaje += "\n";
 					System.out.print("\n");
 				}
 				else
@@ -205,13 +203,21 @@ public class PartidoController implements IPartidoController
 					penalizacion[1 - local_visitante] += (float) 0.1;
 					jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
 					System.out.print(" - Tarjeta roja al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario => EXPULSADO\n");
+					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
 				}
+				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				Comentario comentario = new Comentario(minuto, mensaje, null);
+				comentarios.add(comentario);
 			}
 			System.out.print("\n");
 			
 			if (lesion)
 			{
 				lesiones[local_visitante]++;
+				String mensaje = "Se lesionó el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
+				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				Comentario comentario = new Comentario(minuto, mensaje, null);
+				comentarios.add(comentario);
 			}
 			
 		}
@@ -243,15 +249,7 @@ public class PartidoController implements IPartidoController
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
 		// Guardo los comentarios del partido
-		partidoResultado.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
-		partidoResultado.setTarjetasAmarillasVisitante(tarjetasAmarillas[1]);
-		partidoResultado.setTarjetasRojasLocal(tarjetasRojas[0]);
-		partidoResultado.setTarjetasRojasVisitante(tarjetasRojas[1]);
-		partidoResultado.setGolesLocal(goles[0]);
-		partidoResultado.setGolesVistiante(goles[1]);
-		partidoResultado.setLesionesLocal(lesiones[0]);
-		partidoResultado.setLesionesVisitante(lesiones[1]);
-		partidoResultado.setComentarios(comentarios);
+		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, comentarios);
 		
 		// Retornar resultado
 		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
@@ -428,6 +426,7 @@ public class PartidoController implements IPartidoController
 					Jugador j = getJugadorParaCambiarPorLesion((List<Jugador>) jugadorDAO.obtenerEquipo(idJugadorLesionado).getJugadores(), posicionLesionado);
 					if (j != null)
 					{
+						idJugadorEntrante = j.getIdJugador();
 						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_TITULAR);
 						equipoDAO.sumarCambio(nombreEquipo);
 					}

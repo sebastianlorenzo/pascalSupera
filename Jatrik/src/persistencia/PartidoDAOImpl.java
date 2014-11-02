@@ -1,20 +1,20 @@
 package persistencia;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import dominio.Cambio;
 import dominio.Campeonato;
+import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Partido;
+import dominio.PartidoResultado;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -141,6 +141,30 @@ public class PartidoDAOImpl implements PartidoDAO
 			jpartidos.put(ob);
 		}
 		return jpartidos;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void guardarResultadoPartido(int[] tarjetasAmarillas, int[] tarjetasRojas, int[] goles, int[] lesiones, List<Comentario> comentarios)
+	{
+		PartidoResultado partidoResultado = new PartidoResultado();
+		
+		Iterator<Comentario> it = comentarios.iterator();
+		while (it.hasNext())
+		{
+			Comentario c = it.next();
+			c.setPartidoResultado(partidoResultado);
+			em.persist(c);
+		}
+		
+		partidoResultado.setTarjetasAmarillasLocal(tarjetasAmarillas[0]);
+		partidoResultado.setTarjetasAmarillasVisitante(tarjetasAmarillas[1]);
+		partidoResultado.setTarjetasRojasLocal(tarjetasRojas[0]);
+		partidoResultado.setTarjetasRojasVisitante(tarjetasRojas[1]);
+		partidoResultado.setGolesLocal(goles[0]);
+		partidoResultado.setGolesVistiante(goles[1]);
+		partidoResultado.setLesionesLocal(lesiones[0]);
+		partidoResultado.setLesionesVisitante(lesiones[1]);
+		partidoResultado.setComentarios(comentarios);
 	}
 	
 }

@@ -2,12 +2,9 @@ package persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import javax.ejb.*;
 import javax.persistence.*;
-
 import org.codehaus.jettison.json.*;
-
 import tipos.Constantes;
 import tipos.DataEquipo;
 import tipos.DataJugador;
@@ -208,10 +205,10 @@ public class EquipoDAOImpl implements EquipoDAO
 	        		break;
 	        	}
         	}
-	        j.setEstado_jugador(estado); /** Cambiar esto!!!!!!!!!! **/
+	        j.setEstado_jugador(estado);
         }
         e.setCant_cambios_realizados(0);
-		em.merge(e);
+		em.persist(e);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -341,7 +338,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
 		e.setCant_cambios_realizados(e.getCant_cambios_realizados() + 1);
-		em.merge(e);
+		em.persist(e);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

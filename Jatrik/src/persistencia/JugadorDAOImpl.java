@@ -1,10 +1,9 @@
 package persistencia;
 
 import java.util.ArrayList;
-
 import javax.ejb.*;
 import javax.persistence.*;
-
+import tipos.Constantes;
 import dominio.Equipo;
 import dominio.Jugador;
 
@@ -12,13 +11,6 @@ import dominio.Jugador;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class JugadorDAOImpl implements JugadorDAO
 {
-	static final String CONST_DELANTERO     = "delantero";
-	static final String CONST_MEDIOCAMPISTA = "mediocampista";
-	static final String CONST_DEFENSA 		= "defensa";
-	static final String CONST_PORTERO 		= "portero";
-	static final String CONST_TITULAR		= "titular";
-	static final String CONST_EXPULSADO		= "expulsado";
-	
 	
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
@@ -35,7 +27,7 @@ public class JugadorDAOImpl implements JugadorDAO
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ArrayList<Jugador> obtenerPorterosSinEquipo() {
-		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_PORTERO+"'");
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" + Constantes.CONST_PORTERO + "'");
 		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
 		return resultList;
 	}
@@ -43,7 +35,7 @@ public class JugadorDAOImpl implements JugadorDAO
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ArrayList<Jugador> obtenerDefensasSinEquipo() {
-		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_DEFENSA+"'");
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" + Constantes.CONST_DEFENSA + "'");
 		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
 		return resultList;
 	}
@@ -51,7 +43,7 @@ public class JugadorDAOImpl implements JugadorDAO
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ArrayList<Jugador> obtenerMediocampistasSinEquipo() {
-		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_MEDIOCAMPISTA+"'");
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" + Constantes.CONST_MEDIOCAMPISTA + "'");
 		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
 		return resultList;
 	}
@@ -59,7 +51,7 @@ public class JugadorDAOImpl implements JugadorDAO
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ArrayList<Jugador> obtenerDelanteroSinEquipo() {
-		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" +CONST_DELANTERO+"'");
+		Query query = em.createQuery("SELECT j FROM Jugador j WHERE j.equipo IS EMPTY AND j.posicion_ideal = '" + Constantes.CONST_DELANTERO + "'");
 		ArrayList<Jugador> resultList = (ArrayList<Jugador>) query.getResultList();
 		return resultList;
 	}
