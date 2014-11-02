@@ -169,21 +169,26 @@ public class PartidoController implements IPartidoController
 			int local_visitante = es_local ? 0 : 1;
 			
 			// Hubo gol
+			String mensaje = "";
 			if (probGolParaJugada >= Constantes.CONST_GOL)
 			{
 				goles[local_visitante]++;
-				String mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
-				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				Comentario comentario = new Comentario(minuto, mensaje, null);
-				comentarios.add(comentario);
+				mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
 			}
+			// Si no hubo gol, vemos si podemos realizar algún comentario acerca de la jugada
+			else
+			{
+				mensaje = getMensajeComentarioJugadaErrada(jugadorDAO.getRegateJugador(idJugadorGol));
+			}
+			Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+			Comentario comentario = new Comentario(minuto, mensaje, null);
+			comentarios.add(comentario);
 			
 			// Hubo tarjeta
 			if (probTarjeta >= Constantes.CONST_TARJETA)
 			{
 				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
 				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
-				String mensaje = "";
 				if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
 				{
 					// Las tarjetas van sobre el equipo contrario
@@ -209,8 +214,8 @@ public class PartidoController implements IPartidoController
 					System.out.print(" - Tarjeta roja al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario => EXPULSADO\n");
 					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
 				}
-				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				Comentario comentario = new Comentario(minuto, mensaje, null);
+				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 			}
 			System.out.print("\n");
@@ -218,9 +223,9 @@ public class PartidoController implements IPartidoController
 			if (lesion)
 			{
 				lesiones[local_visitante]++;
-				String mensaje = "Se lesionó el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
-				Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				Comentario comentario = new Comentario(minuto, mensaje, null);
+				mensaje = "Se lesionó el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
+				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 			}
 			
@@ -547,7 +552,24 @@ public class PartidoController implements IPartidoController
 			 	 + nom_equipo_visitante + "\n\t\tGoles: "          + goles[1]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[1]
 	 				                    + "\n\t\tTarjetas Rojas: " + tarjetasRojas[1] + "\n\t\tLesiones: "           + lesiones[1]          + "\n";
 	}
-
+	
+	private String getMensajeComentarioJugadaErrada(Integer regateJugador)
+	{
+		int nro_mensaje = (int) (Math.random() * (Constantes.MAX_CANT_COMENTARIOS - Constantes.MIN_CANT_COMENTARIOS + 1) + Constantes.MIN_CANT_COMENTARIOS);
+		if (regateJugador <= Constantes.CONST_REGATE_BAJO)
+		{
+			return Constantes.CONST_MENSAJES_REGATE_BAJO[nro_mensaje];
+		}
+		else if (regateJugador <= Constantes.CONST_REGATE_MEDIO)
+		{
+			return Constantes.CONST_MENSAJES_REGATE_MEDIO[nro_mensaje];
+		}
+		else
+		{
+			return Constantes.CONST_MENSAJES_REGATE_ALTO[nro_mensaje];
+		}
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataListaPartido listarPartidosJugados(String nomCampeonato) 
 	{

@@ -36,6 +36,13 @@ public class Constantes {
 	public static final Float CONST_TARJETA_AMARILLA   = (float) 0.75; // Probabilidad máxima para que sea tarjeta amarilla
 	public static final Float CONST_MIN_LESION         = (float) 0.65; // Probabilidad mínima para que sea lesión
 	public static final Float CONST_MAX_LESION         = (float) 0.85; // Probabilidad máxima para que sea lesión
+	public static final Integer CONST_REGATE_BAJO      = 35;
+	public static final Integer CONST_REGATE_MEDIO     = 70;
+	public static final Integer MIN_CANT_COMENTARIOS   = 0;
+	public static final Integer MAX_CANT_COMENTARIOS   = 3;
+	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Mensaje1_bajo", "Mensaje2_bajo", "Mensaje3_bajo", "Mensaje4_bajo"};
+	public static final String[] CONST_MENSAJES_REGATE_MEDIO = {"Mensaje1_medio", "Mensaje2_medio", "Mensaje3_medio", "Mensaje4_medio"};
+	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Mensaje1_alto", "Mensaje2_alto", "Mensaje3_alto", "Mensaje4_alto"};
 	
 	/* Usuario */
 	public static final int CAPITAL_USUARIO = 10000;
