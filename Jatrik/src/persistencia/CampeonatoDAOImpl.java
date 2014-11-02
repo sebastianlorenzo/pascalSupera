@@ -174,6 +174,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		Usuario u = em.find(Usuario.class, nomUsuario);
 		Equipo e = u.getEquipo();
 		Collection<Equipo> listEquipos = c.getEquipos();
+System.out.println("size    "+listEquipos.size());
 		if(listEquipos.size() < c.getCantEquipos())
 		{
 			for (Equipo eq: listEquipos)
@@ -315,7 +316,10 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	public boolean campeonatoCompleto(String nomCampeonato) 
 	{
 		Campeonato c = em.find(Campeonato.class, nomCampeonato);
-		Collection<Equipo> listEquipos = c.getEquipos();
+		Query query = em.createQuery("SELECT c.equipos FROM Campeonato c "
+				+ "WHERE c.campeonato = '"+ nomCampeonato+"'");
+		List<Equipo> listEquipos = query.getResultList();
+		//Collection<Equipo> listEquipos = c.getEquipos();
 		if(listEquipos.size() < c.getCantEquipos())
 			return false;
 		else

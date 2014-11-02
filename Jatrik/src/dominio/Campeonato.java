@@ -23,7 +23,7 @@ public class Campeonato
 	@OneToMany(fetch = FetchType.LAZY)
 	private Collection<Partido> partidos;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Equipo> equipos;
 	
 	public Campeonato(){}
