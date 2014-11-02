@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="Description"
+		content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
+	<meta name="Keywords"
+		content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
+	<link rel="stylesheet" media="screen"
+		href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<meta name="Author" content="SymiSun* - symisun.com" />
+	<meta name="Robots" content="index,follow" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<!-- disable IE's image toolbar -->
+</h:head>
+<h:body>
+	<div id="daddy">
+		<ui:insert name="header_user">
+			<ui:include src="/resources/templates/header_user.xhtml" />
+		</ui:insert>
+		<!-- header -->
+		<div id="contenido_body">
+			<h3 id="subtitulo">Formación actual</h3>
+			<p:row>
+				<div style="background: white">
+					<p:outputLabel value="defensa/mediocampo/ataque" />
+					<br />
+					<p:outputLabel
+						value=" #{tacticaBean.cant_defensas}/#{tacticaBean.cant_mediocampistas}/#{tacticaBean.cant_delanteros}" />
+				</div>
+			</p:row>
+			<p:separator />
+			<h3 id="subtitulo">Titulares</h3>
+			<p:row class="row_jugadores">
+				<p:dataTable value="#{tacticaBean.titulares}" var="jugador">
+					<p:column headerText="Nombre">
+						<h:outputText value="#{jugador.nomJugador}" />
+					</p:column>
+
+					<p:column headerText="Estado actual">
+						<h:outputText value="#{jugador.estado_jugador}" />
+					</p:column>
+
+					<p:column headerText="Posición">
+						<h:outputText value="#{jugador.posicion}" />
+					</p:column>
+
+					<p:column headerText="Técnica">
+						<h:outputText value="#{jugador.tecnica}" />
+					</p:column>
+
+					<p:column headerText="Velocidad">
+						<h:outputText value="#{jugador.velocidad}" />
+					</p:column>
+
+					<p:column headerText="Ataque">
+						<h:outputText value="#{jugador.ataque}" />
+					</p:column>
+
+					<p:column headerText="Defensa">
+						<h:outputText value="#{jugador.defensa}" />
+					</p:column>
+
+					<p:column headerText="Portería">
+						<h:outputText value="#{jugador.porteria}" />
+					</p:column>
+				</p:dataTable>
+			</p:row>
+			<h3 id="subtitulo">Suplentes</h3>
+			<p:row class="row_jugadores">
+				<p:dataTable  value="#{tacticaBean.supelentes}" var="jugador">
+					<p:column headerText="Nombre">
+						<h:outputText value="#{jugador.nomJugador}" />
+					</p:column>
+
+					<p:column headerText="Estado actual">
+						<h:outputText value="#{jugador.estado_jugador}" />
+					</p:column>
+
+					<p:column headerText="Posición">
+						<h:outputText value="#{jugador.posicion}" />
+					</p:column>
+
+					<p:column headerText="Técnica">
+						<h:outputText value="#{jugador.tecnica}" />
+					</p:column>
+
+					<p:column headerText="Velocidad">
+						<h:outputText value="#{jugador.velocidad}" />
+					</p:column>
+
+					<p:column headerText="Ataque">
+						<h:outputText value="#{jugador.ataque}" />
+					</p:column>
+
+					<p:column headerText="Defensa">
+						<h:outputText value="#{jugador.defensa}" />
+					</p:column>
+
+					<p:column headerText="Portería">
+						<h:outputText value="#{jugador.porteria}" />
+					</p:column>
+				</p:dataTable>
+			</p:row>
+			<p:separator />
+			<h3 id="subtitulo">Actualizar formación y titulares</h3>
+			<h3 id="letra_chica">En caso de no confirmar la formación y/o los titulares quedan como en el último partido.</h3>
+			<h:form>
+				<p:panelGrid columns="2" >
+					<p:growl id="formacion" showDetail="true" life="2000" />
+					<p:growl id="titulares" showDetail="true" life="2000" />
+					
+					<p:row>
+					<p:outputLabel for="basic" value="Nueva Formación:" />
+					<p:selectOneListbox id="basic"
+						value="#{tacticaBean.nueva_formacion}">
+						<f:selectItem itemLabel="3-4-3" itemValue="3-4-3" />
+						<f:selectItem itemLabel="3-5-2" itemValue="3-5-2" />
+						<f:selectItem itemLabel="4-4-2" itemValue="4-4-2" />
+						<f:selectItem itemLabel="4-3-3" itemValue="4-3-3" />
+						<f:selectItem itemLabel="4-5-1" itemValue="4-5-1" />
+						<f:selectItem itemLabel="5-4-1" itemValue="5-4-1" />
+						<f:selectItem itemLabel="5-3-2" itemValue="5-3-2" />
+						<f:selectItem itemLabel="5-2-3" itemValue="5-2-3" />
+					</p:selectOneListbox>
+					<p:commandButton update="formacion" style="margin-top:5px"
+						value="Confirmar Formación"
+						action="#{tacticaBean.confirmarFormacion()}" />
+					</p:row>
+					<p:row>
+					<p:outputLabel value="Los titulares seran tomados en cuenta de arriba hacia abajo de acuerdo a la 
+					formación del equipo, ej: 4-4-2 , el primer titular será el golero, siguiendo por los 4 defensas,
+					4 mediocampistas y 2 delanteros" />
+					<p:separator/>
+					
+					<p:row>
+					<p:panelGrid columns="2" >
+					<p:column>
+					<p:outputLabel value="Suplentes" />
+					<p:outputLabel style="margin-left:175px" value="Titulares" />
+					<p:pickList id="pickList" value="#{tacticaBean.jugadores}"
+						var="jugador" itemLabel="#{jugador}" itemValue="#{jugador}" />
+					<p:commandButton update="titulares" style="margin-top:5px;left:25%"
+						value="Confirmar Equipo" action="#{tacticaBean.confirmarEquipo()}" />	
+					</p:column>	
+					<p:column>			
+					<p:outputLabel value="Puede arrastrar los jugadores hacia arriba o hacia abajo,y
+					moverlos de suplentes a titulares y viceversa." style="color:#173B0D;margin-left:175px
+					margin-top:50px" />
+					</p:column>
+					</p:panelGrid>
+					</p:row>
+								
+					
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+			<!-- cB -->
+		</div>
+		<!-- content -->
+		<p:ajaxStatus id="startAjax">
+			<f:facet name="start">
+				<div class="ui-widget-overlay">
+					<h:graphicImage
+						style="position: absolute;
+							left: 50%;
+						 	top: 50%;"
+						value="../../resources/images/ajax-loader.gif">
+					</h:graphicImage>
+				</div>
+			</f:facet>
+		</p:ajaxStatus>
+	</div>
+	<!-- daddy -->
+	<ui:insert name="footer_user">
+		<ui:include src="/resources/templates/footer_user.xhtml" />
+	</ui:insert>
+	<!--footer -->
+</h:body>
+</html>

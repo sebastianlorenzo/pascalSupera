@@ -12,18 +12,32 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.google.gson.Gson;
+
+import dataTypes.DataListaPosicion;
+
 public class VistaWebController {
 
 	private String REST_URI_PATH="http://localhost:8080/Jatrik/rest/";
+	
+	//*************************USUARIO***************************************************************
 	private String LOGIN_PATH = "usuarios/login";
 	private String LOGOUT_PATH = "usuarios/logout";
 	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";
 	private String ENVIAR_CHAT_PATH = "usuarios/enviarChat";
 	private String REGISTRO_PATH = "usuarios/registrar";
+	//*************************CAMPEONATO***************************************************************
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
 	private String ANOTARME_CAMPEONATO_PATH = "campeonatos/inscribirse";
 	private String CAMPEONATO_EN_EJECUCION_PATH = "campeonatos/campeonatosEnEjecucion";
+	//*************************EQUIPO***************************************************************
+	private String OBTENER_TITULARES_PATH = "equipos/obtenerJugadoresTitulares";
+	private String OBTENER_SUPLENTES_PATH = "equipos/obtenerJugadoresSuplentes";
+	private String MODIFICAR_TACTICA_PATH = "equipos/modificarTactica";
+	private String MODIFICAR_TITULARES_PATH = "equipos/modificarJugadoresTitulares";
+	private String ENTRENAR_EQUIPO_PATH = "equipos/";
+	
 	
 	// LOGIN USUARIO	*******************************************************************************
 	public String login (String nom, String pwd) {
@@ -206,5 +220,85 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
+				
+				// OBTENER JUGADORES TITULARES	*******************************************************************************
+				public String obtenerTitulares (String nombreEquipo) {
+					
+					String envio= "{"+
+							"Nombre"+":"+nombreEquipo+
+						   "}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_TITULARES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
+				// OBTENER JUGADORES SUPLENTES	*******************************************************************************
+				public String obtenerSuplentes (String nombreEquipo) {
+					
+					String envio= "{"+
+							"Nombre"+":"+nombreEquipo+
+						   "}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_SUPLENTES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
+				// MODIFICAR TACTICA	*******************************************************************************
+				public String modificarTactica (String nombreEquipo,String ataque, String defensa, String mediocampo) {
+					
+					String envio= "{"+
+							"Nombre"+":"+nombreEquipo+","+
+							"Ataque"+":"+ataque+","+
+							"Defensa"+":"+defensa+","+
+							"Mediocampo"+":"+mediocampo							+
+						   "}";		
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+MODIFICAR_TACTICA_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
+				// MODIFICAR TITULARES	*******************************************************************************
+				public String modificarTitulares (String nombreEquipo, DataListaPosicion dlp) {
+					Gson g = new Gson();
+					String posiciones = g.toJson(dlp);
+					String envio= "{"+
+							"Nombre"+":"+nombreEquipo+","+
+							"Posiciones"+":"+posiciones+
+						   "}";		
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+MODIFICAR_TITULARES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
+				// ENTRENAR EQUIPO	*******************************************************************************
+				public void entrenarEquipo (String nomEquipo,String golero, String defensa, String mediocampo, String ataque) {
+			
+					String envio= "{"+
+							"Nombre"+":"+nomEquipo+","+
+							"Golero"+":"+golero+","+
+							"Defensa"+":"+defensa+","+
+							"Mediocampo"+":"+mediocampo+","+
+							"Ataque"+":"+ataque+
+						   "}";		
+					System.out.println(envio);
+					/*
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+MODIFICAR_TITULARES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;*/
+					
+				}
+				
 
 }
