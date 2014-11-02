@@ -205,9 +205,12 @@ public class PartidoDAOImpl implements PartidoDAO
 						  p.getLesionesLocal(), p.getLesionesVisitante());
 				
 				Collection<Comentario> listComentarios = p.getComentarios();
+				
 				List<String> comentariosEnvio = new ArrayList<String>();
 				for (Comentario com: listComentarios ){
+System.out.println("tengo comentario");
 					if(com.getMostrarJugados()){
+System.out.println("listaComentarios: comentario true ");
 						String comentario = com.getMinuto()+" "+com.getComentario();
 						comentariosEnvio.add(comentario);
 					}		
