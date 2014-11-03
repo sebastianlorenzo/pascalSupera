@@ -488,7 +488,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			try
 			{
-				respuesta.put("Oferta aceptada", true);
+				respuesta.put("Oferta rechazada", true);
 				respuesta.put("mensaje", "La oferta fue rechazada correctamente.");
 			} 
 			catch (Exception e) 
