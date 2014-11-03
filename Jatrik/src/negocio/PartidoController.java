@@ -250,7 +250,7 @@ public class PartidoController implements IPartidoController
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
 		String notificacionEquipoVisitante = ((goles[1] >  goles[0]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
-										      ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
+										      ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_local)  : 
 																	   getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))   + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
