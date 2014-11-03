@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -57,4 +58,6 @@ public interface EquipoDAO
 	public Object[]  getEntrenamientoEquipo(String nombreEquipo);
 	
 	public Boolean modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria);
+	
+	public ArrayList<Equipo> obtenerEquipos();
 }

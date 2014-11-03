@@ -171,9 +171,9 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			for(Jugador jug: ljugadores)
 			{
-				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicionIdeal(), 
-				jug.getVelocidad(), jug.getTecnica(), jug.getAtaque(),
-				jug.getDefensa(), jug.getPorteria(), jug.getEstado_jugador());
+				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicion(),  jug.getPosicionIdeal(), 
+												(int)(float) jug.getVelocidad(), (int)(float) jug.getTecnica(), (int)(float) jug.getAtaque(),
+												(int)(float) jug.getDefensa(), (int)(float) jug.getPorteria(), jug.getEstado_jugador());
 				de.addDataJugador(dj);
 			}
 			dlequipos.addDataEquipo(de);
@@ -577,6 +577,15 @@ public class EquipoDAOImpl implements EquipoDAO
 			return true;
 		}
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ArrayList<Equipo> obtenerEquipos()
+	{
+		Query query = em.createQuery("SELECT e FROM Equipo e");
+		ArrayList<Equipo> resultList = (ArrayList<Equipo>) query.getResultList();
+		return resultList;
 	}
 	
 }

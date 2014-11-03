@@ -158,7 +158,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		Jugador j = em.find(Jugador.class, idJugador);
 		if (j != null)
 		{
-			return (j.getTecnica() + j.getVelocidad());
+			return (int) (j.getTecnica() + j.getVelocidad());
 		}
 		return null;
 	}
