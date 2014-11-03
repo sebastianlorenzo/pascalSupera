@@ -615,9 +615,6 @@ public class EquipoDAOImpl implements EquipoDAO
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);		
 		Date ahora = calendar.getTime();
-		
-	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
-	    String fecha_hoy = formateador.format(ahora);
 
 		DataListaPartido dlpartidos = new DataListaPartido();
 		
@@ -627,9 +624,8 @@ public class EquipoDAOImpl implements EquipoDAO
 		{
 			Partido p = iter.next();
 			Date fecha_p = p.getFechaPartido();
-			String fecha_Partido = formateador.format(fecha_p);
 			
-			if(fecha_Partido.compareTo(fecha_hoy) < 0)
+			if(fecha_p.before(ahora))
 			{	
 				String nomCampeonato = p.getCampeonato().getCampeonato();
 				String nomEqLocal = p.getEquipoLocal().getEquipo();

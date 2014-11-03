@@ -96,15 +96,13 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		DataListaCampeonato dlcampeonatos = new DataListaCampeonato();
 		
 		Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    String fecha_hoy = formateador.format(ahora);
-	    
+		
 		for (Campeonato c : campeonatosList) 
 		{	
-			String fecha_campeonato = c.getInicioCampeonato().toString();
+			Date fecha_campeonato = c.getInicioCampeonato();
 			
 			//aplazar campeonato
-			if ((fecha_campeonato.compareTo(fecha_hoy) < 0)  &&
+			if ((fecha_campeonato.before(ahora))  &&
 					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
 			{
 				Date dateIni = sumarDiasFecha(c.getInicioCampeonato(), Constantes.DIAS_APLAZO);
@@ -120,17 +118,17 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				}				
 			}
 			
-			fecha_campeonato = c.getInicioCampeonato().toString();
+			fecha_campeonato = c.getInicioCampeonato();
 			
-			if ((fecha_campeonato.compareTo(fecha_hoy) >=0) &&
+			if ((fecha_campeonato.after(ahora)) &&
 					(c.getEquipos() == null || c.getEquipos().size() < c.getCantEquipos()))
 			{
 				DataCampeonato dca = new DataCampeonato();
 				String nomCampeonato = c.getCampeonato();
 				dca.setNomCampeonato(nomCampeonato);
 				Date fechaCamp = c.getInicioCampeonato();
-				SimpleDateFormat formateador2 = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-			    String fechaInicio = formateador2.format(fechaCamp);
+				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fechaInicio = formateador.format(fechaCamp);
 				dca.setFechaInicio(fechaInicio);
 				Integer bacantes = (c.getCantEquipos() - c.getEquipos().size());
 				dca.setDisponibilidad(bacantes);
@@ -237,27 +235,25 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		List<Campeonato> campEnEjecucion = query.getResultList();		
 		DataListaCampeonato dlcampeonatos = new DataListaCampeonato();
 		Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    String fecha_hoy = formateador.format(ahora);
 	    
 		for (Campeonato c : campEnEjecucion) 
 		{	
-			String fecha_campeonato = c.getInicioCampeonato().toString();
+			Date fecha_campeonato = c.getInicioCampeonato();
 			String nomCamp = c.getCampeonato();
 			Integer cantidadEquipos = c.getCantEquipos();			
 			Integer numero_partido = cantidadEquipos*(cantidadEquipos-1);
 			
 			Partido par = em.find(Partido.class, nomCamp+"_partido_"+numero_partido);
 			
-			String fecha_ultimo_partido = par.getFechaPartido().toString();
-			if ((fecha_campeonato.compareTo(fecha_hoy) < 0) && (fecha_ultimo_partido.compareTo(fecha_hoy) >=0))
+			Date fecha_ultimo_partido = par.getFechaPartido();
+			if ((fecha_campeonato.before(ahora)) && (fecha_ultimo_partido.after(ahora)))
 			{
 				DataCampeonato dca = new DataCampeonato();
 				String nomCampeonato = c.getCampeonato();
 				dca.setNomCampeonato(nomCampeonato);
 				Date fechaCamp = c.getInicioCampeonato();
-				SimpleDateFormat formateador2 = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-			    String fechaInicio = formateador2.format(fechaCamp);
+				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fechaInicio = formateador.format(fechaCamp);
 				dca.setFechaInicio(fechaInicio);
 				
 				Collection<Equipo> lsteq = c.getEquipos();
@@ -286,14 +282,12 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		JSONObject obj;
 
 		Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    String fecha_hoy = formateador.format(ahora);
 	    
 		for (Campeonato c : campeonatos) 
 		{	
-			String fecha_campeonato = c.getInicioCampeonato().toString();
+			Date fecha_campeonato = c.getInicioCampeonato();
 			
-			if (fecha_campeonato.compareTo(fecha_hoy) < 0)
+			if (fecha_campeonato.before(ahora))
 			{
 				try 
 				{	
