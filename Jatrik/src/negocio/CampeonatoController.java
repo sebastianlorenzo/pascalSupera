@@ -130,7 +130,12 @@ public class CampeonatoController implements ICampeonatoController
 			//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
 				boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
 				if(creoCampeonato){
-					Date hoy = new Date();
+										
+					Calendar calendar = Calendar.getInstance();
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					calendar.set(Calendar.MILLISECOND, 0);
+					Date hoy = calendar.getTime();
 					Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
 					
 					int num=1;

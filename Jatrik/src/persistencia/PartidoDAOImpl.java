@@ -200,8 +200,8 @@ public class PartidoDAOImpl implements PartidoDAO
 				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
 				
 				Date fechaPartido = p.getFechaPartido();
-				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-			    String fecha = formateador.format(fechaPartido);
+				SimpleDateFormat formateador2 = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fecha = formateador2.format(fechaPartido);
 						
 				Integer golesLocal = p.getGolesLocal();
 				Integer golesVisitante = p.getGolesVisitante();

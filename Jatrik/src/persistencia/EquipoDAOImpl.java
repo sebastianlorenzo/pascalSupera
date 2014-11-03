@@ -618,16 +618,17 @@ public class EquipoDAOImpl implements EquipoDAO
 		
 	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
 	    String fecha_hoy = formateador.format(ahora);
-	    
+
 		DataListaPartido dlpartidos = new DataListaPartido();
 		
 		Iterator<Partido> iter = partidos.iterator();
 		int cant = 0;
-		while (cant <= Constantes.MAX_RESULTADOS_PARTIDOS && iter.hasNext()){
-			
+		while (cant < Constantes.MAX_RESULTADOS_PARTIDOS && iter.hasNext())
+		{
 			Partido p = iter.next();
 			Date fecha_p = p.getFechaPartido();
-			String fecha_Partido = formateador.format(fecha_p);			
+			String fecha_Partido = formateador.format(fecha_p);
+			
 			if(fecha_Partido.compareTo(fecha_hoy) < 0)
 			{	
 				String nomCampeonato = p.getCampeonato().getCampeonato();
@@ -636,8 +637,8 @@ public class EquipoDAOImpl implements EquipoDAO
 				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
 				
 				Date fechaPartido = p.getFechaPartido();
-				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-			    String fecha = formateador.format(fechaPartido);
+				SimpleDateFormat formateador2 = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fecha = formateador2.format(fechaPartido);
 						
 				Integer golesLocal = p.getGolesLocal();
 				Integer golesVisitante = p.getGolesVisitante();
