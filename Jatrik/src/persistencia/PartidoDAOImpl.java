@@ -2,6 +2,7 @@ package persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -178,13 +179,20 @@ public class PartidoDAOImpl implements PartidoDAO
 		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
 		Collection<Partido> partidos = camp.getPartidos();
 		DataListaPartido dlpartidos = new DataListaPartido();
-		Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);		
+		Date ahora = calendar.getTime();
+		
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
 	    String fecha_hoy = formateador.format(ahora);
 	    
 		for(Partido p: partidos)
 		{	
-			String fecha_Partido = p.getFechaPartido().toString();
+			Date fecha_p = p.getFechaPartido();
+			String fecha_Partido = formateador.format(fecha_p);
+			
 			if(fecha_Partido.compareTo(fecha_hoy) < 0)
 			{
 				String nomEqLocal = p.getEquipoLocal().getEquipo();
@@ -192,7 +200,7 @@ public class PartidoDAOImpl implements PartidoDAO
 				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
 				
 				Date fechaPartido = p.getFechaPartido();
-				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 			    String fecha = formateador.format(fechaPartido);
 						
 				Integer golesLocal = p.getGolesLocal();
@@ -208,9 +216,7 @@ public class PartidoDAOImpl implements PartidoDAO
 				
 				List<String> comentariosEnvio = new ArrayList<String>();
 				for (Comentario com: listComentarios ){
-System.out.println("tengo comentario");
 					if(com.getMostrarJugados()){
-System.out.println("listaComentarios: comentario true ");
 						String comentario = com.getMinuto()+" "+com.getComentario();
 						comentariosEnvio.add(comentario);
 					}		

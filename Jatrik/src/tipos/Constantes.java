@@ -5,7 +5,7 @@ public class Constantes {
 	/* Campeonato */
 	public static final int DIAS_APLAZO         = 15;
 	public static final int DIAS_ENTRE_PARTIDOS = 7;
-	public static final int HORA_PARTIDOS       = 18;
+	public static final int HORA_PARTIDOS       = 16;
 	
 	/* Equipo */
 	public static final Integer CONST_CANT_MAX_CAMBIOS = 3;
@@ -16,6 +16,7 @@ public class Constantes {
 	public static final int MAX_CANT_DEFENSAS          = 6;
 	public static final int MAX_CANT_MEDIOCAMPISTAS    = 6;
 	public static final int MAX_CANT_DELANTEROS        = 4;
+	public static final int MAX_RESULTADOS_PARTIDOS = 10;
 	
 	/* Jugador */
 	public static final String CONST_DELANTERO     = "delantero";

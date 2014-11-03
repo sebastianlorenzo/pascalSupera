@@ -7,6 +7,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaEquipo;
+import tipos.DataListaPartido;
 import tipos.DataListaPosicion;
 import tipos.DataListaOferta;
 import dominio.Equipo;
@@ -54,5 +55,7 @@ public interface IEquipoController
 	public void modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria);
 	
 	public void ejecutarEntrenamiento();
-		
+
+	public DataListaPartido obtenerUltimosResultados(String nomUsuario);
+			
 }

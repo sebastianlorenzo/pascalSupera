@@ -5,13 +5,18 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 import tipos.DataListaEquipo;
+import tipos.DataListaPartido;
 import tipos.DataListaPosicion;
 import tipos.DataListaOferta;
+
 import com.google.gson.Gson;
+
 import negocio.IEquipoController;
 
 @ManagedBean
@@ -321,5 +326,22 @@ public class EquipoWS
 	public void ejecutarEntrenamiento()
 	{
 		iEquipoController.ejecutarEntrenamiento();
-	}	
+	}
+	
+	//Lista los últimos 10 resultados del equipo, las estadísticas y comentarios para la vista de minuto a minuto
+	@POST
+	@Path("verInfoMobile")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String verInfoMobile(String datos) throws JSONException
+	{
+		JSONObject datosU = new JSONObject(datos);
+		String nomUsuario = datosU.getString("nomUsuario"); //Logueado
+		Gson g = new Gson();
+		DataListaPartido dataRes = iEquipoController.obtenerUltimosResultados(nomUsuario);
+		return g.toJson(dataRes);
+		
+	}
+	
+	
 }

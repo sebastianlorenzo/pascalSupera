@@ -20,6 +20,7 @@ import tipos.Constantes;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
 import tipos.DataListaJugador;
+import tipos.DataListaPartido;
 import tipos.DataListaPosicion;
 import tipos.DataPosicion;
 import tipos.DataListaOferta;
@@ -355,5 +356,11 @@ public class EquipoController implements IEquipoController
 				}	
 			}
 		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataListaPartido obtenerUltimosResultados(String nomUsuario) 
+	{
+		return this.equipoDAO.obtenerUltimosResultadosEquipo(nomUsuario);
 	}
 }

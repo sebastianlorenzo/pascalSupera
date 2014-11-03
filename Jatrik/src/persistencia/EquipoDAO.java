@@ -10,6 +10,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaEquipo;
 import tipos.DataListaOferta;
+import tipos.DataListaPartido;
 import dominio.Equipo;
 import dominio.Jugador;
 
@@ -60,4 +61,7 @@ public interface EquipoDAO
 	public Boolean modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria);
 	
 	public ArrayList<Equipo> obtenerEquipos();
+
+	public DataListaPartido obtenerUltimosResultadosEquipo(String nomUsuario);
+	
 }

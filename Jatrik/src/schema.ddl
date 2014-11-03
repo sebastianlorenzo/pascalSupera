@@ -74,6 +74,10 @@
     create table public.equipo (
         equipo varchar(255) not null,
         cant_cambios_realizados int4,
+        entrenamientoDefensivo int4,
+        entrenamientoFisico int4,
+        entrenamientoOfensivo int4,
+        entrenamientoPorteria int4,
         localidad varchar(255),
         pais varchar(255),
         puntaje int4,
@@ -93,16 +97,16 @@
 
     create table public.jugador (
         idJugador int4 not null,
-        ataque int4,
+        ataque float4,
         cant_tarjetas_amarillas int4,
-        defensa int4,
+        defensa float4,
         estado_jugador varchar(255),
         jugador varchar(255),
-        porteria int4,
+        porteria float4,
         posicion varchar(255),
         posicion_ideal varchar(255),
-        tecnica int4,
-        velocidad int4,
+        tecnica float4,
+        velocidad float4,
         equipo_equipo varchar(255),
         primary key (idJugador)
     );

@@ -2,20 +2,27 @@ package persistencia;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import javax.ejb.*;
 import javax.persistence.*;
+
 import org.codehaus.jettison.json.*;
+
 import tipos.Constantes;
 import tipos.DataEquipo;
 import tipos.DataJugador;
 import tipos.DataListaEquipo;
 import tipos.DataListaOferta;
+import tipos.DataListaPartido;
 import tipos.DataOferta;
+import tipos.DataResumenPartido;
+import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Notificacion;
 import dominio.Oferta;
 import dominio.Pais;
+import dominio.Partido;
 import dominio.Usuario;
 
 @Stateless
@@ -586,6 +593,76 @@ public class EquipoDAOImpl implements EquipoDAO
 		Query query = em.createQuery("SELECT e FROM Equipo e");
 		ArrayList<Equipo> resultList = (ArrayList<Equipo>) query.getResultList();
 		return resultList;
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataListaPartido obtenerUltimosResultadosEquipo(String nomUsuario) 
+	{
+		Usuario us = em.find(Usuario.class, nomUsuario);
+		String miEquipo = us.getEquipo().getEquipo();
+		
+		Query query = em.createQuery("SELECT p FROM Partido p " + 
+				"WHERE p.equipoLocal = '" + miEquipo 
+				+ "' or p.equipoVisitante = '" + miEquipo + "' ORDER BY p.fechaPartido DESC");
+		
+		List<Partido> partidos = query.getResultList();
+		
+		if(partidos.isEmpty())
+			return null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);		
+		Date ahora = calendar.getTime();
+		
+	    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+	    String fecha_hoy = formateador.format(ahora);
+	    
+		DataListaPartido dlpartidos = new DataListaPartido();
+		
+		Iterator<Partido> iter = partidos.iterator();
+		int cant = 0;
+		while (cant <= Constantes.MAX_RESULTADOS_PARTIDOS && iter.hasNext()){
+			
+			Partido p = iter.next();
+			Date fecha_p = p.getFechaPartido();
+			String fecha_Partido = formateador.format(fecha_p);			
+			if(fecha_Partido.compareTo(fecha_hoy) < 0)
+			{	
+				String nomCampeonato = p.getCampeonato().getCampeonato();
+				String nomEqLocal = p.getEquipoLocal().getEquipo();
+				String nomEqVisitante = p.getEquipoVisitante().getEquipo();
+				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
+				
+				Date fechaPartido = p.getFechaPartido();
+				formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fecha = formateador.format(fechaPartido);
+						
+				Integer golesLocal = p.getGolesLocal();
+				Integer golesVisitante = p.getGolesVisitante();
+				
+				DataResumenPartido dp = new DataResumenPartido (nomPartido, nomEqLocal, nomEqVisitante, 
+						nomCampeonato, fecha, p.getTarjetasAmarillasLocal(), p.getTarjetasAmarillasVisitante(), 
+						  p.getTarjetasRojasLocal(), p.getTarjetasRojasVisitante(),
+						  golesLocal, golesVisitante,
+						  p.getLesionesLocal(), p.getLesionesVisitante());
+				
+				Collection<Comentario> listComentarios = p.getComentarios();
+				
+				List<String> comentariosEnvio = new ArrayList<String>();
+				for (Comentario com: listComentarios ){
+						String comentario = com.getMinuto()+" "+com.getComentario();
+						comentariosEnvio.add(comentario);		
+				}
+				if(comentariosEnvio != null)
+					dp.setDetalle(comentariosEnvio);
+				
+				dlpartidos.addDataPartido(dp);
+				cant++;
+			}
+		}
+		return dlpartidos;
 	}
 	
 }
