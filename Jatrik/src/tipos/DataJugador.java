@@ -5,6 +5,7 @@ public class DataJugador
 	private Integer idJugador;
 	private String nomJugador;
 	private String posicion;
+	private String posicion_ideal;
 	private Integer velocidad;
 	private Integer tecnica; // Equivale al regate
 	private Integer ataque;  // Equivale a potencia
@@ -14,12 +15,13 @@ public class DataJugador
 	
 	public DataJugador(){}
 	
-	public DataJugador(Integer idJugador, String nomJugador, String posicion, Integer velocidad, Integer tecnica, Integer ataque,
+	public DataJugador(Integer idJugador, String nomJugador, String posicion, String posicion_ideal, Integer velocidad, Integer tecnica, Integer ataque,
 			Integer defensa, Integer porteria, String  estado_jugador)
 	{
 		this.idJugador = idJugador;
 		this.nomJugador = nomJugador;
 		this.posicion = posicion;
+		this.posicion_ideal = posicion_ideal;
 		this.velocidad = velocidad;
 		this.tecnica = tecnica;
 		this.ataque = ataque;
@@ -117,4 +119,11 @@ public class DataJugador
 		this.estado_jugador = estado_jugador;
 	}
 
+	public String getPosicion_ideal() {
+		return posicion_ideal;
+	}
+
+	public void setPosicion_ideal(String posicion_ideal) {
+		this.posicion_ideal = posicion_ideal;
+	}
 }

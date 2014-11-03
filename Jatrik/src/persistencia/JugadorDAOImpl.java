@@ -163,4 +163,23 @@ public class JugadorDAOImpl implements JugadorDAO
 		return null;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void aumentarHabilidades(Integer idJugador, Float defensa, Float tecnica, Float velocidad, Float ataque, Float porteria){
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			if (j.getDefensa() < 100)
+				j.setDefensa(j.getDefensa() + defensa);
+			if (j.getTecnica() < 100)
+				j.setTecnica(j.getTecnica() + tecnica);
+			if (j.getVelocidad() < 100)
+				j.setVelocidad(j.getVelocidad() + velocidad);
+			if (j.getAtaque() < 100)
+				j.setAtaque(j.getAtaque() + ataque);
+			if (j.getPorteria() < 100)
+				j.setPorteria(j.getPorteria() + porteria);
+			em.merge(j);
+		}
+	}
+	
 }

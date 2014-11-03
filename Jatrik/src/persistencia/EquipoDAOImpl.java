@@ -552,4 +552,31 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	}
 	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Object[]  getEntrenamientoEquipo(String nombreEquipo) 
+	{
+		Query query = em.createQuery("SELECT e.entrenamientoOfensivo , e.entrenamientoDefensivo , e.entrenamientoFisico , e.entrenamientoPorteria "
+									+ "FROM  Equipo e "
+									+ "WHERE e.equipo = '"+ nombreEquipo + "'");
+		List <Object[]> entrenamiento = query.getResultList();
+		return entrenamiento.get(0);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria) 
+	{
+		Equipo e = em.find(Equipo.class, equipo);
+		if (e != null)
+		{
+			e.setEntrenamientoOfensivo(ofensivo);
+			e.setEntrenamientoDefensivo(defensivo);
+			e.setEntrenamientoFisico(fisico);
+			e.setEntrenamientoPorteria(porteria);
+			em.merge(e);
+			return true;
+		}
+		return false;
+	}
+	
 }

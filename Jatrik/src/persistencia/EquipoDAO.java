@@ -54,4 +54,7 @@ public interface EquipoDAO
 
 	public DataListaOferta obtenerMisOfertas(String nomUsuario);
 	
+	public Object[]  getEntrenamientoEquipo(String nombreEquipo);
+	
+	public Boolean modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria);
 }

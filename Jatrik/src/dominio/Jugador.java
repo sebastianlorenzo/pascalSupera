@@ -18,11 +18,11 @@ public class Jugador implements java.io.Serializable
 	private String jugador;
 	private String posicion;
 	private String posicion_ideal;
-	private Integer velocidad;
-	private Integer tecnica; // Equivale al regate
-	private Integer ataque;  // Equivale a potencia
-	private Integer defensa;
-	private Integer porteria;
+	private Float velocidad;
+	private Float tecnica; // Equivale al regate
+	private Float ataque;  // Equivale a potencia
+	private Float defensa;
+	private Float porteria;
 	private String  estado_jugador; //{titular, suplente, lesionado, expulsado}
 	private Integer cant_tarjetas_amarillas;
 
@@ -35,8 +35,8 @@ public class Jugador implements java.io.Serializable
 	
 	public Jugador(){}
 
-	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Integer velocidad,	
-				   Integer tecnica, Integer ataque, Integer defensa, Integer porteria) 
+	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Float velocidad,	
+				   Float tecnica, Float ataque, Float defensa, Float porteria) 
 	{
 		this.idJugador = idJugador;
 		this.jugador   = jugador;
@@ -102,52 +102,52 @@ public class Jugador implements java.io.Serializable
 		this.posicion_ideal = posicionIdeal;
 	}
 	
-	public Integer getVelocidad() 
+	public Float getVelocidad() 
 	{
 		return velocidad;
 	}
 
-	public void setVelocidad(Integer velocidad) 
+	public void setVelocidad(Float velocidad) 
 	{
 		this.velocidad = velocidad;
 	}
 
-	public Integer getTecnica() 
+	public Float getTecnica() 
 	{
 		return tecnica;
 	}
 
-	public void setTecnica(Integer tecnica)
+	public void setTecnica(Float tecnica)
 	{
 		this.tecnica = tecnica;
 	}
 
-	public Integer getAtaque() 
+	public Float getAtaque() 
 	{
 		return ataque;
 	}
 
-	public void setAtaque(Integer ataque) 
+	public void setAtaque(Float ataque) 
 	{
 		this.ataque = ataque;
 	}
 
-	public Integer getDefensa()
+	public Float getDefensa()
 	{
 		return defensa;
 	}
 
-	public void setDefensa(Integer defensa) 
+	public void setDefensa(Float defensa) 
 	{
 		this.defensa = defensa;
 	}
 
-	public Integer getPorteria()
+	public Float getPorteria()
 	{
 		return porteria;
 	}
 
-	public void setPorteria(Integer porteria) 
+	public void setPorteria(Float porteria) 
 	{
 		this.porteria = porteria;
 	}

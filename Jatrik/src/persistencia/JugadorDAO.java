@@ -37,4 +37,6 @@ public interface JugadorDAO
 	
 	public Integer getRegateJugador(Integer idJugador);
 	
+	public void aumentarHabilidades(Integer idJugador, Float defensa, Float tecnica, Float velocidad, Float ataque, Float porteria);
+	
 }

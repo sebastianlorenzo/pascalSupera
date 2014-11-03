@@ -200,10 +200,10 @@ public class EquipoController implements IEquipoController
 			while (i.hasNext()){
 				Jugador j = i.next();
 				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) == 0){
-					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
-														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
-					dlj.addDataJugador(dj);
-					
+					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(),  
+														(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
+														(int)(float) j.getPorteria(), j.getEstado_jugador());
+					dlj.addDataJugador(dj);			
 				}
 			}
 			Gson g = new Gson();
@@ -225,11 +225,11 @@ public class EquipoController implements IEquipoController
 			DataListaJugador dlj = new DataListaJugador();
 			while (i.hasNext()){
 				Jugador j = i.next();
-				if (j.getEstado_jugador().compareTo(Constantes.CONST_SUPLENTE) == 0){
-					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicionIdeal(), j.getVelocidad(), j.getTecnica(), 
-														j.getAtaque(), j.getDefensa(), j.getPorteria(), j.getEstado_jugador());
-					dlj.addDataJugador(dj);
-					
+				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) != 0){
+					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(), 
+													(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
+													(int)(float) j.getPorteria(), j.getEstado_jugador());
+					dlj.addDataJugador(dj);			
 				}
 			}
 			Gson g = new Gson();
@@ -279,5 +279,81 @@ public class EquipoController implements IEquipoController
 	public DataListaOferta obtenerOfertasRealizadas(String nomUsuario) 
 	{
 		return this.equipoDAO.obtenerMisOfertas(nomUsuario);
+	}
+	
+		@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONObject obtenerEntrenamiento(String equipo) 
+	{
+		Object[] res = this.equipoDAO.getEntrenamientoEquipo(equipo);
+		JSONObject jsonTactica = new JSONObject();
+		try
+		{
+			jsonTactica.put("Ofensivo", res[0].toString());
+			jsonTactica.put("Defensivo", res[1].toString());
+			jsonTactica.put("Fisico", res[2].toString());
+			jsonTactica.put("Porteria", res[3].toString());
+        }
+        catch(Exception ex)
+		{
+            ex.printStackTrace();
+        }
+		return jsonTactica;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria) 
+	{
+		this.equipoDAO.modificarEntrenamiento(equipo, ofensivo, defensivo, fisico, porteria);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void ejecutarEntrenamiento() {
+		Collection<Equipo> equipos = equipoDAO.obtenerEquipos();
+		Iterator<Equipo> iteradorEquipo = equipos.iterator();
+		while (iteradorEquipo.hasNext()){
+			Equipo e = iteradorEquipo.next();
+			Collection<Jugador> jugadores = e.getJugadores();
+			Iterator<Jugador> i = jugadores.iterator();
+			Integer entrenamientoOfensivo = e.getEntrenamientoOfensivo();
+			Integer entrenamientoDefensivo = e.getEntrenamientoDefensivo();
+			Integer entrenamientoFisico = e.getEntrenamientoFisico();
+			Integer entrenamientoPorteria = e.getEntrenamientoPorteria();
+			Float coeficiente = (float) 0.25;
+			while (i.hasNext()){
+				Jugador j = i.next();
+				if (j.getPosicionIdeal().compareTo(Constantes.CONST_DEFENSA) == 0){
+					jugadorDAO.aumentarHabilidades(j.getIdJugador(), 
+													(entrenamientoDefensivo * coeficiente), 
+													(entrenamientoOfensivo * coeficiente * 1/3), 
+													(entrenamientoFisico * coeficiente), 
+													(entrenamientoOfensivo * coeficiente * 1/3), 
+													(float) 0);
+				}	
+				if (j.getPosicionIdeal().compareTo(Constantes.CONST_DELANTERO) == 0){
+					jugadorDAO.aumentarHabilidades(j.getIdJugador(), 
+													(entrenamientoDefensivo * coeficiente * 1/3), 
+													(entrenamientoOfensivo * coeficiente), 
+													(entrenamientoFisico * coeficiente), 
+													(entrenamientoOfensivo * coeficiente), 
+													(float) 0);
+				}	
+				if (j.getPosicionIdeal().compareTo(Constantes.CONST_MEDIOCAMPISTA) == 0){
+					jugadorDAO.aumentarHabilidades(j.getIdJugador(), 
+													(entrenamientoDefensivo * coeficiente * 1/2), 
+													(entrenamientoOfensivo * coeficiente * 1/2), 
+													(entrenamientoFisico * coeficiente), 
+													(entrenamientoOfensivo * coeficiente * 1/2), 
+													(float) 0);
+				}	
+				if (j.getPosicionIdeal().compareTo(Constantes.CONST_PORTERO) == 0){
+					jugadorDAO.aumentarHabilidades(j.getIdJugador(), 
+													(float) 0, 
+													(float) 0, 
+													(entrenamientoFisico * coeficiente), 
+													(float) 0, 
+													entrenamientoPorteria * coeficiente);
+				}	
+			}
+		}
 	}
 }

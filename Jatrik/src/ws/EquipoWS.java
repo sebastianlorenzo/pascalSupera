@@ -247,5 +247,79 @@ public class EquipoWS
 			respuesta.put("Resultado", false);
 		return respuesta.toString();
 	}
-		
+	
+	@POST
+	@Path("obtenerEntrenamiento")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String obtenerEntrenamiento(String datos) throws JSONException
+	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEquipo = datosEquipo.getString("Nombre");
+		if (iEquipoController.existeEquipoRegistrado(nombreEquipo))
+		{
+    		return iEquipoController.obtenerEntrenamiento(nombreEquipo).toString();
+		}
+		else
+		{
+			JSONObject jsonResult = new JSONObject();
+			try
+			{
+				jsonResult.put("Result", false);
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			return jsonResult.toString();
+		}
+	}
+	
+	@POST
+	@Path("modificarEntrenamiento")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String modificarEntrenamiento(String datos) throws JSONException
+	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEquipo = datosEquipo.getString("Nombre");
+		Integer entrenamientoOfensivo = Integer.parseInt(datosEquipo.getString("Ofensivo"));
+		Integer entrenamientoDefensivo = Integer.parseInt(datosEquipo.getString("Defensivo"));
+		Integer entrenamientoFisico = Integer.parseInt(datosEquipo.getString("Fisico"));
+		Integer entrenamientoPorteria = Integer.parseInt(datosEquipo.getString("Porteria"));
+		if (iEquipoController.existeEquipoRegistrado(nombreEquipo))
+		{
+    		iEquipoController.modificarEntrenamiento(nombreEquipo, entrenamientoOfensivo, entrenamientoDefensivo, entrenamientoFisico, entrenamientoPorteria);
+    		JSONObject jsonResult = new JSONObject();
+			try
+			{
+				jsonResult.put("Result", true);
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			return jsonResult.toString();
+		}
+		else
+		{
+			JSONObject jsonResult = new JSONObject();
+			try
+			{
+				jsonResult.put("Result", false);
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			return jsonResult.toString();
+		}
+	}
+	
+	@GET
+	@Path("ejecutarEntrenamiento")
+	public void ejecutarEntrenamiento()
+	{
+		iEquipoController.ejecutarEntrenamiento();
+	}	
 }

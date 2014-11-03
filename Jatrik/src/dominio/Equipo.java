@@ -26,8 +26,11 @@ public class Equipo implements java.io.Serializable
 	private Integer tacticaAtaque;
 	private Integer puntaje;
 	private Integer cant_cambios_realizados;
+	private Integer entrenamientoPorteria;
+	private Integer entrenamientoOfensivo;
+	private Integer entrenamientoDefensivo;
+	private Integer entrenamientoFisico;
 	
-
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="equipo")
 	private Estadio estadio;
 	
@@ -51,7 +54,6 @@ public class Equipo implements java.io.Serializable
 	@JoinTable(name="equipo_ofertas_recibidas")
 	private Collection<Oferta> ofertasRecibidas;
 	
-	
 	public Equipo(){}
 
 	public Equipo(String equipo, String pais, String localidad) 
@@ -69,6 +71,10 @@ public class Equipo implements java.io.Serializable
 		Collection<Campeonato> campeonatos = new ArrayList<Campeonato>();
 		this.campeonatos = campeonatos;
 		this.cant_cambios_realizados = 0; 
+		this.entrenamientoOfensivo = 0;
+		this.entrenamientoDefensivo = 0;
+		this.entrenamientoPorteria = 0;
+		this.entrenamientoFisico = 0;
 	}
 
 	public String getEquipo() 
@@ -205,8 +211,39 @@ public class Equipo implements java.io.Serializable
 	public void setOfertasRecibidas(Collection<Oferta> ofertasRecibidas) {
 		this.ofertasRecibidas = ofertasRecibidas;
 	}
-	
 
+	public Integer getEntrenamientoDefensivo() {
+		return entrenamientoDefensivo;
+	}
+
+	public void setEntrenamientoDefensivo(Integer entrenamientoDefensivo) {
+		this.entrenamientoDefensivo = entrenamientoDefensivo;
+	}
+
+	public Integer getEntrenamientoOfensivo() {
+		return entrenamientoOfensivo;
+	}
+
+	public void setEntrenamientoOfensivo(Integer entrenamientoOfensivo) {
+		this.entrenamientoOfensivo = entrenamientoOfensivo;
+	}
+
+	public Integer getEntrenamientoPorteria() {
+		return entrenamientoPorteria;
+	}
+
+	public void setEntrenamientoPorteria(Integer entrenamientoPorteria) {
+		this.entrenamientoPorteria = entrenamientoPorteria;
+	}
+
+	public Integer getEntrenamientoFisico() {
+		return entrenamientoFisico;
+	}
+
+	public void setEntrenamientoFisico(Integer entrenamientoFisico) {
+		this.entrenamientoFisico = entrenamientoFisico;
+	}
+	
 	public Integer getCant_cambios_realizados() 
 	{
 		return cant_cambios_realizados;

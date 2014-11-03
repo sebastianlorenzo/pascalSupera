@@ -48,5 +48,11 @@ public interface IEquipoController
 	public JSONObject rechazarOferta(String nomUsuario, String comentario, Integer idOferta);
 
 	public DataListaOferta obtenerOfertasRealizadas(String nomUsuario);
+	
+	public JSONObject obtenerEntrenamiento(String equipo);
+	
+	public void modificarEntrenamiento(String equipo, Integer ofensivo, Integer defensivo, Integer fisico, Integer porteria);
+	
+	public void ejecutarEntrenamiento();
 		
 }
