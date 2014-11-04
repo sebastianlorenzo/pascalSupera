@@ -37,7 +37,8 @@ public class VistaWebController {
 	private String MODIFICAR_TACTICA_PATH = "equipos/modificarTactica";
 	private String MODIFICAR_TITULARES_PATH = "equipos/modificarJugadoresTitulares";
 	private String ENTRENAR_EQUIPO_PATH = "equipos/";
-	
+	//*************************INFO***************************************************************
+	private String OBTENER_INFO_RSS_PATH = "equipos/verInfoMobile";
 	
 	// LOGIN USUARIO	*******************************************************************************
 	public String login (String nom, String pwd) {
@@ -297,6 +298,17 @@ public class VistaWebController {
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 					 
 				    return respuesta;*/
+					
+				}
+				
+				// OBTENER INFO RSS************************************************************************
+				public String obtenerInfoRss () {
+					
+					String envio= "{nomUsuario:\"null\"}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_INFO_RSS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
 					
 				}
 				
