@@ -266,6 +266,7 @@ public class PartidoDAOImpl implements PartidoDAO
 				JSONObject ob = new JSONObject();
 				try 
 				{
+					ob.put("nomPartido", p.getEquipoLocal().getEquipo()+ " vs. "+ p.getEquipoVisitante().getEquipo());
 					ob.put("partido", p.getPartido());
 				} 
 				catch (JSONException ex)
