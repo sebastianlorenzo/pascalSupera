@@ -191,8 +191,8 @@ public class PartidoController implements IPartidoController
 			{
 				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
 				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
-				System.out.println("ANTES Jugador " + j.getJugador());
-				System.out.println("ANTES Estado " + j.getEstado_jugador());
+				System.out.print("\nANTES Jugador " + j.getJugador());
+				System.out.println("\nANTES Estado " + j.getEstado_jugador());
 				if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
 				{
 					// Las tarjetas van sobre el equipo contrario
@@ -218,8 +218,8 @@ public class PartidoController implements IPartidoController
 				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 				System.out.print(" - " + mensaje);
-				System.out.println("DESPUES Jugador " + j.getJugador());
-				System.out.println("DESPUES Estado " + j.getEstado_jugador());
+				System.out.print("DESPUES Jugador " + j.getJugador());
+				System.out.println("\nDESPUES Estado " + j.getEstado_jugador());
 			}
 			
 			// Hubo lesión
