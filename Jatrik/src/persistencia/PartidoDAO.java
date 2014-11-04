@@ -37,5 +37,7 @@ public interface PartidoDAO
 	public DataListaPartido listarJugados(String nomCampeonato);
 
 	public List<Partido> getPartidosSimular(Date fecha);
+
+	public JSONArray obtenerMisPartidos(String nomEquipo);
 	
 }

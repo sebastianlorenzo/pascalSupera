@@ -236,4 +236,46 @@ public class PartidoDAOImpl implements PartidoDAO
 		return partidos;
 	}
 
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerMisPartidos(String nomEquipo) 
+	{
+		Query query = em.createQuery("SELECT p FROM Partido p " + 
+				"WHERE p.equipoLocal = '" + nomEquipo 
+				+ "' or p.equipoVisitante = '" + nomEquipo + "' ORDER BY p.fechaPartido DESC");
+		
+		List<Partido> partidos = query.getResultList();
+		
+		if(partidos.isEmpty())
+			return null;
+		
+		JSONArray jpartidos = new JSONArray();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.add(Calendar.HOUR, 1);
+		Date ahora = calendar.getTime();
+
+		for(Partido p: partidos)
+		{	
+			Date fecha_p = p.getFechaPartido();
+
+			if(fecha_p.after(ahora))
+			{
+				JSONObject ob = new JSONObject();
+				try 
+				{
+					ob.put("partido", p.getPartido());
+				} 
+				catch (JSONException ex)
+				{
+					ex.printStackTrace();
+				}
+				jpartidos.put(ob);				
+			}
+		}
+		return jpartidos;
+	}
+
 }

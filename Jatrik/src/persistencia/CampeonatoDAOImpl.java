@@ -201,9 +201,6 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 							Estadio estadio = eq.getEstadio();
 							p.setEstadio(estadio);	
 							em.merge(p);
-							Collection<Partido> partidosLocal = eq.getPartidos();
-							partidosLocal.add(p);
-							eq.setPartidos(partidosLocal);
 							
 							Collection<Partido> partidosEstadio = estadio.getPartidos();
 							partidosEstadio.add(p);
@@ -225,9 +222,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 							p.setEquipoVisitante(eqVisitante);
 							iter2.hasNext();
 							em.merge(p);
-							/*Collection<Partido> partidosVisitante = eqVisitante.getPartidos();
-							partidosVisitante.add(p);
-							eqVisitante.setPartidos(partidosVisitante);*/
+							
 							cant++;
 						}
 					}

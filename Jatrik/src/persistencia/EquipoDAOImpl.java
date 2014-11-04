@@ -602,13 +602,21 @@ public class EquipoDAOImpl implements EquipoDAO
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public DataListaPartido obtenerUltimosResultadosEquipo(String nomUsuario) 
 	{
-		Usuario us = em.find(Usuario.class, nomUsuario);
-		String miEquipo = us.getEquipo().getEquipo();
-		
-		Query query = em.createQuery("SELECT p FROM Partido p " + 
-				"WHERE p.equipoLocal = '" + miEquipo 
-				+ "' or p.equipoVisitante = '" + miEquipo + "' ORDER BY p.fechaPartido DESC");
-		
+		Query query;
+		if(nomUsuario != null){
+			
+			Usuario us = em.find(Usuario.class, nomUsuario);
+			String miEquipo = us.getEquipo().getEquipo();
+			
+			query = em.createQuery("SELECT p FROM Partido p " + 
+					"WHERE p.equipoLocal = '" + miEquipo 
+					+ "' or p.equipoVisitante = '" + miEquipo + "' ORDER BY p.fechaPartido DESC");
+		}
+		else
+		{
+			query = em.createQuery("SELECT p FROM Partido p ORDER BY p.fechaPartido DESC");
+			
+		}
 		List<Partido> partidos = query.getResultList();
 		
 		if(partidos.isEmpty())
@@ -655,6 +663,7 @@ public class EquipoDAOImpl implements EquipoDAO
 						String comentario = com.getMinuto()+" "+com.getComentario();
 						comentariosEnvio.add(comentario);		
 				}
+				
 				if(comentariosEnvio != null)
 					dp.setDetalle(comentariosEnvio);
 				
@@ -662,6 +671,7 @@ public class EquipoDAOImpl implements EquipoDAO
 				cant++;
 			}
 		}
+		
 		return dlpartidos;
 	}
 	
