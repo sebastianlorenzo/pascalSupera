@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.*;
+
 import org.codehaus.jettison.json.JSONArray;
+
 import dominio.Cambio;
 import dominio.Comentario;
 import dominio.Equipo;
@@ -571,6 +574,11 @@ public class PartidoController implements IPartidoController
 	public List<Partido> listaPartidosSimular(Date fecha)
 	{
 		return partidoDAO.getPartidosSimular(fecha);
+	}
+
+	public JSONArray obtenerMisPartidosPorJugar(String nomEquipo) 
+	{
+		return this.partidoDAO.obtenerMisPartidos(nomEquipo);
 	}
 	
 }

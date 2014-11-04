@@ -338,7 +338,7 @@ public class EquipoWS
 		JSONObject datosU = new JSONObject(datos);
 		String nomUsuario = datosU.getString("nomUsuario"); //Logueado
 		Gson g = new Gson();
-		DataListaPartido dataRes = iEquipoController.obtenerUltimosResultados(nomUsuario);
+		DataListaPartido dataRes = iEquipoController.obtenerUltimosResultados(nomUsuario.equals("null") ? null : nomUsuario);
 		return g.toJson(dataRes);
 		
 	}

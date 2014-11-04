@@ -83,11 +83,12 @@ public class PartidoWS
 		return respuesta.toString();
 	}
 	
+	//previamente llamar a listar partidos en ejecución y finalizados para obtener el nombre del campeonato
 	@POST
-	@Path("listarPartidosCampeonato")
+	@Path("listarPartidosJugados")
 	@Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	public String listarPartidosCampeonato(String datos) throws JSONException
+	public String listarPartidosCampeonatoJugados(String datos) throws JSONException
 	{
 		JSONObject datosPartido = new JSONObject(datos);
 		String nomCampeonato    = datosPartido.getString("nomCampeonato");
@@ -95,6 +96,30 @@ public class PartidoWS
 		Gson g = new Gson();
 		DataListaPartido dataPartidos = iPartidoController.listarPartidosJugados(nomCampeonato);
 		return g.toJson(dataPartidos);
+	}
+	
+	@POST
+	@Path("listarMisProximosPartidos")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String listarMisProximosPartidos(String datos) throws JSONException
+	{
+		JSONObject datosPartido = new JSONObject(datos);
+		String nomEquipo    = datosPartido.getString("nombreEquipo");
+		
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray partidos = null;
+			partidos = iPartidoController.obtenerMisPartidosPorJugar(nomEquipo);
+			respuesta.put("partidos", partidos);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return respuesta.toString();
 	}
 	
 }
