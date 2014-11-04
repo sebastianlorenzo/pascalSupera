@@ -97,4 +97,21 @@ public class PartidoWS
 		return g.toJson(dataPartidos);
 	}
 	
+	@POST
+	@Path("simularPartido")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String simularPartido(String datos) throws JSONException
+	{
+		JSONObject datosPartido = new JSONObject(datos);
+		String partido          = datosPartido.getString("partido");
+		
+		iPartidoController.simularPartido(partido);
+		
+		Gson  g = new Gson();
+		String r = g.toJson("ok");
+		
+		return r;
+	}
+	
 }
