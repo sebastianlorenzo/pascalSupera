@@ -21,6 +21,7 @@ import tipos.DataCampeonato;
 import tipos.DataListaCampeonato;
 import dominio.Campeonato;
 import dominio.Equipo;
+import dominio.Estadio;
 import dominio.Partido;
 import dominio.Usuario;
 
@@ -197,8 +198,16 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 						Partido p = iter.next();
 						if ((cant < (listEquipos.size()-1)) && (p.getEquipoLocal() == null)){
 							p.setEquipoLocal(eq);
-							p.setEstadio(eq.getEstadio());	
+							Estadio estadio = eq.getEstadio();
+							p.setEstadio(estadio);	
 							em.merge(p);
+							Collection<Partido> partidosLocal = eq.getPartidos();
+							partidosLocal.add(p);
+							eq.setPartidos(partidosLocal);
+							
+							Collection<Partido> partidosEstadio = estadio.getPartidos();
+							partidosEstadio.add(p);
+							estadio.setPartidos(partidosEstadio);
 							cant++;
 						}
 					}
@@ -216,6 +225,9 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 							p.setEquipoVisitante(eqVisitante);
 							iter2.hasNext();
 							em.merge(p);
+							/*Collection<Partido> partidosVisitante = eqVisitante.getPartidos();
+							partidosVisitante.add(p);
+							eqVisitante.setPartidos(partidosVisitante);*/
 							cant++;
 						}
 					}
