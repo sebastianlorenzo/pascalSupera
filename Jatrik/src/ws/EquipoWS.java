@@ -49,17 +49,6 @@ public class EquipoWS
 	}
 	
 	@POST
-	@Path("zonaEquipo")
-	@Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String zonaEquipo(String datos) throws JSONException
-    {
-    	JSONObject datosE = new JSONObject(datos);
-		String nomEquipo   = datosE.getString("equipo");
-		return iEquipoController.obtenerZonaEquipo(nomEquipo).toString();
-    }
-	
-	@POST
 	@Path("obtenerTactica")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

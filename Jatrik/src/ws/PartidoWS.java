@@ -98,24 +98,6 @@ public class PartidoWS
 		return g.toJson(dataPartidos);
 	}
 	
-<<<<<<< HEAD
-	/*@POST
-	@Path("simularPartido")
-	@Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-	public String simularPartido(String datos) throws JSONException
-	{
-		JSONObject datosPartido = new JSONObject(datos);
-		String partido          = datosPartido.getString("partido");
-		
-		iPartidoController.simularPartido(partido);
-		
-		Gson  g = new Gson();
-		String r = g.toJson("ok");
-		
-		return r;
-	}*/
-=======
 	@POST
 	@Path("listarMisProximosPartidos")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -139,6 +121,22 @@ public class PartidoWS
 		}
 		return respuesta.toString();
 	}
->>>>>>> a1a7de4f8c9f2022a5f411f6ea629dfa5bc6f9a9
+	
+	/*@POST
+	@Path("simularPartido")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String simularPartido(String datos) throws JSONException
+	{
+		JSONObject datosPartido = new JSONObject(datos);
+		String partido          = datosPartido.getString("partido");
+		
+		iPartidoController.simularPartido(partido);
+		
+		Gson  g = new Gson();
+		String r = g.toJson("ok");
+		
+		return r;
+	}*/
 	
 }
