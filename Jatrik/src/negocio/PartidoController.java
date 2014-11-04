@@ -157,8 +157,8 @@ public class PartidoController implements IPartidoController
 			System.out.print("*************************\n");
 			System.out.print("***** JUGADA NRO. " + i + " *****\n");
 			System.out.print("*************************\n");
-			System.out.print("***** Penalizacion: " + penalizacion[0] + " - " + penalizacion[1] + "\n");
-			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");			
+			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");
+			System.out.print(" - Penalizacion                 : " + (es_local ? penalizacion[0] : penalizacion[1]) + "\n");			
 			System.out.print(" - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
 			System.out.print(" - Probabilidad de gol          : " + probGolParaJugada + "\n");
 			System.out.print(" - Probabilidad de tarjeta      : " + probTarjeta + "\n");

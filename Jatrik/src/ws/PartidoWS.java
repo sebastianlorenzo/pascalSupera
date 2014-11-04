@@ -97,7 +97,7 @@ public class PartidoWS
 		return g.toJson(dataPartidos);
 	}
 	
-	@POST
+	/*@POST
 	@Path("simularPartido")
 	@Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -112,6 +112,6 @@ public class PartidoWS
 		String r = g.toJson("ok");
 		
 		return r;
-	}
+	}*/
 	
 }

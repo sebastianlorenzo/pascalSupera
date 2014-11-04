@@ -130,7 +130,7 @@ public class JugadorDAOImpl implements JugadorDAO
 			System.out.print("***** Cambiando el estado del jugador " + j.getJugador() + " de " + j.getEstado_jugador());
 			j.setEstado_jugador(estado_jugador);
 			em.merge(j);
-			System.out.println("***** a " + estado_jugador + " (ahora es " +  j.getEstado_jugador() + ".");
+			System.out.println(" a " + estado_jugador + " (ahora es " +  j.getEstado_jugador() + ").");
 		}
 	}
 	
