@@ -184,7 +184,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			Collection<Campeonato> listCampeonatos = e.getCampeonatos();
 			listCampeonatos.add(c);
 			em.merge(e);
-			em.merge(c);	
+			em.merge(c);
 			
 			if(listEquipos.size() == c.getCantEquipos()){
 				Collection<Partido> listPartidos = c.getPartidos();

@@ -2,13 +2,11 @@ package negocio;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
-
 import org.codehaus.jettison.json.JSONArray;
-
 import dominio.Cambio;
 import dominio.Comentario;
 import dominio.Equipo;
@@ -24,7 +22,6 @@ import persistencia.UsuarioDAO;
 import persistencia.UsuarioDAOImpl;
 import tipos.DataCambio;
 import tipos.DataListaPartido;
-import tipos.DataResumenPartido;
 import tipos.Constantes;
 
 @Stateless
@@ -77,7 +74,7 @@ public class PartidoController implements IPartidoController
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataResumenPartido simularPartido(String idPartido)
+	public void simularPartido(String idPartido)
 	{
 		
 		float[] penalizacion    = {0,0};
@@ -86,31 +83,33 @@ public class PartidoController implements IPartidoController
 		int[] goles			    = {0,0};
 		int[] lesiones		    = {0,0};
 		
-		// Obtener el partido que vamos a simular
+		/*** Obtener el partido que vamos a simular ***/
 		Partido partido = partidoDAO.getPartido(idPartido);
 		
-		// Hacer un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido
+		System.out.print("*************************\n");
+		System.out.print("***** PARTIDO " + partido.getPartido() + " *****\n");
+		System.out.print("*************************\n");
+		
+		/*** Hacer un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido ***/
 		List<Jugador> jugadoresLocal     = (List<Jugador>) partido.getEquipoLocal().getJugadores();
 		List<Jugador> jugadoresVisitante = (List<Jugador>) partido.getEquipoVisitante().getJugadores();
 		
-		// Obtener los cambios programados
-		List<Cambio> cambiosProgramadosEquipoLocal = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, true);
+		/*** Obtener los cambios programados ***/
+		List<Cambio> cambiosProgramadosEquipoLocal     = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, true);
 		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, false);
 		
-		// Seleccionar aleatoriamente la cantidad de jugadas del partido
+		/*** Seleccionar aleatoriamente la cantidad de jugadas del partido ***/
 		int cantidad_jugadas = (int) (Math.random() * (Constantes.MAX_JUGADAS_PARTIDO - Constantes.MIN_JUGADAS_PARTIDO + 1) + Constantes.MIN_JUGADAS_PARTIDO);
 		
-		// Inicializo la lista de comentarios
+		/*** Inicializar la lista de comentarios ***/
 		List <Comentario> comentarios = new ArrayList<Comentario>();
 		
-		// De 0 a cantidad_jugadas
+		/*** De 0 a cantidad_jugadas ***/
 		for (int i = 0; i < cantidad_jugadas; i++)
 		{
-			// Elijo el equipo que va a realizar la jugada
-			// Se hace 50 y 50.
-			float equipoJugada = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
-			
+			/*** Elegir el equipo que va a realizar la jugada ***/
 			// Si la probabilidad es menor o igual a 0.5 => Asumimos que la jugada es realizada por el equipo local
+			float equipoJugada     = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
 			boolean es_local       = true;
 			Equipo equipo          = null;
 			Equipo equipoContrario = null;
@@ -128,44 +127,42 @@ public class PartidoController implements IPartidoController
 				equipoContrario = partido.getEquipoLocal();
 			}
 			
-			// Realizar los cambios programados en ambos equipos antes de jugar
+			/*** Realizar los cambios programados en ambos equipos antes de jugar ***/
 			realizarCambiosEnEquipo(equipo.getEquipo(), cambiosProgramadosEquipoLocal, cantidad_jugadas, i, 0);
 			realizarCambiosEnEquipo(equipoContrario.getEquipo(), cambiosProgramadosEquipoVisitante, cantidad_jugadas, i, 0);
 			
-			// Obtengo los jugadores de ambos equipos
+			/*** Obtener los jugadores de ambos equipos ***/
 			List<Jugador> jugadores           = (List<Jugador>) equipo.getJugadores();
 			List<Jugador> jugadoresContrarios = (List<Jugador>) equipoContrario.getJugadores();
 			
-			// Calcular la probabilidad de jugada de gol
-			float probJugadaGol = 0;
-			probJugadaGol = calcularProbabilidadJugadaGol(jugadores, jugadoresContrarios, es_local ? penalizacion[0] : penalizacion[1]);
+			/*** Calcular la probabilidad de jugada de gol ***/
+			float probJugadaGol = calcularProbabilidadJugadaGol(jugadores, jugadoresContrarios, es_local ? penalizacion[0] : penalizacion[1]);
 			
-			// Calcular la probabilidad de gol para la jugada
+			/*** Calcular la probabilidad de gol para la jugada ***/
 			String[] prob_gol = calcularProbabilidadGol(jugadores, jugadoresContrarios, probJugadaGol);
 			float probGolParaJugada = Float.parseFloat(prob_gol[0]);
-			String tipoJugador = prob_gol[1];
-			Integer idJugadorGol = Integer.parseInt(prob_gol[2]);
+			String tipoJugador      = prob_gol[1];
+			Integer idJugadorGol    = Integer.parseInt(prob_gol[2]);
 			
-			// Calcular la probabilidad de tarjeta roja/amarilla
+			/*** Calcular la probabilidad de tarjeta roja/amarilla ***/
 			float probTarjeta = calcularProbabilidadTarjeta(jugadoresContrarios, probGolParaJugada);
 			
-			// Verificar si hubo lesión
+			/*** Verificar si hubo lesión ***/
 			boolean lesion = huboLesion(probTarjeta);
 			if (lesion)
 			{
 				realizarCambiosEnEquipo(equipo.getEquipo(), es_local ? cambiosProgramadosEquipoLocal : cambiosProgramadosEquipoVisitante, 0, i, idJugadorGol);
 			}
-
+			
 			System.out.print("*************************\n");
 			System.out.print("***** JUGADA NRO. " + i + " *****\n");
 			System.out.print("*************************\n");
 			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");			
 			System.out.print(" - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
-			System.out.print(" - Probabilidad de gol: " + probGolParaJugada + "\n");
-			System.out.print(" - Probabilidad de tarjeta: " + probTarjeta + "\n");
-			
-			
-			// Actualizo los valores de la jugada
+			System.out.print(" - Probabilidad de gol          : " + probGolParaJugada + "\n");
+			System.out.print(" - Probabilidad de tarjeta      : " + probTarjeta + "\n");
+						
+			/*** Actualizar los valores de la jugada ***/
 			int local_visitante = es_local ? 0 : 1;
 			
 			// Hubo gol
@@ -175,7 +172,7 @@ public class PartidoController implements IPartidoController
 				goles[local_visitante]++;
 				mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
 			}
-			// Si no hubo gol, vemos si podemos realizar algún comentario acerca de la jugada
+			// Si no hubo gol, hacer algún comentario acerca de la jugada
 			else
 			{
 				mensaje = getMensajeComentarioJugadaErrada(jugadorDAO.getRegateJugador(idJugadorGol));
@@ -183,6 +180,7 @@ public class PartidoController implements IPartidoController
 			Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 			Comentario comentario = new Comentario(minuto, mensaje, partido);
 			comentarios.add(comentario);
+			System.out.print(" - " + mensaje);
 			
 			// Hubo tarjeta
 			if (probTarjeta >= Constantes.CONST_TARJETA)
@@ -193,33 +191,30 @@ public class PartidoController implements IPartidoController
 				{
 					// Las tarjetas van sobre el equipo contrario
 					tarjetasAmarillas[1 - local_visitante]++;
-					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
-					System.out.print(" - Tarjeta amarilla al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario");
+					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());					
 					mensaje = "Tarjeta amarilla para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ".";
 					if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 					{
 						penalizacion[1 - local_visitante] += (float) 0.1;
 						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
-						System.out.print(" => EXPULSADO");
 						mensaje += " El mismo ha sido expulsado del juego.";
 					}
 					mensaje += "\n";
-					System.out.print("\n");
 				}
 				else
 				{
 					tarjetasRojas[1 - local_visitante]++;
 					penalizacion[1 - local_visitante] += (float) 0.1;
 					jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
-					System.out.print(" - Tarjeta roja al jugador " + j.getJugador() + " (id = " + j.getIdJugador() + ") del equipo contrario => EXPULSADO\n");
 					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
 				}
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
+				System.out.print(" - " + mensaje);
 			}
-			System.out.print("\n");
 			
+			// Hubo lesión
 			if (lesion)
 			{
 				lesiones[local_visitante]++;
@@ -227,45 +222,42 @@ public class PartidoController implements IPartidoController
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
+				System.out.print(" - " + mensaje);
 			}
+			System.out.print("\n");
 			
 		}
 		
-		// Restauro los atributos de los jugadores (cant_tarjetas_amarillas y ¿estado_jugador?)
+		/*** Restaurar los atributos de los jugadores (tarjetas amarillas y estado del jugador), ***/
+		/*** así como también la cantidad de cambios realizados por el equipo. 					 ***/
 		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoLocal().getEquipo(), jugadoresLocal);
 		equipoDAO.restablecerEquipoLuegoPartido(partido.getEquipoVisitante().getEquipo(), jugadoresVisitante);
 		
-		// Elimino de la BD los cambios prestablecidos para el partido
+		/*** Eliminar de la BD los cambios prestablecidos para el partido ***/
 		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
 		
-		// Enviar notificaciones a los equipos local y visitante
+		/*** Enviar notificaciones a los equipos local y visitante ***/
 		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd--MM-yyyy hh:mm");
-		String fecha_partido = formato_fecha.format(partido.getFechaPartido());
-		String nom_equipo_local     = partido.getEquipoLocal().getEquipo();
-		String nom_equipo_visitante = partido.getEquipoVisitante().getEquipo();
+		String fecha_partido           = formato_fecha.format(partido.getFechaPartido());
+		String nom_equipo_local        = partido.getEquipoLocal().getEquipo();
+		String nom_equipo_visitante    = partido.getEquipoVisitante().getEquipo();
 		
 		String notificacionEquipoLocal     = ((goles[0] >  goles[1]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
-											  ((goles[0] == goles[1]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
-											                           getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))   + 
+											 ((goles[0] == goles[1]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
+											                           getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
 		String notificacionEquipoVisitante = ((goles[1] >  goles[0]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
-										      ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_local)  : 
-																	   getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))   + 
+										     ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_local)      : 
+																	   getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
-		// Guardo los comentarios del partido
+		/*** Guardar los resultados y comentarios del partido ***/
 		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, partido, comentarios);
 		
-		// Retornar resultado
-		DataResumenPartido resumenPartido = new DataResumenPartido(tarjetasAmarillas[0], tarjetasAmarillas[1], 
-																   tarjetasRojas[0], tarjetasRojas[1],
-																   goles[0],goles[1],
-																   lesiones[0], lesiones[1]);
-		return resumenPartido;
 	}
 	
 	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float penalizacion)
@@ -280,7 +272,7 @@ public class PartidoController implements IPartidoController
 		int cant_delanteros_y_mediocampistas = 0;
 		int cant_mediocampistas_y_defensas   = 0;
 				
-		// Calculo el regate como la suma de técnica y velocidad
+		/*** Calcular el regate como la suma de técnica y velocidad ***/
 		Iterator<Jugador> it = jugadores.iterator();
         while(it.hasNext())
         {
@@ -293,7 +285,7 @@ public class PartidoController implements IPartidoController
             }
         }
         
-        // Calculo la potencia del equipo contrario como la suma de defensa y velocidad 
+        /*** Calcular la potencia del equipo contrario como la suma de defensa y velocidad ***/ 
         it = jugadoresContrarios.iterator();
         while(it.hasNext()) 
         {
@@ -306,7 +298,7 @@ public class PartidoController implements IPartidoController
             }
         }
         
-		// probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100
+		/*** probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100 ***/
 		float probJugadaGol = ((regate / cant_delanteros_y_mediocampistas) - (potencia / cant_mediocampistas_y_defensas)) / 100; 
 		
 		return (probJugadaGol * (1 - penalizacion));
@@ -314,7 +306,7 @@ public class PartidoController implements IPartidoController
 	
 	private String[] calcularProbabilidadGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float probJugadaGol)
 	{
-		// Tiro de un jugador
+		/*** Tiro de un jugador ***/
 		float tipo_jugador = (float) Math.random(); // Este random genera un número aleatorio entre 0 y 1.
 		Jugador jugador_realiza_tiro = null;
 		// Probabilidad que salga un delantero: 60%
@@ -337,7 +329,7 @@ public class PartidoController implements IPartidoController
 		}
 		float tiro_jugador = jugador_realiza_tiro.getAtaque();
 		
-		// Habilidad del portero del equipo contrario
+		/*** Habilidad del portero del equipo contrario ***/
 		float habilidad_portero = 0;
 		Iterator<Jugador> it = jugadoresContrarios.iterator();
         while(it.hasNext()) 
@@ -350,11 +342,11 @@ public class PartidoController implements IPartidoController
             }
         }
 		
-		// Factores aleatorios
+		/*** Factores aleatorios ***/
 		float factor_ataque  = (float) Math.random();
 		float factor_portero = (float) Math.random();
 		
-		// Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100
+		/*** Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100 ***/
 		float probGol = (probJugadaGol * ((tiro_jugador * factor_ataque) - (habilidad_portero * factor_portero))) / 100;
 		
 		String[] resultado = new String[3];
@@ -372,7 +364,7 @@ public class PartidoController implements IPartidoController
 		
 		Integer cant_mediocampistas_y_defensas = 0;
 		
-		// Calculo la potencia del equipo contrario como la suma de defensa y velocidad
+		/*** Calcular la potencia del equipo contrario como la suma de defensa y velocidad ***/
 		Iterator<Jugador> it = jugadoresContrarios.iterator();
         while(it.hasNext()) 
         {
@@ -385,7 +377,7 @@ public class PartidoController implements IPartidoController
             }
         }
 		
-		// Probabilidad de tarjeta = Oportunidad de gol x (promedio potencia de jugadores defensores y mediocampistas)
+		/*** Probabilidad de tarjeta = Oportunidad de gol x (promedio potencia de jugadores defensores y mediocampistas) ***/
 		float probTarjeta = (probGolParaJugada * (potencia / cant_mediocampistas_y_defensas))/100;
 		
 		return probTarjeta;
@@ -402,19 +394,19 @@ public class PartidoController implements IPartidoController
 	
 	private void realizarCambiosEnEquipo(String nombreEquipo, List<Cambio> cambiosProgramados, int cantidad_jugadas, int nro_jugada, int idJugadorLesionado)
 	{
-		// Si todavía no se realizó la máxima cantidad de cambios permitidos 
+		/*** Si todavía no se realizó la máxima cantidad de cambios permitidos ***/ 
 		if (equipoDAO.puedeRealizarCambios(nombreEquipo))
 		{
-			// Cambio por lesion 
+			/*** Cambio por lesion ***/ 
 			if (cantidad_jugadas == 0)
 			{
-				// Cambio el estado del jugador a lesionado
+				// Cambiar el estado del jugador a lesionado
 				jugadorDAO.cambiarEstadoJugador(idJugadorLesionado, Constantes.CONST_LESIONADO);
 				
-				// Veo qué posición tiene el jugador que se lesionó
+				// Ver qué posición tiene el jugador que se lesionó
 				String posicionLesionado = jugadorDAO.getPosicionJugador(idJugadorLesionado);
 				
-				// Si alguno de los cambios prestablecidos es de un jugador con esta posición => Hago ese cambio
+				// Si alguno de los cambios prestablecidos es de un jugador con esta posición => Hacer ese cambio
 				Integer idJugadorEntrante = 0;
 				Iterator<Cambio> it = cambiosProgramados.iterator();
 				boolean encontre = false;
@@ -429,7 +421,7 @@ public class PartidoController implements IPartidoController
 						encontre = true;
 					}
 				}
-				// Sino, busco otro jugador con esa posición
+				// Sino, buscar otro jugador con esa posición
 				if (!encontre)
 				{
 					Jugador j = getJugadorParaCambiarPorLesion((List<Jugador>) jugadorDAO.obtenerEquipo(idJugadorLesionado).getJugadores(), posicionLesionado);
@@ -445,7 +437,7 @@ public class PartidoController implements IPartidoController
 				System.out.print("     Jugador que entra: " + idJugadorEntrante + "\n");
 				System.out.print("     Jugador que sale: " + idJugadorLesionado + "\n\n");
 			}
-			// Cambio programado
+			/*** Cambio programado ***/
 			else
 			{
 				Iterator<Cambio> it = cambiosProgramados.iterator();
@@ -519,12 +511,6 @@ public class PartidoController implements IPartidoController
 		}
 		return null;
 	}
-
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray obtenerPartidosPorZona(String nomCampeonato) 
-	{
-		return this.partidoDAO.obtenerPartidosLugar(nomCampeonato);
-	}
 	
 	private String getMensajeGanadorPartido(String fecha_partido, String nom_equipo)
 	{
@@ -535,13 +521,13 @@ public class PartidoController implements IPartidoController
 	private String getMensajeEmpatePartido(String fecha_partido, String nom_equipo)
 	{
 		return "El partido jugado en la fecha " + fecha_partido + 
-				   " contra el equipo " + nom_equipo + " ha finalizado con un empate.\n";
+			   " contra el equipo " + nom_equipo + " ha finalizado con un empate.\n";
 	}
 	
 	private String getMensajePerdedorPartido(String fecha_partido, String nom_equipo)
 	{
 		return "El partido jugado en la fecha " + fecha_partido + 
-			       " contra el equipo " + nom_equipo + " ha finalizado. Lamentablemente, ha sido derrotado.\n";
+			   " contra el equipo " + nom_equipo + " ha finalizado. Lamentablemente, ha sido derrotado.\n";
 	}
 	
 	private String getMensajeResumenPartido(String nom_equipo_local, String nom_equipo_visitante, int[] goles, int[] tarjetasAmarillas, int[] tarjetasRojas, int[] lesiones)
@@ -571,9 +557,20 @@ public class PartidoController implements IPartidoController
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerPartidosPorZona(String nomCampeonato) 
+	{
+		return this.partidoDAO.obtenerPartidosLugar(nomCampeonato);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public DataListaPartido listarPartidosJugados(String nomCampeonato) 
 	{
 		return this.partidoDAO.listarJugados(nomCampeonato);
+	}
+	
+	public List<Partido> listaPartidosSimular(Date fecha)
+	{
+		return partidoDAO.getPartidosSimular(fecha);
 	}
 	
 }

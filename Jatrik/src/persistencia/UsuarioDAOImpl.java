@@ -259,6 +259,7 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		Collection<Notificacion> notificacionesRecibidas = usuario.getNotificacionesRecibidas();
 		notificacionesRecibidas.add(notificacion);
 		usuario.setNotificacionesRecibidas(notificacionesRecibidas);
+		em.merge(usuario);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

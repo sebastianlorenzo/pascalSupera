@@ -194,28 +194,31 @@ public class EquipoDAOImpl implements EquipoDAO
 	public void restablecerEquipoLuegoPartido(String nomEquipo, List<Jugador> jugadoresAntes)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
-		List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
-		Iterator<Jugador> it = jugadores.iterator();
-        while(it.hasNext()) 
-        {
-        	Jugador j = it.next();
-        	j.setCant_tarjetas_amarillas(0);
-
-        	Iterator<Jugador> itj = jugadoresAntes.iterator();
-        	String estado = null;
-        	while (itj.hasNext())
-        	{
-        		Jugador ja = itj.next();
-	        	if (ja.getIdJugador().equals(j.getIdJugador()))
+		if (e != null)
+		{
+			List<Jugador> jugadores = (List<Jugador>) e.getJugadores();
+			Iterator<Jugador> it    = jugadores.iterator();
+	        while(it.hasNext()) 
+	        {
+	        	Jugador j = it.next();
+	        	j.setCant_tarjetas_amarillas(0);
+	
+	        	Iterator<Jugador> itj = jugadoresAntes.iterator();
+	        	String estado = null;
+	        	while (itj.hasNext())
 	        	{
-	        		estado = ja.getEstado_jugador();
-	        		break;
+	        		Jugador ja = itj.next();
+		        	if (ja.getIdJugador().equals(j.getIdJugador()))
+		        	{
+		        		estado = ja.getEstado_jugador();
+		        		break;
+		        	}
 	        	}
-        	}
-	        j.setEstado_jugador(estado);
-        }
-        e.setCant_cambios_realizados(0);
-		em.persist(e);
+		        j.setEstado_jugador(estado);
+	        }
+	        e.setCant_cambios_realizados(0);
+	        em.persist(e);
+		}
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

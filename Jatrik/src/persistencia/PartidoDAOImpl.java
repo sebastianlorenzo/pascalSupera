@@ -227,4 +227,13 @@ public class PartidoDAOImpl implements PartidoDAO
 		return dlpartidos;
 	}
 
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<Partido> getPartidosSimular(Date fecha)
+	{
+		Query query = em.createQuery("SELECT p FROM Partido p WHERE p.fechaPartido = '" + fecha + "'");
+		List<Partido> partidos = query.getResultList();
+		return partidos;
+	}
+
 }
