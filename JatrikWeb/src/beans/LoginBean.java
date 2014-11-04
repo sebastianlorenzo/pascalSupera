@@ -41,6 +41,7 @@ public class LoginBean implements Serializable {
 	private boolean admin;
 	private String nomEquipo;
 	private boolean apreto;
+	private String chat;
 
 	private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
 
@@ -48,6 +49,8 @@ public class LoginBean implements Serializable {
 	private ChatUsers users;
 
 	private List<String> usuariosDesconectados;
+	
+	private List<String> usuariosDesconectadosEstatica;
 
 	private String privateMessage;
 
@@ -156,6 +159,23 @@ public class LoginBean implements Serializable {
 	public void setMensajes(List<DataMensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
+	
+	public List<String> getUsuariosDesconectadosEstatica() {
+		return usuariosDesconectadosEstatica;
+	}
+
+	public void setUsuariosDesconectadosEstatica(
+			List<String> usuariosDesconectadosEstatica) {
+		this.usuariosDesconectadosEstatica = usuariosDesconectadosEstatica;
+	}
+
+	public String getChat() {
+		return chat;
+	}
+
+	public void setChat(String chat) {
+		this.chat = chat;
+	}
 
 	public void sendGlobal() {
 		eventBus.publish(CHANNEL + "*",new Message(String.format("<b> %s </b>: '%s'",
@@ -165,6 +185,10 @@ public class LoginBean implements Serializable {
 
 	public void sendPrivate() {
 		if (this.users.contains(this.privateUser)) {
+			//agrego mi nuevo amigo
+			if (!this.usuariosDesconectadosEstatica.contains(this.privateUser))
+				this.usuariosDesconectadosEstatica.add(this.privateUser);
+			
 			eventBus.publish(CHANNEL + privateUser, new Message(String.format("<a Style=\"color:#173B0D\">[PM] %s </a>: '%s'",
 					this.nombre, this.privateMessage)));
 			privateMessage = null;
@@ -175,9 +199,18 @@ public class LoginBean implements Serializable {
 		}
 	}
 
-	public String salir() {
+	public String salir() throws JSONException {
 		VistaWebController v = new VistaWebController();
-		if (v.logout(this.nombre)) {
+		JSONArray jdesconectados = new JSONArray();
+		JSONObject ob;
+	
+		for (int i=0;i<this.usuariosDesconectadosEstatica.size();i++) 
+		{
+			ob = new JSONObject();
+			ob.put("desconectado", this.usuariosDesconectadosEstatica.get(i));
+			jdesconectados.put(ob);		
+		}
+		if (v.logout(this.nombre,jdesconectados.toString())) {
 			// remove user and update ui
 			users.remove(nombre);
 			RequestContext.getCurrentInstance().update("form:users");
@@ -212,6 +245,20 @@ public class LoginBean implements Serializable {
 				Gson g = new Gson();
 				DataListaMensaje dlm = g.fromJson(json.getString("mensajesNuevos"), DataListaMensaje.class);
 				this.mensajes = dlm.getLstMensajes();
+				
+				this.usuariosDesconectadosEstatica= new ArrayList<String>();
+				String r_desconectados = v.listarDesconectados(this.nombre);
+				JSONObject desconectados = new JSONObject(r_desconectados);
+				JSONArray lista_desconectados = desconectados.getJSONArray("desconectados");
+				System.out.println("Mis amigos actuales:");
+				if (lista_desconectados != null) {
+					for (int i = 0; i < lista_desconectados.length(); i++) {
+						JSONObject ob = lista_desconectados.getJSONObject(i);
+						String usuario = ob.get("desconectado").toString();
+						System.out.println(usuario);
+						this.usuariosDesconectadosEstatica.add(usuario);
+					}
+				}				
 				
 				return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
 			}
@@ -250,12 +297,7 @@ public class LoginBean implements Serializable {
 		else
 		{
 			FacesContext context = FacesContext.getCurrentInstance();
-			String cabecera = "Lo siento";
-			Severity icono = FacesMessage.SEVERITY_INFO;
-			String mensaje_box = "Ud ya esta en la sala.";
-			FacesMessage message = new FacesMessage(icono, cabecera,
-					mensaje_box);
-			context.addMessage("growl", message);
+			context.addMessage(null, new FacesMessage( null,"Ud. ya esta en la sala") );
 		}
 	}
 
@@ -264,23 +306,15 @@ public class LoginBean implements Serializable {
 		return "/paginas/usuario/anotarmeCampeonato_user.xhtml?faces-redirect=true";
 
 	}
-
-	public void onTabShowDesconectados() throws JSONException {
-		this.usuariosDesconectados.removeAll(usuariosDesconectados);
-		VistaWebController v = new VistaWebController();
-		String r_desconectados = v.listarDesconectados();
-		System.out.println(r_desconectados);
-		JSONObject desconectados = new JSONObject(r_desconectados);
-		JSONArray lista_desconectados = desconectados
-				.getJSONArray("desconectados");
-		System.out.println(lista_desconectados);
-		if (lista_desconectados != null) {
-			for (int i = 0; i < lista_desconectados.length(); i++) {
-				JSONObject ob = lista_desconectados.getJSONObject(i);
-				String usuario = ob.get("desconectado").toString();
-				System.out.println(usuario);
-				if (!users.contains(usuario))
-					this.usuariosDesconectados.add(usuario);
+	
+	// Copio la lista de desconectadosEstatica (amigos) y la actualizo contra los que estan conectados
+	// si un usuario se conecto remuevo el usuario de la lista
+	public void onTabShowDesconectados() throws JSONException {		
+		if (!this.usuariosDesconectadosEstatica.isEmpty()) {
+			this.usuariosDesconectados = new ArrayList<String>();
+			for (int i = 0; i < this.usuariosDesconectadosEstatica.size(); i++) {
+				if (!users.contains(this.usuariosDesconectadosEstatica.get(i)))
+					this.usuariosDesconectados.add(this.usuariosDesconectadosEstatica.get(i));
 			}
 		}
 

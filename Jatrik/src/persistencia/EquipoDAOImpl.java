@@ -215,6 +215,7 @@ public class EquipoDAOImpl implements EquipoDAO
 		        	}
 	        	}
 		        j.setEstado_jugador(estado);
+		        em.persist(j);
 	        }
 	        e.setCant_cambios_realizados(0);
 	        em.persist(e);
@@ -341,6 +342,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	public Boolean puedeRealizarCambios(String nomEquipo)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
+		System.out.print(" - Cantidad de cambios          : " + e.getCant_cambios_realizados() + "\n");
 		return (e.getCant_cambios_realizados() < Constantes.CONST_CANT_MAX_CAMBIOS);
 	}
 	

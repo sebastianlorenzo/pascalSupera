@@ -160,7 +160,8 @@ public class PartidoController implements IPartidoController
 			System.out.print("*************************\n");
 			System.out.print("***** JUGADA NRO. " + i + " *****\n");
 			System.out.print("*************************\n");
-			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");			
+			System.out.print("Equipo " + (es_local ? "local: " : "visitante: ") + equipo.getEquipo() + "\n");
+			System.out.print(" - Penalizacion                 : " + (es_local ? penalizacion[0] : penalizacion[1]) + "\n");			
 			System.out.print(" - Probabilidad de jugada de gol: " + probJugadaGol + "\n");
 			System.out.print(" - Probabilidad de gol          : " + probGolParaJugada + "\n");
 			System.out.print(" - Probabilidad de tarjeta      : " + probTarjeta + "\n");
@@ -190,6 +191,8 @@ public class PartidoController implements IPartidoController
 			{
 				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
 				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
+				System.out.print("\nANTES Jugador " + j.getJugador());
+				System.out.println("\nANTES Estado " + j.getEstado_jugador());
 				if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
 				{
 					// Las tarjetas van sobre el equipo contrario
@@ -215,6 +218,8 @@ public class PartidoController implements IPartidoController
 				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 				System.out.print(" - " + mensaje);
+				System.out.print("DESPUES Jugador " + j.getJugador());
+				System.out.println("\nDESPUES Estado " + j.getEstado_jugador());
 			}
 			
 			// Hubo lesión
@@ -260,7 +265,8 @@ public class PartidoController implements IPartidoController
 		
 		/*** Guardar los resultados y comentarios del partido ***/
 		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, partido, comentarios);
-		
+		System.out.println("Goles Local: " + goles[0]);
+		System.out.println("Goles Visitante: " + goles[1]);
 	}
 	
 	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float penalizacion)

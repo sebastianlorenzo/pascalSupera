@@ -127,8 +127,10 @@ public class JugadorDAOImpl implements JugadorDAO
 		Jugador j = em.find(Jugador.class, idJugador);
 		if (j != null)
 		{
+			System.out.print("***** Cambiando el estado del jugador " + j.getJugador() + " de " + j.getEstado_jugador());
 			j.setEstado_jugador(estado_jugador);
-			em.persist(j);
+			em.merge(j);
+			System.out.println(" a " + estado_jugador + " (ahora es " +  j.getEstado_jugador() + ").");
 		}
 	}
 	
