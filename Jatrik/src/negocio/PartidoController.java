@@ -88,15 +88,43 @@ public class PartidoController implements IPartidoController
 		
 		/*** Obtener el partido que vamos a simular ***/
 		Partido partido = partidoDAO.getPartido(idPartido);
-		
+		if (partido == null)
+		{
+			System.out.print("Partido null.\n");
+			return;
+		}
 		System.out.print("*************************\n");
 		System.out.print("***** PARTIDO " + partido.getPartido() + " *****\n");
 		System.out.print("*************************\n");
 		
 		/*** Hacer un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido ***/
-		List<Jugador> jugadoresLocal     = (List<Jugador>) partido.getEquipoLocal().getJugadores();
-		List<Jugador> jugadoresVisitante = (List<Jugador>) partido.getEquipoVisitante().getJugadores();
+		if ((partido.getEquipoLocal() == null) || (partido.getEquipoVisitante() == null))
+		{
+			System.out.print("Equipo local o visitante null.\n");
+			return;
+		}
 		
+		List<Jugador> jugadoresLocal = new ArrayList<Jugador>();
+		List<Jugador> jugadoresVisitante = new ArrayList<Jugador>();
+		Iterator<Jugador> it = partido.getEquipoLocal().getJugadores().iterator();
+        while(it.hasNext()) 
+        {
+        	Jugador j = it.next();
+        	Jugador jugador = new Jugador();
+        	jugador.setIdJugador(j.getIdJugador());
+        	jugador.setEstado_jugador(j.getEstado_jugador());
+        	jugadoresLocal.add(jugador);
+        }
+        it = partido.getEquipoVisitante().getJugadores().iterator();
+        while(it.hasNext()) 
+        {
+        	Jugador j = it.next();
+        	Jugador jugador = new Jugador();
+        	jugador.setIdJugador(j.getIdJugador());
+        	jugador.setEstado_jugador(j.getEstado_jugador());
+        	jugadoresVisitante.add(jugador);
+        }
+        
 		/*** Obtener los cambios programados ***/
 		List<Cambio> cambiosProgramadosEquipoLocal     = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, true);
 		List<Cambio> cambiosProgramadosEquipoVisitante = (List<Cambio>) partidoDAO.getCambiosPartido(idPartido, false);
@@ -130,6 +158,11 @@ public class PartidoController implements IPartidoController
 				equipoContrario = partido.getEquipoLocal();
 			}
 			
+			if ((equipo == null) || (equipoContrario == null))
+			{
+				System.out.print("Equipo o equipo contrario null.\n");
+				return;
+			}
 			/*** Realizar los cambios programados en ambos equipos antes de jugar ***/
 			realizarCambiosEnEquipo(equipo.getEquipo(), cambiosProgramadosEquipoLocal, cantidad_jugadas, i, 0);
 			realizarCambiosEnEquipo(equipoContrario.getEquipo(), cambiosProgramadosEquipoVisitante, cantidad_jugadas, i, 0);
@@ -174,6 +207,11 @@ public class PartidoController implements IPartidoController
 			if (probGolParaJugada >= Constantes.CONST_GOL)
 			{
 				goles[local_visitante]++;
+				if (jugadorDAO.obtenerEquipo(idJugadorGol) == null)
+				{
+					System.out.print("Equipo del jugador null (gol).\n");
+					return;
+				}
 				mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
 			}
 			// Si no hubo gol, hacer algún comentario acerca de la jugada
@@ -197,7 +235,12 @@ public class PartidoController implements IPartidoController
 				{
 					// Las tarjetas van sobre el equipo contrario
 					tarjetasAmarillas[1 - local_visitante]++;
-					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());					
+					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
+					if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
+					{
+						System.out.print("Equipo del jugador null (tarjeta amarilla).\n");
+						return;
+					}
 					mensaje = "Tarjeta amarilla para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ".";
 					if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
 					{
@@ -212,6 +255,11 @@ public class PartidoController implements IPartidoController
 					tarjetasRojas[1 - local_visitante]++;
 					penalizacion[1 - local_visitante] += (float) 0.1;
 					jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
+					if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
+					{
+						System.out.print("Equipo del jugador null (tarjeta roja).\n");
+						return;
+					}
 					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
 				}
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
@@ -226,6 +274,11 @@ public class PartidoController implements IPartidoController
 			if (lesion)
 			{
 				lesiones[local_visitante]++;
+				if (jugadorDAO.obtenerEquipo(idJugadorGol) == null)
+				{
+					System.out.print("Equipo del jugador null (lesion).\n");
+					return;
+				}
 				mensaje = "Se lesionó el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 				comentario = new Comentario(minuto, mensaje, null);
@@ -262,6 +315,11 @@ public class PartidoController implements IPartidoController
 														       getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
+		if ((partido.getEquipoLocal().getUsuario() == null) || (partido.getEquipoVisitante().getUsuario() == null))
+		{
+			System.out.print("Usuario para enviar notificación null.\n");
+			return;
+		}
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
