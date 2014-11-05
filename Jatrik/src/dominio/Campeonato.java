@@ -3,6 +3,7 @@ package dominio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.persistence.*;
 
@@ -25,7 +26,10 @@ public class Campeonato
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Equipo> equipos;
-	
+
+	@OneToMany(fetch = FetchType.LAZY)
+	private Collection<ResultadoCampeonato> resultadoCampeonato;
+
 	public Campeonato(){}
 	
 	public Campeonato(String campeonato, Date inicioCampeonato, Integer cantEquipos)
@@ -83,7 +87,19 @@ public class Campeonato
 		return cantEquipos;
 	}
 
-	public void setCantEquipos(Integer cantEquipos) {
+	public void setCantEquipos(Integer cantEquipos) 
+	{
 		this.cantEquipos = cantEquipos;
 	}
+
+	public Collection<ResultadoCampeonato> getResultadoCampeonato()
+	{
+		return resultadoCampeonato;
+	}
+
+	public void setResultadoCampeonato(Collection<ResultadoCampeonato> resultadoCampeonato)
+	{
+		this.resultadoCampeonato = resultadoCampeonato;
+	}
+	
 }

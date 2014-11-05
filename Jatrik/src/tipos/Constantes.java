@@ -47,6 +47,7 @@ public class Constantes {
 	public static final Integer CONST_PUNTOS_GANADOR   = 3;
 	public static final Integer CONST_PUNTOS_EMPATE    = 1;
 	public static final Integer CONST_PUNTOS_PERDEDOR  = 0;
+	public static final Integer CONT_PORCENTAJE_CAPITAL = 1;
 	
 	/* Usuario */
 	public static final int CAPITAL_USUARIO = 10000;

@@ -1,4 +1,9 @@
 
+    create table public.campeonato_campeonato (
+        campeonato_campeonato varchar(255) not null,
+        resultadoCampeonato_idResultadoCampeonato int4 not null
+    );
+
     create table public.campeonato_equipo (
         campeonatos_campeonato varchar(255) not null,
         equipos_equipo varchar(255) not null
@@ -59,7 +64,11 @@
         campeonato varchar(255) not null,
         cantEquipos int4,
         inicioCampeonato timestamp,
-        primary key (campeonato)
+        idResultadoCampeonato int4 not null,
+        equipo bytea,
+        puntaje int4,
+        campeonato_campeonato varchar(255),
+        primary key (idResultadoCampeonato)
     );
 
     create table public.comentario (
@@ -197,6 +206,9 @@
         notificacionesRecibidas_idNotificacion int8 not null
     );
 
+    alter table public.campeonato_campeonato 
+        add constraint UK_crblxp9ub75n0k0m0oc0a2oxn  unique (resultadoCampeonato_idResultadoCampeonato);
+
     alter table public.campeonato_partido 
         add constraint UK_qel622wydwywu34avof4n9wpi  unique (partidos_partido);
 
@@ -229,6 +241,16 @@
 
     alter table public.usuario_notificaciones 
         add constraint UK_89iq8heaqmye4v93kmxnkan7f  unique (notificacionesRecibidas_idNotificacion);
+
+    alter table public.campeonato_campeonato 
+        add constraint FK_crblxp9ub75n0k0m0oc0a2oxn 
+        foreign key (resultadoCampeonato_idResultadoCampeonato) 
+        references public.campeonato;
+
+    alter table public.campeonato_campeonato 
+        add constraint FK_qh9f7kkmg16j0ycb7sgg6u6px 
+        foreign key (campeonato_campeonato) 
+        references public.campeonato;
 
     alter table public.campeonato_equipo 
         add constraint FK_k7mcfwfovv12itg9awsyblm8d 
@@ -334,6 +356,11 @@
         add constraint FK_14owakocop4k2t8f7akhjxnp5 
         foreign key (cambiosLocal_partido) 
         references public.partido;
+
+    alter table public.campeonato 
+        add constraint FK_mlnm4yumlpaks48jsr0ly4579 
+        foreign key (campeonato_campeonato) 
+        references public.campeonato;
 
     alter table public.comentario 
         add constraint FK_h2nl0oqakub946p3ae4967peu 

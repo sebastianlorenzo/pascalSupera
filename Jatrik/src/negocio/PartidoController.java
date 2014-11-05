@@ -15,6 +15,8 @@ import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Partido;
+import persistencia.CampeonatoDAO;
+import persistencia.CampeonatoDAOImpl;
 import persistencia.EquipoDAO;
 import persistencia.EquipoDAOImpl;
 import persistencia.JugadorDAO;
@@ -44,13 +46,17 @@ public class PartidoController implements IPartidoController
 	@EJB
 	private UsuarioDAO usuarioDAO;
 	
+	@EJB
+	private CampeonatoDAO campeonatoDAO;
+	
 	
 	public PartidoController()
 	{
-		this.partidoDAO = new PartidoDAOImpl();
-		this.equipoDAO  = new EquipoDAOImpl();
-		this.jugadorDAO = new JugadorDAOImpl();
-		this.usuarioDAO = new UsuarioDAOImpl();
+		this.partidoDAO    = new PartidoDAOImpl();
+		this.equipoDAO     = new EquipoDAOImpl();
+		this.jugadorDAO    = new JugadorDAOImpl();
+		this.usuarioDAO    = new UsuarioDAOImpl();
+		this.campeonatoDAO = new CampeonatoDAOImpl();
 	}
 
 	// Se asume que se mandan cambios para un equipo solo, no para los dos a la vez
@@ -329,6 +335,15 @@ public class PartidoController implements IPartidoController
 		/*** Actualizo el puntaje y ranking de los equipos ***/
 		equipoDAO.actualizarPuntajesEquipo(nom_equipo_local, gano_local ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
 		equipoDAO.actualizarPuntajesEquipo(nom_equipo_visitante, gano_visitante ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
+
+		/*** Si es el último partido del campeonato => Premio a los tres primeros puestos ***/
+		String nomCampeonato       = partido.getCampeonato().getCampeonato();
+		Integer cantidadEquipos    = campeonatoDAO.getCantidadEquipos(nomCampeonato);
+		Integer numero_partido_max = cantidadEquipos * (cantidadEquipos - 1);
+		if (partido.getPartido().equals(nomCampeonato + "_partido_" + numero_partido_max))
+		{
+			campeonatoDAO.premiarGanadores(nomCampeonato);
+		}
 		
 		System.out.println("Goles Local    : " + goles[0]);
 		System.out.println("Goles Visitante: " + goles[1]);

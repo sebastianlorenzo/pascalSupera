@@ -16,6 +16,7 @@ import tipos.DataListaOferta;
 import tipos.DataListaPartido;
 import tipos.DataOferta;
 import tipos.DataResumenPartido;
+import dominio.Campeonato;
 import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
@@ -23,6 +24,7 @@ import dominio.Notificacion;
 import dominio.Oferta;
 import dominio.Pais;
 import dominio.Partido;
+import dominio.ResultadoCampeonato;
 import dominio.Usuario;
 
 @Stateless
@@ -676,16 +678,57 @@ public class EquipoDAOImpl implements EquipoDAO
 		
 		return dlpartidos;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	public void actualizarPuntajesEquipo(String equipo, Integer puntos)
 	{
-		Equipo e = em.find(Equipo.class, equipo);
-		if (e != null)
+		/*** Obtengo el equipo, el usuario y el campeonato ***/
+		Equipo e = em.find(Equipo.class, equipo);		
+		if (e == null)
 		{
-			e.setPuntaje(e.getPuntaje() + puntos);
-			e.setRanking(e.getRanking() + puntos);
-			em.merge(e);
+			System.out.println("actualizarPuntajesEquipo: Equipo null.");
+			return;
 		}
+		Query query = em.createQuery("SELECT e.usuario FROM Equipo e WHERE e.equipo = '" + equipo + "'");
+		List<Usuario> usuarios = query.getResultList();
+		Usuario u = (usuarios != null) ? usuarios.get(0) : null;
+		if (u == null)
+		{
+			System.out.println("actualizarPuntajesEquipo: Usuario null.");
+			return;
+		}
+		query = em.createQuery("SELECT e.campeonatos FROM Equipo e WHERE e.equipo = '" + equipo + "'");
+		List<Campeonato> campeonatos = query.getResultList();
+		Campeonato c = (campeonatos != null) ? campeonatos.get(0) : null;
+		if (c == null)
+		{
+			System.out.println("actualizarPuntajesEquipo: Campeonato null.");
+			return;
+		}
+		
+		/*** Seteo los puntos correspondientes ***/
+		e.setPuntaje(e.getPuntaje() + puntos);
+		e.setRanking(e.getRanking() + puntos);
+		
+		// El capital es un porcentaje del capital del usuario, multiplicado por la cantidad de puntos asignados en el partido
+		Integer capital =  u.getCapital();
+		capital += puntos * capital * Constantes.CONT_PORCENTAJE_CAPITAL / 100; 
+		u.setCapital(capital);
+		
+		List<ResultadoCampeonato> resultados = (List<ResultadoCampeonato>) c.getResultadoCampeonato();
+		Iterator<ResultadoCampeonato> it = resultados.iterator();
+		while (it.hasNext())
+		{
+			ResultadoCampeonato r = it.next();
+			if (r.getEquipo().getEquipo().equals(equipo))
+			{
+				r.setPuntaje(r.getPuntaje() + puntos);
+			}
+		}
+		
+		em.merge(c);
+		em.merge(u);
+		em.merge(e);
 	}
 	
 }
