@@ -37,7 +37,8 @@ public class VistaWebController {
 	private String MODIFICAR_TACTICA_PATH = "equipos/modificarTactica";
 	private String MODIFICAR_TITULARES_PATH = "equipos/modificarJugadoresTitulares";
 	private String ENTRENAR_EQUIPO_PATH = "equipos/";
-	
+	//*************************INFO***************************************************************
+	private String OBTENER_INFO_RSS_PATH = "equipos/verInfoMobile";
 	
 	// LOGIN USUARIO	*******************************************************************************
 	public String login (String nom, String pwd) {
@@ -55,10 +56,11 @@ public class VistaWebController {
 	}
 	
 	// LOGOUT USUARIO	*******************************************************************************
-	public boolean logout (String nom) {
+	public boolean logout (String nom,String desconectados) {
 		
 		String envio= "{"+
-				"logout"+":"+nom+
+				"logout"+":"+nom+','+
+				"desconectados"+":"+desconectados+
 			   "}";		
 		Client client = ClientBuilder.newClient();		
 		WebTarget target = client.target(REST_URI_PATH+LOGOUT_PATH);	 
@@ -211,12 +213,16 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
-			// LISTAR CAMPEONATOS	**************************************************************************************
-				public String listarDesconectados () {
+			// LISTAR DESCONECTADOS	**************************************************************************************
+				public String listarDesconectados (String nomUsuario) {
 					
+					String envio= "{"+
+							"nomUsuario"+":"+nomUsuario+
+						   "}";		
 					Client client = ClientBuilder.newClient();		
 					WebTarget target = client.target(REST_URI_PATH+LISTA_DESCONECTADOS_PATH);	 
-					String respuesta=target.request().get(String.class);
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
 				    return respuesta;
 					
 				}
@@ -297,6 +303,17 @@ public class VistaWebController {
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 					 
 				    return respuesta;*/
+					
+				}
+				
+				// OBTENER INFO RSS************************************************************************
+				public String obtenerInfoRss () {
+					
+					String envio= "{nomUsuario:\"null\"}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_INFO_RSS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
 					
 				}
 				

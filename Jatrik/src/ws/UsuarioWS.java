@@ -97,9 +97,9 @@ public class UsuarioWS
     {
     	JSONObject datosUsr = new JSONObject(datos);
 		String nomUsuario   = datosUsr.getString("logout");
-		JSONArray amigos = datosUsr.getJSONArray("desconectados");
 		
-		if (amigos != null){
+		if (!datosUsr.getBoolean("admin")){
+			JSONArray amigos = datosUsr.getJSONArray("desconectados");
 			List<String> listUs = new ArrayList<String>();
 			int i;
 			for (i=0; i < amigos.length(); i++){

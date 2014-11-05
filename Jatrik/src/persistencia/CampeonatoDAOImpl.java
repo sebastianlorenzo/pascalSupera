@@ -181,6 +181,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				if(eq.getEquipo() == e.getEquipo())
 					return false;
 			}
+			e.setPuntaje(0);
 			listEquipos.add(e);
 			Collection<Campeonato> listCampeonatos = e.getCampeonatos();
 			listCampeonatos.add(c);
@@ -325,6 +326,24 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			return false;
 		else
 			return true;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean anotadoPreviamente(String nomUsuario) 
+	{
+		Query query = em.createQuery("SELECT u.equipo FROM Usuario u "
+				                   + "WHERE u.login = '"+ nomUsuario + "'");
+		List<Equipo> equipos = query.getResultList();
+		if (equipos != null)
+		{
+			Integer puntaje = equipos.get(0).getPuntaje();
+		
+			if (puntaje < 0)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

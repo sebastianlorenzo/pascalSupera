@@ -8,18 +8,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import negocio.IPartidoController;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 import com.google.gson.Gson;
-
 import tipos.DataCambio;
 import tipos.DataListaPartido;
-import tipos.DataResumenPartido;
 
 @ManagedBean
 @ApplicationScoped

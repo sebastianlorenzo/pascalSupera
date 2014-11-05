@@ -64,7 +64,7 @@ public class Equipo implements java.io.Serializable
 		this.localidad = localidad;
 		this.estadio = null;
 		this.usuario = null;
-		this.puntaje = 0;
+		this.puntaje = -1;
 		this.ranking = 0;
 		Collection<Jugador> jugadores = new ArrayList<Jugador>();
 		this.jugadores = jugadores;

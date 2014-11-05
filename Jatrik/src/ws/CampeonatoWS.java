@@ -88,11 +88,20 @@ public class CampeonatoWS
 		JSONObject datosCampI = new JSONObject(datos);
 		String nomCampeonato = datosCampI.getString("nomCampeonato");
 		String nomUsuario = datosCampI.getString("nomUsuario");
-		Boolean ok = this.iCampeonatoController.anotarseACampeonato(nomCampeonato, nomUsuario);
+		Integer ok = this.iCampeonatoController.anotarseACampeonato(nomCampeonato, nomUsuario);
 		JSONObject json = new JSONObject();
 		try
 		{
-			json.put("inscripcion", ok );
+			json.put("inscripcion", ok);
+			if(ok == -1){
+				json.put("mensaje", "ERROR. Ya esta anotado a un campeonato.");
+			}
+			else if(ok == 0){
+				json.put("mensaje", "ERROR. No se pudo anotar al campeonato.");
+			}
+			else{
+				json.put("mensaje", "Anotado al campeonato correctamente.");
+			}
 		}
 		catch(Exception ex)
 		{

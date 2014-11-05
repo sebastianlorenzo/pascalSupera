@@ -81,6 +81,7 @@
         localidad varchar(255),
         pais varchar(255),
         puntaje int4,
+        ranking int4,
         tacticaAtaque int4,
         tacticaDefensa int4,
         tacticaMediocampo int4,

@@ -119,41 +119,49 @@ public class CampeonatoController implements ICampeonatoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario) 
+	public Integer anotarseACampeonato(String nomCampeonato, String nomUsuario) 
 	{
-		Boolean ok= this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
-		
-		if (ok){
-			boolean lleno = this.campeonatoDAO.campeonatoCompleto(nomCampeonato);
-			
-			if(lleno){
-			//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
-				boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
-				if(creoCampeonato){
-										
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(Calendar.MINUTE, 0);
-					calendar.set(Calendar.SECOND, 0);
-					calendar.set(Calendar.MILLISECOND, 0);
-					Date hoy = calendar.getTime();
-					Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
-					
-					int num=1;
-					while(this.campeonatoDAO.existeCampeonato(nomCampeonato+num))
-						num++;
-					
-					JSONObject ob = crearCampeonato(nomCampeonato+num, inicioCampeonato, 2);
-					try{
-						ob.put("camp",nomCampeonato+num);
+		//verificar si esta anotado
+		Boolean anotado= this.campeonatoDAO.anotadoPreviamente(nomUsuario);
+		if (anotado)
+			return -1;
+		else{
+			Boolean ok= this.campeonatoDAO.anotarseACampeonato(nomCampeonato, nomUsuario);
+			if(!ok){
+				return 0;
+			}
+			else{
+				boolean lleno = this.campeonatoDAO.campeonatoCompleto(nomCampeonato);
+				
+				if(lleno){
+				//verificamos si quedan campeonatos disponibles, en caso contrario se crea uno nuevo
+					boolean creoCampeonato = this.campeonatoDAO.hayCampeonatosDisponibles();
+					if(creoCampeonato){
+											
+						Calendar calendar = Calendar.getInstance();
+						calendar.set(Calendar.MINUTE, 0);
+						calendar.set(Calendar.SECOND, 0);
+						calendar.set(Calendar.MILLISECOND, 0);
+						Date hoy = calendar.getTime();
+						Date inicioCampeonato = sumarDiasFecha(hoy, Constantes.DIAS_APLAZO);
+						
+						int num=1;
+						while(this.campeonatoDAO.existeCampeonato(nomCampeonato+num))
+							num++;
+						
+						JSONObject ob = crearCampeonato(nomCampeonato+num, inicioCampeonato, 2);
+						try{
+							ob.put("camp",nomCampeonato+num);
+						}
+				        catch(Exception ex)
+						{
+				            ex.printStackTrace();
+				        }
 					}
-			        catch(Exception ex)
-					{
-			            ex.printStackTrace();
-			        }
 				}
+				return 1;
 			}
 		}
-		return ok;
 	}
 
 	//obtengo todos los campeonatos en ejecución
