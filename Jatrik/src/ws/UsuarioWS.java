@@ -83,10 +83,9 @@ public class UsuarioWS
     	String mail          = datosUsr.getString("mail");
     	String nombreEquipo  = datosUsr.getString("nombreEquipo");
     	String pais          = datosUsr.getString("pais");
-    	String localidad     = datosUsr.getString("localidad");
     	String nombreEstadio = datosUsr.getString("nombreEstadio");
     	
-    	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, localidad, nombreEstadio).toString();    	
+    	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, nombreEstadio).toString();    	
     }
     
     @POST

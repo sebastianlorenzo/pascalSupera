@@ -19,7 +19,7 @@ public interface IUsuarioController
 	public Boolean estaConectadoUsuario(String login);
 	
 	public JSONObject ingresarUsuario(String login, String password, String mail, String equipo,
-									  String pais, String localidad, String estadio);
+									  String pais, String estadio);
 	
 	public void setearConectado(String login);
 	
