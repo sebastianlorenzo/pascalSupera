@@ -190,8 +190,29 @@ public class UsuarioWS
     	JSONObject datosNotificacion = new JSONObject(datos);
 		String nomUsuario = datosNotificacion.getString("nomUsuario"); //Logueado
 		Gson g = new Gson();
-		DataListaNotificacion dataNotif = this.iUsuarioController.verNotificaciones(nomUsuario);
+		DataListaNotificacion dataNotif = iUsuarioController.verNotificaciones(nomUsuario);
 		return g.toJson(dataNotif);
     }
+    
+	@GET
+	@Path("verRanking")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String verRanking() throws JSONException
+	{
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray usuariosRanking = null;
+			usuariosRanking = iUsuarioController.obtenerRanking();
+			respuesta.put("ranking", usuariosRanking);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return respuesta.toString();		
+	}
       
 }

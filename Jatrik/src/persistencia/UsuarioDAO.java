@@ -44,5 +44,7 @@ public interface UsuarioDAO
 	public DataListaNotificacion obtenerNotificaciones(String login);
 
 	public void setearAmigos(String nomUsuario, List<String> listUs);
-	
+
+	public JSONArray obtenerRankingUsuarios();
+		
 }

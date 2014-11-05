@@ -176,4 +176,10 @@ public class UsuarioController implements IUsuarioController
 	{
 		this.usuarioDAO.setearAmigos(nomUsuario, listUs);
 	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerRanking() 
+	{
+		return this.usuarioDAO.obtenerRankingUsuarios();
+	}
 }

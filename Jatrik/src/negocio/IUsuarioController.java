@@ -38,5 +38,7 @@ public interface IUsuarioController
 	public DataListaNotificacion verNotificaciones(String nomUsuario);
 
 	public void setearNuevosAmigos(String nomUsuario, List<String> listUs);
-		
+
+	public JSONArray obtenerRanking();
+			
 }
