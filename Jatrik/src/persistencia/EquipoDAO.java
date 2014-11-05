@@ -63,5 +63,7 @@ public interface EquipoDAO
 	public ArrayList<Equipo> obtenerEquipos();
 
 	public DataListaPartido obtenerUltimosResultadosEquipo(String nomUsuario);
+	 
+	public void actualizarPuntajesEquipo(String equipo, Integer puntos);
 	
 }

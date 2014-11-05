@@ -249,15 +249,17 @@ public class PartidoController implements IPartidoController
 		String fecha_partido           = formato_fecha.format(partido.getFechaPartido());
 		String nom_equipo_local        = partido.getEquipoLocal().getEquipo();
 		String nom_equipo_visitante    = partido.getEquipoVisitante().getEquipo();
-		
-		String notificacionEquipoLocal     = ((goles[0] >  goles[1]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
-											 ((goles[0] == goles[1]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
-											                           getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
+		boolean gano_local             = (goles[0] >  goles[1]);
+		boolean empate       		   = (goles[0] == goles[1]);
+		boolean gano_visitante 		   = (goles[1] > goles[0]);
+		String notificacionEquipoLocal     = (gano_local ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
+											 (empate     ? getMensajeEmpatePartido(fecha_partido, nom_equipo_visitante)  : 
+											               getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
-		String notificacionEquipoVisitante = ((goles[1] >  goles[0]) ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
-										     ((goles[1] == goles[0]) ? getMensajeEmpatePartido(fecha_partido, nom_equipo_local)      : 
-																	   getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
+		String notificacionEquipoVisitante = (gano_visitante ? getMensajeGanadorPartido(fecha_partido, nom_equipo_visitante) : 
+										     (empate         ? getMensajeEmpatePartido(fecha_partido, nom_equipo_local)      : 
+														       getMensajePerdedorPartido(fecha_partido, nom_equipo_local)))  + 
 											 getMensajeResumenPartido(nom_equipo_local, nom_equipo_visitante, goles, tarjetasAmarillas, tarjetasRojas, lesiones);
 		
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
@@ -265,7 +267,12 @@ public class PartidoController implements IPartidoController
 		
 		/*** Guardar los resultados y comentarios del partido ***/
 		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, partido, comentarios);
-		System.out.println("Goles Local: " + goles[0]);
+		
+		/*** Actualizo el puntaje y ranking de los equipos ***/
+		equipoDAO.actualizarPuntajesEquipo(nom_equipo_local, gano_local ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
+		equipoDAO.actualizarPuntajesEquipo(nom_equipo_visitante, gano_visitante ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
+		
+		System.out.println("Goles Local    : " + goles[0]);
 		System.out.println("Goles Visitante: " + goles[1]);
 	}
 	

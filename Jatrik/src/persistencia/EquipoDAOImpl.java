@@ -677,4 +677,15 @@ public class EquipoDAOImpl implements EquipoDAO
 		return dlpartidos;
 	}
 	
+	public void actualizarPuntajesEquipo(String equipo, Integer puntos)
+	{
+		Equipo e = em.find(Equipo.class, equipo);
+		if (e != null)
+		{
+			e.setPuntaje(e.getPuntaje() + puntos);
+			e.setRanking(e.getRanking() + puntos);
+			em.merge(e);
+		}
+	}
+	
 }

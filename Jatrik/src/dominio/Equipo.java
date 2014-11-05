@@ -25,6 +25,7 @@ public class Equipo implements java.io.Serializable
 	private Integer tacticaMediocampo;
 	private Integer tacticaAtaque;
 	private Integer puntaje;
+	private Integer ranking;
 	private Integer cant_cambios_realizados;
 	private Integer entrenamientoPorteria;
 	private Integer entrenamientoOfensivo;
@@ -64,6 +65,7 @@ public class Equipo implements java.io.Serializable
 		this.estadio = null;
 		this.usuario = null;
 		this.puntaje = 0;
+		this.ranking = 0;
 		Collection<Jugador> jugadores = new ArrayList<Jugador>();
 		this.jugadores = jugadores;
 		Collection<Partido> partidos = new ArrayList<Partido>();
@@ -195,6 +197,13 @@ public class Equipo implements java.io.Serializable
 		this.puntaje = puntaje;
 	}
 	
+	public Integer getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Integer ranking) {
+		this.ranking = ranking;
+	}
 	
 	public Collection<Oferta> getOfertasRealizadas() {
 		return ofertasRealizadas;

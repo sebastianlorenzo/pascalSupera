@@ -44,6 +44,9 @@ public class Constantes {
 	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Mensaje1_bajo", "Mensaje2_bajo", "Mensaje3_bajo", "Mensaje4_bajo"};
 	public static final String[] CONST_MENSAJES_REGATE_MEDIO = {"Mensaje1_medio", "Mensaje2_medio", "Mensaje3_medio", "Mensaje4_medio"};
 	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Mensaje1_alto", "Mensaje2_alto", "Mensaje3_alto", "Mensaje4_alto"};
+	public static final Integer CONST_PUNTOS_GANADOR   = 3;
+	public static final Integer CONST_PUNTOS_EMPATE    = 1;
+	public static final Integer CONST_PUNTOS_PERDEDOR  = 0;
 	
 	/* Usuario */
 	public static final int CAPITAL_USUARIO = 10000;
