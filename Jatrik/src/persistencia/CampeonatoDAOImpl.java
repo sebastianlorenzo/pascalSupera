@@ -341,6 +341,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean anotadoPreviamente(String nomUsuario) 
 	{

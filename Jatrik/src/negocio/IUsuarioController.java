@@ -19,7 +19,7 @@ public interface IUsuarioController
 	public Boolean estaConectadoUsuario(String login);
 	
 	public JSONObject ingresarUsuario(String login, String password, String mail, String equipo,
-									  String pais, String localidad, String estadio);
+									  String pais, String estadio);
 	
 	public void setearConectado(String login);
 	
@@ -38,5 +38,7 @@ public interface IUsuarioController
 	public DataListaNotificacion verNotificaciones(String nomUsuario);
 
 	public void setearNuevosAmigos(String nomUsuario, List<String> listUs);
-		
+
+	public JSONArray obtenerRanking();
+			
 }

@@ -139,7 +139,6 @@ public class PartidoDAOImpl implements PartidoDAO
 			{
 				ob.put("partido", eqLocal+" vs. "+eqVisitante);
 				ob.put("pais", eq.getPais());
-				ob.put("localidad", eq.getLocalidad());
 			} 
 			catch (JSONException ex) 
 			{

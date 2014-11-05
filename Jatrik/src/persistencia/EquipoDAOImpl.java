@@ -77,7 +77,6 @@ public class EquipoDAOImpl implements EquipoDAO
 			{
 				ob.put("equipo", e.getEquipo());
 				ob.put("pais", e.getPais());
-				ob.put("localidad", e.getLocalidad());
 			} 
 			catch (JSONException ex) 
 			{
@@ -122,19 +121,18 @@ public class EquipoDAOImpl implements EquipoDAO
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public JSONObject obtenerLugarEquipo(String nomEquipo) 
 	{
-		JSONObject paisYLocalidad = new JSONObject();
+		JSONObject pais = new JSONObject();
 		Equipo eq = em.find(Equipo.class, nomEquipo);
 		
 		try
 		{
-			paisYLocalidad.put("pais", eq.getPais() );
-			paisYLocalidad.put("localidad", eq.getLocalidad());
+			pais.put("pais", eq.getPais());
         }
         catch(Exception ex)
 		{
             ex.printStackTrace();
         }
-		return paisYLocalidad;
+		return pais;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -13,6 +13,7 @@ import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
 import tipos.DataMensaje;
 import tipos.DataNotificacion;
+import dominio.Equipo;
 import dominio.Mensaje;
 import dominio.Notificacion;
 import dominio.Usuario;
@@ -278,6 +279,38 @@ public class UsuarioDAOImpl implements UsuarioDAO
 				u.setMisAmigosChat(amigos);
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public JSONArray obtenerRankingUsuarios() 
+	{
+		Query query = em.createQuery("SELECT e FROM Equipo e ORDER BY e.ranking DESC");
+
+		List<Equipo> lst = query.getResultList();
+		
+		JSONArray jranking = new JSONArray();
+		JSONObject ob;
+	
+		int posicion = 1;
+		for (Equipo eq : lst) 
+		{
+			try 
+			{	
+				ob = new JSONObject();
+				{
+					ob.put("posicion", posicion);
+					ob.put("usuario", eq.getUsuario().getLogin());
+					jranking.put(ob);
+					posicion++;
+				}
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}	
+		}
+		return jranking;
 	}	
 	
 }

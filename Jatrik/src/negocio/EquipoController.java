@@ -47,9 +47,9 @@ public class EquipoController implements IEquipoController
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio)
+	public Equipo crearEquipo(String equipo, String pais, String nomestadio)
 	{
-		Equipo e = new Equipo(equipo, pais, localidad);
+		Equipo e = new Equipo(equipo, pais);
 		int capacidad = Constantes.MAX_CAPACIDAD;
 		int altura = (int) (Math.random() * (Constantes.MAX_ALTURA_ESTADIO - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
 		Estadio estadio = new Estadio(nomestadio, capacidad, altura);

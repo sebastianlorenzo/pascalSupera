@@ -20,7 +20,6 @@ public class Equipo implements java.io.Serializable
 	@Id
 	private String equipo;	
 	private String pais;
-	private String localidad;
 	private Integer tacticaDefensa;
 	private Integer tacticaMediocampo;
 	private Integer tacticaAtaque;
@@ -57,11 +56,10 @@ public class Equipo implements java.io.Serializable
 	
 	public Equipo(){}
 
-	public Equipo(String equipo, String pais, String localidad) 
+	public Equipo(String equipo, String pais) 
 	{
 		this.equipo = equipo;
 		this.pais = pais;
-		this.localidad = localidad;
 		this.estadio = null;
 		this.usuario = null;
 		this.puntaje = -1;
@@ -97,16 +95,6 @@ public class Equipo implements java.io.Serializable
 	public void setPais(String pais) 
 	{
 		this.pais = pais;
-	}
-
-	public String getLocalidad() 
-	{
-		return localidad;
-	}
-
-	public void setLocalidad(String localidad) 
-	{
-		this.localidad = localidad;
 	}
 	
 	public Integer getTacticaMediocampo() 

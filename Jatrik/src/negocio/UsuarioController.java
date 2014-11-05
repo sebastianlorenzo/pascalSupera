@@ -63,7 +63,7 @@ public class UsuarioController implements IUsuarioController
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONObject ingresarUsuario(String login, String password, String mail, String equipo,
-									  String pais, String localidad, String estadio) 
+									  String pais, String estadio) 
 	{
 		
 		JSONObject jsonRegistrar = new JSONObject();
@@ -108,7 +108,7 @@ public class UsuarioController implements IUsuarioController
 		{
 			Integer capitalIni = Constantes.CAPITAL_USUARIO;
 			Usuario u = new Usuario(login, password, mail, capitalIni);
-			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, localidad, estadio);
+			Equipo nuevoequipo = this.iEquipoController.crearEquipo(equipo, pais, estadio);
 			u.setEquipo(nuevoequipo);
 			this.usuarioDAO.insertarUsuario(u);
 			try
@@ -175,5 +175,11 @@ public class UsuarioController implements IUsuarioController
 	public void setearNuevosAmigos(String nomUsuario, List<String> listUs) 
 	{
 		this.usuarioDAO.setearAmigos(nomUsuario, listUs);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public JSONArray obtenerRanking() 
+	{
+		return this.usuarioDAO.obtenerRankingUsuarios();
 	}
 }

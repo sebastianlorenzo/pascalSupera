@@ -87,7 +87,6 @@
         entrenamientoFisico int4,
         entrenamientoOfensivo int4,
         entrenamientoPorteria int4,
-        localidad varchar(255),
         pais varchar(255),
         puntaje int4,
         ranking int4,
