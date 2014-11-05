@@ -16,7 +16,7 @@ public interface ICampeonatoController
 	
 	public DataListaCampeonato campeonatosDisponibles();
 
-	public Boolean anotarseACampeonato(String nomCampeonato, String nomUsuario);
+	public Integer anotarseACampeonato(String nomCampeonato, String nomUsuario);
 
 	public DataListaCampeonato campeonatosEnEjecucion();
 

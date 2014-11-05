@@ -26,5 +26,7 @@ public interface CampeonatoDAO
 	public boolean hayCampeonatosDisponibles();
 
 	public boolean campeonatoCompleto(String nomCampeonato);
+
+	public Boolean anotadoPreviamente(String nomUsuario);
 	
 }

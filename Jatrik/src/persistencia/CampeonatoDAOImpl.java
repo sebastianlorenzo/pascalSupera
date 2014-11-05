@@ -327,4 +327,18 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			return true;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Boolean anotadoPreviamente(String nomUsuario) 
+	{
+		Usuario u = em.find(Usuario.class, nomUsuario);
+		Equipo e = u.getEquipo();
+		Integer puntaje = e.getPuntaje();
+		
+		if(puntaje == -1){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
 }
