@@ -3,7 +3,6 @@ package dominio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.persistence.*;
 
@@ -11,9 +10,11 @@ import dominio.Partido;
 
 @Entity
 @Table(name = "campeonato", schema = "public")
-public class Campeonato 
+public class Campeonato implements java.io.Serializable
 {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	private String campeonato;
 	

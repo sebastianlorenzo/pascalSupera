@@ -1,18 +1,21 @@
 package dominio;
 
-import java.util.Collection;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "campeonato", schema = "public")
-public class ResultadoCampeonato {
+@Table(name = "resultadoCampeonato", schema = "public")
+public class ResultadoCampeonato implements java.io.Serializable 
+{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue
 	private Integer idResultadoCampeonato;
-	private Equipo equipo;
 	private Integer puntaje;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	private Equipo equipo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Campeonato campeonato;

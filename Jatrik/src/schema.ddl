@@ -1,9 +1,4 @@
 
-    create table public.campeonato_campeonato (
-        campeonato_campeonato varchar(255) not null,
-        resultadoCampeonato_idResultadoCampeonato int4 not null
-    );
-
     create table public.campeonato_equipo (
         campeonatos_campeonato varchar(255) not null,
         equipos_equipo varchar(255) not null
@@ -12,6 +7,11 @@
     create table public.campeonato_partido (
         campeonato_campeonato varchar(255) not null,
         partidos_partido varchar(255) not null
+    );
+
+    create table public.campeonato_resultadoCampeonato (
+        campeonato_campeonato varchar(255) not null,
+        resultadoCampeonato_idResultadoCampeonato int4 not null
     );
 
     create table public.equipo_jugador (
@@ -64,11 +64,7 @@
         campeonato varchar(255) not null,
         cantEquipos int4,
         inicioCampeonato timestamp,
-        idResultadoCampeonato int4 not null,
-        equipo bytea,
-        puntaje int4,
-        campeonato_campeonato varchar(255),
-        primary key (idResultadoCampeonato)
+        primary key (campeonato)
     );
 
     create table public.comentario (
@@ -174,6 +170,14 @@
         primary key (partido)
     );
 
+    create table public.resultadoCampeonato (
+        idResultadoCampeonato int4 not null,
+        puntaje int4,
+        campeonato_campeonato varchar(255),
+        equipo_equipo varchar(255),
+        primary key (idResultadoCampeonato)
+    );
+
     create table public.usuario (
         login varchar(255) not null,
         capital int4,
@@ -205,11 +209,11 @@
         notificacionesRecibidas_idNotificacion int8 not null
     );
 
-    alter table public.campeonato_campeonato 
-        add constraint UK_crblxp9ub75n0k0m0oc0a2oxn  unique (resultadoCampeonato_idResultadoCampeonato);
-
     alter table public.campeonato_partido 
         add constraint UK_qel622wydwywu34avof4n9wpi  unique (partidos_partido);
+
+    alter table public.campeonato_resultadoCampeonato 
+        add constraint UK_66h22ad35gttod16w9cfu9gvs  unique (resultadoCampeonato_idResultadoCampeonato);
 
     alter table public.equipo_jugador 
         add constraint UK_l82welmroy9q2qx97fud6ivs4  unique (jugadores_idJugador);
@@ -241,16 +245,6 @@
     alter table public.usuario_notificaciones 
         add constraint UK_89iq8heaqmye4v93kmxnkan7f  unique (notificacionesRecibidas_idNotificacion);
 
-    alter table public.campeonato_campeonato 
-        add constraint FK_crblxp9ub75n0k0m0oc0a2oxn 
-        foreign key (resultadoCampeonato_idResultadoCampeonato) 
-        references public.campeonato;
-
-    alter table public.campeonato_campeonato 
-        add constraint FK_qh9f7kkmg16j0ycb7sgg6u6px 
-        foreign key (campeonato_campeonato) 
-        references public.campeonato;
-
     alter table public.campeonato_equipo 
         add constraint FK_k7mcfwfovv12itg9awsyblm8d 
         foreign key (equipos_equipo) 
@@ -268,6 +262,16 @@
 
     alter table public.campeonato_partido 
         add constraint FK_ewebbgy5ct326wly7j0kqml2i 
+        foreign key (campeonato_campeonato) 
+        references public.campeonato;
+
+    alter table public.campeonato_resultadoCampeonato 
+        add constraint FK_66h22ad35gttod16w9cfu9gvs 
+        foreign key (resultadoCampeonato_idResultadoCampeonato) 
+        references public.resultadoCampeonato;
+
+    alter table public.campeonato_resultadoCampeonato 
+        add constraint FK_hy904eltj3u0iq5jx77luqror 
         foreign key (campeonato_campeonato) 
         references public.campeonato;
 
@@ -356,11 +360,6 @@
         foreign key (cambiosLocal_partido) 
         references public.partido;
 
-    alter table public.campeonato 
-        add constraint FK_mlnm4yumlpaks48jsr0ly4579 
-        foreign key (campeonato_campeonato) 
-        references public.campeonato;
-
     alter table public.comentario 
         add constraint FK_h2nl0oqakub946p3ae4967peu 
         foreign key (partido_partido) 
@@ -425,6 +424,16 @@
         add constraint FK_nf87hcmti5sjxjwxcphvh67wt 
         foreign key (estadio_estadio) 
         references public.estadio;
+
+    alter table public.resultadoCampeonato 
+        add constraint FK_alnb6cuulh30x10myvjwxguic 
+        foreign key (campeonato_campeonato) 
+        references public.campeonato;
+
+    alter table public.resultadoCampeonato 
+        add constraint FK_9m5wxsg89dkcgvlw4rsk8wjai 
+        foreign key (equipo_equipo) 
+        references public.equipo;
 
     alter table public.usuario 
         add constraint FK_k2bt9tx57xvrxrl8gd5af2dbl 

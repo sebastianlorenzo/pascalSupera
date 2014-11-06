@@ -238,7 +238,10 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				
 				// Inicializo la tabla de resultados del campeonato
 				for(Equipo eq : listEquipos){
+					Collection<ResultadoCampeonato> resultadoCampeonato = c.getResultadoCampeonato();
 					ResultadoCampeonato r = new ResultadoCampeonato(eq, 0, c);
+					resultadoCampeonato.add(r);
+					c.setResultadoCampeonato(resultadoCampeonato);
 					em.persist(r);
 				}
 			}
@@ -376,7 +379,9 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	{
 		// Asigno puntos y plata a los tres primeros lugares
 		// Asigno 15, 10 y 5 puntos a cada posición
-		Query query = em.createQuery("SELECT c.resultadoCampeonato FROM Campeonato c ORDER BY c.resultadoCampeonato.puntaje DESC");
+		Query query = em.createQuery("SELECT r FROM ResultadoCampeonato r, Campeonato c "
+								   + "WHERE r.campeonato = c AND c.campeonato = '" + nomCampeonato + "' "
+								   + "ORDER BY r.puntaje DESC");
 		Iterator<ResultadoCampeonato> it = query.getResultList().iterator();
 		int cant = 0;
 		int puntos = 15;
@@ -391,6 +396,9 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			u.setCapital(capital);
 			r.setPuntaje(r.getPuntaje() + puntos);
 			
+			// Además restablezco el puntaje del equipo a -1. 
+	        e.setPuntaje(-1);
+	        
 			em.merge(r);
 			em.merge(u);
 			em.merge(e);
