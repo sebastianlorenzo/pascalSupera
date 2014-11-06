@@ -168,9 +168,9 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataListaEquipo obtenerEquiposData(String nomEquipo) 
+	public DataListaEquipo obtenerEquiposData(String nomEquipo, boolean incluir_equipo) 
 	{
-		return this.equipoDAO.equiposData(nomEquipo);
+		return this.equipoDAO.equiposData(nomEquipo, incluir_equipo);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

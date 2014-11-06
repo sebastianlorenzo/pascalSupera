@@ -163,9 +163,17 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public DataListaEquipo equiposData(String nomEquipo)
+	public DataListaEquipo equiposData(String nomEquipo, boolean incluir_equipo)
 	{
-		Query query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		Query query = null;
+		if (incluir_equipo)
+		{
+			query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo = :equipo ORDER BY eq.puntaje desc");
+		}
+		else
+		{
+			query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		}
 		query.setParameter("equipo", nomEquipo);
 		List<Equipo> lequipos = query.getResultList();		
 		DataListaEquipo dlequipos = new DataListaEquipo();

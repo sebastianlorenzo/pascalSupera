@@ -124,7 +124,7 @@ public class EquipoWS
 		JSONObject datosEquipo = new JSONObject(datos);
 		String nombreEq = datosEquipo.getString("nombreEquipo");
 		Gson g = new Gson();
-		DataListaEquipo dataEq = iEquipoController.obtenerEquiposData(nombreEq);
+		DataListaEquipo dataEq = iEquipoController.obtenerEquiposData(nombreEq, false);
 		return g.toJson(dataEq);
 	}
 	
@@ -332,5 +332,17 @@ public class EquipoWS
 		
 	}
 	
+	@POST
+	@Path("listarEstadisitcasJugadoresEquipo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String listarEstadisitcasJugadoresEquipo(String datos) throws JSONException
+	{
+		JSONObject datosEquipo = new JSONObject(datos);
+		String nombreEq = datosEquipo.getString("nombreEquipo");
+		Gson g = new Gson();
+		DataListaEquipo dataEq = iEquipoController.obtenerEquiposData(nombreEq, true);
+		return g.toJson(dataEq);
+	}
 	
 }
