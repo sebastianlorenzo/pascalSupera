@@ -100,7 +100,8 @@ public class PartidoController implements IPartidoController
 			return;
 		}
 		System.out.print("*************************\n");
-		System.out.print("***** PARTIDO " + partido.getPartido() + " *****\n");
+		System.out.print("PARTIDO " + partido.getPartido() + "\n");
+		float penalizacionAltura = getPenalizacionPorAltura(partido.getEquipoLocal().getEstadio().getAltura());
 		System.out.print("*************************\n");
 		
 		/*** Hacer un "respaldo" de los jugadores para dejarlos en el mismo estado al finalizar el partido ***/
@@ -178,7 +179,7 @@ public class PartidoController implements IPartidoController
 			List<Jugador> jugadoresContrarios = (List<Jugador>) equipoContrario.getJugadores();
 			
 			/*** Calcular la probabilidad de jugada de gol ***/
-			float probJugadaGol = calcularProbabilidadJugadaGol(jugadores, jugadoresContrarios, es_local ? penalizacion[0] : penalizacion[1]);
+			float probJugadaGol = calcularProbabilidadJugadaGol(jugadores, jugadoresContrarios, es_local ? penalizacion[0] : penalizacion[1], es_local, penalizacionAltura);
 			
 			/*** Calcular la probabilidad de gol para la jugada ***/
 			String[] prob_gol = calcularProbabilidadGol(jugadores, jugadoresContrarios, probJugadaGol);
@@ -349,7 +350,7 @@ public class PartidoController implements IPartidoController
 		System.out.println("Goles Visitante: " + goles[1]);
 	}
 	
-	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float penalizacion)
+	private float calcularProbabilidadJugadaGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float penalizacion, boolean es_local_jugadores, float penalizacionAltura)
 	{
 		// RegateATs    = Sumatoria de la habilidad de regate de todos los delanteros
 		// RegateMEDs   = Sumatoria de la habilidad de regate de todos los mediocampistas
@@ -360,7 +361,7 @@ public class PartidoController implements IPartidoController
 		
 		int cant_delanteros_y_mediocampistas = 0;
 		int cant_mediocampistas_y_defensas   = 0;
-				
+		
 		/*** Calcular el regate como la suma de técnica y velocidad ***/
 		Iterator<Jugador> it = jugadores.iterator();
         while(it.hasNext())
@@ -373,6 +374,7 @@ public class PartidoController implements IPartidoController
             	cant_delanteros_y_mediocampistas++;
             }
         }
+		regate = es_local_jugadores ? regate : (regate * penalizacionAltura); // Si es el equipo visitante, le aplico la penalización por altura
         
         /*** Calcular la potencia del equipo contrario como la suma de defensa y velocidad ***/ 
         it = jugadoresContrarios.iterator();
@@ -386,11 +388,49 @@ public class PartidoController implements IPartidoController
             	cant_mediocampistas_y_defensas++;
             }
         }
+        potencia = (!es_local_jugadores) ? potencia : (potencia * penalizacionAltura); // Si es el equipo visitante, le aplico la penalización por altura
         
 		/*** probabildad de jugada de gol = (Promedio (RegateATs+RegateMEDs) – Promedio(PotenciaMEDs+PotenciaDEFs))/100 ***/
 		float probJugadaGol = ((regate / cant_delanteros_y_mediocampistas) - (potencia / cant_mediocampistas_y_defensas)) / 100; 
 		
 		return (probJugadaGol * (1 - penalizacion));
+	}
+	
+	private float getPenalizacionPorAltura(Integer altura)
+	{
+		System.out.print("Altura del estadio: " + altura + "\n");
+		if ((altura > 1500) && (altura <= 2000))
+		{
+			System.out.println("Penalización: 0.95");
+			return (float)0.95;
+		}
+		if ((altura > 2000) && (altura <= 2500))
+		{
+			System.out.println("Penalización: 0.90");
+			return (float)0.90;
+		}
+		if ((altura > 2500) && (altura <= 3000))
+		{
+			System.out.println("Penalización: 0.85");
+			return (float)0.85;
+		}
+		if ((altura > 3000) && (altura <= 3500))
+		{
+			System.out.println("Penalización: 0.75");
+			return (float)0.75;
+		}
+		if ((altura > 3500) && (altura <= 4000))
+		{
+			System.out.println("Penalización: 0.65");
+			return (float)0.65;
+		}
+		if ((altura > 4000) && (altura <= 4500))
+		{
+			System.out.println("Penalización: 0.50");
+			return (float)0.50;
+		}
+		System.out.println("Penalización: 0");
+		return 0;
 	}
 	
 	private String[] calcularProbabilidadGol(List<Jugador> jugadores, List<Jugador> jugadoresContrarios, float probJugadaGol)
@@ -432,8 +472,8 @@ public class PartidoController implements IPartidoController
         }
 		
 		/*** Factores aleatorios ***/
-		float factor_ataque  = (float) Math.random();
-		float factor_portero = (float) Math.random();
+		float factor_ataque  = (float) Math.random(); System.out.println("********factor_ataque " + factor_ataque);System.out.println("********tiro_jugador * factor_ataque " + tiro_jugador * factor_ataque);
+		float factor_portero = (float) Math.random(); System.out.println("********factor_portero " + factor_portero);System.out.println("********habilidad_portero * factor_portero " + habilidad_portero * factor_portero);
 		
 		/*** Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100 ***/
 		float probGol = (probJugadaGol * ((tiro_jugador * factor_ataque) - (habilidad_portero * factor_portero))) / 100;
