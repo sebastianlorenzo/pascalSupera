@@ -188,7 +188,9 @@ public class EquipoDAOImpl implements EquipoDAO
 			{
 				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicion(),  jug.getPosicionIdeal(), 
 												(int)(float) jug.getVelocidad(), (int)(float) jug.getTecnica(), (int)(float) jug.getAtaque(),
-												(int)(float) jug.getDefensa(), (int)(float) jug.getPorteria(), jug.getEstado_jugador());
+												(int)(float) jug.getDefensa(), (int)(float) jug.getPorteria(), jug.getEstado_jugador(), 
+												jug.getHistoricoTarjetasAmarillas(), jug.getHistoricoTarjetasRojas(), jug.getHistoricoGoles(),
+												jug.getHistoricoLesiones());
 				de.addDataJugador(dj);
 			}
 			dlequipos.addDataEquipo(de);

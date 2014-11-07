@@ -220,6 +220,8 @@ public class PartidoController implements IPartidoController
 					return;
 				}
 				mensaje = "Gol de " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
+				// Actualizo el historial de goles del jugador
+				jugadorDAO.sumarGolHistorialJugador(idJugadorGol);
 			}
 			// Si no hubo gol, hacer algún comentario acerca de la jugada
 			else
@@ -256,6 +258,8 @@ public class PartidoController implements IPartidoController
 						mensaje += " El mismo ha sido expulsado del juego.";
 					}
 					mensaje += "\n";
+					// Actualizo el historial de tarjetas amarillas del jugador
+					jugadorDAO.sumarTarjetaAmarillaHistorialJugador(j.getIdJugador());
 				}
 				else
 				{
@@ -268,6 +272,8 @@ public class PartidoController implements IPartidoController
 						return;
 					}
 					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
+					// Actualizo el historial de tarjetas rojas del jugador
+					jugadorDAO.sumarTarjetaRojaHistorialJugador(j.getIdJugador());
 				}
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 				comentario = new Comentario(minuto, mensaje, null);
@@ -291,9 +297,10 @@ public class PartidoController implements IPartidoController
 				comentario = new Comentario(minuto, mensaje, null);
 				comentarios.add(comentario);
 				System.out.print(" - " + mensaje);
+				// Actualizo el historial de lesiones del jugador
+				jugadorDAO.sumarLesionHistorialJugador(idJugadorGol);
 			}
 			System.out.print("\n");
-			
 		}
 		
 		/*** Restaurar los atributos de los jugadores (tarjetas amarillas y estado del jugador), ***/
@@ -472,8 +479,8 @@ public class PartidoController implements IPartidoController
         }
 		
 		/*** Factores aleatorios ***/
-		float factor_ataque  = (float) Math.random(); System.out.println("********factor_ataque " + factor_ataque);System.out.println("********tiro_jugador * factor_ataque " + tiro_jugador * factor_ataque);
-		float factor_portero = (float) Math.random(); System.out.println("********factor_portero " + factor_portero);System.out.println("********habilidad_portero * factor_portero " + habilidad_portero * factor_portero);
+		float factor_ataque  = (float) Math.random();
+		float factor_portero = (float) Math.random();
 		
 		/*** Probabilidad de gol = ((probabilidad de jugada gol) x (tiro de un jugador*factor_aleatorio_ataque - habilidad del portero*factor_aleatorio_portero))/100 ***/
 		float probGol = (probJugadaGol * ((tiro_jugador * factor_ataque) - (habilidad_portero * factor_portero))) / 100;

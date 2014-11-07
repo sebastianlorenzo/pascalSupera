@@ -145,6 +145,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		return null;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String getNombreJugador(Integer idJugador)
 	{
 		Jugador j = em.find(Jugador.class, idJugador);
@@ -155,6 +156,7 @@ public class JugadorDAOImpl implements JugadorDAO
 		return null;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Integer getRegateJugador(Integer idJugador)
 	{
 		Jugador j = em.find(Jugador.class, idJugador);
@@ -180,6 +182,50 @@ public class JugadorDAOImpl implements JugadorDAO
 				j.setAtaque(j.getAtaque() + ataque);
 			if (j.getPorteria() < 100)
 				j.setPorteria(j.getPorteria() + porteria);
+			em.merge(j);
+		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void sumarGolHistorialJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setHistoricoGoles(j.getHistoricoGoles() + 1);
+			em.merge(j);
+		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void sumarTarjetaAmarillaHistorialJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setHistoricoTarjetasAmarillas(j.getHistoricoTarjetasAmarillas() + 1);
+			em.merge(j);
+		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void sumarTarjetaRojaHistorialJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setHistoricoTarjetasRojas(j.getHistoricoTarjetasRojas() + 1);
+			em.merge(j);
+		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void sumarLesionHistorialJugador(Integer idJugador)
+	{
+		Jugador j = em.find(Jugador.class, idJugador);
+		if (j != null)
+		{
+			j.setHistoricoLesiones(j.getHistoricoLesiones() + 1);
 			em.merge(j);
 		}
 	}

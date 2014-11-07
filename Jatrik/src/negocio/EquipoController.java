@@ -203,7 +203,8 @@ public class EquipoController implements IEquipoController
 				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) == 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(),  
 														(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
-														(int)(float) j.getPorteria(), j.getEstado_jugador());
+														(int)(float) j.getPorteria(), j.getEstado_jugador(), j.getHistoricoTarjetasAmarillas(), 
+														j.getHistoricoTarjetasRojas(), j.getHistoricoGoles(), j.getHistoricoLesiones());
 					dlj.addDataJugador(dj);			
 				}
 			}
@@ -229,7 +230,8 @@ public class EquipoController implements IEquipoController
 				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) != 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(), 
 													(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
-													(int)(float) j.getPorteria(), j.getEstado_jugador());
+													(int)(float) j.getPorteria(), j.getEstado_jugador(), j.getHistoricoTarjetasAmarillas(), 
+													j.getHistoricoTarjetasRojas(), j.getHistoricoGoles(), j.getHistoricoLesiones());
 					dlj.addDataJugador(dj);			
 				}
 			}
