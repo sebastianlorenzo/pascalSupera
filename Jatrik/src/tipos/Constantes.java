@@ -8,15 +8,16 @@ public class Constantes {
 	public static final int HORA_PARTIDOS       = 16;
 	
 	/* Equipo */
-	public static final Integer CONST_CANT_MAX_CAMBIOS = 3;
-	public static final int MAX_CAPACIDAD              = 10000;
-	public static final int MAX_ALTURA_ESTADIO         = 4500;
-	public static final int MIN_ALTURA_ESTADIO         = 0;
-	public static final int MAX_CANT_PORTEROS          = 2;
-	public static final int MAX_CANT_DEFENSAS          = 6;
-	public static final int MAX_CANT_MEDIOCAMPISTAS    = 6;
-	public static final int MAX_CANT_DELANTEROS        = 4;
-	public static final int MAX_RESULTADOS_PARTIDOS = 10;
+	public static final Integer CONST_CANT_MAX_CAMBIOS     = 3;
+	public static final int MAX_CAPACIDAD                  = 10000;
+	public static final int MAX_ALTURA_ESTADIO             = 4500;
+	public static final int MIN_ALTURA_ESTADIO             = 0;
+	public static final int MAX_CANT_PORTEROS              = 2;
+	public static final int MAX_CANT_DEFENSAS          	   = 6;
+	public static final int MAX_CANT_MEDIOCAMPISTAS    	   = 6;
+	public static final int MAX_CANT_DELANTEROS        	   = 4;
+	public static final int MAX_RESULTADOS_PARTIDOS        = 10;
+	public static final int[] CONST_FORMACION_POR_DEFECTO  = {4, 4, 2}; // [Defensa, Mediocampo, Ataque]
 	
 	/* Jugador */
 	public static final String CONST_DELANTERO     = "delantero";
