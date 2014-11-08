@@ -406,7 +406,12 @@ public class EquipoDAOImpl implements EquipoDAO
 			jugadoresDeEqDestino.add(jug);
 			
 			jug.setEquipo(eqDestino);
-								
+			
+			Boolean es_titular = false;
+			if(jug.getEstado_jugador().equals("titular")){
+				jug.setEstado_jugador("suplente");
+				es_titular = true;
+			}								
 			oferta.setEstado_oferta("aceptada");
 						
 			Collection<Notificacion> notificacionesRecibidas = usComprador.getNotificacionesRecibidas();
@@ -453,7 +458,10 @@ public class EquipoDAOImpl implements EquipoDAO
 			try
 			{
 				respuesta.put("Oferta aceptada", true);
-				respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
+				if(es_titular == false)
+					respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
+				else
+					respuesta.put("mensaje", "La venta del jugador titular fue realizada correctamente. Debes modificar tu lista de jugadores titulares.");
 			} 
 			catch (Exception e) 
 			{
