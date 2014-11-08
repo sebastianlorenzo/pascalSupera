@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="Description"
+		content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
+	<meta name="Keywords"
+		content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
+	<link rel="stylesheet" media="screen"
+		href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<meta name="Author" content="SymiSun* - symisun.com" />
+	<meta name="Robots" content="index,follow" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<!-- disable IE's image toolbar -->
+	<script type="text/javascript"
+ 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo">
+     </script>
+</h:head>
+<h:body>
+	<div id="daddy">
+		<ui:insert name="header_user">
+			<ui:include src="/resources/templates/header_user.xhtml" />
+		</ui:insert>
+		<!-- header -->
+
+		<div id="content_mapa">
+			<h2 id="titulo">Equipos en el mapa</h2>
+			<h3 id="subtitulo">En cada ubicación se puede ver el nombre del equipo.</h3> 
+			<div class="center">
+			<p:gmap center="-34,-58.283333" zoom="4" type="ROADMAP"
+				style="width:700px;height:550px" model="#{mapBean.model}" />
+			</div>
+		</div>
+		<!-- content -->
+		<p:ajaxStatus id="startAjax">
+			<f:facet name="start">
+				<div class="ui-widget-overlay">
+					<h:graphicImage
+						style="position: absolute;
+							left: 50%;
+						 	top: 50%;"
+						value="../../resources/images/ajax-loader.gif">
+					</h:graphicImage>
+				</div>
+			</f:facet>
+		</p:ajaxStatus>
+	</div>
+	<!-- daddy -->
+	<ui:insert name="footer_user">
+		<ui:include src="/resources/templates/footer_user.xhtml" />
+	</ui:insert>
+	<!--footer -->
+</h:body>
+</html>

@@ -201,6 +201,7 @@ public class LoginBean implements Serializable {
 
 	public String salir() throws JSONException {
 		VistaWebController v = new VistaWebController();
+		if (!this.admin){
 		JSONArray jdesconectados = new JSONArray();
 		JSONObject ob;
 	
@@ -210,7 +211,7 @@ public class LoginBean implements Serializable {
 			ob.put("desconectado", this.usuariosDesconectadosEstatica.get(i));
 			jdesconectados.put(ob);		
 		}
-		if (v.logout(this.nombre,jdesconectados.toString())) {
+		if (v.logout(this.nombre,jdesconectados.toString(),false)) {
 			// remove user and update ui
 			users.remove(nombre);
 			RequestContext.getCurrentInstance().update("form:users");
@@ -221,13 +222,18 @@ public class LoginBean implements Serializable {
 			return "/index.xhtml?faces-redirect=true";
 		}
 		return "/paginas/home.xhtml?faces-redirect=true";
+		}
+		else {
+			
+			v.logout(this.nombre,"",true);
+			return "/index.xhtml?faces-redirect=true";
+		}
 	}
 
 	public String login() throws JSONException {
 
 		VistaWebController v = new VistaWebController();
 		String respuesta = v.login(nombre, pwd);
-		System.out.println(respuesta);
 		JSONObject json = new JSONObject(respuesta);
 		if (json.getBoolean("login")) {
 
@@ -250,12 +256,10 @@ public class LoginBean implements Serializable {
 				String r_desconectados = v.listarDesconectados(this.nombre);
 				JSONObject desconectados = new JSONObject(r_desconectados);
 				JSONArray lista_desconectados = desconectados.getJSONArray("desconectados");
-				System.out.println("Mis amigos actuales:");
 				if (lista_desconectados != null) {
 					for (int i = 0; i < lista_desconectados.length(); i++) {
 						JSONObject ob = lista_desconectados.getJSONObject(i);
 						String usuario = ob.get("desconectado").toString();
-						System.out.println(usuario);
 						this.usuariosDesconectadosEstatica.add(usuario);
 					}
 				}				
