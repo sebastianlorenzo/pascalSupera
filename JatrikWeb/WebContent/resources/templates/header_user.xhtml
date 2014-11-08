@@ -36,8 +36,11 @@
 				            <p:submenu label="Non-Ajax" icon="ui-icon-newwin">
 				                <p:menuitem value="Delete" actionListener="#{menuView.delete}" icon="ui-icon-close" update="messages" ajax="false"/>
 				            </p:submenu>
-				        </p:submenu>			 
-				        <p:menuitem url="equiposEnMapa_user.xhtml" value="Listar equipos en el mapa" />       
+				        </p:submenu>	
+				        <p:submenu label="Otros" icon="ui-icon-gear">	 
+				        <p:menuitem url="ranking_user.xhtml" value="Ver Ranking" /> 
+				        <p:menuitem url="equiposEnMapa_user.xhtml" value="Listar equipos en el mapa" />
+				        </p:submenu>	      
 				 		<p:menuitem action="#{loginBean.salir()}" value="Salir" />
 				    </p:menubar>
 			</h:form>			

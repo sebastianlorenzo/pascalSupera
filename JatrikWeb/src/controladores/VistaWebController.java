@@ -31,6 +31,7 @@ public class VistaWebController {
 	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";
 	private String ENVIAR_CHAT_PATH = "usuarios/enviarChat";
 	private String REGISTRO_PATH = "usuarios/registrar";
+	private String VER_RANKING_PATH = "usuarios/verRanking";	
 	//*************************CAMPEONATO***************************************************************
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
@@ -39,16 +40,17 @@ public class VistaWebController {
 	//*************************EQUIPO***************************************************************
 	private String OBTENER_TITULARES_PATH = "equipos/obtenerJugadoresTitulares";
 	private String OBTENER_SUPLENTES_PATH = "equipos/obtenerJugadoresSuplentes";
+	private String OBTENER_TACTICA_PATH = "equipos/obtenerTactica";
 	private String MODIFICAR_TACTICA_PATH = "equipos/modificarTactica";
 	private String MODIFICAR_TITULARES_PATH = "equipos/modificarJugadoresTitulares";
-	private String ENTRENAR_EQUIPO_PATH = "equipos/";
+	private String OBTENER_ENTRENAMIENTO_PATH = "equipos/obtenerEntrenamiento";
+	private String MODIFICAR_ENTRENAMIENTO_PATH = "equipos/modificarEntrenamiento";
 	private String LISTAR_EQUIPOS_MAPA_PATH = "equipos/listarEquiposMapa";
 	private String LISTAR_EQUIPOS_PATH = "equipos/listarEquipos";
 	private String REALIZAR_OFERTA_PATH = "equipos/realizarOferta";
 	private String OBTENER_OFERTAS_PATH = "equipos/obtenerOfertas";
 	private String ACEPTAR_OFERTA_PATH = "equipos/aceptarOferta";
-	private String RECHAZAR_OFERTA_PATH = "equipos/rechazarOferta";
-	
+	private String RECHAZAR_OFERTA_PATH = "equipos/rechazarOferta";	
 	
 	
 	//*************************INFO***************************************************************
@@ -169,6 +171,16 @@ public class VistaWebController {
 		    return respuesta;
 			
 		}
+		
+		// VER RANKING	**************************************************************************************
+		public String verRanking () {
+			
+			Client client = ClientBuilder.newClient();		
+			WebTarget target = client.target(REST_URI_PATH+VER_RANKING_PATH);	 
+			String respuesta=target.request().get(String.class);
+		    return respuesta;
+			
+		}
 	
 	// CREAR CAMPEONATO	**************************************************************************************
 		public String crearCampeonato (String nombre,Integer cantidadEquipos ,Date fechaInicio) {
@@ -270,8 +282,21 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
+				// OBTENER TACTICA	*******************************************************************************
+				public String obtenerTactica (String nombreEquipo) {
+					
+					String envio= "{"+
+							"Nombre"+":"+nombreEquipo+
+						   "}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_TACTICA_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
 				// MODIFICAR TACTICA	*******************************************************************************
-				public String modificarTactica (String nombreEquipo,String ataque, String defensa, String mediocampo) {
+				public String modificarTactica (String nombreEquipo,String defensa, String mediocampo, String ataque) {
 					
 					String envio= "{"+
 							"Nombre"+":"+nombreEquipo+","+
@@ -303,20 +328,34 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
-				// ENTRENAR EQUIPO	*******************************************************************************
-				public String entrenarEquipo (String nomEquipo,String golero, String defensa, String mediocampo, String ataque) {
+				// OBTENER ENTRENAMIENTO	*******************************************************************************
+				public String obtenerEntrenamiento (String nomEquipo) {
 			
 					String envio= "{"+
-							"Nombre"+":"+nomEquipo+","+
-							"Golero"+":"+golero+","+
-							"Defensa"+":"+defensa+","+
-							"Mediocampo"+":"+mediocampo+","+
-							"Ataque"+":"+ataque+
+							"Nombre"+":"+nomEquipo+
 						   "}";		
-					System.out.println(envio);
 					
 					Client client = ClientBuilder.newClient();		
-					WebTarget target = client.target(REST_URI_PATH+ENTRENAR_EQUIPO_PATH);	 
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_ENTRENAMIENTO_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+					 
+				    return respuesta;
+					
+				}
+				
+				// MODIFICAR ENTRENAMIENTO	*******************************************************************************
+				public String modificarEntrenamiento (String nomEquipo,String porteria, String defensivo, 
+						String fisico, String ofensivo) {
+					String envio= "{"+
+							"Nombre"+":"+nomEquipo+","+
+							"Porteria"+":"+porteria+","+
+							"Defensivo"+":"+defensivo+","+
+							"Fisico"+":"+fisico+","+
+							"Ofensivo"+":"+ofensivo+
+						   "}";		
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+MODIFICAR_ENTRENAMIENTO_PATH);	 
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 					 
 				    return respuesta;
