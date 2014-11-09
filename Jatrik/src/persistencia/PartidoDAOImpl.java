@@ -124,27 +124,32 @@ public class PartidoDAOImpl implements PartidoDAO
 	public JSONArray obtenerPartidosLugar(String nomCampeonato)
 	{
 		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
-		Collection<Partido> partidosList = camp.getPartidos();
 		
 		JSONArray jpartidos = new JSONArray();
-		//obtener partido, luego estadio, luego equipo para obtener lugar
-		for (Partido p : partidosList) 
-		{
-			Equipo eq = p.getEstadio().getEquipo();
-			String eqLocal = p.getEquipoLocal().getEquipo();
-			String eqVisitante = p.getEquipoVisitante().getEquipo();
-			
-			JSONObject ob = new JSONObject();
-			try 
+		
+		if (camp.getCantEquipos() == camp.getEquipos().size())
+		{	
+			Collection<Partido> partidosList = camp.getPartidos();
+	
+			//obtener partido, luego estadio, luego equipo para obtener lugar
+			for (Partido p : partidosList) 
 			{
-				ob.put("partido", eqLocal+" vs. "+eqVisitante);
-				ob.put("pais", eq.getPais());
-			} 
-			catch (JSONException ex) 
-			{
-				ex.printStackTrace();
+				Equipo eq = p.getEstadio().getEquipo();
+				String eqLocal = p.getEquipoLocal().getEquipo();
+				String eqVisitante = p.getEquipoVisitante().getEquipo();
+				
+				JSONObject ob = new JSONObject();
+				try 
+				{
+					ob.put("partido", eqLocal+" vs. "+eqVisitante);
+					ob.put("pais", eq.getPais());
+				} 
+				catch (JSONException ex) 
+				{
+					ex.printStackTrace();
+				}
+				jpartidos.put(ob);
 			}
-			jpartidos.put(ob);
 		}
 		return jpartidos;
 	}
