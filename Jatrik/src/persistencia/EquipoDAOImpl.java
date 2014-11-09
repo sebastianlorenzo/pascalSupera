@@ -655,7 +655,6 @@ public class EquipoDAOImpl implements EquipoDAO
 		{
 			Partido p = iter.next();
 			Date fecha_p = p.getFechaPartido();
-			
 			if(fecha_p.before(ahora))
 			{	
 				String nomCampeonato = p.getCampeonato().getCampeonato();
