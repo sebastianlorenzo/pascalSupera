@@ -187,14 +187,18 @@ public class ProximosPartidosBean {
 			DataCambio dc1 = null;
 			DataCambio dc2= null;
 			DataCambio dc3=null;
+			Integer cant_cambios=0;
 		if (this.entra1!=null && this.sale1!=null && this.minutos1!=null){
 			dc1 = new DataCambio(entra1.getIdJugador(),sale1.getIdJugador(),minutos1,drp.getNomPartidoEnBase());
+			cant_cambios++;
 		}
 		if (this.entra2!=null && this.sale2!=null && this.minutos2!=null){
 			dc2 = new DataCambio(entra2.getIdJugador(),sale2.getIdJugador(),minutos2,drp.getNomPartidoEnBase());
+			cant_cambios++;
 		}
 		if (this.entra3!=null && this.sale3!=null && this.minutos3!=null){
 			dc3 = new DataCambio(entra3.getIdJugador(),sale3.getIdJugador(),minutos3,drp.getNomPartidoEnBase());
+			cant_cambios++;
 		}
 		Gson g = new Gson();
 		VistaWebController vwc = new VistaWebController();
@@ -205,7 +209,10 @@ public class ProximosPartidosBean {
 		if (json.getString("cambios_realizados").equals("ok")){
 			
 			icono=FacesMessage.SEVERITY_INFO;
-			mensaje = "Cambios realizados con éxito";
+			if (cant_cambios>=2)
+				mensaje = "Sus "+cant_cambios.toString()+" cambios fueron realizados con éxito";
+			else
+				mensaje = "Su cambio fue realizado con éxito";
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage(icono ,"" ,mensaje);
 			context.addMessage(null, message);

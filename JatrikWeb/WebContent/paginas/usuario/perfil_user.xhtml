@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<link rel="stylesheet" media="screen"
+		href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</h:head>
+<h:body>
+	<div id="daddy">
+		<ui:insert name="header_user">
+			<ui:include src="/resources/templates/header_user.xhtml" />
+		</ui:insert>
+		<!-- header -->
+
+		<div id="contenido_body">
+
+			<div>
+				<h2 id="titulo">Mi perfil</h2>
+				<p:panelGrid columns="2">
+				
+					<h:outputText value="Nombre Usuario:" />
+					<h:outputText value="#{perfilBean.nombreUsr}" />
+
+					<h:outputText value="Nombre Equipo:" />
+					<h:outputText value="#{perfilBean.nombreEquipo}" />
+
+					<h:outputText value="Localidad:" />
+					<h:outputText value="#{perfilBean.localidad}" />
+
+					<h:outputText value="Estadio:" />
+					<h:outputText value="#{perfilBean.nombreEstadio}" />
+					
+					<h:outputText value="Capital:" />
+					<h:outputText value="#{perfilBean.capital}" />
+				</p:panelGrid>
+
+			</div>
+			<!-- cB -->
+		</div>
+		<!-- content -->
+	</div>
+	<!-- daddy -->
+	<ui:insert name="footer_user">
+		<ui:include src="/resources/templates/footer_user.xhtml" />
+	</ui:insert>
+	<!--footer -->
+</h:body>
+</html>

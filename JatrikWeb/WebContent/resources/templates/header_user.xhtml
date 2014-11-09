@@ -21,20 +21,21 @@
 						<p:outputLabel>#{loginBean.nombre}</p:outputLabel>
 					</div>				 
 				    <p:menubar>
-				    	<p:menuitem value="Menu Principal" url="home_user.xhtml"/>			        	
-				        <p:submenu label="Campeonatos" icon="ui-icon-gear">
-				        	<p:menuitem action="#{anotarseCampeonatoBean.listarCampeonatos()}" value="Anotarme a Campeonato" />
-				        	<p:menuitem action="#{campeonatosEnEjecucionBean.listarCampeonatos()}" value="Listar Campeonatos en Ejecución" />				            
-				        </p:submenu>				        				 		
-				        <p:submenu label="Mi equipo" icon="ui-icon-gear">
+				    	<p:menuitem value="Menu Principal" url="home_user.xhtml"/>	
+				    	<p:submenu label="Mi equipo" icon="ui-icon-gear">
 				            <p:submenu label="Gestion" icon="ui-icon-refresh">
+				            	<p:menuitem value="Ver Perfil" url="perfil_user.xhtml" icon="ui-icon-disk"/>
 				                <p:menuitem value="Ver Táctica" url="tactica_user.xhtml" icon="ui-icon-disk"/>
 				                <p:menuitem value="Entrenar Equipo" url="entrenarEquipo_user.xhtml" icon="ui-icon-disk"/>				                
 				            </p:submenu>
 				            <p:menuitem value="Realizar oferta" url="realizarOferta_user.xhtml" icon="ui-icon-refresh" />
 				            <p:menuitem value="Ofertas recibidas" url="verOfertas_user.xhtml" icon="ui-icon-refresh" />
 				            <p:menuitem value="Ofertas realizadas" url="ofertasRealizadas_user.xhtml" icon="ui-icon-refresh" />
-				        </p:submenu>
+				        </p:submenu>		        	
+				        <p:submenu label="Campeonatos" icon="ui-icon-gear">
+				        	<p:menuitem action="#{anotarseCampeonatoBean.listarCampeonatos()}" value="Anotarme a Campeonato" />
+				        	<p:menuitem action="#{campeonatosEnEjecucionBean.listarCampeonatos()}" value="Listar Campeonatos en Ejecución" />				            
+				        </p:submenu>	
 				        <p:submenu label="Partidos" icon="ui-icon-gear">	 
 					        <p:menuitem url="proximosPartidos_user.xhtml" value="Ver próximos partidos" /> 
 					        <p:menuitem url="historialPartidos_user.xhtml" value="Ver historial de partidos" />

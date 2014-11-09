@@ -28,7 +28,8 @@ public class VistaWebController {
 	private String LISTA_DESCONECTADOS_PATH = "usuarios/listarDesconectados";
 	private String ENVIAR_CHAT_PATH = "usuarios/enviarChat";
 	private String REGISTRO_PATH = "usuarios/registrar";
-	private String VER_RANKING_PATH = "usuarios/verRanking";	
+	private String VER_RANKING_PATH = "usuarios/verRanking";
+	private String VER_PERFIL_PATH = "usuarios/verPerfil";	
 	//*************************CAMPEONATO***************************************************************
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
@@ -185,6 +186,18 @@ public class VistaWebController {
 		    return respuesta;
 			
 		}
+		// VER PERFIL USUARIO	*******************************************************************************
+				public String verPerfil (String nomUsuario) {
+					
+					String envio= "{"+
+							"nomUsuario"+":"+nomUsuario+
+						   "}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+VER_PERFIL_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);			 
+				    return respuesta;
+					
+				}
 	
 	// CREAR CAMPEONATO	**************************************************************************************
 		public String crearCampeonato (String nombre,Integer cantidadEquipos ,Date fechaInicio) {

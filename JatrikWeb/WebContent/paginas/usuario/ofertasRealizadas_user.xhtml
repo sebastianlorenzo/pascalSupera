@@ -8,17 +8,9 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<meta name="Description"
-		content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
-	<meta name="Keywords"
-		content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
 	<link rel="stylesheet" media="screen"
 		href="../../resources/css/style.css" />
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<meta name="Author" content="SymiSun* - symisun.com" />
-	<meta name="Robots" content="index,follow" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<!-- disable IE's image toolbar -->
 </h:head>
 <h:body>
 	<div id="daddy">
@@ -42,8 +34,8 @@
 						<p:panel  header="#{oferta.jugador}" style="text-align:center">
 							<h:panelGrid columns="1" style="width:100%">
 								<h:outputText value="Fecha: #{oferta.fecha}" />
-								<h:outputText value="Usuario actual: #{oferta.usuarioActual}" />
-								<h:outputText value="Equipo actual: #{oferta.equipoActual}" />
+								<h:outputText value="Usuario: #{oferta.usuarioActual}" />
+								<h:outputText value="Equipo: #{oferta.equipoActual}" />
 								<h:outputText value="Precio ofrecido: #{oferta.precio}" />
 								<h:outputText value="Respuesta: #{oferta.comentario}" />
 								<h:outputText value="Estado: #{oferta.estado}" />
