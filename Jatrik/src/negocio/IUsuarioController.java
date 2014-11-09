@@ -9,6 +9,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
+import tipos.DataUsuario;
 
 @Local
 public interface IUsuarioController 
@@ -40,5 +41,7 @@ public interface IUsuarioController
 	public void setearNuevosAmigos(String nomUsuario, List<String> listUs);
 
 	public JSONArray obtenerRanking();
+
+	public DataUsuario verPerfil(String nomUsuario);
 			
 }

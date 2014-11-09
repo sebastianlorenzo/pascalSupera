@@ -118,12 +118,6 @@ public class EquipoController implements IEquipoController
 
 		return e;
 	}
-		
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray obtenerPaisesInicial()
-	{
-		return this.equipoDAO.obtenerPaises();
-	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean existeEstadioRegistrado(String estadio) 

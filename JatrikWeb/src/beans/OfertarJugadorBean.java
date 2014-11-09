@@ -19,9 +19,9 @@ import org.codehaus.jettison.json.JSONObject;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataEquipo;
-import dataTypes.DataJugador;
-import dataTypes.DataListaEquipo;
+import tipos.DataEquipo;
+import tipos.DataJugador;
+import tipos.DataListaEquipo;
 
 @ManagedBean
 @ViewScoped

@@ -28,8 +28,6 @@ public interface EquipoDAO
 	
 	public Boolean existeEquipo(String equipo);
 	
-	public JSONArray obtenerPaises();
-
 	public JSONObject obtenerLugarEquipo(String nomEquipo);
 	
 	public Object[] getTaticaEquipo(String nombreEquipo); 

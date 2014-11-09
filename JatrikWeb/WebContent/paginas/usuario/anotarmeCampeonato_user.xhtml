@@ -30,8 +30,7 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 			
 			<h:form id="accordionPanelCampeonato">  
 			<p:accordionPanel value="#{anotarseCampeonatoBean.dlc}" var="DataCampeonato"
-				 activeIndex="#{anotarseCampeonatoBean.campeonatoSeleccionado}"  >
-				<p:ajax event="tabChange" listener="#{anotarseCampeonatoBean.onChange()}" update=":accordionPanelCampeonato" />
+				 activeIndex="#{anotarseCampeonatoBean.campeonatoSeleccionado}"  >				
 				<p:tab title="#{DataCampeonato.nomCampeonato}" >
 					<h:outputText class="campeonato_lista_item" value= "Fecha inicio: "/>
 					<h:outputText value= "#{DataCampeonato.fechaInicio}"/>

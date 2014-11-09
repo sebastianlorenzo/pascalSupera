@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<link rel="stylesheet" media="screen"
+		href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<meta http-equiv="imagetoolbar" content="no" />
+</h:head>
+<h:body>
+	<div id="daddy">
+		<ui:insert name="header_user">
+			<ui:include src="/resources/templates/header_user.xhtml" />
+		</ui:insert>
+		<!-- header -->
+
+		<div id="contenido_body">
+
+			<div>
+				<h2 id="titulo">Próximos partidos</h2>
+				<h3 id="subtitulo">Puede configurar los cambios de jugadores en
+					cada partido</h3>
+
+				<h:form id="accordionOfertar">
+					<p:dataGrid value="#{proximosPartidosBean.ldrp}"
+						var="DataResumenPartido" columns="3" layout="grid" rows="12"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6,12,16">
+
+						<f:facet title="Partidos" name="header">
+						</f:facet>
+
+						<p:panel header="#{DataResumenPartido.campeonato}"
+							style="text-align:center">
+							<h:panelGrid columns="1" style="width:100%">
+								<h:outputText value="#{DataResumenPartido.nomPartido}" />
+								<h:outputText value="Fecha: #{DataResumenPartido.fecha}" />
+								<h:outputText value="Local: #{DataResumenPartido.eqLocal}" />
+								<h:outputText
+									value="Visitante: #{DataResumenPartido.eqVisitante}" />
+
+								<p:commandButton 
+									value="Configurar Cambios" style="margin-top:8px;"
+									oncomplete="PF('ofertaVentana').show()">
+									<f:setPropertyActionListener value="#{DataResumenPartido}"
+												target="#{proximosPartidosBean.drp}" />
+								</p:commandButton>
+
+							</h:panelGrid>
+						</p:panel>
+
+					</p:dataGrid>
+				</h:form>
+				<h:form id="form_ventana">
+					<p:growl id="mensaje" showDetail="true" />
+					<p:dialog header="Configurar Cambios" widgetVar="ofertaVentana"
+						modal="true" showEffect="fade" hideEffect="fade"
+						closeOnEscape="true" resizable="false">
+						<h:panelGrid id="ventana" columns="3" style="margin-bottom:10px"
+							cellpadding="5">
+							<p:outputLabel  value="Sale:" />
+							<p:outputLabel  value="Entra:" />
+							<p:outputLabel value="Minutos(1-89):" />
+							
+							<p:selectOneMenu id="sale1"
+								value="#{proximosPartidosBean.sale1}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:selectOneMenu id="entra1"
+								value="#{proximosPartidosBean.entra1}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos1" value="#{proximosPartidosBean.minutos1}" min="1" max="89" />
+							
+							<p:selectOneMenu id="sale2"
+								value="#{proximosPartidosBean.sale2}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:selectOneMenu id="entra2"
+								value="#{proximosPartidosBean.entra2}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos2" value="#{proximosPartidosBean.minutos2}" min="1" max="89" />
+							
+							<p:selectOneMenu id="sale3"
+								value="#{proximosPartidosBean.sale3}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:selectOneMenu id="entra3"
+								value="#{proximosPartidosBean.entra3}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos3" value="#{proximosPartidosBean.minutos3}" min="1" max="89" />						
+							
+							
+							<p:commandButton update="mensaje" value="Confirmar cambios" id="confirmar"
+								action="#{proximosPartidosBean.confirmarCambios()}">
+								<p:ajax oncomplete="PF('ofertaVentana').hide()"/>
+							</p:commandButton>
+						</h:panelGrid>
+					</p:dialog>
+				</h:form>
+			</div>
+			<!-- cB -->
+		</div>
+		<!-- content -->
+	</div>
+	<!-- daddy -->
+	<ui:insert name="footer_user">
+		<ui:include src="/resources/templates/footer_user.xhtml" />
+	</ui:insert>
+	<!--footer -->
+</h:body>
+</html>

@@ -230,6 +230,7 @@ public class PartidoController implements IPartidoController
 			}
 			Integer minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 			Comentario comentario = new Comentario(minuto, mensaje, partido);
+			comentario.setMostrarJugados(false);
 			comentarios.add(comentario);
 			System.out.print(" - " + mensaje);
 			
@@ -276,7 +277,7 @@ public class PartidoController implements IPartidoController
 					jugadorDAO.sumarTarjetaRojaHistorialJugador(j.getIdJugador());
 				}
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				comentario = new Comentario(minuto, mensaje, null);
+				comentario = new Comentario(minuto, mensaje, partido);
 				comentarios.add(comentario);
 				System.out.print(" - " + mensaje);
 				System.out.print("DESPUES Jugador " + j.getJugador());
@@ -292,9 +293,9 @@ public class PartidoController implements IPartidoController
 					System.out.print("Equipo del jugador null (lesion).\n");
 					return;
 				}
-				mensaje = "Se lesionó el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
+				mensaje = "Lesionado el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + " se retira de la cancha.\n";
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				comentario = new Comentario(minuto, mensaje, null);
+				comentario = new Comentario(minuto, mensaje, partido);
 				comentarios.add(comentario);
 				System.out.print(" - " + mensaje);
 				// Actualizo el historial de lesiones del jugador
@@ -709,7 +710,7 @@ public class PartidoController implements IPartidoController
 		return partidoDAO.getPartidosSimular(fecha);
 	}
 
-	public JSONArray obtenerMisPartidosPorJugar(String nomEquipo) 
+	public DataListaPartido obtenerMisPartidosPorJugar(String nomEquipo) 
 	{
 		return this.partidoDAO.obtenerMisPartidos(nomEquipo);
 	}

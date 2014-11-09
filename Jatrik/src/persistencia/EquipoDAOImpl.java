@@ -22,7 +22,6 @@ import dominio.Equipo;
 import dominio.Jugador;
 import dominio.Notificacion;
 import dominio.Oferta;
-import dominio.Pais;
 import dominio.Partido;
 import dominio.ResultadoCampeonato;
 import dominio.Usuario;
@@ -93,31 +92,6 @@ public class EquipoDAOImpl implements EquipoDAO
 		return (em.find(Equipo.class, equipo) != null);
 	}
 	
-	@SuppressWarnings("unchecked")
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public JSONArray obtenerPaises()
-	{
-		Query query = em.createQuery("SELECT p FROM Pais p");
-		List<Pais> paisesList = query.getResultList();		
-		JSONArray jpaises = new JSONArray();
-		
-		for (Pais p : paisesList) 
-		{
-			JSONObject ob = new JSONObject();
-			try 
-			{
-				ob.put("pais", p.getPais());
-				ob.put("localidad", p.getLocalidad());
-			} 
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}
-			jpaises.put(ob);
-		}
-		return jpaises;
-	}
-
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public JSONObject obtenerLugarEquipo(String nomEquipo) 
 	{
@@ -546,40 +520,36 @@ public class EquipoDAOImpl implements EquipoDAO
 			
 			Oferta of = iter.next();
 			String estadoOf = of.getEstado_oferta();
-			if(estadoOf.equals("pendiente") || estadoOf.equals("rechazada"))
-			{	
-				Date fechaOferta = of.getFecha_oferta();
-				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			    String fechaOf = formateador.format(fechaOferta);
-			    
-			    Equipo eqOrigen = of.getEquipoOrigen();
-			    String nomEqActual = eqOrigen.getEquipo();
-			    String usActual = eqOrigen.getUsuario().getLogin();
+			
+			Date fechaOferta = of.getFecha_oferta();
+			SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+		    String fechaOf = formateador.format(fechaOferta);
+		    
+		    Equipo eqOrigen = of.getEquipoOrigen();
+		    String nomEqActual = eqOrigen.getEquipo();
+		    String usActual = eqOrigen.getUsuario().getLogin();
 
-			    Jugador jugadorEnVenta = of.getJugadorEnVenta();
-			    String 	nomJugador = jugadorEnVenta.getJugador();
-			    
-			    Integer precio = of.getPrecio();
-			    
-			    dof = new DataOferta(nomJugador, precio, fechaOf, estadoOf);
-			    
-			    dof.setEquipoActual(nomEqActual);
-			    dof.setUsuarioActual(usActual);			    
-			    
-			    Integer idOferta = of.getIdOferta();
-			    dof.setIdOferta(idOferta);
-			    
-			    String comentario = of.getComentarioAcepta();
-			    if (comentario != null && !comentario.equals(""))
-			    	dof.setComentario(comentario);
+		    Jugador jugadorEnVenta = of.getJugadorEnVenta();
+		    String 	nomJugador = jugadorEnVenta.getJugador();
+		    
+		    Integer precio = of.getPrecio();
+		    
+		    dof = new DataOferta(nomJugador, precio, fechaOf, estadoOf);
+		    
+		    dof.setEquipoActual(nomEqActual);
+		    dof.setUsuarioActual(usActual);			    
+		    
+		    Integer idOferta = of.getIdOferta();
+		    dof.setIdOferta(idOferta);
+		    
+		    String comentario = of.getComentarioAcepta();
+		    if (comentario != null && !comentario.equals(""))
+		    	dof.setComentario(comentario);
 			    
 			if(dof != null)
 				dlo.addDataOferta(dof);
-			}
-
 		}
 		return dlo;
-
 	}
 	
 	@SuppressWarnings("unchecked")

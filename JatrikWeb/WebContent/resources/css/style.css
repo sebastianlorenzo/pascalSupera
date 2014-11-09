@@ -221,7 +221,7 @@ h5 {
 /* Header */
 #header {height:332px}
 #logo {
-	width:366px;
+	width:308px;
 	height:85px;
 	padding:14px 0 0 0;
 	//background:url('../images/bg_menu_starter.gif') no-repeat top right;
@@ -321,7 +321,7 @@ h5 {
 
 /* Menu */
 #menu {
-	width:632px;
+	width:690px;
 	height:53px;
 	background:url('../images/bg_menu.gif') repeat-x top left;
 	float:right;

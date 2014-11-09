@@ -15,6 +15,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
+import tipos.DataUsuario;
 
 import com.google.gson.Gson;
 
@@ -213,5 +214,18 @@ public class UsuarioWS
 		
 		return respuesta.toString();		
 	}
+	
+	@POST
+	@Path("verPerfil")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String verPerfil(String datos) throws JSONException
+    {
+    	JSONObject datosNotificacion = new JSONObject(datos);
+		String nomUsuario = datosNotificacion.getString("nomUsuario"); //Logueado
+		Gson g = new Gson();
+		DataUsuario dataUsuario = iUsuarioController.verPerfil(nomUsuario);
+		return g.toJson(dataUsuario);
+    }
       
 }

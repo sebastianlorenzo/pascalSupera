@@ -13,6 +13,7 @@ import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
 import tipos.DataMensaje;
 import tipos.DataNotificacion;
+import tipos.DataUsuario;
 import dominio.Equipo;
 import dominio.Mensaje;
 import dominio.Notificacion;
@@ -311,6 +312,21 @@ public class UsuarioDAOImpl implements UsuarioDAO
 			}	
 		}
 		return jranking;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public DataUsuario verPerfil(String login) 
+	{
+		Usuario u = em.find(Usuario.class, login);
+		String mail = u.getMail();
+		Integer capital = u.getCapital();
+		Equipo eq = u.getEquipo();
+		String nomEquipo = eq.getEquipo();
+		String ubicacion = eq.getPais();
+		String nomEstadio = eq.getEstadio().getEstadio();
+		
+		DataUsuario du = new DataUsuario(login, mail, capital, nomEquipo, ubicacion, nomEstadio);
+		return du;
 	}	
 	
 }

@@ -15,15 +15,13 @@ import javax.faces.context.FacesContext;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.TabChangeEvent;
 
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataCampeonato;
-import dataTypes.DataListaCampeonato;
+import tipos.DataCampeonato;
+import tipos.DataListaCampeonato;
 
 @ManagedBean
 @RequestScoped
@@ -59,13 +57,6 @@ public class AnotarseCampeonatoBean {
 
 	public void setCampeonatoSeleccionado(String campeonatoSeleccionado) {
 		this.campeonatoSeleccionado = campeonatoSeleccionado;
-	}
-
-	public void onChange(TabChangeEvent event) {
-		 String activeIndex = ((AccordionPanel) event.getComponent()).getActiveIndex();
-	       
-	        System.out.println("Active:" + activeIndex);
-		
 	}
 
 	

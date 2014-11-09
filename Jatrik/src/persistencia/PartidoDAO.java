@@ -38,6 +38,6 @@ public interface PartidoDAO
 
 	public List<Partido> getPartidosSimular(Date fecha);
 
-	public JSONArray obtenerMisPartidos(String nomEquipo);
+	public DataListaPartido obtenerMisPartidos(String nomEquipo);
 	
 }

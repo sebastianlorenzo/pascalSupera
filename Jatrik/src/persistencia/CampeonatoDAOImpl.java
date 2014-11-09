@@ -268,30 +268,32 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			Integer numero_partido = cantidadEquipos*(cantidadEquipos-1);
 			
 			Partido par = em.find(Partido.class, nomCamp+"_partido_"+numero_partido);
-			
-			Date fecha_ultimo_partido = par.getFechaPartido();
-			if ((fecha_campeonato.before(ahora)) && (fecha_ultimo_partido.after(ahora)))
+			if(c.getCantEquipos() == c.getEquipos().size())
 			{
-				DataCampeonato dca = new DataCampeonato();
-				String nomCampeonato = c.getCampeonato();
-				dca.setNomCampeonato(nomCampeonato);
-				Date fechaCamp = c.getInicioCampeonato();
-				SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-			    String fechaInicio = formateador.format(fechaCamp);
-				dca.setFechaInicio(fechaInicio);
-				
-				Collection<Equipo> lsteq = c.getEquipos();
-				
-				List<String> lsteqdata = new ArrayList<String>();
-				for (Equipo e : lsteq)
+				Date fecha_ultimo_partido = par.getFechaPartido();
+				if ((fecha_campeonato.before(ahora)) && (fecha_ultimo_partido.after(ahora)))
 				{
-					String nomEq = e.getEquipo();
-					lsteqdata.add(nomEq);					
+					DataCampeonato dca = new DataCampeonato();
+					String nomCampeonato = c.getCampeonato();
+					dca.setNomCampeonato(nomCampeonato);
+					Date fechaCamp = c.getInicioCampeonato();
+					SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+				    String fechaInicio = formateador.format(fechaCamp);
+					dca.setFechaInicio(fechaInicio);
+					
+					Collection<Equipo> lsteq = c.getEquipos();
+					
+					List<String> lsteqdata = new ArrayList<String>();
+					for (Equipo e : lsteq)
+					{
+						String nomEq = e.getEquipo();
+						lsteqdata.add(nomEq);					
+					}
+					dca.setEquiposCampeonato(lsteqdata);
+					
+					dlcampeonatos.addDataCampeonato(dca);
 				}
-				dca.setEquiposCampeonato(lsteqdata);
-				
-				dlcampeonatos.addDataCampeonato(dca);
-			}	
+			}
 		}		
 		return dlcampeonatos;
 	}
@@ -300,7 +302,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONArray listarCampEnEjecucionYFinalizados() 
 	{	
-		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		Query query = em.createQuery("SELECT c FROM Campeonato c ORDER BY c.inicioCampeonato DESC");
 		List<Campeonato> campeonatos = query.getResultList();
 		JSONArray jcampeonatos = new JSONArray();
 		JSONObject obj;

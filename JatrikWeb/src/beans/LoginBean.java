@@ -25,8 +25,8 @@ import com.google.gson.Gson;
 import chat.ChatUsers;
 import chat.Message;
 import controladores.VistaWebController;
-import dataTypes.DataListaMensaje;
-import dataTypes.DataMensaje;
+import tipos.DataListaMensaje;
+import tipos.DataMensaje;
 
 @ManagedBean
 @SessionScoped
@@ -224,8 +224,9 @@ public class LoginBean implements Serializable {
 		return "/paginas/home.xhtml?faces-redirect=true";
 		}
 		else {
-			
-			v.logout(this.nombre,"",true);
+			FacesContext.getCurrentInstance().getExternalContext()
+			.invalidateSession();
+			v.logout(this.nombre,"vacio",true);
 			return "/index.xhtml?faces-redirect=true";
 		}
 	}
@@ -267,14 +268,12 @@ public class LoginBean implements Serializable {
 				return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
 			}
 		} else {
-			RequestContext requestContext = RequestContext.getCurrentInstance();
 			String cabecera = "Ha ocurrido un error";
 			Severity icono = FacesMessage.SEVERITY_ERROR;
-			String mensaje_box = "Compruebe nombre de usuario o contraseña.";
-			FacesMessage message = new FacesMessage(icono, cabecera,
-					mensaje_box);
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			requestContext.update("growl");
+			String mensaje = "Compruebe nombre de usuario o contraseña.";
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje);
+			context.addMessage(null, message);
 			return "/index.xhtml?faces-redirect=true";
 		}
 

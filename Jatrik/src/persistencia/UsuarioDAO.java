@@ -1,10 +1,14 @@
 package persistencia;
 
 import java.util.List;
+
 import javax.ejb.Local;
+
 import org.codehaus.jettison.json.JSONArray;
+
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
+import tipos.DataUsuario;
 import dominio.Usuario;
 
 @Local
@@ -46,5 +50,7 @@ public interface UsuarioDAO
 	public void setearAmigos(String nomUsuario, List<String> listUs);
 
 	public JSONArray obtenerRankingUsuarios();
+
+	public DataUsuario verPerfil(String nomUsuario);
 		
 }
