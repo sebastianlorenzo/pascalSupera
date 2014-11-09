@@ -83,10 +83,9 @@ public class UsuarioWS
     	String mail          = datosUsr.getString("mail");
     	String nombreEquipo  = datosUsr.getString("nombreEquipo");
     	String pais          = datosUsr.getString("pais");
-    	String localidad     = datosUsr.getString("localidad");
     	String nombreEstadio = datosUsr.getString("nombreEstadio");
     	
-    	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, localidad, nombreEstadio).toString();    	
+    	return iUsuarioController.ingresarUsuario(login, password, mail, nombreEquipo, pais, nombreEstadio).toString();    	
     }
     
     @POST
@@ -97,9 +96,9 @@ public class UsuarioWS
     {
     	JSONObject datosUsr = new JSONObject(datos);
 		String nomUsuario   = datosUsr.getString("logout");
-		JSONArray amigos = datosUsr.getJSONArray("desconectados");
 		
-		if (amigos != null){
+		if (!datosUsr.getBoolean("admin")){
+			JSONArray amigos = datosUsr.getJSONArray("desconectados");
 			List<String> listUs = new ArrayList<String>();
 			int i;
 			for (i=0; i < amigos.length(); i++){
@@ -190,8 +189,29 @@ public class UsuarioWS
     	JSONObject datosNotificacion = new JSONObject(datos);
 		String nomUsuario = datosNotificacion.getString("nomUsuario"); //Logueado
 		Gson g = new Gson();
-		DataListaNotificacion dataNotif = this.iUsuarioController.verNotificaciones(nomUsuario);
+		DataListaNotificacion dataNotif = iUsuarioController.verNotificaciones(nomUsuario);
 		return g.toJson(dataNotif);
     }
+    
+	@GET
+	@Path("verRanking")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String verRanking() throws JSONException
+	{
+		JSONObject respuesta = new JSONObject();		
+		try 
+		{
+			JSONArray usuariosRanking = null;
+			usuariosRanking = iUsuarioController.obtenerRanking();
+			respuesta.put("ranking", usuariosRanking);
+
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return respuesta.toString();		
+	}
       
 }

@@ -24,7 +24,7 @@ public class Jugador implements java.io.Serializable
 	private Float defensa;
 	private Float porteria;
 	private String  estado_jugador; //{titular, suplente, lesionado, expulsado}
-	private Integer cant_tarjetas_amarillas;
+	private Integer cant_tarjetas_amarillas; // Se usa para contar las tarjetas amarillas POR PARTIDO
 
 	@ManyToOne
 	private Equipo equipo;
@@ -33,22 +33,34 @@ public class Jugador implements java.io.Serializable
 	@JoinTable(name="oferta_jugadores")
 	private Collection<Oferta> oferta_jugadores;
 	
+	// Para las estadísticas del jugador
+	private Integer historicoTarjetasAmarillas;
+	private Integer historicoTarjetasRojas;
+	private Integer historicoGoles;
+	private Integer historicoLesiones;
+
 	public Jugador(){}
 
 	public Jugador(Integer idJugador, String jugador, Equipo equipo, String posicion, Float velocidad,	
-				   Float tecnica, Float ataque, Float defensa, Float porteria) 
+				   Float tecnica, Float ataque, Float defensa, Float porteria, String estado_jugador,
+				   Integer historicoTarjetasAmarillas, Integer historicoTarjetasRojas, Integer historicoGoles, Integer historicoLesiones) 
 	{
-		this.idJugador = idJugador;
-		this.jugador   = jugador;
-		this.equipo    = equipo;
-		this.posicion  = posicion;
-		this.posicion_ideal  = posicion;
-		this.velocidad = velocidad;
-		this.tecnica   = tecnica;
-		this.ataque    = ataque;
-		this.defensa   = defensa;
-		this.porteria  = porteria;
-		this.cant_tarjetas_amarillas = 0;
+		this.idJugador      = idJugador;
+		this.jugador        = jugador;
+		this.equipo         = equipo;
+		this.posicion       = posicion;
+		this.posicion_ideal = posicion;
+		this.velocidad      = velocidad;
+		this.tecnica        = tecnica;
+		this.ataque         = ataque;
+		this.defensa        = defensa;
+		this.porteria       = porteria;
+		this.estado_jugador = estado_jugador;
+		this.cant_tarjetas_amarillas    = 0;
+		this.historicoTarjetasAmarillas = historicoTarjetasAmarillas;
+		this.historicoTarjetasRojas     = historicoTarjetasRojas;
+		this.historicoGoles             = historicoGoles;
+		this.historicoLesiones          = historicoLesiones;
 	}
 	
 
@@ -90,6 +102,16 @@ public class Jugador implements java.io.Serializable
 	public void setPosicion(String posicion) 
 	{
 		this.posicion = posicion;
+	}
+
+	public String getPosicion_ideal() 
+	{
+		return posicion_ideal;
+	}
+
+	public void setPosicion_ideal(String posicion_ideal) 
+	{
+		this.posicion_ideal = posicion_ideal;
 	}
 
 	public String getPosicionIdeal() 
@@ -181,5 +203,44 @@ public class Jugador implements java.io.Serializable
 	{
 		this.cant_tarjetas_amarillas = cant_tarjetas_amarillas;
 	}
-	
+
+	public Integer getHistoricoTarjetasAmarillas() 
+	{
+		return historicoTarjetasAmarillas;
+	}
+
+	public void setHistoricoTarjetasAmarillas(Integer historicoTarjetasAmarillas)
+	{
+		this.historicoTarjetasAmarillas = historicoTarjetasAmarillas;
+	}
+
+	public Integer getHistoricoTarjetasRojas() 
+	{
+		return historicoTarjetasRojas;
+	}
+
+	public void setHistoricoTarjetasRojas(Integer historicoTarjetasRojas) 
+	{
+		this.historicoTarjetasRojas = historicoTarjetasRojas;
+	}
+
+	public Integer getHistoricoGoles()
+	{
+		return historicoGoles;
+	}
+
+	public void setHistoricoGoles(Integer historicoGoles)
+	{
+		this.historicoGoles = historicoGoles;
+	}
+
+	public Integer getHistoricoLesiones() 
+	{
+		return historicoLesiones;
+	}
+
+	public void setHistoricoLesiones(Integer historicoLesiones) 
+	{
+		this.historicoLesiones = historicoLesiones;
+	}
 }

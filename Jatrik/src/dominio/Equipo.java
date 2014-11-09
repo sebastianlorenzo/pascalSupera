@@ -2,6 +2,7 @@ package dominio;
 
 import javax.persistence.*;
 
+import tipos.Constantes;
 import dominio.Jugador;
 import dominio.Estadio;
 import dominio.Usuario;
@@ -20,11 +21,11 @@ public class Equipo implements java.io.Serializable
 	@Id
 	private String equipo;	
 	private String pais;
-	private String localidad;
 	private Integer tacticaDefensa;
 	private Integer tacticaMediocampo;
 	private Integer tacticaAtaque;
 	private Integer puntaje;
+	private Integer ranking;
 	private Integer cant_cambios_realizados;
 	private Integer entrenamientoPorteria;
 	private Integer entrenamientoOfensivo;
@@ -56,25 +57,30 @@ public class Equipo implements java.io.Serializable
 	
 	public Equipo(){}
 
-	public Equipo(String equipo, String pais, String localidad) 
+	public Equipo(String equipo, String pais) 
 	{
-		this.equipo = equipo;
-		this.pais = pais;
-		this.localidad = localidad;
+		this.equipo  = equipo;
+		this.pais    = pais;
 		this.estadio = null;
 		this.usuario = null;
 		this.puntaje = -1;
+		this.ranking = 0;
 		Collection<Jugador> jugadores = new ArrayList<Jugador>();
 		this.jugadores = jugadores;
-		Collection<Partido> partidos = new ArrayList<Partido>();
+		Collection<Partido> partidos  = new ArrayList<Partido>();
 		this.partidos = partidos;
 		Collection<Campeonato> campeonatos = new ArrayList<Campeonato>();
-		this.campeonatos = campeonatos;
+		this.campeonatos  			 = campeonatos;
 		this.cant_cambios_realizados = 0; 
-		this.entrenamientoOfensivo = 0;
-		this.entrenamientoDefensivo = 0;
-		this.entrenamientoPorteria = 0;
-		this.entrenamientoFisico = 0;
+		this.entrenamientoOfensivo   = 0;
+		this.entrenamientoDefensivo  = 0;
+		this.entrenamientoPorteria   = 0;
+		this.entrenamientoFisico     = 0;
+		this.tacticaDefensa    = Constantes.CONST_FORMACION_POR_DEFECTO[0];
+		this.tacticaMediocampo = Constantes.CONST_FORMACION_POR_DEFECTO[1];
+		this.tacticaAtaque     = Constantes.CONST_FORMACION_POR_DEFECTO[2];
+		this.ofertasRealizadas = null;
+		this.ofertasRecibidas  = null;
 	}
 
 	public String getEquipo() 
@@ -95,16 +101,6 @@ public class Equipo implements java.io.Serializable
 	public void setPais(String pais) 
 	{
 		this.pais = pais;
-	}
-
-	public String getLocalidad() 
-	{
-		return localidad;
-	}
-
-	public void setLocalidad(String localidad) 
-	{
-		this.localidad = localidad;
 	}
 	
 	public Integer getTacticaMediocampo() 
@@ -195,6 +191,13 @@ public class Equipo implements java.io.Serializable
 		this.puntaje = puntaje;
 	}
 	
+	public Integer getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Integer ranking) {
+		this.ranking = ranking;
+	}
 	
 	public Collection<Oferta> getOfertasRealizadas() {
 		return ofertasRealizadas;

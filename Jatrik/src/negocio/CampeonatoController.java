@@ -149,7 +149,8 @@ public class CampeonatoController implements ICampeonatoController
 						while(this.campeonatoDAO.existeCampeonato(nomCampeonato+num))
 							num++;
 						
-						JSONObject ob = crearCampeonato(nomCampeonato+num, inicioCampeonato, 2);
+						int cant_equipos = campeonatoDAO.getCantidadEquipos(nomCampeonato);
+						JSONObject ob = crearCampeonato(nomCampeonato+num, inicioCampeonato, cant_equipos);
 						try{
 							ob.put("camp",nomCampeonato+num);
 						}

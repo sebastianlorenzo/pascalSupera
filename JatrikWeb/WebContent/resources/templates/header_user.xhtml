@@ -31,12 +31,16 @@
 				                <p:menuitem value="Ver Táctica" url="tactica_user.xhtml" icon="ui-icon-disk"/>
 				                <p:menuitem value="Entrenar Equipo" url="entrenarEquipo_user.xhtml" icon="ui-icon-disk"/>				                
 				            </p:submenu>
-				            <p:menuitem value="Ofertas recibidas" actionListener="#{menuView.save}" icon="ui-icon-refresh" update="messages"/>
-				            <p:menuitem value="Realizar oferta" actionListener="#{menuView.save}" icon="ui-icon-refresh" update="messages"/>
+				            <p:menuitem value="Realizar oferta" url="realizarOferta_user.xhtml" icon="ui-icon-refresh" />
+				            <p:menuitem value="Ofertas recibidas" url="verOfertas_user.xhtml" icon="ui-icon-refresh" update="messages"/>
 				            <p:submenu label="Non-Ajax" icon="ui-icon-newwin">
 				                <p:menuitem value="Delete" actionListener="#{menuView.delete}" icon="ui-icon-close" update="messages" ajax="false"/>
 				            </p:submenu>
-				        </p:submenu>			        
+				        </p:submenu>	
+				        <p:submenu label="Otros" icon="ui-icon-gear">	 
+				        <p:menuitem url="ranking_user.xhtml" value="Ver Ranking" /> 
+				        <p:menuitem url="equiposEnMapa_user.xhtml" value="Listar equipos en el mapa" />
+				        </p:submenu>	      
 				 		<p:menuitem action="#{loginBean.salir()}" value="Salir" />
 				    </p:menubar>
 			</h:form>			

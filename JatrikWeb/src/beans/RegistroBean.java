@@ -32,7 +32,7 @@ public class RegistroBean {
 	private String equipo;
 	@Size(min=1, message="El nombre del estadio no puede ser vacio")
 	private String nomEstadio;	
-	
+	private String googleKey="AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo";
     private List<String> paises= new ArrayList<String>() {
 	
 		private static final long serialVersionUID = 1L;
@@ -42,7 +42,7 @@ public class RegistroBean {
         add("B");
         add("C");
     }};
-    private String paisSeleccionado;
+    private String paisSeleccionado="";
 
 	
     
@@ -111,6 +111,14 @@ public class RegistroBean {
 		this.nomEstadio = nomEstadio;
 	}
 	
+	public String getGoogleKey() {
+		return googleKey;
+	}
+
+	public void setGoogleKey(String googleKey) {
+		this.googleKey = googleKey;
+	}
+
 	// en arg2 viene el string Nombre
 	//Nombre va a ser el id que identifique al usuario en el sistema
 	public void existeUsuario(FacesContext arg0, UIComponent arg1, Object arg2)
@@ -127,7 +135,9 @@ public class RegistroBean {
 	public void registarUsuario() throws JSONException{
 		
 		VistaWebController vwc = new VistaWebController();
-		String respuesta=vwc.registrarUsuario(nombre, pwd, mail, equipo,nomEstadio,paisSeleccionado);
+		String pais = this.paisSeleccionado.replaceAll(",", "-");
+		System.out.println(this.paisSeleccionado);
+		String respuesta=vwc.registrarUsuario(nombre, pwd, mail, equipo,nomEstadio,pais);
 		JSONObject json = new JSONObject(respuesta);
 		String mensaje_box=json.getString("mensaje");
 		String cabecera;

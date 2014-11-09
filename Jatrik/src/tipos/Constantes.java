@@ -8,15 +8,16 @@ public class Constantes {
 	public static final int HORA_PARTIDOS       = 16;
 	
 	/* Equipo */
-	public static final Integer CONST_CANT_MAX_CAMBIOS = 3;
-	public static final int MAX_CAPACIDAD              = 10000;
-	public static final int MAX_ALTURA_ESTADIO         = 4500;
-	public static final int MIN_ALTURA_ESTADIO         = 0;
-	public static final int MAX_CANT_PORTEROS          = 2;
-	public static final int MAX_CANT_DEFENSAS          = 6;
-	public static final int MAX_CANT_MEDIOCAMPISTAS    = 6;
-	public static final int MAX_CANT_DELANTEROS        = 4;
-	public static final int MAX_RESULTADOS_PARTIDOS = 10;
+	public static final Integer CONST_CANT_MAX_CAMBIOS     = 3;
+	public static final int MAX_CAPACIDAD                  = 10000;
+	public static final int MAX_ALTURA_ESTADIO             = 4500;
+	public static final int MIN_ALTURA_ESTADIO             = 0;
+	public static final int MAX_CANT_PORTEROS              = 2;
+	public static final int MAX_CANT_DEFENSAS          	   = 6;
+	public static final int MAX_CANT_MEDIOCAMPISTAS    	   = 6;
+	public static final int MAX_CANT_DELANTEROS        	   = 4;
+	public static final int MAX_RESULTADOS_PARTIDOS        = 10;
+	public static final int[] CONST_FORMACION_POR_DEFECTO  = {4, 4, 2}; // [Defensa, Mediocampo, Ataque]
 	
 	/* Jugador */
 	public static final String CONST_DELANTERO     = "delantero";
@@ -41,9 +42,13 @@ public class Constantes {
 	public static final Integer CONST_REGATE_MEDIO     = 70;
 	public static final Integer MIN_CANT_COMENTARIOS   = 0;
 	public static final Integer MAX_CANT_COMENTARIOS   = 3;
-	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Mensaje1_bajo", "Mensaje2_bajo", "Mensaje3_bajo", "Mensaje4_bajo"};
-	public static final String[] CONST_MENSAJES_REGATE_MEDIO = {"Mensaje1_medio", "Mensaje2_medio", "Mensaje3_medio", "Mensaje4_medio"};
-	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Mensaje1_alto", "Mensaje2_alto", "Mensaje3_alto", "Mensaje4_alto"};
+	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Tiro sin dirección que no tiene destino de arco.", "Disparo que se va tres metros desviado.", "Potente disparo de larga distancia que controla el arquero.", "Tiro que sale por encima del travesaño."};
+	public static final String[] CONST_MENSAJES_REGATE_MEDIO = {"Disparo que sale desviado.", "Tiro desviado que sale hacia la banda derecha.", "Remate controlado sin problemas por el arquero.", "Mano a mano con el arquero, que tapa bien con su pierna izquierda."};
+	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Potente remate desde afuera del área.", "Gran atajada del arquero.", "Gran atajada del arquero que genera un tiro de esquina.", "Potente disparo que da rebote y casi cambia el marcador."};
+	public static final Integer CONST_PUNTOS_GANADOR   = 3;
+	public static final Integer CONST_PUNTOS_EMPATE    = 1;
+	public static final Integer CONST_PUNTOS_PERDEDOR  = 0;
+	public static final Integer CONT_PORCENTAJE_CAPITAL = 1;
 	
 	/* Usuario */
 	public static final int CAPITAL_USUARIO = 10000;

@@ -29,17 +29,17 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 				<h3 id="titulo">Entrenamiento</h3>
 				<h3 id="subtitulo">Tiene 10 puntos para repartir entre los entrenamientos de las distintas posiciones.</h3>
 				 <p:panelGrid columns="2" cellpadding="5">
-			        <h:outputText value="Golero:" />
-			        <p:rating stars="10" value="#{entrenarEquipoBean.golero}" />
+			        <h:outputText value="Portería:" />
+			        <p:rating stars="10" value="#{entrenarEquipoBean.porteria}" />
 			        
 			        <h:outputText value="Defensa:" />
-			        <p:rating stars="10" value="#{entrenarEquipoBean.defensa}" />
-			        
-			        <h:outputText value="Mediocampo:" />
-			        <p:rating stars="10" value="#{entrenarEquipoBean.mediocampo}" />
+			        <p:rating stars="10" value="#{entrenarEquipoBean.defensivo}" />
 			        
 			        <h:outputText value="Ataque:" />
-			        <p:rating stars="10" value="#{entrenarEquipoBean.ataque}" />			        	        
+			        <p:rating stars="10" value="#{entrenarEquipoBean.ofensivo}" />
+			        
+			        <h:outputText value="Físico:" />
+			        <p:rating stars="10" value="#{entrenarEquipoBean.fisico}" />			        	        
 			     </p:panelGrid>
 			     <p:commandButton update="entrenamiento" value="Confirmar entrenamiento" style="margin-top:8px;" actionListener="#{entrenarEquipoBean.confirmarEntrenamiento()}">
 					</p:commandButton>	

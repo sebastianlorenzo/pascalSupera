@@ -13,23 +13,35 @@ public class DataJugador
 	private Integer porteria;
 	private String  estado_jugador;
 	
+	// Para las estadísticas del jugador
+	private Integer historicoTarjetasAmarillas;
+	private Integer historicoTarjetasRojas;
+	private Integer historicoGoles;
+	private Integer historicoLesiones;
+	
+
 	public DataJugador(){}
 	
 	public DataJugador(Integer idJugador, String nomJugador, String posicion, String posicion_ideal, Integer velocidad, Integer tecnica, Integer ataque,
-			Integer defensa, Integer porteria, String  estado_jugador)
+			Integer defensa, Integer porteria, String  estado_jugador, Integer historicoTarjetasAmarillas, Integer historicoTarjetasRojas, 
+			Integer historicoGoles, Integer historicoLesiones)
 	{
-		this.idJugador = idJugador;
-		this.nomJugador = nomJugador;
-		this.posicion = posicion;
+		this.idJugador      = idJugador;
+		this.nomJugador     = nomJugador;
+		this.posicion       = posicion;
 		this.posicion_ideal = posicion_ideal;
-		this.velocidad = velocidad;
-		this.tecnica = tecnica;
-		this.ataque = ataque;
-		this.defensa = defensa;
-		this.porteria = porteria;
-		this.estado_jugador = estado_jugador;	
+		this.velocidad      = velocidad;
+		this.tecnica 		= tecnica;
+		this.ataque 		= ataque;
+		this.defensa 		= defensa;
+		this.porteria		= porteria;
+		this.estado_jugador = estado_jugador;
+		
+		this.historicoTarjetasAmarillas = historicoTarjetasAmarillas;
+		this.historicoTarjetasRojas 	= historicoTarjetasRojas;
+		this.historicoGoles				= historicoGoles;
+		this.historicoLesiones			= historicoLesiones;
 	}
-	
 
 	public Integer getIdJugador() {
 		return idJugador;
@@ -119,11 +131,55 @@ public class DataJugador
 		this.estado_jugador = estado_jugador;
 	}
 
-	public String getPosicion_ideal() {
+	public String getPosicion_ideal() 
+	{
 		return posicion_ideal;
 	}
 
-	public void setPosicion_ideal(String posicion_ideal) {
+	public void setPosicion_ideal(String posicion_ideal) 
+	{
 		this.posicion_ideal = posicion_ideal;
 	}
+	
+
+	public Integer getHistoricoTarjetasAmarillas() 
+	{
+		return historicoTarjetasAmarillas;
+	}
+
+	public void setHistoricoTarjetasAmarillas(Integer historicoTarjetasAmarillas) 
+	{
+		this.historicoTarjetasAmarillas = historicoTarjetasAmarillas;
+	}
+
+	public Integer getHistoricoTarjetasRojas()
+	{
+		return historicoTarjetasRojas;
+	}
+
+	public void setHistoricoTarjetasRojas(Integer historicoTarjetasRojas) 
+	{
+		this.historicoTarjetasRojas = historicoTarjetasRojas;
+	}
+
+	public Integer getHistoricoGoles() 
+	{
+		return historicoGoles;
+	}
+
+	public void setHistoricoGoles(Integer historicoGoles)
+	{
+		this.historicoGoles = historicoGoles;
+	}
+
+	public Integer getHistoricoLesiones()
+	{
+		return historicoLesiones;
+	}
+
+	public void setHistoricoLesiones(Integer historicoLesiones)
+	{
+		this.historicoLesiones = historicoLesiones;
+	}
+	
 }

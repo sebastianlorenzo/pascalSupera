@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.util.ArrayList;
+
 import dominio.Equipo;
 import dominio.Jugador;
 
@@ -38,5 +39,13 @@ public interface JugadorDAO
 	public Integer getRegateJugador(Integer idJugador);
 	
 	public void aumentarHabilidades(Integer idJugador, Float defensa, Float tecnica, Float velocidad, Float ataque, Float porteria);
+
+	public void sumarGolHistorialJugador(Integer idJugador);
+
+	public void sumarTarjetaAmarillaHistorialJugador(Integer idJugador);
+
+	public void sumarTarjetaRojaHistorialJugador(Integer idJugador);
+
+	public void sumarLesionHistorialJugador(Integer idJugador);
 	
 }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="Description"
+		content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
+	<meta name="Keywords"
+		content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
+	<link rel="stylesheet" media="screen"
+		href="../../resources/css/style.css" />
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<meta name="Author" content="SymiSun* - symisun.com" />
+	<meta name="Robots" content="index,follow" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<!-- disable IE's image toolbar -->
+</h:head>
+<h:body>
+	<div id="daddy">
+		<ui:insert name="header_user">
+			<ui:include src="/resources/templates/header_user.xhtml" />
+		</ui:insert>
+		<!-- header -->
+
+		<div id="contenido_body">
+
+			<div>
+				<h2 id="titulo">Información de las ofertas recibidas</h2>
+				<h3 id="letra_chica">Puede aceptar o rechazar cada oferta. Cuando acepta una oferta automáticamente
+				vende el jugador a cambio del precio acordado.</h3>
+
+				<h:form id="form_ofertas">
+					<p:dataGrid value="#{verOfertasBean.lista_ofertas}" var="oferta"
+						columns="3" layout="grid" rows="12" paginator="true" id="equipo"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6,12,16" emptyMessage="No tiene ofertas">
+
+						<f:facet title="Ofertas" name="header">
+						</f:facet>
+
+						<p:panel  header="#{oferta.jugador}" style="text-align:center">
+							<h:panelGrid columns="1" style="width:100%">
+								<h:outputText value="Fecha: #{oferta.fecha}" />
+								<h:outputText value="Usuario: #{oferta.usuarioOferente}" />
+								<h:outputText value="Equipo: #{oferta.equipoOferente}" />
+								<h:outputText value="Precio ofrecido: #{oferta.precio}" />
+								<h:outputText value="Comentario: #{oferta.comentario}" />
+
+								<p:commandButton update=":form_ventana:ventana"
+									value="Aceptar/Rechazar" style="margin-top:8px;"
+									oncomplete="PF('ofertaVentana').show()">
+									<f:setPropertyActionListener value="#{oferta}"
+										target="#{verOfertasBean.oferta}" />
+								</p:commandButton>
+
+							</h:panelGrid>
+						</p:panel>
+
+					</p:dataGrid>
+				</h:form>
+				<h:form id="form_ventana">
+					<p:growl id="mensaje" showDetail="true" />		
+					<p:dialog header="Aceptar o Rechazar oferta" widgetVar="ofertaVentana"
+						modal="true" showEffect="fade" hideEffect="fade"
+						closeOnEscape="true" resizable="false">
+						<p:outputPanel id="ventana" style="text-align:center;">
+							<div id="row_div2">
+								<div id="col_div2">
+									<h:outputText value="Comentario:" />
+								</div>
+							</div>
+							<div id="row_div2">
+								<div id="col_div2">
+									<p:inputTextarea placeholder="Si desea agregue el motivo.." 
+										id="comentario" autoResize="false" rows="6"
+										cols="33" value="#{verOfertasBean.comentario}" />
+								</div>
+							</div>
+							<div id="row_div2">
+								<div id="col_div2">
+									<p:commandButton update=":form_ofertas mensaje" value="Aceptar" id="aceptar"
+										action="#{verOfertasBean.aceptarOferta()}" >
+										<p:ajax oncomplete="PF('ofertaVentana').hide()" />
+									</p:commandButton>
+								</div>
+								<div id="col_div2">
+									<p:commandButton  update=":form_ofertas mensaje" value="Rechazar" id="rechazar"
+										action="#{verOfertasBean.recharzarOferta()}">
+										<p:ajax oncomplete="PF('ofertaVentana').hide()" />
+									</p:commandButton>
+								</div>
+							</div>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+			</div>
+			<!-- cB -->
+		</div>
+		<!-- content -->
+		<p:ajaxStatus id="startAjax">
+			<f:facet name="start">
+				<div class="ui-widget-overlay">
+					<h:graphicImage
+						style="position: absolute;
+							left: 50%;
+						 	top: 50%;"
+						value="../../resources/images/ajax-loader.gif">
+					</h:graphicImage>
+				</div>
+			</f:facet>
+		</p:ajaxStatus>
+	</div>
+	<!-- daddy -->
+	<ui:insert name="footer_user">
+		<ui:include src="/resources/templates/footer_user.xhtml" />
+	</ui:insert>
+	<!--footer -->
+</h:body>
+</html>

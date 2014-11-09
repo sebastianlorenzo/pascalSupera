@@ -44,7 +44,7 @@ public class TacticaBean implements Serializable {
 	private String nomEquipo;
 	
 	@PostConstruct
-	public void init(){
+	public void init() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELContext contextoEL = context.getELContext( );
@@ -55,6 +55,15 @@ public class TacticaBean implements Serializable {
 		this.nomEquipo = bean.getNomEquipo();
 		String respuesta_titulares = vwc.obtenerTitulares(bean.getNomEquipo());
 		String respuesta_suplentes = vwc.obtenerSuplentes(bean.getNomEquipo());
+		String respuesta_tactica = vwc.obtenerTactica(this.nomEquipo);
+		JSONObject json_tactica = new JSONObject(respuesta_tactica);
+		System.out.println(json_tactica);
+		String defensa = json_tactica.getString("Defensa");
+		String mediocampo = json_tactica.getString("Mediocampo");
+		String ataque = json_tactica.getString("Ataque");
+		this.cant_defensas = Integer.parseInt(defensa);
+		this.cant_mediocampistas = Integer.parseInt(mediocampo);
+		this.cant_delanteros = Integer.parseInt(ataque);
 		Gson g = new Gson();
 		DataListaJugador dlj_t = g.fromJson(respuesta_titulares, DataListaJugador.class);
 		DataListaJugador dlj_s = g.fromJson(respuesta_suplentes, DataListaJugador.class);

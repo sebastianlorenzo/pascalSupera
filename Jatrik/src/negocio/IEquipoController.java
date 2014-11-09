@@ -18,7 +18,7 @@ public interface IEquipoController
 	
 	public Boolean existeEquipoRegistrado(String equipo);
 	
-	public Equipo crearEquipo(String equipo, String pais, String localidad, String estadio);
+	public Equipo crearEquipo(String equipo, String pais, String estadio);
 
 	public JSONArray obtenerPaisesInicial();
 	
@@ -38,7 +38,7 @@ public interface IEquipoController
 	
 	public Boolean modificarJugadoresTitulares (String nomEquipo, DataListaPosicion titulares) throws JSONException;
 		
-	public DataListaEquipo obtenerEquiposData(String nombreEq);
+	public DataListaEquipo obtenerEquiposData(String nombreEq, boolean incluir_equipo);
 
 	public JSONObject realizarOferta(String nomUsuario, Integer idJugador, Integer precio, String comentario);
 

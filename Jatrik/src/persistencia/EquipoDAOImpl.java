@@ -16,6 +16,7 @@ import tipos.DataListaOferta;
 import tipos.DataListaPartido;
 import tipos.DataOferta;
 import tipos.DataResumenPartido;
+import dominio.Campeonato;
 import dominio.Comentario;
 import dominio.Equipo;
 import dominio.Jugador;
@@ -23,6 +24,7 @@ import dominio.Notificacion;
 import dominio.Oferta;
 import dominio.Pais;
 import dominio.Partido;
+import dominio.ResultadoCampeonato;
 import dominio.Usuario;
 
 @Stateless
@@ -75,7 +77,6 @@ public class EquipoDAOImpl implements EquipoDAO
 			{
 				ob.put("equipo", e.getEquipo());
 				ob.put("pais", e.getPais());
-				ob.put("localidad", e.getLocalidad());
 			} 
 			catch (JSONException ex) 
 			{
@@ -120,19 +121,18 @@ public class EquipoDAOImpl implements EquipoDAO
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public JSONObject obtenerLugarEquipo(String nomEquipo) 
 	{
-		JSONObject paisYLocalidad = new JSONObject();
+		JSONObject pais = new JSONObject();
 		Equipo eq = em.find(Equipo.class, nomEquipo);
 		
 		try
 		{
-			paisYLocalidad.put("pais", eq.getPais() );
-			paisYLocalidad.put("localidad", eq.getLocalidad());
+			pais.put("pais", eq.getPais());
         }
         catch(Exception ex)
 		{
             ex.printStackTrace();
         }
-		return paisYLocalidad;
+		return pais;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -163,9 +163,17 @@ public class EquipoDAOImpl implements EquipoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public DataListaEquipo equiposData(String nomEquipo)
+	public DataListaEquipo equiposData(String nomEquipo, boolean incluir_equipo)
 	{
-		Query query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		Query query = null;
+		if (incluir_equipo)
+		{
+			query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo = :equipo ORDER BY eq.puntaje desc");
+		}
+		else
+		{
+			query = em.createQuery("SELECT eq FROM Equipo eq WHERE eq.equipo != :equipo ORDER BY eq.puntaje desc");
+		}
 		query.setParameter("equipo", nomEquipo);
 		List<Equipo> lequipos = query.getResultList();		
 		DataListaEquipo dlequipos = new DataListaEquipo();
@@ -180,7 +188,9 @@ public class EquipoDAOImpl implements EquipoDAO
 			{
 				DataJugador dj = new DataJugador(jug.getIdJugador(), jug.getJugador(), jug.getPosicion(),  jug.getPosicionIdeal(), 
 												(int)(float) jug.getVelocidad(), (int)(float) jug.getTecnica(), (int)(float) jug.getAtaque(),
-												(int)(float) jug.getDefensa(), (int)(float) jug.getPorteria(), jug.getEstado_jugador());
+												(int)(float) jug.getDefensa(), (int)(float) jug.getPorteria(), jug.getEstado_jugador(), 
+												jug.getHistoricoTarjetasAmarillas(), jug.getHistoricoTarjetasRojas(), jug.getHistoricoGoles(),
+												jug.getHistoricoLesiones());
 				de.addDataJugador(dj);
 			}
 			dlequipos.addDataEquipo(de);
@@ -215,10 +225,10 @@ public class EquipoDAOImpl implements EquipoDAO
 		        	}
 	        	}
 		        j.setEstado_jugador(estado);
-		        em.persist(j);
+		        em.merge(j);
 	        }
 	        e.setCant_cambios_realizados(0);
-	        em.persist(e);
+	        em.merge(e);
 		}
 	}
 	
@@ -342,7 +352,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	public Boolean puedeRealizarCambios(String nomEquipo)
 	{
 		Equipo e = em.find(Equipo.class, nomEquipo);
-		System.out.print(" - Cantidad de cambios          : " + e.getCant_cambios_realizados() + "\n");
+		System.out.print(" - Cantidad de cambios " + nomEquipo + ": " + e.getCant_cambios_realizados() + "\n");
 		return (e.getCant_cambios_realizados() < Constantes.CONST_CANT_MAX_CAMBIOS);
 	}
 	
@@ -396,7 +406,12 @@ public class EquipoDAOImpl implements EquipoDAO
 			jugadoresDeEqDestino.add(jug);
 			
 			jug.setEquipo(eqDestino);
-								
+			
+			Boolean es_titular = false;
+			if(jug.getEstado_jugador().equals("titular")){
+				jug.setEstado_jugador("suplente");
+				es_titular = true;
+			}								
 			oferta.setEstado_oferta("aceptada");
 						
 			Collection<Notificacion> notificacionesRecibidas = usComprador.getNotificacionesRecibidas();
@@ -443,7 +458,10 @@ public class EquipoDAOImpl implements EquipoDAO
 			try
 			{
 				respuesta.put("Oferta aceptada", true);
-				respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
+				if(es_titular == false)
+					respuesta.put("mensaje", "La venta del jugador fue realizada correctamente.");
+				else
+					respuesta.put("mensaje", "La venta del jugador titular fue realizada correctamente. Debes modificar tu lista de jugadores titulares.");
 			} 
 			catch (Exception e) 
 			{
@@ -675,6 +693,58 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		
 		return dlpartidos;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void actualizarPuntajesEquipo(String equipo, Integer puntos)
+	{
+		/*** Obtengo el equipo, el usuario y el campeonato ***/
+		Equipo e = em.find(Equipo.class, equipo);		
+		if (e == null)
+		{
+			System.out.println("actualizarPuntajesEquipo: Equipo null.");
+			return;
+		}
+		Query query = em.createQuery("SELECT e.usuario FROM Equipo e WHERE e.equipo = '" + equipo + "'");
+		List<Usuario> usuarios = query.getResultList();
+		Usuario u = (usuarios != null) ? usuarios.get(0) : null;
+		if (u == null)
+		{
+			System.out.println("actualizarPuntajesEquipo: Usuario null.");
+			return;
+		}
+		query = em.createQuery("SELECT e.campeonatos FROM Equipo e WHERE e.equipo = '" + equipo + "'");
+		List<Campeonato> campeonatos = query.getResultList();
+		Campeonato c = (campeonatos != null) ? campeonatos.get(0) : null;
+		if (c == null)
+		{
+			System.out.println("actualizarPuntajesEquipo: Campeonato null.");
+			return;
+		}
+		
+		/*** Seteo los puntos correspondientes ***/
+		e.setPuntaje(e.getPuntaje() + puntos);
+		e.setRanking(e.getRanking() + puntos);
+		
+		// El capital es un porcentaje del capital del usuario, multiplicado por la cantidad de puntos asignados en el partido
+		Integer capital =  u.getCapital();
+		capital += puntos * capital * Constantes.CONT_PORCENTAJE_CAPITAL / 100; 
+		u.setCapital(capital);
+		
+		List<ResultadoCampeonato> resultados = (List<ResultadoCampeonato>) c.getResultadoCampeonato();
+		Iterator<ResultadoCampeonato> it = resultados.iterator();
+		while (it.hasNext())
+		{
+			ResultadoCampeonato r = it.next();
+			if (r.getEquipo().getEquipo().equals(equipo))
+			{
+				r.setPuntaje(r.getPuntaje() + puntos);
+			}
+		}
+		
+		em.merge(c);
+		em.merge(u);
+		em.merge(e);
 	}
 	
 }

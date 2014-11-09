@@ -28,5 +28,9 @@ public interface CampeonatoDAO
 	public boolean campeonatoCompleto(String nomCampeonato);
 
 	public Boolean anotadoPreviamente(String nomUsuario);
+
+	public Integer getCantidadEquipos(String nomCampeonato);
+
+	public void premiarGanadores(String nomCampeonato);
 	
 }

@@ -47,9 +47,9 @@ public class EquipoController implements IEquipoController
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public Equipo crearEquipo(String equipo, String pais, String localidad, String nomestadio)
+	public Equipo crearEquipo(String equipo, String pais, String nomestadio)
 	{
-		Equipo e = new Equipo(equipo, pais, localidad);
+		Equipo e = new Equipo(equipo, pais);
 		int capacidad = Constantes.MAX_CAPACIDAD;
 		int altura = (int) (Math.random() * (Constantes.MAX_ALTURA_ESTADIO - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
 		Estadio estadio = new Estadio(nomestadio, capacidad, altura);
@@ -168,9 +168,9 @@ public class EquipoController implements IEquipoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataListaEquipo obtenerEquiposData(String nomEquipo) 
+	public DataListaEquipo obtenerEquiposData(String nomEquipo, boolean incluir_equipo) 
 	{
-		return this.equipoDAO.equiposData(nomEquipo);
+		return this.equipoDAO.equiposData(nomEquipo, incluir_equipo);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -203,7 +203,8 @@ public class EquipoController implements IEquipoController
 				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) == 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(),  
 														(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
-														(int)(float) j.getPorteria(), j.getEstado_jugador());
+														(int)(float) j.getPorteria(), j.getEstado_jugador(), j.getHistoricoTarjetasAmarillas(), 
+														j.getHistoricoTarjetasRojas(), j.getHistoricoGoles(), j.getHistoricoLesiones());
 					dlj.addDataJugador(dj);			
 				}
 			}
@@ -229,7 +230,8 @@ public class EquipoController implements IEquipoController
 				if (j.getEstado_jugador().compareTo(Constantes.CONST_TITULAR) != 0){
 					DataJugador dj = new DataJugador(j.getIdJugador(), j.getJugador(), j.getPosicion(), j.getPosicionIdeal(), (int)(float) j.getVelocidad(), 
 													(int)(float) j.getTecnica(), (int)(float) j.getAtaque(), (int)(float) j.getDefensa(), 
-													(int)(float) j.getPorteria(), j.getEstado_jugador());
+													(int)(float) j.getPorteria(), j.getEstado_jugador(), j.getHistoricoTarjetasAmarillas(), 
+													j.getHistoricoTarjetasRojas(), j.getHistoricoGoles(), j.getHistoricoLesiones());
 					dlj.addDataJugador(dj);			
 				}
 			}

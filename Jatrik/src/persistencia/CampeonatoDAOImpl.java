@@ -23,6 +23,7 @@ import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
 import dominio.Partido;
+import dominio.ResultadoCampeonato;
 import dominio.Usuario;
 
 @Stateless
@@ -174,6 +175,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		Equipo e = u.getEquipo();
 		Collection<Equipo> listEquipos = c.getEquipos();
 
+		// Si hay lugar en el campeonato
 		if(listEquipos.size() < c.getCantEquipos())
 		{
 			for (Equipo eq: listEquipos)
@@ -181,18 +183,22 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 				if(eq.getEquipo() == e.getEquipo())
 					return false;
 			}
+			e.setPuntaje(0);
 			listEquipos.add(e);
 			Collection<Campeonato> listCampeonatos = e.getCampeonatos();
 			listCampeonatos.add(c);
 			em.merge(e);
 			em.merge(c);
 			
+			// El campeonato se llenó
 			if(listEquipos.size() == c.getCantEquipos()){
 				Collection<Partido> listPartidos = c.getPartidos();
+				// Para cada equipo anotado al campeonato
 				for(Equipo eq : listEquipos){
 					Iterator<Partido> iter = listPartidos.iterator();
 					
 					int cant = 0;
+					// Recorro la lista de partidos y lo seteo como local
 					while(iter.hasNext())
 					{
 						Partido p = iter.next();
@@ -210,10 +216,12 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 					}
 				}
 				Iterator<Partido> iter2 = listPartidos.iterator();
+				// Para cada equipo anotado al campeonato
 				for(Equipo eq2 : listEquipos){
 					
 					Iterator<Equipo> iter3 = listEquipos.iterator();
 					int cant = 0;
+					// Seteo los visitantes
 					while(iter3.hasNext() && (cant < (listEquipos.size()-1)))
 					{	
 						Equipo eqVisitante = iter3.next();
@@ -226,6 +234,15 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 							cant++;
 						}
 					}
+				}
+				
+				// Inicializo la tabla de resultados del campeonato
+				for(Equipo eq : listEquipos){
+					Collection<ResultadoCampeonato> resultadoCampeonato = c.getResultadoCampeonato();
+					ResultadoCampeonato r = new ResultadoCampeonato(eq, 0, c);
+					resultadoCampeonato.add(r);
+					c.setResultadoCampeonato(resultadoCampeonato);
+					em.persist(r);
 				}
 			}
 			return true;
@@ -326,19 +343,69 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		else
 			return true;
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Boolean anotadoPreviamente(String nomUsuario) 
 	{
-		Usuario u = em.find(Usuario.class, nomUsuario);
-		Equipo e = u.getEquipo();
-		Integer puntaje = e.getPuntaje();
+		Query query = em.createQuery("SELECT u.equipo FROM Usuario u "
+				                   + "WHERE u.login = '"+ nomUsuario + "'");
+		List<Equipo> equipos = query.getResultList();
+		if (equipos != null)
+		{
+			Integer puntaje = equipos.get(0).getPuntaje();
 		
-		if(puntaje == -1){
-			return false;
-		}else{
-			return true;
+			if (puntaje < 0)
+			{
+				return false;
+			}
 		}
+		return true;
+	}
+	
+
+	public Integer getCantidadEquipos(String nomCampeonato)
+	{
+		Campeonato c = em.find(Campeonato.class, nomCampeonato);
+		if (c != null)
+		{
+			return c.getCantEquipos();
+		}
+		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
+	public void premiarGanadores(String nomCampeonato)
+	{
+		// Asigno puntos y plata a los tres primeros lugares
+		// Asigno 15, 10 y 5 puntos a cada posición
+		Query query = em.createQuery("SELECT r FROM ResultadoCampeonato r, Campeonato c "
+								   + "WHERE r.campeonato = c AND c.campeonato = '" + nomCampeonato + "' "
+								   + "ORDER BY r.puntaje DESC");
+		Iterator<ResultadoCampeonato> it = query.getResultList().iterator();
+		int cant = 0;
+		int puntos = 15;
+		while (it.hasNext() && (cant < 3))
+		{
+			ResultadoCampeonato r = it.next();
+			Equipo e              = r.getEquipo();
+			Usuario u             = e.getUsuario();
+			Integer capital       = u.getCapital();
+			
+			capital += puntos * (capital * Constantes.CONT_PORCENTAJE_CAPITAL / 100); 
+			u.setCapital(capital);
+			r.setPuntaje(r.getPuntaje() + puntos);
+			
+			// Además restablezco el puntaje del equipo a -1. 
+	        e.setPuntaje(-1);
+	        
+			em.merge(r);
+			em.merge(u);
+			em.merge(e);
+			
+			cant++;
+			puntos -= 5;
+		}
+	}
+	
 }
