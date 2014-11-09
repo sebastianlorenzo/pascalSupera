@@ -224,7 +224,8 @@ public class LoginBean implements Serializable {
 		return "/paginas/home.xhtml?faces-redirect=true";
 		}
 		else {
-			
+			FacesContext.getCurrentInstance().getExternalContext()
+			.invalidateSession();
 			v.logout(this.nombre,"vacio",true);
 			return "/index.xhtml?faces-redirect=true";
 		}
