@@ -12,7 +12,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import controladores.VistaWebController;
-import dataTypes.DataRanking;
+import tipos.DataRanking;
 
 @ManagedBean
 @RequestScoped

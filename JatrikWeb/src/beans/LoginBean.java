@@ -25,8 +25,8 @@ import com.google.gson.Gson;
 import chat.ChatUsers;
 import chat.Message;
 import controladores.VistaWebController;
-import dataTypes.DataListaMensaje;
-import dataTypes.DataMensaje;
+import tipos.DataListaMensaje;
+import tipos.DataMensaje;
 
 @ManagedBean
 @SessionScoped

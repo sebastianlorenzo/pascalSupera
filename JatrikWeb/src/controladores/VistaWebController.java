@@ -1,16 +1,13 @@
 package controladores;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -18,7 +15,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.google.gson.Gson;
 
-import dataTypes.DataListaPosicion;
+import tipos.DataListaPosicion;
 
 public class VistaWebController {
 

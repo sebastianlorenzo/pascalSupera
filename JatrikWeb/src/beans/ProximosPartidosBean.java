@@ -14,8 +14,8 @@ import javax.faces.context.FacesContext;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataListaPartido;
-import dataTypes.DataResumenPartido;
+import tipos.DataListaPartido;
+import tipos.DataResumenPartido;
 
 @ManagedBean
 @RequestScoped

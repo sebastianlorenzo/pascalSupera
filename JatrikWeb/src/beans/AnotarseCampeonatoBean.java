@@ -20,8 +20,8 @@ import org.primefaces.context.RequestContext;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataCampeonato;
-import dataTypes.DataListaCampeonato;
+import tipos.DataCampeonato;
+import tipos.DataListaCampeonato;
 
 @ManagedBean
 @RequestScoped

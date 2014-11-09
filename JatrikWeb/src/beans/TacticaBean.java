@@ -22,10 +22,10 @@ import org.primefaces.model.DualListModel;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataJugador;
-import dataTypes.DataListaJugador;
-import dataTypes.DataListaPosicion;
-import dataTypes.DataPosicion;
+import tipos.DataJugador;
+import tipos.DataListaJugador;
+import tipos.DataListaPosicion;
+import tipos.DataPosicion;
 
 @ManagedBean
 @RequestScoped

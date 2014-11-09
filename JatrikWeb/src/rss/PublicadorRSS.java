@@ -25,10 +25,10 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.SyndFeedOutput;
 
 import controladores.VistaWebController;
-import dataTypes.DataJugador;
-import dataTypes.DataListaJugador;
-import dataTypes.DataListaPartido;
-import dataTypes.DataResumenPartido;
+import tipos.DataJugador;
+import tipos.DataListaJugador;
+import tipos.DataListaPartido;
+import tipos.DataResumenPartido;
 
 /**
  * Servlet implementation class PublicadorRSS
@@ -78,19 +78,19 @@ public class PublicadorRSS extends HttpServlet {
 									"</table>"+
 									"<table style=\"width:100%\">"+
 									  "<tr>"+
-									    "<td style=\"text-align: center\">"+drp.golesEquipoLocalEquipoVisitante[0]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getGolesEquipoLocal()+"</td>"+
 									    "<td style=\"text-align: center\">Goles</td>"+
-									    "<td style=\"text-align: center\">"+drp.golesEquipoLocalEquipoVisitante[1]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getGolesEquipoVisitante()+"</td>"+
 									  "</tr>"+
 									  "<tr>"+
-									    "<td style=\"text-align: center\">"+drp.tarjetasAmarillasEquipoLocalEquipoVisitante[0]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getTarjetasAmarillasEquipoLocal()+"</td>"+
 									    "<td style=\"text-align: center\">Tarjetas amarillas</td>"+
-									    "<td style=\"text-align: center\">"+drp.tarjetasAmarillasEquipoLocalEquipoVisitante[1]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getTarjetasAmarillasEquipoVisitante()+"</td>"+
 									  "</tr>"+
 									  "<tr>"+
-									    "<td style=\"text-align: center\">"+drp.tarjetasRojasEquipoLocalEquipoVisitante[0]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getTarjetasRojasEquipoLocal()+"</td>"+
 									    "<td style=\"text-align: center\">Tarjetas Rojas</td>"+
-									    "<td style=\"text-align: center\">"+drp.tarjetasRojasEquipoLocalEquipoVisitante[1]+"</td>"+
+									    "<td style=\"text-align: center\">"+drp.getTarjetasRojasEquipoVisitante()+"</td>"+
 									  "</tr>"+
 								"</table>");
 	        entry.setDescription(description);

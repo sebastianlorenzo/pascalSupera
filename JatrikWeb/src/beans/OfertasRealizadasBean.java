@@ -13,8 +13,8 @@ import javax.faces.context.FacesContext;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataListaOferta;
-import dataTypes.DataOferta;
+import tipos.DataListaOferta;
+import tipos.DataOferta;
 
 
 @ManagedBean

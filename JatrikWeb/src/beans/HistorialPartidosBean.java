@@ -12,12 +12,12 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.primefaces.event.TabChangeEvent;
 
-import dataTypes.DataListaPartido;
+import tipos.DataListaPartido;
 
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataResumenPartido;
+import tipos.DataResumenPartido;
 
 @ManagedBean
 @ViewScoped
