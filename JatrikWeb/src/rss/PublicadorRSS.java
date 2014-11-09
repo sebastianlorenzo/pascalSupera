@@ -47,6 +47,7 @@ public class PublicadorRSS extends HttpServlet {
 		
 		VistaWebController vwc = new VistaWebController();
 		String info = vwc.obtenerInfoRss();
+		
 		Gson g = new Gson();
 		DataListaPartido dlp = g.fromJson(info, DataListaPartido.class);
 		
@@ -57,6 +58,7 @@ public class PublicadorRSS extends HttpServlet {
         feed.setDescription("Ultimos resultados de Jatrik");
         
         Iterator<DataResumenPartido> it = dlp.getLstPartidos().iterator();
+        List<SyndEntry> lstEntry = new ArrayList<SyndEntry>();
 		while (it.hasNext()){
 			DataResumenPartido drp =(DataResumenPartido) it.next();
 	        SyndEntry entry = new SyndEntryImpl();
@@ -92,17 +94,16 @@ public class PublicadorRSS extends HttpServlet {
 									  "</tr>"+
 								"</table>");
 	        entry.setDescription(description);
-
+	        
 	        List<SyndCategory> categories = new ArrayList<SyndCategory>();
 	        SyndCategory category = new SyndCategoryImpl();
 	        category.setName("Resultado");
 	        categories.add(category);
 	        entry.setCategories(categories);
 
-	        List<SyndEntry> lstEntry = new ArrayList<SyndEntry>();
 	        lstEntry.add(entry);
-	        feed.setEntries(lstEntry);
 		}    
+        feed.setEntries(lstEntry);
         
         Writer writer = response.getWriter();
         response.setContentType("application/xml; charset=UTF-8");
