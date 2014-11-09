@@ -7,7 +7,6 @@
 		<class>dominio.Equipo</class>
 		<class>dominio.Estadio</class>
 		<class>dominio.Jugador</class>
-		<class>dominio.Pais</class>
 		<class>dominio.Partido</class>
 		<class>dominio.Mensaje</class>
 		<class>dominio.Oferta</class>

@@ -150,12 +150,6 @@
         primary key (idOferta)
     );
 
-    create table public.pais (
-        localidad varchar(255) not null,
-        pais varchar(255),
-        primary key (localidad)
-    );
-
     create table public.partido (
         partido varchar(255) not null,
         fechaPartido timestamp,
