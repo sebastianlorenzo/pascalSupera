@@ -9,12 +9,16 @@ public class DataResumenPartido
 	public String eqVisitante;
 	public String campeonato;
 	public String fecha;
-	public String nomPartidoEnBase;
+	public String nomPartidoEnBase;	
 	
-	public Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante = new Integer[2];
-	public Integer[] tarjetasRojasEquipoLocalEquipoVisitante 	 = new Integer[2];
-	public Integer[] golesEquipoLocalEquipoVisitante 			 = new Integer[2];
-	public Integer[] lesionesEquipoLocalEquipoVisitante 		 = new Integer[2];
+	public Integer tarjetasAmarillasEquipoLocal;
+	public Integer tarjetasAmarillasEquipoVisitante;
+	public Integer tarjetasRojasEquipoLocal;
+	public Integer tarjetasRojasEquipoVisitante;
+	public Integer golesEquipoLocal;
+	public Integer golesEquipoVisitante;
+	public Integer lesionesEquipoLocal;
+	public Integer lesionesEquipoVisitante;	
 	
 	public List<String> detalle;
 	
@@ -31,71 +35,15 @@ public class DataResumenPartido
 		this.eqVisitante = eqVisitante;
 		this.campeonato = campeonato;
 		this.fecha = fecha;
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante[0] = tarjetasAmarillasLocal;
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante[1] = tarjetasAmarillasVisitante;
-		this.tarjetasRojasEquipoLocalEquipoVisitante[0]     = tarjetasRojasLocal;
-		this.tarjetasRojasEquipoLocalEquipoVisitante[1]     = tarjetasRojasVisitante;
-		this.golesEquipoLocalEquipoVisitante[0]             = golesLocal;
-		this.golesEquipoLocalEquipoVisitante[1]             = golesVisitante;
-		this.lesionesEquipoLocalEquipoVisitante[0]          = lesionesLocal;
-		this.lesionesEquipoLocalEquipoVisitante[1]          = lesionesVisitante;
+		this.tarjetasAmarillasEquipoLocal = tarjetasAmarillasLocal;
+		this.tarjetasAmarillasEquipoVisitante = tarjetasAmarillasVisitante;
+		this.tarjetasRojasEquipoLocal = tarjetasRojasLocal;
+		this.tarjetasRojasEquipoVisitante = tarjetasRojasVisitante;
+		this.golesEquipoLocal = golesLocal;
+		this.golesEquipoVisitante = golesVisitante;
+		this.lesionesEquipoLocal  = lesionesLocal;
+		this.lesionesEquipoVisitante= lesionesVisitante;
 	}
-	
-	public DataResumenPartido(Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 
-							  Integer tarjetasRojasLocal, Integer tarjetasRojasVisitante,
-							  Integer gloesLocal,Integer gloesVisitante,
-							  Integer lesionesLocal, Integer lesionesVisitante)
-	{
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante[0] = tarjetasAmarillasLocal;
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante[1] = tarjetasAmarillasVisitante;
-		this.tarjetasRojasEquipoLocalEquipoVisitante[0]     = tarjetasRojasLocal;
-		this.tarjetasRojasEquipoLocalEquipoVisitante[1]     = tarjetasRojasVisitante;
-		this.golesEquipoLocalEquipoVisitante[0]             = gloesLocal;
-		this.golesEquipoLocalEquipoVisitante[1]             = gloesVisitante;
-		this.lesionesEquipoLocalEquipoVisitante[0]          = lesionesLocal;
-		this.lesionesEquipoLocalEquipoVisitante[1]          = lesionesVisitante;
-	}
-	
-	public Integer[] getTarjetasAmarillasEquipoLocalEquipoVisitante() 
-	{
-		return tarjetasAmarillasEquipoLocalEquipoVisitante;
-	}
-	
-	public void setTarjetasAmarillasEquipoLocalEquipoVisitante (Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante) 
-	{
-		this.tarjetasAmarillasEquipoLocalEquipoVisitante = tarjetasAmarillasEquipoLocalEquipoVisitante;
-	}
-	
-	public Integer[] getTarjetasRojasEquipoLocalEquipoVisitante()
-	{
-		return tarjetasRojasEquipoLocalEquipoVisitante;
-	}
-	
-	public void setTarjetasRojasEquipoLocalEquipoVisitante (Integer[] tarjetasRojasEquipoLocalEquipoVisitante) 
-	{
-		this.tarjetasRojasEquipoLocalEquipoVisitante = tarjetasRojasEquipoLocalEquipoVisitante;
-	}
-	
-	public Integer[] getGolesEquipoLocalEquipoVisitante() 
-	{
-		return golesEquipoLocalEquipoVisitante;
-	}
-	
-	public void setGolesEquipoLocalEquipoVisitante (Integer[] golesEquipoLocalEquipoVisitante) 
-	{
-		this.golesEquipoLocalEquipoVisitante = golesEquipoLocalEquipoVisitante;
-	}
-	
-	public Integer[] getLesionesEquipoLocalEquipoVisitante() 
-	{
-		return lesionesEquipoLocalEquipoVisitante;
-	}
-	
-	public void setLesionesEquipoLocalEquipoVisitante (Integer[] lesionesEquipoLocalEquipoVisitante) 
-	{
-		this.lesionesEquipoLocalEquipoVisitante = lesionesEquipoLocalEquipoVisitante;
-	}
-	
 	
 	public String getNomPartido()
 	{
@@ -146,16 +94,6 @@ public class DataResumenPartido
 	{
 		this.fecha = fecha;
 	}
-
-	public List<String> getDetalle()
-	{
-		return detalle;
-	}
-
-	public void setDetalle(List<String> detalle) 
-	{
-		this.detalle = detalle;
-	}
 	
 	public String getNomPartidoEnBase() 
 	{
@@ -166,5 +104,96 @@ public class DataResumenPartido
 	{
 		this.nomPartidoEnBase = nomPartidoEnBase;
 	}
+
+	public Integer getTarjetasAmarillasEquipoLocal() 
+	{
+		return tarjetasAmarillasEquipoLocal;
+	}
+
+	public void setTarjetasAmarillasEquipoLocal(Integer tarjetasAmarillasEquipoLocal) 
+	{
+		this.tarjetasAmarillasEquipoLocal = tarjetasAmarillasEquipoLocal;
+	}
+
+	public Integer getTarjetasAmarillasEquipoVisitante() 
+	{
+		return tarjetasAmarillasEquipoVisitante;
+	}
+
+	public void setTarjetasAmarillasEquipoVisitante(Integer tarjetasAmarillasEquipoVisitante) 
+	{
+		this.tarjetasAmarillasEquipoVisitante = tarjetasAmarillasEquipoVisitante;
+	}
+
+	public Integer getTarjetasRojasEquipoLocal() 
+	{
+		return tarjetasRojasEquipoLocal;
+	}
+
+	public void setTarjetasRojasEquipoLocal(Integer tarjetasRojasEquipoLocal) 
+	{
+		this.tarjetasRojasEquipoLocal = tarjetasRojasEquipoLocal;
+	}
+
+	public Integer getTarjetasRojasEquipoVisitante() 
+	{
+		return tarjetasRojasEquipoVisitante;
+	}
+
+	public void setTarjetasRojasEquipoVisitante(Integer tarjetasRojasEquipoVisitante) 
+	{
+		this.tarjetasRojasEquipoVisitante = tarjetasRojasEquipoVisitante;
+	}
+
+	public Integer getGolesEquipoLocal() 
+	{
+		return golesEquipoLocal;
+	}
+
+	public void setGolesEquipoLocal(Integer golesEquipoLocal)
+	{
+		this.golesEquipoLocal = golesEquipoLocal;
+	}
+
+	public Integer getGolesEquipoVisitante() 
+	{
+		return golesEquipoVisitante;
+	}
+
+	public void setGolesEquipoVisitante(Integer golesEquipoVisitante) 
+	{
+		this.golesEquipoVisitante = golesEquipoVisitante;
+	}
+
+	public Integer getLesionesEquipoLocal() 
+	{
+		return lesionesEquipoLocal;
+	}
+
+	public void setLesionesEquipoLocal(Integer lesionesEquipoLocal)
+	{
+		this.lesionesEquipoLocal = lesionesEquipoLocal;
+	}
+
+	public Integer getLesionesEquipoVisitante() 
+	{
+		return lesionesEquipoVisitante;
+	}
+
+	public void setLesionesEquipoVisitante(Integer lesionesEquipoVisitante) 
+	{
+		this.lesionesEquipoVisitante = lesionesEquipoVisitante;
+	}
 	
+
+	public List<String> getDetalle()
+	{
+		return detalle;
+	}
+
+	public void setDetalle(List<String> detalle) 
+	{
+		this.detalle = detalle;
+	}
+
 }
