@@ -19,8 +19,6 @@ public interface IEquipoController
 	public Boolean existeEquipoRegistrado(String equipo);
 	
 	public Equipo crearEquipo(String equipo, String pais, String estadio);
-
-	public JSONArray obtenerPaisesInicial();
 	
 	public Boolean existeEstadioRegistrado(String estadio);
 

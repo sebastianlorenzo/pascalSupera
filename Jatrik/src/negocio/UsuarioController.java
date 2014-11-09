@@ -12,6 +12,7 @@ import persistencia.UsuarioDAOImpl;
 import tipos.Constantes;
 import tipos.DataListaMensaje;
 import tipos.DataListaNotificacion;
+import tipos.DataUsuario;
 import dominio.Equipo;
 import dominio.Usuario;
 
@@ -181,5 +182,11 @@ public class UsuarioController implements IUsuarioController
 	public JSONArray obtenerRanking() 
 	{
 		return this.usuarioDAO.obtenerRankingUsuarios();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DataUsuario verPerfil(String nomUsuario) 
+	{
+		return this.usuarioDAO.verPerfil(nomUsuario);
 	}
 }
