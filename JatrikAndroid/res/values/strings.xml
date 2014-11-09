@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Jatrik</string>
+    <string name="edit_message">Ingresar Mensaje</string>
+    <string name="button_send">Enviar</string>
+    <string name="action_settings">Cofiguración</string>
+    <string name="title_activity_main">Principal</string>
+    <string name="title_activity_display_message">Mensaje</string>
+
+    <!-- PANTALLA LLOGIN -->
+    <string name="edit_user">Ingresar usuario</string>
+    <string name="edit_psw">Ingresar contraseña</string>
+    <string name="button_login">Ingresar</string>
+    <string name="error_user">Ingresar nombre de usuario</string>
+    <string name="error_psw">Ingresar contraseña</string>
+    <string name="error_login">ERROR: Nombre de usuario o contraseña incorrecta</string>
+    <!-- PANTALLA LLOGIN -->
+
+    <string name="title_activity_listado_partidos">Ultimos Partidos</string>
+    <string name="title_activity_objeto_lista">ObjetoLista</string>
+    <string name="title_activity_estadisticas">Estadisticas</string>
+    <string name="title_Resumen">Resumen</string>
+    <string name="title_MinutoAMinuto">Minuto a minuto</string>
+    
+    <string name="goles">Goles</string>
+    <string name="amarillas">Tarjetas Amarillas</string>
+    <string name="rojas">Tarjetas Rojas</string>
+
+</resources>
