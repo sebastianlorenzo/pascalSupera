@@ -225,7 +225,7 @@ public class LoginBean implements Serializable {
 		}
 		else {
 			
-			v.logout(this.nombre,"",true);
+			v.logout(this.nombre,"vacio",true);
 			return "/index.xhtml?faces-redirect=true";
 		}
 	}
@@ -267,14 +267,12 @@ public class LoginBean implements Serializable {
 				return "/paginas/usuario/home_user.xhtml?faces-redirect=true";
 			}
 		} else {
-			RequestContext requestContext = RequestContext.getCurrentInstance();
 			String cabecera = "Ha ocurrido un error";
 			Severity icono = FacesMessage.SEVERITY_ERROR;
-			String mensaje_box = "Compruebe nombre de usuario o contraseña.";
-			FacesMessage message = new FacesMessage(icono, cabecera,
-					mensaje_box);
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			requestContext.update("growl");
+			String mensaje = "Compruebe nombre de usuario o contraseña.";
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje);
+			context.addMessage(null, message);
 			return "/index.xhtml?faces-redirect=true";
 		}
 

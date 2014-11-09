@@ -49,9 +49,15 @@ public class VistaWebController {
 	private String LISTAR_EQUIPOS_PATH = "equipos/listarEquipos";
 	private String REALIZAR_OFERTA_PATH = "equipos/realizarOferta";
 	private String OBTENER_OFERTAS_PATH = "equipos/obtenerOfertas";
+	private String OBTENER_OFERTAS_REALIZADAS_PATH = "equipos/obtenerOfertasRealizadas";	
 	private String ACEPTAR_OFERTA_PATH = "equipos/aceptarOferta";
 	private String RECHAZAR_OFERTA_PATH = "equipos/rechazarOferta";	
+	//*************************PARTIDOS***************************************************************
+	private String LISTAR_PROXIMOS_PARTIDOS_PATH = "partidos/listarMisProximosPartidos";
+	private String LISTAR_PARTIDOS_JUGADOS_PATH = "partidos/listarPartidosJugados";
 	
+	//*************************CAMPEONATOS***************************************************************
+	private String LISTAR_CAMPEONATOS_EN_EJECUCION_Y_FINALIZADOS_PATH = "campeonatos/listarCampeonatosEnEjecucionYFinalizados";
 	
 	//*************************INFO***************************************************************
 	private String OBTENER_INFO_RSS_PATH = "equipos/verInfoMobile";
@@ -456,6 +462,19 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
+				// OBTENER OFERTAS REALIZADAS************************************************************************
+				public String obtenerOfertasRealizadas (String nombreUsr) {
+					
+					String envio= "{"+
+							"nomUsuario"+":"+nombreUsr+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+OBTENER_OFERTAS_REALIZADAS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}
 				// ACEPTAR OFERTA ************************************************************************
 				public String aceptarOferta (String nomUsuario,String comentario,String idOferta) {
 					
@@ -485,7 +504,43 @@ public class VistaWebController {
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 				    return respuesta;
 					
-				}				
+				}	
+				// LISTAR PROXIMOS PARTIDOS************************************************************************
+				public String listarProximosPartidos (String nombreEquipo) {
+					
+					String envio= "{"+
+							"nombreEquipo"+":"+nombreEquipo+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTAR_PROXIMOS_PARTIDOS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}	
+				
+				// LISTAR CAMPEONATOS FINALIZADOS Y EN EJECUCION *************************************************************************************
+				public String listarCampeonatosFinalizadosEjecucion () {
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTAR_CAMPEONATOS_EN_EJECUCION_Y_FINALIZADOS_PATH);	 
+					String respuesta=target.request().get(String.class);
+				    return respuesta;
+					
+				}
+				// LISTAR PARTIDOS YA JUGADOS ************************************************************************
+				public String listarPartidosJugados (String nomCampeonato) {
+					
+					String envio= "{"+
+							"nomCampeonato"+":"+nomCampeonato+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTAR_PARTIDOS_JUGADOS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}	
 
 }
 
