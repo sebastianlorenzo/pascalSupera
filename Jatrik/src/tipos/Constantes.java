@@ -42,9 +42,9 @@ public class Constantes {
 	public static final Integer CONST_REGATE_MEDIO     = 70;
 	public static final Integer MIN_CANT_COMENTARIOS   = 0;
 	public static final Integer MAX_CANT_COMENTARIOS   = 3;
-	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Tiro sin dirección que no tiene destino de arco.", "Disparo que se va tres metros desviado.", "Potente disparo de larga distancia que controla el arquero.", "Tiro que sale por encima del travesaño."};
+	public static final String[] CONST_MENSAJES_REGATE_BAJO  = {"Tiro sin trayectoria definida que no tiene destino de arco.", "Disparo que se va tres metros desviado.", "Potente disparo de larga distancia que controla el arquero.", "Tiro que sale por encima del travesaño."};
 	public static final String[] CONST_MENSAJES_REGATE_MEDIO = {"Disparo que sale desviado.", "Tiro desviado que sale hacia la banda derecha.", "Remate controlado sin problemas por el arquero.", "Mano a mano con el arquero, que tapa bien con su pierna izquierda."};
-	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Potente remate desde afuera del área.", "Gran atajada del arquero.", "Gran atajada del arquero que genera un tiro de esquina.", "Potente disparo que da rebote y casi cambia el marcador."};
+	public static final String[] CONST_MENSAJES_REGATE_ALTO  = {"Potente remate que no llega a destino.", "Gran atajada del arquero.", "Gran atajada del arquero que genera un tiro de esquina.", "Potente disparo que da rebote y casi cambia el marcador."};
 	public static final Integer CONST_PUNTOS_GANADOR   = 3;
 	public static final Integer CONST_PUNTOS_EMPATE    = 1;
 	public static final Integer CONST_PUNTOS_PERDEDOR  = 0;

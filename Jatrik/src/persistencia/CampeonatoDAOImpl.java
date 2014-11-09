@@ -300,7 +300,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public JSONArray listarCampEnEjecucionYFinalizados() 
 	{	
-		Query query = em.createQuery("SELECT c FROM Campeonato c");
+		Query query = em.createQuery("SELECT c FROM Campeonato c ORDER BY c.inicioCampeonato DESC");
 		List<Campeonato> campeonatos = query.getResultList();
 		JSONArray jcampeonatos = new JSONArray();
 		JSONObject obj;

@@ -237,18 +237,15 @@ public class PartidoDAOImpl implements PartidoDAO
 
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public JSONArray obtenerMisPartidos(String nomEquipo) 
+	public DataListaPartido obtenerMisPartidos(String nomEquipo) 
 	{
 		Query query = em.createQuery("SELECT p FROM Partido p " + 
 				"WHERE p.equipoLocal = '" + nomEquipo 
-				+ "' or p.equipoVisitante = '" + nomEquipo + "' ORDER BY p.fechaPartido DESC");
+				+ "' or p.equipoVisitante = '" + nomEquipo + "' ORDER BY p.fechaPartido ASC");
 		
 		List<Partido> partidos = query.getResultList();
-		
-		if(partidos.isEmpty())
-			return null;
-		
-		JSONArray jpartidos = new JSONArray();
+				
+		DataListaPartido data_lst_partidos = new DataListaPartido();
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MINUTE, 0);
@@ -262,20 +259,26 @@ public class PartidoDAOImpl implements PartidoDAO
 
 			if(fecha_p.after(ahora))
 			{
-				JSONObject ob = new JSONObject();
-				try 
-				{
-					ob.put("nomPartido", p.getEquipoLocal().getEquipo()+ " vs. "+ p.getEquipoVisitante().getEquipo());
-					ob.put("partido", p.getPartido());
-				} 
-				catch (JSONException ex)
-				{
-					ex.printStackTrace();
-				}
-				jpartidos.put(ob);				
+				String nomEqLocal = p.getEquipoLocal().getEquipo();
+				String nomEqVisitante = p.getEquipoVisitante().getEquipo();
+				String nomPartido = nomEqLocal+" vs. "+nomEqVisitante;
+				String nomPartidoEnBase = p.getPartido();
+				
+				Date fechaPartido = p.getFechaPartido();
+				SimpleDateFormat formateador2 = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+			    String fecha = formateador2.format(fechaPartido);
+				
+			    DataResumenPartido drp = new DataResumenPartido();
+			    drp.setEqLocal(nomEqLocal);
+			    drp.setEqVisitante(nomEqVisitante);
+			    drp.setNomPartido(nomPartido);
+			    drp.setFecha(fecha);
+			    drp.setNomPartidoEnBase(nomPartidoEnBase);   
+			    
+			    data_lst_partidos.addDataPartido(drp);
 			}
 		}
-		return jpartidos;
+		return data_lst_partidos;		
 	}
 
 }

@@ -9,6 +9,7 @@ public class DataResumenPartido
 	public String eqVisitante;
 	public String campeonato;
 	public String fecha;
+	public String nomPartidoEnBase;
 	
 	public Integer[] tarjetasAmarillasEquipoLocalEquipoVisitante = new Integer[2];
 	public Integer[] tarjetasRojasEquipoLocalEquipoVisitante 	 = new Integer[2];
@@ -16,6 +17,8 @@ public class DataResumenPartido
 	public Integer[] lesionesEquipoLocalEquipoVisitante 		 = new Integer[2];
 	
 	public List<String> detalle;
+	
+	public DataResumenPartido(){};
 	
 	public DataResumenPartido(String nomPartido, String eqLocal, String eqVisitante, String campeonato, String fecha,
 			Integer tarjetasAmarillasLocal, Integer tarjetasAmarillasVisitante, 
@@ -152,6 +155,16 @@ public class DataResumenPartido
 	public void setDetalle(List<String> detalle) 
 	{
 		this.detalle = detalle;
+	}
+	
+	public String getNomPartidoEnBase() 
+	{
+		return nomPartidoEnBase;
+	}
+
+	public void setNomPartidoEnBase(String nomPartidoEnBase) 
+	{
+		this.nomPartidoEnBase = nomPartidoEnBase;
 	}
 	
 }

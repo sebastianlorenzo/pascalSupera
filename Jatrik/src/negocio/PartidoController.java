@@ -709,7 +709,7 @@ public class PartidoController implements IPartidoController
 		return partidoDAO.getPartidosSimular(fecha);
 	}
 
-	public JSONArray obtenerMisPartidosPorJugar(String nomEquipo) 
+	public DataListaPartido obtenerMisPartidosPorJugar(String nomEquipo) 
 	{
 		return this.partidoDAO.obtenerMisPartidos(nomEquipo);
 	}

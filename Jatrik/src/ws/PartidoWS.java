@@ -102,19 +102,10 @@ public class PartidoWS
 		JSONObject datosPartido = new JSONObject(datos);
 		String nomEquipo    = datosPartido.getString("nombreEquipo");
 		
-		JSONObject respuesta = new JSONObject();		
-		try 
-		{
-			JSONArray partidos = null;
-			partidos = iPartidoController.obtenerMisPartidosPorJugar(nomEquipo);
-			respuesta.put("partidos", partidos);
-
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return respuesta.toString();
+		Gson g = new Gson();
+		DataListaPartido dataPartidos = iPartidoController.obtenerMisPartidosPorJugar(nomEquipo);
+		return g.toJson(dataPartidos);
+		
 	}
 	
 	@POST

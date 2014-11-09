@@ -25,6 +25,6 @@ public interface IPartidoController
 	
 	public List<Partido> listaPartidosSimular(Date fecha);
 
-	public JSONArray obtenerMisPartidosPorJugar(String nomEquipo);
+	public DataListaPartido obtenerMisPartidosPorJugar(String nomEquipo);
 		
 }
