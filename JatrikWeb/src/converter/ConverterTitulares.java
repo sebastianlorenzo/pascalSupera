@@ -1,5 +1,12 @@
 package converter;
 
+import java.util.Iterator;
+import java.util.List;
+
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -15,10 +22,16 @@ import tipos.DataJugador;
 public class ConverterTitulares implements Converter {
  
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        if(value != null && value.trim().length() > 0) {
+        if(value != null && (!value.equals("--")) && value.trim().length() > 0) {
             try {
-                ProximosPartidosBean ppb = (ProximosPartidosBean) fc.getExternalContext().getApplicationMap().get("proximosPartidosBean");
-                return ppb.getTitulares().get(Integer.parseInt(value));
+                //ProximosPartidosBean ppb = (ProximosPartidosBean) fc.getExternalContext().getApplicationMap().get("proximosPartidosBean");
+                ELContext contextoEL = fc.getELContext( );
+        		Application apli  = fc.getApplication( );		 
+        		ExpressionFactory ef = apli.getExpressionFactory( );
+        		ValueExpression ve = ef.createValueExpression(contextoEL, "#{proximosPartidosBean}",ProximosPartidosBean.class);
+        		ProximosPartidosBean ppb = (ProximosPartidosBean) ve.getValue(contextoEL);
+        		DataJugador dj = dameJugador(Integer.parseInt(value),ppb.getTitulares()); 
+                return dj;
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "No es un valido titular."));
             }
@@ -30,10 +43,23 @@ public class ConverterTitulares implements Converter {
  
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if((object != null)&&(object!="")) {
-            return ((DataJugador) object).getNomJugador();
+            return String.valueOf(((DataJugador) object).getIdJugador());
         }
         else {
             return null;
         }
     }  
+    
+    public DataJugador dameJugador(Integer idJugador, List<DataJugador> lista){
+    	Iterator<DataJugador> it = lista.iterator();
+    	boolean encontre=false;    
+    	DataJugador dj = null;
+    	while (it.hasNext()&& !encontre){
+    		dj= (DataJugador)it.next();
+    		Integer i = dj.getIdJugador();
+    		if (i.equals(idJugador))
+    			encontre=true;
+    	}
+    	return dj;
+    }
 } 

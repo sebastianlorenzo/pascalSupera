@@ -106,7 +106,7 @@
 					                <h:outputText value="#{DataJugador.nomJugador}" />
 					            </p:column>								
 							</p:selectOneMenu>
-							<p:spinner id="minutos2" value="#{proximosPartidosBean.minutos1}" min="1" max="89" />
+							<p:spinner id="minutos2" value="#{proximosPartidosBean.minutos2}" min="1" max="89" />
 							
 							<p:selectOneMenu id="sale3"
 								value="#{proximosPartidosBean.sale3}" converter="converterTitulares" var="DataJugador">
@@ -126,7 +126,7 @@
 					                <h:outputText value="#{DataJugador.nomJugador}" />
 					            </p:column>								
 							</p:selectOneMenu>
-							<p:spinner id="minutos3" value="#{proximosPartidosBean.minutos1}" min="1" max="89" />						
+							<p:spinner id="minutos3" value="#{proximosPartidosBean.minutos3}" min="1" max="89" />						
 							
 							
 							<p:commandButton update="mensaje" value="Confirmar cambios" id="confirmar"

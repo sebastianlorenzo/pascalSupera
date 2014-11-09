@@ -540,12 +540,13 @@ public class VistaWebController {
 					
 				}
 				// CONFIRMAR CAMBIOS ************************************************************************
-				public String confirmarCambios (String nomUsuario,String comentario,String idOferta) {
+				public String confirmarCambios (String nomPartido,String cambio1,String cambio2,String cambio3) {
 					
 					String envio= "{"+
-							"nomUsuario"+":"+nomUsuario+","+
-							"comentario"+":"+comentario+","+
-							"idOferta"+":"+idOferta+
+							"partido"+":"+nomPartido+","+
+							"cambio1"+":"+cambio1+","+
+							"cambio2"+":"+cambio2+","+
+							"cambio3"+":"+cambio3+
 						   "}";
 					
 					Client client = ClientBuilder.newClient();		

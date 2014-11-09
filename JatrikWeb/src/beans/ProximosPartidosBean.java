@@ -7,20 +7,27 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
+import tipos.DataCambio;
 import tipos.DataJugador;
 import tipos.DataListaJugador;
 import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class ProximosPartidosBean {
 	
 	private List<DataResumenPartido> ldrp;
@@ -52,14 +59,11 @@ public class ProximosPartidosBean {
 		this.nombreEquipo = bean.getNomEquipo();
 		VistaWebController vwc = new VistaWebController();
 		String respuesta = vwc.listarProximosPartidos(this.nombreEquipo);
-		System.out.println(respuesta);
 		Gson g = new Gson();
 		DataListaPartido dataPartidos =g.fromJson(respuesta, DataListaPartido.class);
 		this.ldrp = dataPartidos.getLstPartidos();
 		String respuesta_titualres = vwc.obtenerTitulares(this.nombreEquipo);
 		String respuesta_suplentes = vwc.obtenerSuplentes(this.nombreEquipo);
-		System.out.println(respuesta_titualres);
-		System.out.println(respuesta_suplentes);
 		DataListaJugador tit = g.fromJson(respuesta_titualres, DataListaJugador.class);
 		DataListaJugador sup = g.fromJson(respuesta_suplentes, DataListaJugador.class);
 		this.titulares= tit.getListJugadores();
@@ -178,23 +182,42 @@ public class ProximosPartidosBean {
 		this.drp = drp;
 	}
 
-	public void confirmarCambios(){
-		if (this.drp!=null)
-		System.out.println(drp.getNomPartido());
+	public void confirmarCambios() throws JSONException{
+		if (this.drp!=null){
+			DataCambio dc1 = null;
+			DataCambio dc2= null;
+			DataCambio dc3=null;
 		if (this.entra1!=null && this.sale1!=null && this.minutos1!=null){
-			System.out.println(entra1.getNomJugador());
-			System.out.println(sale1.getNomJugador());
-			System.out.println(this.minutos1.toString());
+			dc1 = new DataCambio(entra1.getIdJugador(),sale1.getIdJugador(),minutos1,drp.getNomPartidoEnBase());
 		}
 		if (this.entra2!=null && this.sale2!=null && this.minutos2!=null){
-			System.out.println(entra2.getNomJugador());
-			System.out.println(sale2.getNomJugador());
-			System.out.println(this.minutos2.toString());
+			dc2 = new DataCambio(entra2.getIdJugador(),sale2.getIdJugador(),minutos2,drp.getNomPartidoEnBase());
 		}
 		if (this.entra3!=null && this.sale3!=null && this.minutos3!=null){
-			System.out.println(entra3.getNomJugador());
-			System.out.println(sale3.getNomJugador());
-			System.out.println(this.minutos3.toString());
+			dc3 = new DataCambio(entra3.getIdJugador(),sale3.getIdJugador(),minutos3,drp.getNomPartidoEnBase());
+		}
+		Gson g = new Gson();
+		VistaWebController vwc = new VistaWebController();
+		String respuesta=vwc.confirmarCambios(drp.getNomPartidoEnBase(), g.toJson(dc1), g.toJson(dc2), g.toJson(dc3));
+		JSONObject json = new JSONObject(respuesta);
+		Severity icono;
+		String mensaje;
+		if (json.getString("cambios_realizados").equals("ok")){
+			
+			icono=FacesMessage.SEVERITY_INFO;
+			mensaje = "Cambios realizados con éxito";
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(icono ,"" ,mensaje);
+			context.addMessage(null, message);
+		}
+		else{
+			icono=FacesMessage.SEVERITY_ERROR;
+			mensaje = "Há ocurrido un error, intentelo de nuevo.";
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(icono ,"" ,mensaje);
+			context.addMessage(null, message);
+			
+		}
 		}
 		
 	}
