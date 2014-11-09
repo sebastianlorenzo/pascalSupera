@@ -668,7 +668,7 @@ public class PartidoController implements IPartidoController
 	
 	private String getMensajeResumenPartido(String nom_equipo_local, String nom_equipo_visitante, int[] goles, int[] tarjetasAmarillas, int[] tarjetasRojas, int[] lesiones)
 	{
-		return "\nHa continuación se muestra el resumen del partido:\n\t"
+		return "\nEl resumen del partido es el siguiente:\n\t"
 			     + nom_equipo_local     + "\n\t\tGoles: "          + goles[0]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[0] 
 			 				            + "\n\t\tTarjetas Rojas: " + tarjetasRojas[0] + "\n\t\tLesiones: "           + lesiones[0]          + "\n\n\t"
 			 	 + nom_equipo_visitante + "\n\t\tGoles: "          + goles[1]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[1]
