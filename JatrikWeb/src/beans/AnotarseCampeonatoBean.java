@@ -82,16 +82,22 @@ public class AnotarseCampeonatoBean {
 		String cabecera;
 		Severity icono;
 		String mensaje_box;
-		if (json.getBoolean("inscripcion")){
-			cabecera="Enhorabuena!";
+		Integer i= json.getInt("inscripcion");
+		if (i>0){
+			cabecera="Felicitaciones!";
 			icono=FacesMessage.SEVERITY_INFO;
 			mensaje_box="Su inscripción fue realizada con éxito";
-		}			
-		else{
+		}	
+		else if (i==0){
 			cabecera="Lo siento.";
 			icono=FacesMessage.SEVERITY_ERROR;
-			mensaje_box="Ocurrió un error al inscribirse";
+			mensaje_box="Ocurrió un error al inscribirse, intentelo de nuevo";
 		}
+		else{//==-1
+			cabecera="Lo siento.";
+			icono=FacesMessage.SEVERITY_ERROR;
+			mensaje_box="Ya esta anotado a un campeonato.";
+		}	
 				
 		FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje_box);
 	    RequestContext.getCurrentInstance().showMessageInDialog(message);	
