@@ -5,20 +5,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<meta name="Description"
-		content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
-	<meta name="Keywords"
-		content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
 	<link rel="stylesheet" media="screen"
 		href="../../resources/css/style.css" />
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<meta name="Author" content="SymiSun* - symisun.com" />
-	<meta name="Robots" content="index,follow" />
 	<meta http-equiv="imagetoolbar" content="no" />
-	<!-- disable IE's image toolbar -->
 </h:head>
 <h:body>
 	<div id="daddy">
@@ -53,11 +45,11 @@
 								<h:outputText
 									value="Visitante: #{DataResumenPartido.eqVisitante}" />
 
-								<p:commandButton update=":form_ventana:ventana"
+								<p:commandButton 
 									value="Configurar Cambios" style="margin-top:8px;"
 									oncomplete="PF('ofertaVentana').show()">
 									<f:setPropertyActionListener value="#{DataResumenPartido}"
-										target="#{historialPartidosBean.drp}" />
+												target="#{proximosPartidosBean.drp}" />
 								</p:commandButton>
 
 							</h:panelGrid>
@@ -67,19 +59,80 @@
 				</h:form>
 				<h:form id="form_ventana">
 					<p:growl id="mensaje" showDetail="true" />
-					<p:dialog header="Complete su oferta" widgetVar="ofertaVentana"
+					<p:dialog header="Configurar Cambios" widgetVar="ofertaVentana"
 						modal="true" showEffect="fade" hideEffect="fade"
 						closeOnEscape="true" resizable="false">
-						<h:panelGrid columns="2" style="margin-bottom:10px"
+						<h:panelGrid id="ventana" columns="3" style="margin-bottom:10px"
 							cellpadding="5">
-							<p:outputLabel for="console" value="Basic:" />
-							<p:selectOneMenu id="console"
-								value="#{selectOneMenuView.console}">
-								<f:selectItem itemLabel="Select One" itemValue="" />
-								<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
-								<f:selectItem itemLabel="PS4" itemValue="PS4" />
-								<f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+							<p:outputLabel  value="Sale:" />
+							<p:outputLabel  value="Entra:" />
+							<p:outputLabel value="Minutos(1-89):" />
+							
+							<p:selectOneMenu id="sale1"
+								value="#{proximosPartidosBean.sale1}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
 							</p:selectOneMenu>
+							<p:selectOneMenu id="entra1"
+								value="#{proximosPartidosBean.entra1}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos1" value="#{proximosPartidosBean.minutos1}" min="1" max="89" />
+							
+							<p:selectOneMenu id="sale2"
+								value="#{proximosPartidosBean.sale2}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:selectOneMenu id="entra2"
+								value="#{proximosPartidosBean.entra2}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos2" value="#{proximosPartidosBean.minutos2}" min="1" max="89" />
+							
+							<p:selectOneMenu id="sale3"
+								value="#{proximosPartidosBean.sale3}" converter="converterTitulares" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.titulares}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:selectOneMenu id="entra3"
+								value="#{proximosPartidosBean.entra3}" converter="converterSuplentes" var="DataJugador">
+								<f:selectItem itemLabel="--" itemValue="" />
+								<f:selectItems value="#{proximosPartidosBean.suplentes}" var="DataJugador"
+									itemLabel="#{DataJugador.nomJugador}" itemValue="#{DataJugador}" />
+								<p:column >
+					                <h:outputText value="#{DataJugador.nomJugador}" />
+					            </p:column>								
+							</p:selectOneMenu>
+							<p:spinner id="minutos3" value="#{proximosPartidosBean.minutos3}" min="1" max="89" />						
+							
+							
+							<p:commandButton update="mensaje" value="Confirmar cambios" id="confirmar"
+								action="#{proximosPartidosBean.confirmarCambios()}">
+								<p:ajax oncomplete="PF('ofertaVentana').hide()"/>
+							</p:commandButton>
 						</h:panelGrid>
 					</p:dialog>
 				</h:form>

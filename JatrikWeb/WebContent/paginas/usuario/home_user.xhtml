@@ -58,31 +58,11 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 		<div id="cB" >
 			<div class="Ctopright"></div>
 			
-			<p:carousel  numVisible="1" autoPlayInterval="3000" style="float:right" 
-				 circular="true" value="#{carouselVistaNoticiasBean.list_noticias}" headerText="Ultimas Noticias" 
+			<p:carousel  numVisible="1" autoPlayInterval="3000" style="float:right"
+				 circular="true" value="#{carouselVistaNoticiasBean.lista_rss}" headerText="Ultimas Noticias" 
 				 var="DataNoticia" itemStyleClass="carItem">
-		        <h:panelGrid columns="3"  cellpadding="8" style="width:280px;height:250px" columnClasses="label,value">		         
-		            <f:facet  name="header">
-		                <p:graphicImage url="../resources/images/escudo-manya.png" />
-		                <p:graphicImage url="../resources/images/escudo-river.jpeg" />
-		            </f:facet>
-		          
-		 
-		            <h:outputText value="Resultado" />
-		            <h:outputText value="#{DataNoticia.goles_1}" />
-		            <h:outputText value="#{DataNoticia.goles_2}" />
-		            
-		            <h:outputText value="Amarillas" />
-		            <h:outputText value="#{DataNoticia.amarillas_1}" />
-		            <h:outputText value="#{DataNoticia.amarillas_2}" />
-		            
-		            <h:outputText value="Rojas" />
-		            <h:outputText value="#{DataNoticia.rojas_1}" />
-		            <h:outputText value="#{DataNoticia.rojas_2}" />
-		            
-		            <h:outputText value="Estadio" />
-		            <h:outputText value="#{DataNoticia.nomEstadio}" />
-		            
+		        <h:panelGrid columns="3"  cellpadding="8" style="width:280px;height:250px;" columnClasses="label,value">
+		            	<h:outputText escape="false" value="#{DataNoticia}" />
 		        </h:panelGrid>
 		 
 		        <f:facet name="footer">

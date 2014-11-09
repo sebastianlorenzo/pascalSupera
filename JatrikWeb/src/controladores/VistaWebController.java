@@ -52,6 +52,7 @@ public class VistaWebController {
 	//*************************PARTIDOS***************************************************************
 	private String LISTAR_PROXIMOS_PARTIDOS_PATH = "partidos/listarMisProximosPartidos";
 	private String LISTAR_PARTIDOS_JUGADOS_PATH = "partidos/listarPartidosJugados";
+	private String CONFIRMAR_CAMBIOS_PATH = "partidos/configurarCambiosPartido";	
 	
 	//*************************CAMPEONATOS***************************************************************
 	private String LISTAR_CAMPEONATOS_EN_EJECUCION_Y_FINALIZADOS_PATH = "campeonatos/listarCampeonatosEnEjecucionYFinalizados";
@@ -537,7 +538,23 @@ public class VistaWebController {
 					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 				    return respuesta;
 					
-				}	
+				}
+				// CONFIRMAR CAMBIOS ************************************************************************
+				public String confirmarCambios (String nomPartido,String cambio1,String cambio2,String cambio3) {
+					
+					String envio= "{"+
+							"partido"+":"+nomPartido+","+
+							"cambio1"+":"+cambio1+","+
+							"cambio2"+":"+cambio2+","+
+							"cambio3"+":"+cambio3+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+CONFIRMAR_CAMBIOS_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}
 
 }
 
