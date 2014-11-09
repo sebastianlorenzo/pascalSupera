@@ -1,0 +1,198 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.grupo10.jatrikandroid.Estadisticas$PlaceholderFragment" >
+
+	<LinearLayout 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_centerInParent="false"
+		android:background="@drawable/linearlayout_bg"
+		android:padding="10dp">
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="horizontal" >
+		
+			<TextView
+				android:id="@+id/texto_local"
+				android:layout_weight="3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:textColor="#FFFFFF"
+				android:gravity="center"
+				android:padding="10dp"
+				android:textStyle="bold"
+				android:background="@drawable/textview_fecha"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+      
+			<LinearLayout
+				android:layout_weight="3"
+				android:layout_width="0dp" 
+				android:layout_height="wrap_content"/>
+  		
+			<TextView
+				android:id="@+id/texto_visitante"
+				android:layout_weight="3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:textColor="#FFFFFF"
+				android:gravity="center"
+				android:padding="10dp"
+				android:textStyle="bold"
+				android:background="@drawable/textview_fecha"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+		</LinearLayout>
+		<LinearLayout	
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="horizontal" >
+
+			<TextView
+				android:id="@+id/texto_goles_local"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_left"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" /> 	
+	     
+			<TextView
+				android:id="@+id/texto_goles"
+				android:layout_weight="3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:padding="10dp"
+				android:textStyle="bold"
+				android:text="@string/goles"
+				android:background="@drawable/textview_resumen"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+	     
+			<TextView
+				android:id="@+id/texto_goles_visitante"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_rigth"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+			 
+		</LinearLayout>
+		
+		<LinearLayout	
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="horizontal" >
+
+			<TextView
+				android:id="@+id/texto_amarillas_local"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_left"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" /> 	
+	     
+			<TextView
+				android:id="@+id/texto_amarillas"
+				android:layout_weight="3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:padding="10dp"
+				android:textStyle="bold"
+				android:text="@string/amarillas"
+				android:background="@drawable/textview_resumen"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+	     
+			<TextView
+				android:id="@+id/texto_amarillas_visitante"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_rigth"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+			 
+		</LinearLayout>
+		
+		<LinearLayout	
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="horizontal" >
+
+			<TextView
+				android:id="@+id/texto_rojas_local"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_left"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" /> 	
+	     
+			<TextView
+				android:id="@+id/texto_rojas"
+				android:layout_weight="3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:padding="10dp"
+				android:textStyle="bold"
+				android:background="@drawable/textview_resumen"
+				android:text="@string/rojas"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+	     
+			<TextView
+				android:id="@+id/texto_rojas_visitante"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@drawable/textview_default_rigth"
+				android:padding="10dp"
+				style="@style/DefaultEditText"
+				android:maxLines="1"
+				android:singleLine="true" />
+			 
+		</LinearLayout>
+		 
+	</LinearLayout>
+	
+</RelativeLayout>
