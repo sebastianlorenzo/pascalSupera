@@ -56,6 +56,8 @@ public class PublicadorRSS extends HttpServlet {
         feed.setLink("http://localhost:8080/JatrikWeb/");
         feed.setDescription("Ultimos resultados de Jatrik");
         
+        List<SyndEntry> lstEntry = new ArrayList<SyndEntry>();
+        
         Iterator<DataResumenPartido> it = dlp.getLstPartidos().iterator();
 		while (it.hasNext()){
 			DataResumenPartido drp =(DataResumenPartido) it.next();
@@ -99,11 +101,11 @@ public class PublicadorRSS extends HttpServlet {
 	        categories.add(category);
 	        entry.setCategories(categories);
 
-	        List<SyndEntry> lstEntry = new ArrayList<SyndEntry>();
 	        lstEntry.add(entry);
-	        feed.setEntries(lstEntry);
+	        
 		}    
         
+		feed.setEntries(lstEntry);
         Writer writer = response.getWriter();
         response.setContentType("application/xml; charset=UTF-8");
         SyndFeedOutput output = new SyndFeedOutput();
