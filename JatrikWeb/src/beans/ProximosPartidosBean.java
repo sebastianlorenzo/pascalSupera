@@ -1,6 +1,6 @@
 package beans;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -11,21 +11,21 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataRanking;
+import dataTypes.DataListaPartido;
+import dataTypes.DataResumenPartido;
 
 @ManagedBean
 @RequestScoped
 public class ProximosPartidosBean {
 	
+	private List<DataResumenPartido> ldrp;
 	private String nombreEquipo;
 	
 	@PostConstruct
-	public void init() throws JSONException {
+	public void init() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELContext contextoEL = context.getELContext( );
 		Application apli  = context.getApplication( );		 
@@ -36,11 +36,25 @@ public class ProximosPartidosBean {
 		VistaWebController vwc = new VistaWebController();
 		String respuesta = vwc.listarProximosPartidos(this.nombreEquipo);
 		System.out.println(respuesta);
-		JSONObject json = new JSONObject(respuesta);
-		JSONArray array = json.getJSONArray("partidos");
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject ob = array.getJSONObject(i);
-		}
+		Gson g = new Gson();
+		DataListaPartido dataPartidos =g.fromJson(respuesta, DataListaPartido.class);
+		this.ldrp = dataPartidos.getLstPartidos();
+	}
+
+	public List<DataResumenPartido> getLdrp() {
+		return ldrp;
+	}
+
+	public void setLdrp(List<DataResumenPartido> ldrp) {
+		this.ldrp = ldrp;
+	}
+
+	public String getNombreEquipo() {
+		return nombreEquipo;
+	}
+
+	public void setNombreEquipo(String nombreEquipo) {
+		this.nombreEquipo = nombreEquipo;
 	}
 
 	public ProximosPartidosBean() {

@@ -26,10 +26,7 @@ public class HistorialPartidosBean {
 	private List<String> campeonatos;
 	private String campeonato_seleccionado;
 	private List <DataResumenPartido> ldrp;
-	private Integer amarillas_local;
-	private Integer amarillas_visitante;
-	private Integer goles_local;
-	private Integer goles_visitante;
+	private DataResumenPartido drp;
 	
 	
 	@PostConstruct
@@ -69,38 +66,6 @@ public class HistorialPartidosBean {
 		this.ldrp = ldrp;
 	}
 
-	public Integer getAmarillas_local() {
-		return amarillas_local;
-	}
-
-	public void setAmarillas_local(Integer amarillas_local) {
-		this.amarillas_local = amarillas_local;
-	}
-
-	public Integer getAmarillas_visitante() {
-		return amarillas_visitante;
-	}
-
-	public void setAmarillas_visitante(Integer amarillas_visitante) {
-		this.amarillas_visitante = amarillas_visitante;
-	}
-
-	public Integer getGoles_local() {
-		return goles_local;
-	}
-
-	public void setGoles_local(Integer goles_local) {
-		this.goles_local = goles_local;
-	}
-
-	public Integer getGoles_visitante() {
-		return goles_visitante;
-	}
-
-	public void setGoles_visitante(Integer goles_visitante) {
-		this.goles_visitante = goles_visitante;
-	}
-
 	public String getCampeonato_seleccionado() {
 		return campeonato_seleccionado;
 	}
@@ -109,6 +74,14 @@ public class HistorialPartidosBean {
 		this.campeonato_seleccionado = campeonato_seleccionado;
 	}
 	
+	public DataResumenPartido getDrp() {
+		return drp;
+	}
+
+	public void setDrp(DataResumenPartido drp) {
+		this.drp = drp;
+	}
+
 	public void onChange(TabChangeEvent event) {
 		if (this.campeonato_seleccionado!=null){
 			VistaWebController vwc = new VistaWebController();		

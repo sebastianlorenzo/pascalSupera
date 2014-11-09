@@ -30,27 +30,59 @@
 		<div id="contenido_body">
 
 			<div>
-				<h2 id="titulo">Información de las ofertas realizadas</h2>
-				<h:form id="form_ofertas">
-					<p:dataGrid value="#{ofertasRealizadasBean.lista_ofertas}" var="oferta"
-						columns="3" layout="grid" rows="12" paginator="true" id="equipo"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="6,12,16" emptyMessage="No tiene ofertas">
+				<h2 id="titulo">Próximos partidos</h2>
+				<h3 id="subtitulo">Puede configurar los cambios de jugadores en
+					cada partido</h3>
 
-						<f:facet title="Ofertas Realizadas" name="header">
+				<h:form id="accordionOfertar">
+					<p:dataGrid value="#{proximosPartidosBean.ldrp}"
+						var="DataResumenPartido" columns="3" layout="grid" rows="12"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6,12,16">
+
+						<f:facet title="Partidos" name="header">
 						</f:facet>
-						<p:panel  header="#{oferta.jugador}" style="text-align:center">
+
+						<p:panel header="#{DataResumenPartido.campeonato}"
+							style="text-align:center">
 							<h:panelGrid columns="1" style="width:100%">
-								<h:outputText value="Fecha: #{oferta.fecha}" />
-								<h:outputText value="Usuario actual: #{oferta.usuarioActual}" />
-								<h:outputText value="Equipo actual: #{oferta.equipoActual}" />
-								<h:outputText value="Precio ofrecido: #{oferta.precio}" />
-								<h:outputText value="Respuesta: #{oferta.comentario}" />
-								<h:outputText value="Estado: #{oferta.estado}" />
+								<h:outputText value="#{DataResumenPartido.nomPartido}" />
+								<h:outputText value="Fecha: #{DataResumenPartido.fecha}" />
+								<h:outputText value="Local: #{DataResumenPartido.eqLocal}" />
+								<h:outputText
+									value="Visitante: #{DataResumenPartido.eqVisitante}" />
+
+								<p:commandButton update=":form_ventana:ventana"
+									value="Configurar Cambios" style="margin-top:8px;"
+									oncomplete="PF('ofertaVentana').show()">
+									<f:setPropertyActionListener value="#{DataResumenPartido}"
+										target="#{historialPartidosBean.drp}" />
+								</p:commandButton>
+
 							</h:panelGrid>
 						</p:panel>
+
 					</p:dataGrid>
-				</h:form>				
+				</h:form>
+				<h:form id="form_ventana">
+					<p:growl id="mensaje" showDetail="true" />
+					<p:dialog header="Complete su oferta" widgetVar="ofertaVentana"
+						modal="true" showEffect="fade" hideEffect="fade"
+						closeOnEscape="true" resizable="false">
+						<h:panelGrid columns="2" style="margin-bottom:10px"
+							cellpadding="5">
+							<p:outputLabel for="console" value="Basic:" />
+							<p:selectOneMenu id="console"
+								value="#{selectOneMenuView.console}">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+								<f:selectItem itemLabel="PS4" itemValue="PS4" />
+								<f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</p:dialog>
+				</h:form>
 			</div>
 			<!-- cB -->
 		</div>
