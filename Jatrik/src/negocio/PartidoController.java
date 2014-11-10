@@ -313,7 +313,7 @@ public class PartidoController implements IPartidoController
 		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
 		
 		/*** Enviar notificaciones a los equipos local y visitante ***/
-		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd--MM-yyyy hh:mm");
+		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 		String fecha_partido           = formato_fecha.format(partido.getFechaPartido());
 		String nom_equipo_local        = partido.getEquipoLocal().getEquipo();
 		String nom_equipo_visitante    = partido.getEquipoVisitante().getEquipo();
