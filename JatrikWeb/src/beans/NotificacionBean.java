@@ -31,16 +31,16 @@ public class NotificacionBean {
 	@PostConstruct
 	public void init() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
-		FacesContext context = FacesContext.getCurrentInstance();
-		ELContext contextoEL = context.getELContext( );
-		Application apli  = context.getApplication( );		 
-		ExpressionFactory ef = apli.getExpressionFactory( );
-		ValueExpression ve = ef.createValueExpression(contextoEL, "#{loginBean}",LoginBean.class);
-		LoginBean bean = (LoginBean) ve.getValue(contextoEL);
-		this.nombreUsr = bean.getNombre();
+		FacesContext context   = FacesContext.getCurrentInstance();
+		ELContext contextoEL   = context.getELContext( );
+		Application apli       = context.getApplication( );		 
+		ExpressionFactory ef   = apli.getExpressionFactory( );
+		ValueExpression ve     = ef.createValueExpression(contextoEL, "#{loginBean}",LoginBean.class);
+		LoginBean bean         = (LoginBean) ve.getValue(contextoEL);
+		this.nombreUsr         = bean.getNombre();
 		
 		String respuesta = vwc.verNotificaciones(nombreUsr);
-System.out.println("***********" + respuesta);
+		
 		Gson g = new Gson();
 		DataListaNotificacion dln = g.fromJson(respuesta, DataListaNotificacion.class);
 		this.notificaciones= dln.getListNotificaciones();
