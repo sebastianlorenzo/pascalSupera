@@ -20,7 +20,13 @@
 	display: table-row; 
 	border-widh3th: 2px; 
 }
-
+#col_div_historial { 
+	display: table-cell;
+	text-align: center; 
+	vertical-align: top; 
+	border-style: solid; 
+	border-width: 2px; 
+}
 #col_div2 { 
 	display: table-cell;
 	text-align: left; 

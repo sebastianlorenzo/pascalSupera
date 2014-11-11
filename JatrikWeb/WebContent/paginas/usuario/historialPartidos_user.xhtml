@@ -28,43 +28,66 @@
 					que contiene.</h3>
 
 				<h:form id="accordionCampeonatos">
-					<p:accordionPanel id="acordion"
-						value="#{historialPartidosBean.ldrp}" var="DataResumenPartido"
-						activeIndex="#{historialPartidosBean.campeonato_seleccionado}">
-						<p:ajax event="tabChange"
-							listener="#{historialPartidosBean.onChange()}" />
-						<p:tab title="#{historialPartidosBean.campeonatos}">
-							<br></br>
-							<p:dataGrid value="#{DataEquipo.listJugadores}"
-								var="DataResumenPartido" columns="3" layout="grid" rows="12"
-								paginator="true" id="equipo"
-								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-								rowsPerPageTemplate="6,12,16">
+					<div id="row_div">
+						<div id="col_div_historial">
+							<p:selectOneMenu
+								value="#{historialPartidosBean.campeonato_seleccionado}">
+								<f:selectItem itemLabel="Seleccione un campeonato" itemValue="" />
+								<f:selectItems value="#{historialPartidosBean.campeonatos}"
+									var="campeonatos" itemLabel="#{campeonatos}"
+									itemValue="#{campeonatos}" />
+							</p:selectOneMenu>
+						</div>
+						<div id="col_div_historial">
+							<p:commandButton update=":partidos" value="Mostrar Partidos"							
+								action="#{historialPartidosBean.mostrarPartidos()}">
+							</p:commandButton>
+						</div>
+					</div>
+				</h:form>
+				<br />
+				<h:form id="partidos">
+					<p:dataGrid value="#{historialPartidosBean.ldrp}"
+						var="DataResumenPartido" columns="1" layout="grid" rows="12"
+						paginator="true" id="ventana_partidos"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6,12,16">
 
-								<f:facet title="#{historialPartidosBean.campeonatos}"
-									name="header">
-								</f:facet>
+						<f:facet title="#{historialPartidosBean.campeonatos}"
+							name="header">
+						</f:facet>
 
-								<p:panel header="#{DataResumenPartido.nomPartido}"
-									style="text-align:center">
-									<h:panelGrid columns="1" style="width:100%">
-										<h:outputText value="Fecha: #{DataResumenPartido.fecha}" />
-										<h:outputText value="Local: #{DataResumenPartido.eqLocal}" />
-										<h:outputText value="Visitante: #{DataResumenPartido.eqVisitante}" />
-										<p:dataList type="ordered">
-											<f:facet name="header">
+						<p:panel header="#{DataResumenPartido.nomPartido}"
+							style="text-align:center">
+							<h:panelGrid columns="1" style="width:100%">
+								<h:outputText value="Fecha: #{DataResumenPartido.fecha}" />
+								<h:outputText value="Local: #{DataResumenPartido.eqLocal}" />
+								<h:outputText
+									value="Visitante: #{DataResumenPartido.eqVisitante}" />
+								<h:outputText
+									value="Resultado: #{DataResumenPartido.eqLocal}   #{DataResumenPartido.golesEquipoLocal}
+										#{DataResumenPartido.eqVisitante}   #{DataResumenPartido.golesEquipoVisitante}" />
+								<h:outputText
+									value="Lesiones : #{DataResumenPartido.eqLocal}   #{DataResumenPartido.lesionesEquipoLocal}
+											#{DataResumenPartido.eqVisitante}   #{DataResumenPartido.lesionesEquipoVisitante}" />
+								<h:outputText
+									value="Tarjetas Rojas : #{DataResumenPartido.eqLocal}   #{DataResumenPartido.tarjetasRojasEquipoLocal}
+											#{DataResumenPartido.eqVisitante}   #{DataResumenPartido.tarjetasRojasEquipoVisitante}" />
+								<h:outputText
+									value="Tarjetas Amarillas : #{DataResumenPartido.eqLocal}   #{DataResumenPartido.tarjetasAmarillasEquipoLocal}
+											#{DataResumenPartido.eqVisitante}   #{DataResumenPartido.tarjetasAmarillasEquipoVisitante}" />
+
+								<p:dataList emptyMessage="No hay detalles para este partido" value="#{DataResumenPartido.detalle}" var="detalle"
+									type="ordered">
+									<f:facet name="header">
 									            Detalles minuto a minuto
 									        </f:facet>
-									        #{DataResumenPartido.detalle}"
+									       * #{detalle}
 									    </p:dataList>
-									</h:panelGrid>
-								</p:panel>
+							</h:panelGrid>
+						</p:panel>
 
-							</p:dataGrid>
-
-						</p:tab>
-
-					</p:accordionPanel>
+					</p:dataGrid>
 				</h:form>
 			</div>
 			<!-- cB -->

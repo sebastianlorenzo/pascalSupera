@@ -61,7 +61,7 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 			<p:carousel  numVisible="1" autoPlayInterval="3000" style="float:right"
 				 circular="true" value="#{carouselVistaNoticiasBean.lista_rss}" headerText="Ultimas Noticias" 
 				 var="DataNoticia" itemStyleClass="carItem">
-		        <h:panelGrid columns="3"  cellpadding="8" style="width:280px;height:250px;" columnClasses="label,value">
+		        <h:panelGrid columns="3"  cellpadding="8" style="width:654px;height:250px;" columnClasses="label,value">
 		            	<h:outputText escape="false" value="#{DataNoticia}" />
 		        </h:panelGrid>
 		 
@@ -94,5 +94,5 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	   <ui:include src="/resources/templates/footer_user.xhtml"/>
 	</ui:insert> <!--footer -->			 
 </h:body>
-	<p:socket onMessage="handleMessage" channel="/Jatrik" autoConnect="false" widgetVar='subscriber' />
+	
 </html>

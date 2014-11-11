@@ -33,15 +33,6 @@ public class RegistroBean {
 	@Size(min=1, message="El nombre del estadio no puede ser vacio")
 	private String nomEstadio;	
 	private String googleKey="AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo";
-    private List<String> paises= new ArrayList<String>() {
-	
-		private static final long serialVersionUID = 1L;
-
-	{
-        add("A");
-        add("B");
-        add("C");
-    }};
     private String paisSeleccionado="";
 
 	
@@ -89,13 +80,6 @@ public class RegistroBean {
 		this.equipo = equipo;
 	}
 	
-	
-	public List<String> getPaises() {
-		return paises;
-	}
-	public void setPaises(List<String> paises) {
-		this.paises = paises;
-	}
 	public String getPaisSeleccionado() {
 		return paisSeleccionado;
 	}
@@ -138,6 +122,12 @@ public class RegistroBean {
 		String pais = this.paisSeleccionado.replaceAll(",", "-");
 		System.out.println(this.paisSeleccionado);
 		String respuesta=vwc.registrarUsuario(nombre, pwd, mail, equipo,nomEstadio,pais);
+		this.nombre="";
+		this.pwd="";
+		this.mail="";
+		this.equipo="";
+		this.nombre="";
+		this.paisSeleccionado="";
 		JSONObject json = new JSONObject(respuesta);
 		String mensaje_box=json.getString("mensaje");
 		String cabecera;

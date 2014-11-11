@@ -10,8 +10,8 @@ import javax.faces.bean.ViewScoped;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.primefaces.event.TabChangeEvent;
 
+import tipos.DataCampeonato;
 import tipos.DataListaPartido;
 
 import com.google.gson.Gson;
@@ -41,8 +41,14 @@ public class HistorialPartidosBean {
 				JSONObject ob = array.getJSONObject(i);
 				String campeonato = ob.getString("nomCampeonato");
 				this.campeonatos.add(campeonato);
+				DataCampeonato camp = new DataCampeonato();
+				camp.setNomCampeonato(campeonato);
 			}
-		}
+		}		
+		String respuesta2 = vwc.listarPartidosJugados(campeonatos.get(0));
+		Gson g = new Gson();
+		DataListaPartido dataPartidos =g.fromJson(respuesta2, DataListaPartido.class);
+		this.ldrp = dataPartidos.getLstPartidos();
 		
 	}
 	
@@ -81,17 +87,16 @@ public class HistorialPartidosBean {
 	public void setDrp(DataResumenPartido drp) {
 		this.drp = drp;
 	}
-
-	public void onChange(TabChangeEvent event) {
-		if (this.campeonato_seleccionado!=null){
-			VistaWebController vwc = new VistaWebController();		
-			String respuesta = vwc.listarPartidosJugados(this.campeonato_seleccionado);
-			Gson g = new Gson();
-			DataListaPartido dataPartidos =g.fromJson(respuesta, DataListaPartido.class);
-			this.ldrp = dataPartidos.getLstPartidos();
-			
+	
+	public void mostrarPartidos(){
+		VistaWebController vwc = new VistaWebController();
+		String campeonato = this.campeonato_seleccionado;
+		if (!campeonato.equals("")){
+		String respuesta2 = vwc.listarPartidosJugados(campeonato);
+		Gson g = new Gson();
+		DataListaPartido dataPartidos =g.fromJson(respuesta2, DataListaPartido.class);
+		this.ldrp = dataPartidos.getLstPartidos();
 		}
-		
 	}
 	
 }
