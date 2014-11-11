@@ -7,6 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONArray;
 
@@ -293,7 +298,7 @@ public class PartidoController implements IPartidoController
 					System.out.print("Equipo del jugador null (lesion).\n");
 					return;
 				}
-				mensaje = "Lesionado el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + " se retira de la cancha.\n";
+				mensaje = "Lesionado se retira de la cancha el jugador " + jugadorDAO.getNombreJugador(idJugadorGol) + " del equipo " + jugadorDAO.obtenerEquipo(idJugadorGol).getEquipo() + ".\n";
 				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
 				comentario = new Comentario(minuto, mensaje, partido);
 				comentarios.add(comentario);
@@ -313,7 +318,7 @@ public class PartidoController implements IPartidoController
 		partidoDAO.eliminarCambiosHechosDurantePartido(partido);
 		
 		/*** Enviar notificaciones a los equipos local y visitante ***/
-		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd--MM-yyyy hh:mm");
+		SimpleDateFormat formato_fecha = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 		String fecha_partido           = formato_fecha.format(partido.getFechaPartido());
 		String nom_equipo_local        = partido.getEquipoLocal().getEquipo();
 		String nom_equipo_visitante    = partido.getEquipoVisitante().getEquipo();
@@ -337,6 +342,17 @@ public class PartidoController implements IPartidoController
 		}
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
+		
+		// Le aviso a la web que hay notificaciones nuevas para el usuario local y visitante
+		String envio  = "{nomUsuario:" + partido.getEquipoLocal().getUsuario().getLogin() + "}";		
+		Client client = ClientBuilder.newClient();		
+		WebTarget target = client.target("http://localhost:8080/JatrikWeb/restWeb/notificaciones/nuevaNotificacion");	 
+		String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+		
+		envio  = "{nomUsuario:" + partido.getEquipoVisitante().getUsuario().getLogin() + "}";		
+		client = ClientBuilder.newClient();		
+		target = client.target("http://localhost:8080/JatrikWeb/restWeb/notificaciones/nuevaNotificacion");	 
+		respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
 		
 		/*** Guardar los resultados y comentarios del partido ***/
 		partidoDAO.guardarResultadoPartido(tarjetasAmarillas, tarjetasRojas, goles, lesiones, partido, comentarios);
@@ -651,29 +667,29 @@ public class PartidoController implements IPartidoController
 	
 	private String getMensajeGanadorPartido(String fecha_partido, String nom_equipo)
 	{
-		return "FELICITACIONES! Ha ganado el partido jugado en la fecha " + fecha_partido + 
-			   " contra el equipo " + nom_equipo + ".\n";
+		return "<b>FELICITACIONES!</b> Ha ganado el partido jugado en la fecha <b>" + fecha_partido + 
+			   "hs.</b> contra el equipo <b>" + nom_equipo + "</b>.<br/>";
 	}
 	
 	private String getMensajeEmpatePartido(String fecha_partido, String nom_equipo)
 	{
-		return "El partido jugado en la fecha " + fecha_partido + 
-			   " contra el equipo " + nom_equipo + " ha finalizado con un empate.\n";
+		return "El partido jugado en la fecha <b>" + fecha_partido + 
+			   "hs.</b> contra el equipo <b>" + nom_equipo + "</b> ha finalizado con un empate.<br/>";
 	}
 	
 	private String getMensajePerdedorPartido(String fecha_partido, String nom_equipo)
 	{
-		return "El partido jugado en la fecha " + fecha_partido + 
-			   " contra el equipo " + nom_equipo + " ha finalizado. Lamentablemente, ha sido derrotado.\n";
+		return "El partido jugado en la fecha <b>" + fecha_partido + 
+			   "hs.</b> contra el equipo <b>" + nom_equipo + "</b> ha finalizado. Lamentablemente, ha sido derrotado.<br/>";
 	}
 	
 	private String getMensajeResumenPartido(String nom_equipo_local, String nom_equipo_visitante, int[] goles, int[] tarjetasAmarillas, int[] tarjetasRojas, int[] lesiones)
 	{
-		return "\nEl resumen del partido es el siguiente:\n\t"
-			     + nom_equipo_local     + "\n\t\tGoles: "          + goles[0]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[0] 
-			 				            + "\n\t\tTarjetas Rojas: " + tarjetasRojas[0] + "\n\t\tLesiones: "           + lesiones[0]          + "\n\n\t"
-			 	 + nom_equipo_visitante + "\n\t\tGoles: "          + goles[1]         + "\n\t\tTarjetas Amarillas: " + tarjetasAmarillas[1]
-	 				                    + "\n\t\tTarjetas Rojas: " + tarjetasRojas[1] + "\n\t\tLesiones: "           + lesiones[1]          + "\n";
+		return "<br/>Resumen del partido:<br/><pre>   "
+			     + nom_equipo_local     + "<br/>      Goles: "          + goles[0]         + "<br/>      Tarjetas Amarillas: " + tarjetasAmarillas[0] 
+			 				            + "<br/>      Tarjetas Rojas: " + tarjetasRojas[0] + "<br/>      Lesiones: "           + lesiones[0]          + "<br/><br/>   "
+			 	 + nom_equipo_visitante + "<br/>      Goles: "          + goles[1]         + "<br/>      Tarjetas Amarillas: " + tarjetasAmarillas[1]
+	 				                    + "<br/>      Tarjetas Rojas: " + tarjetasRojas[1] + "<br/>      Lesiones: "           + lesiones[1]          + "<br/></pre>";
 	}
 	
 	private String getMensajeComentarioJugadaErrada(Integer regateJugador)

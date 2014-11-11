@@ -39,7 +39,12 @@
 		<groupId>net.java.dev.rome</groupId>
 		<artifactId>rome</artifactId>
 		<version>1.0.0</version>
-	</dependency>			
+	</dependency>
+	<dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
