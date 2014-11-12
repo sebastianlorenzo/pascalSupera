@@ -27,7 +27,7 @@
 					cada partido</h3>
 
 				<h:form id="accordionOfertar">
-					<p:dataGrid value="#{proximosPartidosBean.ldrp}"
+					<p:dataGrid value="#{proximosPartidosBean.ldrp}" emptyMessage="No tiene partidos por jugar."
 						var="DataResumenPartido" columns="3" layout="grid" rows="12"
 						paginator="true"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

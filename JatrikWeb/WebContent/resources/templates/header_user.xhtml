@@ -5,15 +5,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	<div id="header">
-		<div id="logo">
-			<a href="../">
-				<img src="../../resources/images/logo2.jpeg" alt="Your Company Logo" width="318" height="85" />
-			</a>
-			<span id="logo-text">
-				<a href="../../">Jatrik</a>
-			</span>
-		</div>	<!-- logo -->
-		
 		<div id="menu">			
 			<h:form id="formulario_salir">			
 				<p:growl id="messages"/>
@@ -44,8 +35,8 @@
 					        <p:menuitem url="ranking_user.xhtml" value="Ver Ranking" /> 
 					        <p:menuitem url="equiposEnMapa_user.xhtml" value="Listar equipos en el mapa" />
 				        </p:submenu>
-				        <p:menuitem value="Notificaciones" url="verNotificaciones_user.xhtml"/>
-				 		<p:menuitem action="#{loginBean.salir()}" value="Salir" />
+				        <p:menuitem id="notificaciones" value="Notificaciones" url="verNotificaciones_user.xhtml" />
+				        <p:menuitem action="#{loginBean.salir()}" value="Salir" style="float:right"/>				        
 				    </p:menubar>
 			</h:form>			
 		</div>	<!-- menu -->
@@ -71,6 +62,12 @@
 				JATRIK
 			</div>
 		</div>	<!-- headerimage -->
-		
+		<script type="text/javascript">
+		function handleMessage2(message) {  	  		
+  	  		if (message.text==='si')
+  			document.getElementById('formulario_salir:notificaciones').style.background= 'red';
+        }
+		</script>
+		<p:socket onMessage="handleMessage2" connect="/notify/#{loginBean.nombre}" channel="/notify/#{loginBean.nombre}" />
 	</div>	<!-- header -->
 </ui:composition>

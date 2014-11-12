@@ -1,11 +1,11 @@
 package Notificaciones;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+
+import chat.Message;
  
 @ManagedBean
 @RequestScoped
@@ -16,6 +16,7 @@ public class NotifyView {
     private String summary;
      
     private String detail;
+    
      
     public String getSummary() {
         return summary;
@@ -31,9 +32,12 @@ public class NotifyView {
         this.detail = detail;
     }
      
-    public void send(String nomUsuario) {
+	public void send(String nomUsuario) {
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
     System.out.println("******* channel: " + CHANNEL + nomUsuario);
-        eventBus.publish(CHANNEL + nomUsuario, new FacesMessage(StringEscapeUtils.escapeHtml(summary), StringEscapeUtils.escapeHtml(detail)));
+    // el "si" es leido en la funcion de javascript handleMessage2, para saber si es realmente un llamado
+    //porque cuando se refresca la pagina tambien hace un llamado en falso
+      eventBus.publish(CHANNEL + nomUsuario, new Message(String.format("si",
+				nomUsuario, "si")));
     }
 }

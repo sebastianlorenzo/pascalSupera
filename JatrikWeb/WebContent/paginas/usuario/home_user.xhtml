@@ -18,9 +18,9 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	<script type="text/javascript">
 	    function handleMessage(message) {
 	        var chatContent = $(PrimeFaces.escapeClientId('form:public')),
-	        text = (message.user) ? message.user + ':' + message.text: message.text;
-	 
+	        text = (message.user) ? message.user + ':' + message.text: message.text;	 		
 	        chatContent.append(text + '<br />');
+	        
 	 
 	        //keep scroll
 	        chatContent.scrollTop(chatContent.height());
@@ -36,11 +36,7 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	   	function ver_desconectados(){
     	    $('#ventana_desconectados').css('visibility', 'visible');
    		};
-
-  		function handleMessage(facesmessage) {
-            facesmessage.severity = 'info';
-            PF('growl').show([facesmessage]);
-        }
+  		
 	</script>
 </h:head>
 <h:body>			
@@ -49,9 +45,6 @@ xmlns:ui="http://java.sun.com/jsf/facelets">
 	<ui:insert name="header_user" >
 	     <ui:include src="/resources/templates/header_user.xhtml"/>
 	</ui:insert> <!-- header -->	
-	
-	<p:growl widgetVar="growl" showDetail="true" />
-	<p:socket onMessage="handleMessage" channel="/notify/#{loginBean.nombre}" />
 	
 	<div id="content">	
 		<div id="cA">

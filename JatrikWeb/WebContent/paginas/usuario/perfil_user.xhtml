@@ -24,8 +24,12 @@
 
 			<div>
 				<h2 id="titulo">Mi perfil</h2>
-				<p:panelGrid columns="2">
-				
+				<p:panelGrid columns="2"
+					style="left: 54%;
+					margin-left: 24%;
+					margin-top: 30px;
+					width: 600px;">
+
 					<h:outputText value="Nombre Usuario:" />
 					<h:outputText value="#{perfilBean.nombreUsr}" />
 
@@ -37,8 +41,8 @@
 
 					<h:outputText value="Estadio:" />
 					<h:outputText value="#{perfilBean.nombreEstadio}" />
-					
-					<h:outputText value="Capital:" />
+
+					<h:outputText value="Saldo:" />
 					<h:outputText value="#{perfilBean.capital}" />
 				</p:panelGrid>
 

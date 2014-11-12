@@ -124,6 +124,7 @@ thead {
 	margin-left: 23%;
 	font: 12px arial !important;
 	color: rgba(89, 25, 25, 0);
+	float:right;
 }
 * {padding:0; margin:0}
 h1, h2, h3, h4, h5, h6, p, pre, blockquote, label, ul, ol, dl, fieldset, address {margin:0 10px}
@@ -229,7 +230,16 @@ h5 {
 #logo {
 	width:308px;
 	height:85px;
-	padding:14px 0 0 0;
+	//padding:14px 0 0 0;
+	//background:url('../images/bg_menu_starter.gif') no-repeat top right;
+	float:left;
+	display:inline;
+	position:relative
+	}
+#logo_index {
+	width:308px;
+	height:85px;
+	//padding:14px 0 0 0;
 	//background:url('../images/bg_menu_starter.gif') no-repeat top right;
 	float:left;
 	display:inline;
@@ -327,8 +337,8 @@ h5 {
 
 /* Menu */
 #menu {
-	width:690px;
-	height:53px;
+	height: 56px;
+	width: 997px;
 	background:url('../images/bg_menu.gif') repeat-x top left;
 	float:right;
 	display:inline;
@@ -392,7 +402,7 @@ h5 {
 #foot1 {height:30px; text-align:right; padding:12px 29px 0 0}
 #foot1 a:link, #foot1 a:visited {color:#888}
 #foot1 a:active {color:#999}
-#foot2 {padding:10px 360px 0 30px; color:#999}
+#foot2 {padding: 50px 867px 0px 6px; color:#999}
 #foot2 a:link, #foot2 a:visited {color:#ddd}
 #foot2 a:active {color:#eee}
 .star {color:#fc0}

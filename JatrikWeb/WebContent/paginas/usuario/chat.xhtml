@@ -50,14 +50,14 @@
 			
 			
 			<h:form id="form_desconectados">
-			  <p:accordionPanel>
+			  <p:accordionPanel activeIndex="-1">
 				<p:ajax event="tabChange" listener="#{loginBean.onTabShowDesconectados()}" update="usersDesconectados"/>				
-        		<p:tab value="Usuarios Desconectados">	
+        		<p:tab title="Usuarios Desconectados">	
 			      <p:remoteCommand name="updateListDesconectados" update="usersDesconectados" process="@this" />
 			        <h:panelGroup rendered="#{loginBean.loggedIn}">
 			            <h:panelGrid style="width:100%">
 			                <p:row>
-			                	<p:dataList id="usersDesconectados" var="userDesconectados" value="#{loginBean.usuariosDesconectados}" styleClass="usersList">
+			                	<p:dataList emptyMessage="No hay usuarios desconectados" id="usersDesconectados" var="userDesconectados" value="#{loginBean.usuariosDesconectados}" styleClass="usersList">
 				                    <f:facet id="titulo_desconectados" name="header">
 				                        Desconectados
 				                    </f:facet>

@@ -13,8 +13,6 @@ import javax.faces.context.FacesContext;
 
 import org.codehaus.jettison.json.JSONException;
 
-import tipos.DataUsuario;
-
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;

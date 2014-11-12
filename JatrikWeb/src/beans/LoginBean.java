@@ -57,6 +57,8 @@ public class LoginBean implements Serializable {
 	private String globalMessage;
 
 	private boolean loggedIn;
+	
+	private boolean hayNotificacion;
 
 	private String privateUser;
 
@@ -177,6 +179,14 @@ public class LoginBean implements Serializable {
 		this.chat = chat;
 	}
 
+	public boolean isHayNotificacion() {
+		return hayNotificacion;
+	}
+
+	public void setHayNotificacion(boolean hayNotificacion) {
+		this.hayNotificacion = hayNotificacion;
+	}
+
 	public void sendGlobal() {
 		eventBus.publish(CHANNEL + "*",new Message(String.format("<b> %s </b>: '%s'",
 				this.nombre, this.globalMessage)));
@@ -244,6 +254,7 @@ public class LoginBean implements Serializable {
 			}
 
 			else {
+				this.hayNotificacion=false;
 				this.nomEquipo= json.getString("nomEquipo");
 				this.usuariosDesconectados = new ArrayList<String>();				
 				users.add(nombre);
