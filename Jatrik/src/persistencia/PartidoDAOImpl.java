@@ -12,10 +12,6 @@ import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
 import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 import dominio.Cambio;
@@ -121,11 +117,11 @@ public class PartidoDAOImpl implements PartidoDAO
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public JSONArray obtenerPartidosLugar(String nomCampeonato)
+	public DataListaPartido obtenerPartidosLugar(String nomCampeonato)
 	{
 		Campeonato camp = em.find(Campeonato.class, nomCampeonato);
 		
-		JSONArray jpartidos = new JSONArray();
+		DataListaPartido dataListPartidos = new DataListaPartido();
 		
 		if (camp.getCantEquipos() == camp.getEquipos().size())
 		{	
@@ -138,20 +134,13 @@ public class PartidoDAOImpl implements PartidoDAO
 				String eqLocal = p.getEquipoLocal().getEquipo();
 				String eqVisitante = p.getEquipoVisitante().getEquipo();
 				
-				JSONObject ob = new JSONObject();
-				try 
-				{
-					ob.put("partido", eqLocal+" vs. "+eqVisitante);
-					ob.put("pais", eq.getPais());
-				} 
-				catch (JSONException ex) 
-				{
-					ex.printStackTrace();
-				}
-				jpartidos.put(ob);
+				DataResumenPartido dp = new DataResumenPartido();
+				dp.setNomPartido(eqLocal+ " vs. "+eqVisitante);
+				dp.setUbicacion(eq.getPais());
+				dataListPartidos.addDataPartido(dp);
 			}
 		}
-		return jpartidos;
+		return dataListPartidos;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

@@ -333,10 +333,10 @@ public class EquipoWS
 	}
 	
 	@POST
-	@Path("listarEstadisitcasJugadoresEquipo")
+	@Path("listarEstadisiticasJugadoresEquipo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String listarEstadisitcasJugadoresEquipo(String datos) throws JSONException
+	public String listarEstadisiticasJugadoresEquipo(String datos) throws JSONException
 	{
 		JSONObject datosEquipo = new JSONObject(datos);
 		String nombreEq = datosEquipo.getString("nombreEquipo");

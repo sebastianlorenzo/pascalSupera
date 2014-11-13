@@ -13,8 +13,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jettison.json.JSONArray;
-
 import dominio.Cambio;
 import dominio.Comentario;
 import dominio.Equipo;
@@ -710,7 +708,7 @@ public class PartidoController implements IPartidoController
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray obtenerPartidosPorZona(String nomCampeonato) 
+	public DataListaPartido obtenerPartidosPorZona(String nomCampeonato) 
 	{
 		return this.partidoDAO.obtenerPartidosLugar(nomCampeonato);
 	}

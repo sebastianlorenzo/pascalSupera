@@ -9,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import negocio.IPartidoController;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import com.google.gson.Gson;
@@ -63,19 +62,10 @@ public class PartidoWS
 		JSONObject datosPartido = new JSONObject(datos);
 		String nomCampeonato          = datosPartido.getString("nomCampeonato");
 		
-		JSONObject respuesta = new JSONObject();		
-		try 
-		{
-			JSONArray partidos = null;
-			partidos = iPartidoController.obtenerPartidosPorZona(nomCampeonato);
-			respuesta.put("partidos", partidos);
-
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return respuesta.toString();
+		Gson g = new Gson();
+		DataListaPartido dataPartidos = iPartidoController.obtenerPartidosPorZona(nomCampeonato);
+		return g.toJson(dataPartidos);
+		
 	}
 	
 	//previamente llamar a listar partidos en ejecución y finalizados para obtener el nombre del campeonato
