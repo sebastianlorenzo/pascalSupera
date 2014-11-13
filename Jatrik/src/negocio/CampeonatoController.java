@@ -12,7 +12,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import dominio.Campeonato;
@@ -173,7 +172,7 @@ public class CampeonatoController implements ICampeonatoController
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray listarCampEnEjecucionYFinalizados() 
+	public DataListaCampeonato listarCampEnEjecucionYFinalizados() 
 	{
 		return this.campeonatoDAO.listarCampEnEjecucionYFinalizados();
 	}

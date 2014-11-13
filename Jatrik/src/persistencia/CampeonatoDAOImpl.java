@@ -12,10 +12,6 @@ import javax.ejb.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
 import tipos.Constantes;
 import tipos.DataCampeonato;
 import tipos.DataListaCampeonato;
@@ -300,12 +296,11 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public JSONArray listarCampEnEjecucionYFinalizados() 
+	public DataListaCampeonato listarCampEnEjecucionYFinalizados() 
 	{	
 		Query query = em.createQuery("SELECT c FROM Campeonato c ORDER BY c.inicioCampeonato DESC");
 		List<Campeonato> campeonatos = query.getResultList();
-		JSONArray jcampeonatos = new JSONArray();
-		JSONObject obj;
+		DataListaCampeonato datacampeonatos = new DataListaCampeonato();
 
 		Date ahora = new Date();
 	    
@@ -315,21 +310,14 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			
 			if (fecha_campeonato.before(ahora))
 			{
-				try 
-				{	
-					String nomCamp = c.getCampeonato();
-					obj = new JSONObject();
-					obj.put("nomCampeonato", nomCamp);
-					jcampeonatos.put(obj);
-				} 
-				catch (JSONException e) 
-				{
-					e.printStackTrace();
-				}
-				
+				String nomCamp = c.getCampeonato();
+				DataCampeonato dc = new DataCampeonato();
+				dc.setNomCampeonato(nomCamp);
+					
+				datacampeonatos.addDataCampeonato(dc);			
 			}
 		}
-		return jcampeonatos;
+		return datacampeonatos;
 	}
 
 	@SuppressWarnings("unchecked")

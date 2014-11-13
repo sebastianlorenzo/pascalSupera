@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.ejb.Local;
 
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaCampeonato;
@@ -20,6 +19,6 @@ public interface ICampeonatoController
 
 	public DataListaCampeonato campeonatosEnEjecucion();
 
-	public JSONArray listarCampEnEjecucionYFinalizados();
+	public DataListaCampeonato listarCampEnEjecucionYFinalizados();
 	
 }
