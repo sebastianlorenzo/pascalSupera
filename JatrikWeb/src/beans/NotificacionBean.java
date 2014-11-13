@@ -25,7 +25,8 @@ public class NotificacionBean {
 	
 	private String nombreUsr;
 	private List<DataNotificacion> notificaciones;
-	
+	private int cant_notificaciones;
+
 	@PostConstruct
 	public void init() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
@@ -42,7 +43,7 @@ public class NotificacionBean {
 		Gson g = new Gson();
 		DataListaNotificacion dln = g.fromJson(respuesta, DataListaNotificacion.class);
 		this.notificaciones= dln.getListNotificaciones();
-		
+		this.cant_notificaciones = this.notificaciones.size();
 	}
 	
 	public NotificacionBean(){	
@@ -65,4 +66,12 @@ public class NotificacionBean {
 		this.notificaciones = notificaciones;
 	}
 
+	public int getCant_notificaciones() {
+		return cant_notificaciones;
+	}
+
+	public void setCant_notificaciones(int cant_notificaciones) {
+		this.cant_notificaciones = cant_notificaciones;
+	}
+	
 }

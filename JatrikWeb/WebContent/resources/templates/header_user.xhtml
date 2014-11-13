@@ -15,6 +15,7 @@
 				    	<p:menuitem value="Menu Principal" url="home_user.xhtml"/>	
 				    	<p:submenu label="Mi equipo" icon="ui-icon-gear">
 				    		<p:menuitem value="Ver Perfil" url="perfil_user.xhtml" icon="ui-icon-disk"/>
+				    		<p:menuitem value="Mis Jugadores" url="verJugadores_user.xhtml" icon="ui-icon-disk"/>
 				            <p:submenu label="Gestion" icon="ui-icon-refresh">				            	
 				                <p:menuitem value="Ver Táctica" url="tactica_user.xhtml" icon="ui-icon-disk"/>
 				                <p:menuitem value="Entrenar Equipo" url="entrenarEquipo_user.xhtml" icon="ui-icon-disk"/>				                
@@ -38,6 +39,7 @@
 				        <p:menuitem id="notificaciones" value="Notificaciones" url="verNotificaciones_user.xhtml" />
 				        <p:menuitem action="#{loginBean.salir()}" value="Salir" style="float:right"/>				        
 				    </p:menubar>
+			        <h:inputHidden id="cant_notificaciones" value="#{notificacionBean.cant_notificaciones}" />
 			</h:form>			
 		</div>	<!-- menu -->
 		
@@ -63,8 +65,9 @@
 			</div>
 		</div>	<!-- headerimage -->
 		<script type="text/javascript">
-		function handleMessage2(message) {  	  		
-  	  		if (message.text==='si')
+		function handleMessage2(message) {
+			//var cant_notificaciones = document.getElementById('formulario_salir:cant_notificaciones').value;
+  	  		if (message.text=='si')// ((message.text=='si') || (cant_notificaciones > 0))
   			document.getElementById('formulario_salir:notificaciones').style.background= 'red';
         }
 		</script>

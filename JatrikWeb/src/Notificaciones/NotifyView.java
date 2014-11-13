@@ -33,11 +33,9 @@ public class NotifyView {
     }
      
 	public void send(String nomUsuario) {
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-    System.out.println("******* channel: " + CHANNEL + nomUsuario);
-    // el "si" es leido en la funcion de javascript handleMessage2, para saber si es realmente un llamado
-    //porque cuando se refresca la pagina tambien hace un llamado en falso
-      eventBus.publish(CHANNEL + nomUsuario, new Message(String.format("si",
-				nomUsuario, "si")));
+		EventBus eventBus = EventBusFactory.getDefault().eventBus();
+		// el "si" es leido en la funcion de javascript handleMessage2, para saber si es realmente un llamado
+		// porque cuando se refresca la pagina tambien hace un llamado en falso
+		eventBus.publish(CHANNEL + nomUsuario, new Message(String.format("si", nomUsuario, "si")));
     }
 }

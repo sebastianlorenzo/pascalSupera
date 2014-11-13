@@ -8,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import com.google.gson.Gson;
 
 @ManagedBean
 @ApplicationScoped
@@ -21,7 +20,6 @@ public class Notificacion {
 	public void nuevaNotificacion(String datos) throws JSONException
 	{
 		JSONObject datosPartido = new JSONObject(datos);
-		Gson g = new Gson();
 		String nomUsuario = datosPartido.getString("nomUsuario");
 		
 		NotifyView nv = new NotifyView();

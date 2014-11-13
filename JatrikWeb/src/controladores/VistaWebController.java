@@ -582,5 +582,20 @@ public class VistaWebController {
 					
 				}
 
+				//NUEVO LISTAR JUGADORES DE MI EQUIPO
+				private String LISTAR_JUGADORES_PATH = "equipos/listarEstadisiticasJugadoresEquipo";
+				public String listarJugadoresDeMiEquipo (String nombreEquipo) {
+					
+					String envio= "{"+
+							"nombreEquipo"+":"+nombreEquipo+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTAR_JUGADORES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}	
+
 }
 

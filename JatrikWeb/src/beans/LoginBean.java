@@ -12,6 +12,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.Size;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -20,11 +25,14 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
+import Notificaciones.NotifyView;
+
 import com.google.gson.Gson;
 
 import chat.ChatUsers;
 import chat.Message;
 import controladores.VistaWebController;
+import dataTypes.DataListaNotificacion;
 import tipos.DataListaMensaje;
 import tipos.DataMensaje;
 
@@ -254,12 +262,16 @@ public class LoginBean implements Serializable {
 			}
 
 			else {
-				this.hayNotificacion=false;
+				//this.hayNotificacion=false;
 				this.nomEquipo= json.getString("nomEquipo");
 				this.usuariosDesconectados = new ArrayList<String>();				
 				users.add(nombre);
 				this.loggedIn = true;
 				this.apreto = false;
+				/* Para que le avise al usuario si tiene notificaciones sin leer */
+				NotifyView nv = new NotifyView();
+				nv.send(nombre);
+				/***/
 				Gson g = new Gson();
 				DataListaMensaje dlm = g.fromJson(json.getString("mensajesNuevos"), DataListaMensaje.class);
 				this.mensajes = dlm.getLstMensajes();
