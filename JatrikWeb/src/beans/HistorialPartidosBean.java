@@ -35,7 +35,7 @@ public class HistorialPartidosBean {
 		VistaWebController vwc = new VistaWebController();		
 		String respuesta = vwc.listarCampeonatosFinalizadosEjecucion();
 		JSONObject json = new JSONObject(respuesta);
-		JSONArray array = json.getJSONArray("campeonatos");
+		JSONArray array = json.getJSONArray("listCampeonatos");
 		if (array != null) {
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject ob = array.getJSONObject(i);
