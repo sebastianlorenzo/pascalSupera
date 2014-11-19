@@ -593,8 +593,9 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
-				
-				//NUEVO LISTAR JUGADORES DE MI EQUIPO
+
+				//LISTAR JUGADORES DE MI EQUIPO
+
 				private String LISTAR_JUGADORES_PATH = "equipos/listarEstadisiticasJugadoresEquipo";
 				public String listarJugadoresDeMiEquipo (String nombreEquipo) {
 					
@@ -608,6 +609,21 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}	
+				
+				//VER PARTIDOS MAPA
+				private String LISTAR_PARTIDOS_MAPA_PATH = "partidos/listarPartidosMapa";
+				public String listarPartidosMapa (String nomCampeonato) {
+					
+					String envio= "{"+
+							"nomCampeonato"+":"+nomCampeonato+
+						   "}";
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+LISTAR_PARTIDOS_MAPA_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);
+				    return respuesta;
+					
+				}
 
 }
 

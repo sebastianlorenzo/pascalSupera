@@ -23,10 +23,7 @@ import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.SyndFeedOutput;
-
 import controladores.VistaWebController;
-import tipos.DataJugador;
-import tipos.DataListaJugador;
 import tipos.DataListaPartido;
 import tipos.DataResumenPartido;
 

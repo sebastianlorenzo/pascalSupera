@@ -2,14 +2,9 @@ package Notificaciones;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-
-import com.google.gson.Gson;
-
 import controladores.VistaWebController;
-import beans.NotificacionBean;
 import chat.Message;
  
 @ManagedBean

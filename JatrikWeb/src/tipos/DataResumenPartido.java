@@ -9,7 +9,8 @@ public class DataResumenPartido
 	public String eqVisitante;
 	public String campeonato;
 	public String fecha;
-	public String nomPartidoEnBase;	
+	public String nomPartidoEnBase;
+	public String ubicacion;
 	
 	public Integer tarjetasAmarillasEquipoLocal;
 	public Integer tarjetasAmarillasEquipoVisitante;
@@ -194,6 +195,16 @@ public class DataResumenPartido
 	public void setDetalle(List<String> detalle) 
 	{
 		this.detalle = detalle;
+	}
+	
+	public String getUbicacion() 
+	{
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) 
+	{
+		this.ubicacion = ubicacion;
 	}
 
 }
