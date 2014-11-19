@@ -126,6 +126,18 @@ thead {
 	color: rgba(89, 25, 25, 0);
 	float:right;
 }
+
+#notificacion {
+	position: absolute;
+	right: 460px;
+	top: 15px;
+	border-radius: 4px;
+	background: red;
+	width: 20px;
+	height: 18px;
+	text-align: center;
+}
+
 * {padding:0; margin:0}
 h1, h2, h3, h4, h5, h6, p, pre, blockquote, label, ul, ol, dl, fieldset, address {margin:0 10px}
 li, dd {margin-left:15px}

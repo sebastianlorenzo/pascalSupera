@@ -12,6 +12,11 @@
 		href="../../resources/css/style.css" />
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
+	<script type="text/javascript">
+		window.onload = function() {
+			document.getElementById('formulario_salir:cant_notificaciones').style.display = 'none';
+		}
+	</script>
 </h:head>
 <h:body>
 	<div id="daddy">
@@ -24,7 +29,7 @@
 
 			<div>
 				<h:form> 
-				    <p:dataScroller value="#{notificacionBean.notificaciones}" var="notificacion" chunkSize="10">
+				    <p:dataScroller value="#{notificacionBean.cargarNotificaciones()}" var="notificacion" chunkSize="10">
 				        <f:facet name="header">
 				            Mis notificaciones
 				        </f:facet>

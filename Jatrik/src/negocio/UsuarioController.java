@@ -171,6 +171,12 @@ public class UsuarioController implements IUsuarioController
 	{
 		return this.usuarioDAO.obtenerNotificaciones(login);
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public Integer cantidadNotificacionesSinLeer(String login) 
+	{
+		return this.usuarioDAO.obtenerCantidadNotificaciones(login);
+	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public void setearNuevosAmigos(String nomUsuario, List<String> listUs) 

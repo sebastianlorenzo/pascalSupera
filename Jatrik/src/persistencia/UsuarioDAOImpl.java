@@ -253,6 +253,23 @@ public class UsuarioDAOImpl implements UsuarioDAO
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Integer obtenerCantidadNotificaciones(String login) 
+	{
+		/*Usuario u = em.find(Usuario.class, login);
+		if(u != null){*/
+			Query query = em.createQuery("SELECT n FROM Notificacion n "
+									   + "WHERE n.receptorNotificacion = '" + login + "' AND "
+									   + "n.vista = FALSE "
+									   + "ORDER BY n.idNotificacion DESC");
+
+			List<Notificacion> notificaciones = query.getResultList();
+			return notificaciones.size();
+		/*}
+		return 0;*/
+	}
+	
 	public void enviarNotificacion(String nom_usuario, String texto_notificacion)
 	{
 		Usuario usuario = em.find(Usuario.class, nom_usuario);

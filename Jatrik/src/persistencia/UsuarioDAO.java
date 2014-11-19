@@ -46,6 +46,8 @@ public interface UsuarioDAO
 	public void enviarNotificacion(String nom_usuario, String texto_notificacion);
 	
 	public DataListaNotificacion obtenerNotificaciones(String login);
+	
+	public Integer obtenerCantidadNotificaciones(String login);
 
 	public void setearAmigos(String nomUsuario, List<String> listUs);
 

@@ -2,9 +2,14 @@ package Notificaciones;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
+import com.google.gson.Gson;
+
+import controladores.VistaWebController;
+import beans.NotificacionBean;
 import chat.Message;
  
 @ManagedBean
@@ -33,9 +38,12 @@ public class NotifyView {
     }
      
 	public void send(String nomUsuario) {
+		VistaWebController vwc = new VistaWebController();
+		String cantNotificaciones = vwc.obtenerCantNotificaciones(nomUsuario) + 1;
+		
 		EventBus eventBus = EventBusFactory.getDefault().eventBus();
 		// el "si" es leido en la funcion de javascript handleMessage2, para saber si es realmente un llamado
 		// porque cuando se refresca la pagina tambien hace un llamado en falso
-		eventBus.publish(CHANNEL + nomUsuario, new Message(String.format("si", nomUsuario, "si")));
+		eventBus.publish(CHANNEL + nomUsuario, new Message(String.format("si_" + cantNotificaciones, nomUsuario, "si")));
     }
 }

@@ -42,9 +42,9 @@ public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Size(min = 1, message = "EL nombre no puede ser vacÃ­o")
+	@Size(min = 1, message = "EL nombre no puede ser vacío")
 	private String nombre;
-	@Size(min = 1, message = "La contraseÃ±a no puede ser vacÃ­a")
+	@Size(min = 1, message = "La contraseña no puede ser vacía")
 	private String pwd;
 	private boolean admin;
 	private String nomEquipo;
@@ -262,16 +262,16 @@ public class LoginBean implements Serializable {
 			}
 
 			else {
-				//this.hayNotificacion=false;
 				this.nomEquipo= json.getString("nomEquipo");
 				this.usuariosDesconectados = new ArrayList<String>();				
 				users.add(nombre);
 				this.loggedIn = true;
 				this.apreto = false;
+				
 				/* Para que le avise al usuario si tiene notificaciones sin leer */
 				NotifyView nv = new NotifyView();
 				nv.send(nombre);
-				/***/
+				
 				Gson g = new Gson();
 				DataListaMensaje dlm = g.fromJson(json.getString("mensajesNuevos"), DataListaMensaje.class);
 				this.mensajes = dlm.getLstMensajes();

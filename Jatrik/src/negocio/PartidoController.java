@@ -341,7 +341,7 @@ public class PartidoController implements IPartidoController
 		usuarioDAO.enviarNotificacion(partido.getEquipoLocal().getUsuario().getLogin(), notificacionEquipoLocal);
 		usuarioDAO.enviarNotificacion(partido.getEquipoVisitante().getUsuario().getLogin(), notificacionEquipoVisitante);
 		
-		// Le aviso a la web que hay notificaciones nuevas para el usuario local y visitante
+		// TODO Le aviso a la web que hay notificaciones nuevas para el usuario local y visitante
 		String envio  = "{nomUsuario:" + partido.getEquipoLocal().getUsuario().getLogin() + "}";		
 		Client client = ClientBuilder.newClient();		
 		WebTarget target = client.target("http://localhost:8080/JatrikWeb/restWeb/notificaciones/nuevaNotificacion");	 

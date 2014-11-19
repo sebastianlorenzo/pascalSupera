@@ -36,11 +36,12 @@
 					        <p:menuitem url="ranking_user.xhtml" value="Ver Ranking" /> 
 					        <p:menuitem url="equiposEnMapa_user.xhtml" value="Listar equipos en el mapa" />
 				        </p:submenu>
-				        <p:menuitem id="notificaciones" value="Notificaciones" url="verNotificaciones_user.xhtml" />
+				        <p:menuitem id="notificaciones" value="Notificaciones" url="verNotificaciones_user.xhtml"/>				        
 				        <p:menuitem action="#{loginBean.salir()}" value="Salir" style="float:right"/>				        
 				    </p:menubar>
-			        <h:inputHidden id="cant_notificaciones" value="#{notificacionBean.cant_notificaciones}" />
-			</h:form>			
+					<h:graphicImage id="cant_notificaciones" value="../../resources/images/notificacion2.png" style="position: absolute;right: 460px;top: 5px; border-radius: 3px;width: 30px;height: 30px;text-align: center; display: none" />
+					
+			</h:form>
 		</div>	<!-- menu -->
 		
 		<div id="ticker">
@@ -64,13 +65,35 @@
 				JATRIK
 			</div>
 		</div>	<!-- headerimage -->
+		
 		<script type="text/javascript">
-		function handleMessage2(message) {
-			//var cant_notificaciones = document.getElementById('formulario_salir:cant_notificaciones').value;
-  	  		if (message.text=='si')// ((message.text=='si') || (cant_notificaciones > 0))
-  			document.getElementById('formulario_salir:notificaciones').style.background= 'red';
-        }
+		
+		 		
+			function handleMessage2(message) {
+				var cant_notificaciones = "#{notificacionBean.cant_notificaciones}";
+				var msg = message.text.split('_');
+				
+				if (cant_notificaciones > 0) {
+					document.getElementById('formulario_salir:cant_notificaciones').style.display = 'block';
+				}
+	  	  		else {
+		  	  		if (msg[0] == 'si') {
+		  	  			if (msg[1] > 0) {
+							document.getElementById('formulario_salir:cant_notificaciones').style.display = 'block';
+		  	  			}
+			  	  		else{
+		  	  				document.getElementById('formulario_salir:cant_notificaciones').style.display = 'none';
+			  	  		}
+					}
+		  	  		else{
+	  	  				document.getElementById('formulario_salir:cant_notificaciones').style.display = 'none';
+		  	  		}
+				}
+       		}
+       		
+       	
 		</script>
+		
 		<p:socket onMessage="handleMessage2" connect="/notify/#{loginBean.nombre}" channel="/notify/#{loginBean.nombre}" />
 	</div>	<!-- header -->
 </ui:composition>

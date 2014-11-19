@@ -194,6 +194,19 @@ public class UsuarioWS
 		return g.toJson(dataNotif);
     }
     
+    @POST
+	@Path("cantidadNotificacionesSinLeer")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String cantidadNotificacionesSinLeer(String datos) throws JSONException
+    {
+    	JSONObject datosNotificacion = new JSONObject(datos);
+		String nomUsuario = datosNotificacion.getString("nomUsuario"); //Logueado
+		Gson g = new Gson();
+		Integer cantNotif = iUsuarioController.cantidadNotificacionesSinLeer(nomUsuario);
+		return g.toJson(cantNotif);
+    }
+    
 	@GET
 	@Path("verRanking")
 	@Produces(MediaType.APPLICATION_JSON)

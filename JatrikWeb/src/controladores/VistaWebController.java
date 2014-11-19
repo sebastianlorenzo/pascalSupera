@@ -31,6 +31,7 @@ public class VistaWebController {
 	private String VER_RANKING_PATH = "usuarios/verRanking";
 	private String VER_PERFIL_PATH = "usuarios/verPerfil";	
 	private String VER_NOTIFICACIONES_PATH = "usuarios/verNotificaciones";
+	private String CANT_NOTIFICACIONES_PATH = "usuarios/cantidadNotificacionesSinLeer";
 	//*************************CAMPEONATO***************************************************************
 	private String CREAR_CAMPEONATO_PATH = "campeonatos/crear";
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
@@ -571,7 +572,6 @@ public class VistaWebController {
 				}
 				// VER NOTIFICACIONES	*******************************************************************************
 				public String verNotificaciones (String nomUsuario) {
-					
 					String envio= "{"+
 							"nomUsuario"+":"+nomUsuario+
 						   "}";		
@@ -581,7 +581,19 @@ public class VistaWebController {
 				    return respuesta;
 					
 				}
-
+				
+				// CANTIDAD DE NOTIFICACIONES	***********************************************************************
+				public String obtenerCantNotificaciones (String nomUsuario) {
+					String envio= "{"+
+							"nomUsuario"+":"+nomUsuario+
+						   "}";		
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH + CANT_NOTIFICACIONES_PATH);	 
+					String respuesta=target.request(MediaType.APPLICATION_JSON).post(Entity.json(envio),String.class);			 
+				    return respuesta;
+					
+				}
+				
 				//NUEVO LISTAR JUGADORES DE MI EQUIPO
 				private String LISTAR_JUGADORES_PATH = "equipos/listarEstadisiticasJugadoresEquipo";
 				public String listarJugadoresDeMiEquipo (String nombreEquipo) {
