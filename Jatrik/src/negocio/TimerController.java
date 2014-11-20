@@ -32,7 +32,7 @@ public class TimerController {
         System.out.println("***************FIN ENTRENAMIENTO **************");
     }
 	
-	@Schedule(second="0", minute="0", hour="*", dayOfWeek="*", dayOfMonth="*", month="*", year="*", info="SimularPartido")
+	@Schedule(second="0", minute="0", hour="*", dayOfWeek="*", dayOfMonth="*", month="*", year="*", info="SimularPartido",persistent=false)
     private void scheduledSimularPartidos(final Timer t) {
 		System.out.print("***********************************\n");
 		System.out.print("***** INICIO SIMULAR PARTIDOS *****\n");

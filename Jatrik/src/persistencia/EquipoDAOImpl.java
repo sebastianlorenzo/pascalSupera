@@ -44,7 +44,7 @@ public class EquipoDAOImpl implements EquipoDAO
 		}
 		catch (Throwable ex)
 		{
-			System.out.println("EXCEPCIÓN: " + ex.getClass());
+			System.out.println("EXCEPCIï¿½N: " + ex.getClass());
             return null;
 		}
 	}
@@ -173,7 +173,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	}
 
 	// Pone tarjetas amarillas de los jugadores y cantidad de cambios realizados por el equipo en 0.
-	// Además, restablece el valor del estado del jugador como estaba antes de jugarse el partido
+	// Ademï¿½s, restablece el valor del estado del jugador como estaba antes de jugarse el partido
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void restablecerEquipoLuegoPartido(String nomEquipo, List<Jugador> jugadoresAntes)
 	{
@@ -683,7 +683,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			System.out.println("actualizarPuntajesEquipo: Usuario null.");
 			return;
 		}
-		query = em.createQuery("SELECT e.campeonatos FROM Equipo e WHERE e.equipo = '" + equipo + "'");
+		query = em.createQuery("SELECT c FROM Campeonato c WHERE c.campeonato = '" + campeonato + "'");
 		List<Campeonato> campeonatos = query.getResultList();
 		Campeonato c = (campeonatos != null) ? campeonatos.get(0) : null;
 		if (c == null)
