@@ -33,16 +33,22 @@
 		<h3 id="subtitulo">Elija el campeonato para ver los partidos del
 			mismo en el mapa.</h3>
 		<h:form>
-			<p:selectOneMenu value="#{mapaPartidosBean.campeonato_seleccionado}">
-				<f:selectItem itemLabel="Seleccione un campeonato" itemValue="" />
-				<f:selectItems value="#{mapaPartidosBean.campeonatos}"
-					var="campeonatos" itemLabel="#{campeonatos}"
-					itemValue="#{campeonatos}" />
-			</p:selectOneMenu>
-
-			<p:commandButton update=":partidos" value="Mostrar Partidos"
-				action="#{mapaPartidosBean.mostrarPartidos()}">
-			</p:commandButton>
+			<div id="row_div">
+				<div id="col_div_historial">
+					<p:selectOneMenu
+						value="#{mapaPartidosBean.campeonato_seleccionado}">
+						<f:selectItem itemLabel="Seleccione un campeonato" itemValue="" />
+						<f:selectItems value="#{mapaPartidosBean.campeonatos}"
+							var="campeonatos" itemLabel="#{campeonatos}"
+							itemValue="#{campeonatos}" />
+					</p:selectOneMenu>
+				</div>
+				<div id="col_div_historial">
+					<p:commandButton update=":partidos" value="Mostrar Partidos"
+						action="#{mapaPartidosBean.mostrarPartidos()}">
+					</p:commandButton>
+				</div>
+			</div>
 		</h:form>
 		<br />
 		<!-- 
