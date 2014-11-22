@@ -20,7 +20,7 @@
 	<meta http-equiv="imagetoolbar" content="no" />
 	<!-- disable IE's image toolbar -->
 	<script type="text/javascript"
- 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo">
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo">
      </script>
 </h:head>
 <h:body>
@@ -28,24 +28,24 @@
 		<ui:insert name="header_user">
 			<ui:include src="/resources/templates/header_user.xhtml" />
 		</ui:insert>
-		
+
 		<h2 id="titulo">Campeonatos</h2>
-				<h3 id="subtitulo">Elija el campeonato para ver los partidos del mismo en el mapa.</h3>
+		<h3 id="subtitulo">Elija el campeonato para ver los partidos del
+			mismo en el mapa.</h3>
+		<h:form>
+			<p:selectOneMenu value="#{mapaPartidosBean.campeonato_seleccionado}">
+				<f:selectItem itemLabel="Seleccione un campeonato" itemValue="" />
+				<f:selectItems value="#{mapaPartidosBean.campeonatos}"
+					var="campeonatos" itemLabel="#{campeonatos}"
+					itemValue="#{campeonatos}" />
+			</p:selectOneMenu>
 
-							<p:selectOneMenu
-								value="#{mapaPartidosBean.campeonato_seleccionado}">
-								<f:selectItem itemLabel="Seleccione un campeonato" itemValue="" />
-								<f:selectItems value="#{mapaPartidosBean.campeonatos}"
-									var="campeonatos" itemLabel="#{campeonatos}"
-									itemValue="#{campeonatos}" />
-							</p:selectOneMenu>
-			
-							<p:commandButton update=":partidos" value="Mostrar Partidos"							
-								action="#{mapaPartidosBean.mostrarPartidos()}">
-							</p:commandButton>
-
-				<br />
-<!-- 
+			<p:commandButton update=":partidos" value="Mostrar Partidos"
+				action="#{mapaPartidosBean.mostrarPartidos()}">
+			</p:commandButton>
+		</h:form>
+		<br />
+		<!-- 
 				<h:form id="partidos">
 					<p:dataGrid value="#{mapaPartidosBean.ldrp}"
 						var="DataResumenPartido" columns="1" layout="grid" rows="12"
@@ -66,18 +66,19 @@
 
 					</p:dataGrid>
 				</h:form>
- -->				
+ -->
 		<!-- header -->
 
 		<div id="content_mapa">
 			<h2 id="titulo">Partidos en el mapa</h2>
-			<h3 id="subtitulo">En cada ubicación se puede ver el partido jugado o próximo a jugarse.</h3>
-<h:form id="partidos"> 
-			<div class="center">
-			<p:gmap center="-34,-58.283333" zoom="4" type="ROADMAP"
-				style="width:700px;height:550px" model="#{mapaPartidosBean.model}" />
-			</div>
-</h:form>
+			<h3 id="subtitulo">En cada ubicación se puede ver el partido
+				jugado o próximo a jugarse.</h3>
+			<h:form id="partidos">
+				<div class="center">
+					<p:gmap center="-34,-58.283333" zoom="4" type="ROADMAP"
+						style="width:700px;height:550px" model="#{mapaPartidosBean.model}" />
+				</div>
+			</h:form>
 		</div>
 		<!-- content -->
 		<p:ajaxStatus id="startAjax">
