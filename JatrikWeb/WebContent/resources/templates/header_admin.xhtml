@@ -1,37 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui"> 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<meta name="Description" content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
-	<meta name="Keywords" content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
-	<link rel="stylesheet" media="screen" href="../../resources/css/style.css" />
-	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<meta name="Author" content="SymiSun* - symisun.com" />
-	<meta name="Robots" content="index,follow" />
-	<meta http-equiv="imagetoolbar" content="no" />
-</h:head>
-<h:body>		
-	<div id="header">
-		<div id="logo">
-			<a href="../">
-				<img src="../../resources/images/logo2.jpeg" alt="Your Company Logo" width="318" height="85" />
-			</a>
-			<span id="logo-text">
-				<a href="../../">Jatrik</a>
-			</span>
-		</div>	<!-- logo -->
-		
-		<div id="menu">
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<div id="header">		
+		<div id="menu" >
 			<h:form id="formulario_salir">
-				<ul>
-									
-					<li><a href="">Forums</a></li>
-					<li><a href="">Gallery</a></li>
-					<li><a href="">Links</a></li>
+				<ul style="float:right;">
+					<li><a href="home_admin.xhtml">Menu Principal</a></li>
 					<li><a href="crearCampeonato_admin.xhtml">Crear Campeonato</a></li>				
 					<li>
 					 <p:commandLink action="#{loginBean.salir()}" value="Salir" />					
@@ -41,28 +19,14 @@ xmlns:p="http://primefaces.org/ui">
 		</div>	<!-- menu -->
 		
 		<div id="ticker">
-			 Juego de Fútbol Manager. Dirige tu propio equipo.
+			 Pagina del Administrado, puedes crear un nuevo campeonato.
 		</div>	<!-- ticker -->
 		
-		<div id="headerimage">			
-			<div id="icons">
-				<a href="../" >
-					<img src="../../resources/images/icon_home.gif" alt="Home" width="13" height="13" id="home" />
-				</a>
-				<a href="../">
-					<img src="../../resources/images/icon_sitemap.gif" alt="Sitemap" width="13" height="13" id="sitemap" />
-				</a>
-				<a href="../../">
-					<img src="../../resources/images/icon_contact.gif" alt="Contact" width="13" height="13" id="contact" />
-				</a>			
-			</div>	<!-- icons -->
-			
+		<div id="headerimage">				
 			<div id="slogan">
 				JATRIK
 			</div>
 		</div>	<!-- headerimage -->
 		
 	</div>	<!-- header -->
-		 
-</h:body>
-</html>
+</ui:composition>

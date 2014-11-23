@@ -31,9 +31,9 @@ public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Size(min = 1, message = "EL nombre no puede ser vacío")
+	@Size(min = 1, message = "EL nombre no puede ser vacï¿½o")
 	private String nombre;
-	@Size(min = 1, message = "La contraseña no puede ser vacía")
+	@Size(min = 1, message = "La contraseï¿½a no puede ser vacï¿½a")
 	private String pwd;
 	private boolean admin;
 	private String nomEquipo;
@@ -286,7 +286,7 @@ public class LoginBean implements Serializable {
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje);
 			context.addMessage(null, message);
-			return "/index.xhtml?faces-redirect=true";
+			return "";
 		}
 
 	}

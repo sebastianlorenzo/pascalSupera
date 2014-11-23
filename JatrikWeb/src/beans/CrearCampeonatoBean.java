@@ -62,7 +62,10 @@ public class CrearCampeonatoBean {
 			cabecera="Lo siento.";
 			icono=FacesMessage.SEVERITY_ERROR;
 		}
-			
+		this.cantidadEquipos=null;
+		this.fechaInicio=null;
+		this.nombreCampeonato="";
+		
 		FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
 		

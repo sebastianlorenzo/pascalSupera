@@ -6,13 +6,8 @@ xmlns:f="http://java.sun.com/jsf/core"
 xmlns:p="http://primefaces.org/ui"> 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<meta name="Description" content="FCT01 by SymiSun* is an open source XHTML 1.0 and CSS valid template, released under the creative commons license." />
-	<meta name="Keywords" content="symisun, symisun*, free css template, valid xhtml template, open source template, free xhtml template, ftc01, symisun 01" />
 	<link rel="stylesheet" media="screen" href="./resources/css/style.css" />
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-	<meta name="Author" content="SymiSun* - symisun.com" />
-	<meta name="Robots" content="index,follow" />
-	<meta http-equiv="imagetoolbar" content="no" /><!-- disable IE's image toolbar -->
 	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;sensor=true&amp;key=#{registroBean.googleKey}"></script>
 	 <script>
     // <![CDATA[
@@ -63,7 +58,7 @@ xmlns:p="http://primefaces.org/ui">
 			
 					
 					<h:form id="formulario_login">
-						<p:growl id="growl" showDetail="true" />   
+						<p:growl id="growl" showDetail="true" life="2000"/>   
 								<div id = "row_div"> 
 									<div id = "col_div"> 
 										<h:outputLabel class = "label_div" value="Nombre:"></h:outputLabel>
@@ -155,7 +150,8 @@ xmlns:p="http://primefaces.org/ui">
 						        	 <p:outputLabel value="País y/o ciudad:" />	    	
 						        	 <p:inputText id="searchTextField" type="text" value="#{registroBean.paisSeleccionado}" />				        	 
         
-						        	<p:commandButton value="Registrarme" style="margin-top:8px;" type="submit" actionListener="#{registroBean.registarUsuario()}">
+						        	<p:commandButton value="Registrarme" style="margin-top:8px;" type="submit" 
+						        		actionListener="#{registroBean.registarUsuario()}" update=":formulario_registro">										
 									</p:commandButton>
 				    		</p:panel>
 		    			</h:form>	    				

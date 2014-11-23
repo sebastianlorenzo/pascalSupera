@@ -123,6 +123,7 @@ public class RegistroBean {
 		this.pwd="";
 		this.mail="";
 		this.equipo="";
+		this.nomEstadio="";
 		this.nombre="";
 		this.paisSeleccionado="";
 		JSONObject json = new JSONObject(respuesta);
