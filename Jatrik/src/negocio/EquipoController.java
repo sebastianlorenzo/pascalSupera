@@ -25,6 +25,21 @@ import tipos.DataListaPosicion;
 import tipos.DataPosicion;
 import tipos.DataListaOferta;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;	
+
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -358,5 +373,95 @@ public class EquipoController implements IEquipoController
 	public DataListaPartido obtenerUltimosResultados(String nomUsuario) 
 	{
 		return this.equipoDAO.obtenerUltimosResultadosEquipo(nomUsuario);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public void obtenerJugadoresExternos() {
+		try {
+			URL url = new URL("http://c3420952.r52.cf0.rackcdn.com/playerdata.xml");
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			String strTemp = "";
+			String respuesta = "";
+			while (null != (strTemp = br.readLine())) {
+				respuesta = respuesta + strTemp;
+			}
+	
+			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		    InputSource is = new InputSource();
+		    is.setCharacterStream(new StringReader(respuesta));
+		    Document doc = db.parse(is);
+		    Node n1 = doc.getFirstChild();
+		    Node n2 = n1.getFirstChild();
+		    NodeList nodes = n2.getChildNodes();
+			
+		    int exito = 0;
+			int fallo = 0;
+			
+		    for (int i = 0; i < nodes.getLength(); i++) {
+		    	Element element = (Element) nodes.item(i);
+		    	int velocidad = 0;
+		    	int tecnica = 0;
+		    	int ataque = 0;
+		    	int defensa = 0;
+		    	int porteria = 0;
+		    	String posicion = null;
+		    	String nombre = element.getAttribute("f").toString();
+		    	String apellido = element.getAttribute("s").toString();
+		    	String jugador = nombre + " " + apellido;
+		    	float random = (float) (Math.random()*100);
+		    	if (random >= 0 && random < 10){
+		    		posicion = Constantes.CONST_PORTERO;
+		    		velocidad = (int) (Math.random()*50);
+			    	tecnica = (int) (Math.random()*50);
+			    	ataque = (int) (Math.random()*50);
+			    	defensa = (int) (Math.random()*50);
+			    	porteria = (int) (Math.random()*50) + 50;
+		    	}
+		    	else if (random >= 10 && random < 40){
+		    		posicion = Constantes.CONST_DEFENSA;
+		    		velocidad = (int) (Math.random()*50) + 50;
+			    	tecnica = (int) (Math.random()*50);
+			    	ataque = (int) (Math.random()*50);
+			    	defensa = (int) (Math.random()*50) + 50;
+			    	porteria = (int) (Math.random()*50);
+		    	}
+				else if (random >= 40 && random < 70){
+					posicion = Constantes.CONST_MEDIOCAMPISTA;
+		    		velocidad = (int) (Math.random()*50) + 50;
+			    	tecnica = (int) (Math.random()*50) + 50;
+			    	ataque = (int) (Math.random()*50);
+			    	defensa = (int) (Math.random()*50) + 50;
+			    	porteria = (int) (Math.random()*50); 		
+		    	}
+				else if (random >= 70 && random <= 100){
+					posicion = Constantes.CONST_DELANTERO;
+		    		velocidad = (int) (Math.random()*50) + 50;
+			    	tecnica = (int) (Math.random()*50) + 50;
+			    	ataque = (int) (Math.random()*50);
+			    	defensa = (int) (Math.random()*50);
+			    	porteria = (int) (Math.random()*50);
+				}
+				Jugador j = new Jugador(null, jugador, null, posicion, (float)velocidad,	
+						(float)tecnica, (float)ataque, (float)defensa, (float)porteria, Constantes.CONST_SUPLENTE,
+						   0, 0, 0, 0);
+				Boolean res = this.jugadorDAO.insertarJugador(j);
+				if (res){
+					System.out.println("Inserto");
+					System.out.println("Nombre: " + element.getAttribute("f").toString());
+					System.out.println("Apellido: " + element.getAttribute("s").toString());
+					exito++;
+				}
+				else{
+					System.out.println("Fallo");
+					System.out.println("Nombre: " + element.getAttribute("f").toString());
+					System.out.println("Apellido: " + element.getAttribute("s").toString());
+					fallo++;
+				}
+		    }
+			System.out.println("Inserto " + exito);
+			System.out.println("Fallo " + fallo);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

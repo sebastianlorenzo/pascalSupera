@@ -55,5 +55,7 @@ public interface IEquipoController
 	public void ejecutarEntrenamiento();
 
 	public DataListaPartido obtenerUltimosResultados(String nomUsuario);
+	
+	public void obtenerJugadoresExternos();
 			
 }

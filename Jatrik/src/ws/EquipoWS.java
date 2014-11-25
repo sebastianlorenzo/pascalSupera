@@ -345,4 +345,11 @@ public class EquipoWS
 		return g.toJson(dataEq);
 	}
 	
+	@GET
+	@Path("obtenerJugadoresExternos")
+	public void obtenerJugadoresExternos()
+	{
+		iEquipoController.obtenerJugadoresExternos();
+	}
+	
 }

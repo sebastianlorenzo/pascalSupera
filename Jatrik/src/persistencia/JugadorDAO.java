@@ -8,6 +8,8 @@ import dominio.Jugador;
 public interface JugadorDAO 
 {
 	
+	public Boolean insertarJugador(Jugador j);
+	
 	public ArrayList<Jugador> obtenerJugadoresSinEquipo();
 
 	public ArrayList<Jugador> obtenerPorterosSinEquipo();

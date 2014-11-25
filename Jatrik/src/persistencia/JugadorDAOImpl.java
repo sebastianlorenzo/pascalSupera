@@ -17,6 +17,21 @@ public class JugadorDAOImpl implements JugadorDAO
 	@PersistenceContext(unitName="Jatrik")
 	private javax.persistence.EntityManager em;
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Boolean insertarJugador(Jugador j) 
+	{
+		try
+		{
+			em.persist(j);
+			return true;
+		}
+		catch (Throwable ex)
+		{
+			System.out.println("EXCEPCIÓN: " + ex.getClass());
+            return false;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ArrayList<Jugador> obtenerJugadoresSinEquipo()
