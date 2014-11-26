@@ -31,9 +31,9 @@ public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Size(min = 1, message = "EL nombre no puede ser vac�o")
+	@Size(min = 1, message = "EL nombre no puede ser vac\u00EDo")
 	private String nombre;
-	@Size(min = 1, message = "La contrase�a no puede ser vac�a")
+	@Size(min = 1, message = "La contrase\u00f1a no puede ser vac\u00EDa")
 	private String pwd;
 	private boolean admin;
 	private String nomEquipo;

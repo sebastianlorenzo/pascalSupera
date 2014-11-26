@@ -140,7 +140,7 @@ public class VistaWebController {
 				if (ok){
 					respuesta_bean="{"+
 									"ok"+":"+true+","+
-									"mensaje"+":"+"Ya puedes Iniciar Sesión."+
+									"mensaje"+":"+"Ya puedes Iniciar Sesi\u00F3n."+
 									"}";				
 					
 				}
