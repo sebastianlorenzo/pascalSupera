@@ -121,7 +121,7 @@ public class EntrenarEquipoBean {
 		else {
 			VistaWebController vwc = new VistaWebController();
 			vwc.modificarEntrenamiento(this.nombreEquipo,this.porteria.toString(), this.defensivo.toString(), this.fisico.toString(), this.ofensivo.toString());
-			context.addMessage(null, new FacesMessage( "","El entrenamiento fue actualizado con éxito"));
+			context.addMessage(null, new FacesMessage( "","El entrenamiento fue actualizado con \u00E9xito"));
 		}
         
 	}

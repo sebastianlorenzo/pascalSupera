@@ -19,15 +19,15 @@ import controladores.VistaWebController;
 @RequestScoped
 public class RegistroBean {
 	
-	@Size(min=1, message="El nombre no puede ser vacio")
+	@Size(min=1, message="El nombre no puede ser vac\u00EDo")
 	private String nombre; //login
-	@Size(min=1, message="La contraseña no puede ser vacia")
+	@Size(min=1, message="La contrase\u00F1a no puede ser vac\u00EDa")
 	private String pwd;
-	@Size(min=1, message="El mail no puede ser vacio")
+	@Size(min=1, message="El mail no puede ser vac\u00EDo")
 	private String mail;
-	@Size(min=1, message="El nombre de equipo no puede ser vacio")
+	@Size(min=1, message="El nombre de equipo no puede ser vac\u00EDo")
 	private String equipo;
-	@Size(min=1, message="El nombre del estadio no puede ser vacio")
+	@Size(min=1, message="El nombre del estadio no puede ser vac\u00EDo")
 	private String nomEstadio;	
 	private String googleKey="AIzaSyAqLuGawbfE7GsJbJH2ZJvb6Z02UoAhfIo";
     private String paisSeleccionado="";

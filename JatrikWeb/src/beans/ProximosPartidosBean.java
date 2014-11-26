@@ -209,16 +209,16 @@ public class ProximosPartidosBean {
 			
 			icono=FacesMessage.SEVERITY_INFO;
 			if (cant_cambios>=2)
-				mensaje = "Sus "+cant_cambios.toString()+" cambios fueron realizados con éxito";
+				mensaje = "Sus "+cant_cambios.toString()+" cambios fueron realizados con \u00E9xito";
 			else
-				mensaje = "Su cambio fue realizado con éxito";
+				mensaje = "Su cambio fue realizado con \u00E9xito";
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage(icono ,"" ,mensaje);
 			context.addMessage(null, message);
 		}
 		else{
 			icono=FacesMessage.SEVERITY_ERROR;
-			mensaje = "Há ocurrido un error, intentelo de nuevo.";
+			mensaje = "Ha ocurrido un error, intentelo de nuevo.";
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage(icono ,"" ,mensaje);
 			context.addMessage(null, message);

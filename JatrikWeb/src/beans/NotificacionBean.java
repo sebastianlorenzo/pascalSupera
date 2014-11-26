@@ -16,8 +16,8 @@ import org.codehaus.jettison.json.JSONException;
 import com.google.gson.Gson;
 
 import controladores.VistaWebController;
-import dataTypes.DataListaNotificacion;
-import dataTypes.DataNotificacion;
+import tipos.DataListaNotificacion;
+import tipos.DataNotificacion;
 
 @ManagedBean
 @RequestScoped

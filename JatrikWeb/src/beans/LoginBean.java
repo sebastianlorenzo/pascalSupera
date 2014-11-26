@@ -282,7 +282,7 @@ public class LoginBean implements Serializable {
 		} else {
 			String cabecera = "Ha ocurrido un error";
 			Severity icono = FacesMessage.SEVERITY_ERROR;
-			String mensaje = "Compruebe nombre de usuario o contraseña.";
+			String mensaje = "Compruebe nombre de usuario o contrase\u00F1a.";
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage message = new FacesMessage(icono ,cabecera ,mensaje);
 			context.addMessage(null, message);

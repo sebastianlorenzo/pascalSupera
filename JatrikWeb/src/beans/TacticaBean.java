@@ -177,7 +177,7 @@ public class TacticaBean implements Serializable {
 			String respuesta = vwc.modificarTitulares(this.nomEquipo, dlp);
 			JSONObject json = new JSONObject(respuesta);
 			if (json.getBoolean("Resultado"))
-				context.addMessage(null, new FacesMessage( "","Equipo titular actualizado con éxito") );
+				context.addMessage(null, new FacesMessage( "","Equipo titular actualizado con \u00E9xito") );
 			
 			else 
 				context.addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR,"Ha ocurrido un error, intente nuevamente","") );
@@ -189,7 +189,7 @@ public class TacticaBean implements Serializable {
 	public void confirmarFormacion() throws JSONException{
 		FacesContext context = FacesContext.getCurrentInstance();
 		if(this.nueva_formacion==null){
-			context.addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR,"Seleccione una formación","") );
+			context.addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR,"Seleccione una formaci\u00F3n","") );
 		}
 		else {
 			VistaWebController vwc = new VistaWebController();
@@ -197,7 +197,7 @@ public class TacticaBean implements Serializable {
 			String respuesta = vwc.modificarTactica(this.nomEquipo, nueva_f[0], nueva_f[1],nueva_f[2]);
 			JSONObject json = new JSONObject(respuesta);
 			if (json.getBoolean("Result"))
-			context.addMessage(null, new FacesMessage( "","Formación actualizada con éxito") );
+			context.addMessage(null, new FacesMessage( "","Formaci\u00F3n actualizada con \u00E9xito") );
 			else
 				context.addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR,"Ha ocurrido un error, intente nuevamente","") );
 		}
