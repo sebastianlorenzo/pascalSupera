@@ -86,12 +86,12 @@ public class AnotarseCampeonatoBean {
 		if (i>0){
 			cabecera="Felicitaciones!";
 			icono=FacesMessage.SEVERITY_INFO;
-			mensaje_box="Su inscripción fue realizada con éxito";
+			mensaje_box="Su inscripci\u00F3n fue realizada con \u00E9xito";
 		}	
 		else if (i==0){
 			cabecera="Lo siento.";
 			icono=FacesMessage.SEVERITY_ERROR;
-			mensaje_box="OcurriÃ³ un error al inscribirse, intentelo de nuevo";
+			mensaje_box="Ocurri\u00F3 un error al inscribirse, intentelo de nuevo";
 		}
 		else{//==-1
 			cabecera="Lo siento.";

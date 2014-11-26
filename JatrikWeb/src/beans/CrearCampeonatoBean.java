@@ -55,7 +55,7 @@ public class CrearCampeonatoBean {
 		String cabecera;
 		Severity icono;
 		if (json.getBoolean("campeonato")){
-			cabecera="Enhorabuena!";
+			cabecera="Felicitaciones!";
 			icono=FacesMessage.SEVERITY_INFO;
 		}			
 		else{
