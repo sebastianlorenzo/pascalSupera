@@ -206,10 +206,10 @@ public class PartidoDAOImpl implements PartidoDAO
 				
 				List<String> comentariosEnvio = new ArrayList<String>();
 				for (Comentario com: listComentarios ){
-					if(com.getMostrarJugados()){
+					//if(com.getMostrarJugados()){
 						String comentario = com.getMinuto()+" "+com.getComentario();
 						comentariosEnvio.add(comentario);
-					}		
+					//}		
 				}
 				if(comentariosEnvio != null)
 					dp.setDetalle(comentariosEnvio);
