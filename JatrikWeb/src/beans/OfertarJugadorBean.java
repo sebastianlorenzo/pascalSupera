@@ -91,6 +91,8 @@ public class OfertarJugadorBean {
 	public void ofertar() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
 		String idJugador = Integer.toString(this.jugador.getIdJugador());
+		if (this.comentario.equals(""))
+			this.comentario="null";
 		String respuesta = vwc.realizarOferta(this.nomUsr, idJugador, this.comentario, this.precio);
 		JSONObject json = new JSONObject(respuesta);
 		Severity icono;

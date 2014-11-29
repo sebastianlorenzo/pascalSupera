@@ -78,6 +78,8 @@ public class VerOfertasBean {
 	public void aceptarOferta() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
 		String idOferta = Integer.toString(this.oferta.getIdOferta());
+		if (this.comentario.equals(""))
+			this.comentario="null";
 		String respuesta = vwc.aceptarOferta(this.nombreUsr, this.comentario, idOferta);
 		this.comentario="";
 		removerOferta(Integer.parseInt(idOferta));
@@ -99,6 +101,8 @@ public class VerOfertasBean {
 	public void recharzarOferta() throws JSONException{
 		VistaWebController vwc = new VistaWebController();
 		String idOferta = Integer.toString(this.oferta.getIdOferta());
+		if (this.comentario.equals(""))
+			this.comentario="null";
 		String respuesta= vwc.rechazarOferta(this.nombreUsr, this.comentario, idOferta);
 		this.comentario="";
 		removerOferta(Integer.parseInt(idOferta));
