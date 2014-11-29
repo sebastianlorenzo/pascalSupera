@@ -312,7 +312,8 @@ public class EquipoDAOImpl implements EquipoDAO
 			    dof.setIdOferta(idOferta);
 			    
 			    String comentario = of.getComentario();
-			    if (!comentario.equals(""))
+			    if(comentario != null)
+			    //if (!comentario.equals("null"))
 			    	dof.setComentario(comentario);
 			    
 			if(dof != null)
@@ -395,7 +396,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			not.setReceptorNotificacion(usComprador);
 			not.setVista(false);
 			
-			if (!comentario.equals("")){
+			if (comentario != null){
 				oferta.setComentarioAcepta(comentario);
 				not.setTexto(mensaje+" "+comentario);
 			}else{
@@ -479,7 +480,7 @@ public class EquipoDAOImpl implements EquipoDAO
 			not.setReceptorNotificacion(usOferente);
 			not.setVista(false);
 			
-			if (!comentario.equals("")){
+			if (comentario != null){
 				oferta.setComentarioAcepta(comentario);
 				not.setTexto(mensajeUno+" "+comentario);
 			}else{
