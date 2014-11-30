@@ -359,13 +359,17 @@ public class PartidoController implements IPartidoController
 		equipoDAO.actualizarPuntajesEquipo(nom_equipo_local, gano_local ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
 		equipoDAO.actualizarPuntajesEquipo(nom_equipo_visitante, gano_visitante ? Constantes.CONST_PUNTOS_GANADOR : (empate ? Constantes.CONST_PUNTOS_EMPATE : Constantes.CONST_PUNTOS_PERDEDOR));
 
-		/*** Si es el último partido del campeonato => Premio a los tres primeros puestos ***/
+		/*** Si es el último partido del campeonato => Premio a los tres primeros puestos y seteo en -1 el puntaje de los equipos ***/
 		String nomCampeonato       = partido.getCampeonato().getCampeonato();
 		Integer cantidadEquipos    = campeonatoDAO.getCantidadEquipos(nomCampeonato);
 		Integer numero_partido_max = cantidadEquipos * (cantidadEquipos - 1);
 		if (partido.getPartido().equals(nomCampeonato + "_partido_" + numero_partido_max))
 		{
+			// Premiar ganadores
 			campeonatoDAO.premiarGanadores(nomCampeonato);
+			// Setear en -1 el puntaje de los equipos
+			equipoDAO.reiniciarPuntajesEquipo(nom_equipo_local);
+			equipoDAO.reiniciarPuntajesEquipo(nom_equipo_visitante);
 		}
 		
 		System.out.println("Goles Local    : " + goles[0]);

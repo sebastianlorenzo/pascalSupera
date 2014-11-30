@@ -717,4 +717,16 @@ public class EquipoDAOImpl implements EquipoDAO
 		em.merge(e);
 	}
 	
+	public void reiniciarPuntajesEquipo(String equipo)
+	{
+		Equipo e = em.find(Equipo.class, equipo);		
+		if (e == null)
+		{
+			System.out.println("reiniciarPuntajesEquipo: Equipo null.");
+			return;
+		}
+		e.setPuntaje(-1);		
+		em.merge(e);
+	}
+	
 }
