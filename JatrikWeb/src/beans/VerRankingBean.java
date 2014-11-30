@@ -31,7 +31,8 @@ public class VerRankingBean {
 			JSONObject ob = array.getJSONObject(i);
 			String posicion = ob.getString("posicion");
 			String nomUsr = ob.getString("usuario");
-			DataRanking dr = new DataRanking(posicion, nomUsr);
+			String nomEquipo = ob.getString("equipo");
+			DataRanking dr = new DataRanking(posicion, nomUsr,nomEquipo);
 			this.ldr.add(dr);
 		}
 	}
