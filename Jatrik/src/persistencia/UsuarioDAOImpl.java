@@ -320,6 +320,7 @@ public class UsuarioDAOImpl implements UsuarioDAO
 					ob.put("posicion", posicion);
 					ob.put("usuario", eq.getUsuario().getLogin());
 					ob.put("equipo", eq.getEquipo());
+					ob.put("puntos", eq.getRanking());
 					jranking.put(ob);
 					posicion++;
 				}
