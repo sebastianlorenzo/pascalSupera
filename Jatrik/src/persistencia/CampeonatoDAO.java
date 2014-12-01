@@ -1,6 +1,7 @@
 package persistencia;
 
 import tipos.DataListaCampeonato;
+import tipos.DataListaGanadoresCamp;
 import dominio.Campeonato;
 
 public interface CampeonatoDAO 
@@ -30,5 +31,7 @@ public interface CampeonatoDAO
 	public Integer getCantidadEquipos(String nomCampeonato);
 
 	public void premiarGanadores(String nomCampeonato);
+
+	public DataListaGanadoresCamp listarGanadoresCampeonatos();
 	
 }

@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaCampeonato;
+import tipos.DataListaGanadoresCamp;
 
 import com.google.gson.Gson;
 
@@ -121,4 +122,14 @@ public class CampeonatoWS
 		return g.toJson(dataCampEyF);
 	}
 
+	@GET
+	@Path("listarGanadoresCampeonatos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String listarGanadoresCampeonatos()
+	{	
+		Gson g = new Gson();
+		DataListaGanadoresCamp ganadores = iCampeonatoController.listarGanadoresCampeonatos();
+		return g.toJson(ganadores);
+	}
+	
 }

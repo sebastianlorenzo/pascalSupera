@@ -14,7 +14,10 @@ import javax.persistence.Query;
 
 import tipos.Constantes;
 import tipos.DataCampeonato;
+import tipos.DataEquipoRanking;
+import tipos.DataGanadoresCamp;
 import tipos.DataListaCampeonato;
+import tipos.DataListaGanadoresCamp;
 import dominio.Campeonato;
 import dominio.Equipo;
 import dominio.Estadio;
@@ -396,6 +399,57 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			cant++;
 			puntos -= 5;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public DataListaGanadoresCamp listarGanadoresCampeonatos()
+	{
+		// Obtengo todos los campeonatos para los cuales hay resultados ingresados
+		Query query = em.createQuery("SELECT DISTINCT c FROM ResultadoCampeonato r, Campeonato c "
+				  				   + "WHERE r.campeonato = c "
+				  				   + "ORDER BY c.inicioCampeonato DESC");
+		List<Campeonato> campeonatos = query.getResultList();
+		DataListaGanadoresCamp listaGanadores = new DataListaGanadoresCamp();
+		Date fecha_hoy = new Date();
+		List<DataGanadoresCamp> listaGanadoresCamp = new ArrayList<DataGanadoresCamp>();
+		
+		for (Campeonato c : campeonatos)
+		{
+			String nomCampeonato       = c.getCampeonato();
+			Integer cantidadEquipos    = c.getCantEquipos();
+			Integer numero_partido_max = cantidadEquipos * (cantidadEquipos - 1);
+			Partido partido            = em.find(Partido.class, nomCampeonato + "_partido_" + numero_partido_max);
+			// Si el campeonato está completo
+			if(c.getCantEquipos() == c.getEquipos().size())
+			{
+				Date fecha_ultimo_partido = partido.getFechaPartido();
+				// Si la fecha del último partido del campeonato es anterior a hoy => El campeonato finalizó
+				if (fecha_ultimo_partido.before(fecha_hoy))
+				{
+					// Agrego este campeonato a la lista que vamos a retornar
+					DataGanadoresCamp ganadores_campeonato = new DataGanadoresCamp();
+					ganadores_campeonato.setNomCampeonato(nomCampeonato);
+					
+					// Obtengo todos los resultados para el campeonato
+					query = em.createQuery("SELECT r FROM ResultadoCampeonato r "
+			  				   			 + "WHERE r.campeonato = '" + nomCampeonato + "'");
+					List<ResultadoCampeonato> resultados = query.getResultList();
+					List<DataEquipoRanking> listaEquiposRanking = new ArrayList<DataEquipoRanking>();
+					for (ResultadoCampeonato r : resultados)
+					{
+						DataEquipoRanking equipo_ranking = new DataEquipoRanking();
+						equipo_ranking.setNomEquipo(r.getEquipo().getEquipo());
+						equipo_ranking.setRanking(r.getPuntaje());
+						listaEquiposRanking.add(equipo_ranking);
+					}
+					ganadores_campeonato.setListaEquipos(listaEquiposRanking);
+					
+					listaGanadoresCamp.add(ganadores_campeonato);
+				}
+			}
+		}
+		listaGanadores.setListaGanadoresCamp(listaGanadoresCamp);
+		return listaGanadores;
 	}
 	
 }

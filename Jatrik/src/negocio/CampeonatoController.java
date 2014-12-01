@@ -22,6 +22,7 @@ import persistencia.PartidoDAO;
 import persistencia.PartidoDAOImpl;
 import tipos.Constantes;
 import tipos.DataListaCampeonato;
+import tipos.DataListaGanadoresCamp;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -175,6 +176,11 @@ public class CampeonatoController implements ICampeonatoController
 	public DataListaCampeonato listarCampEnEjecucionYFinalizados() 
 	{
 		return this.campeonatoDAO.listarCampEnEjecucionYFinalizados();
+	}
+	
+	public DataListaGanadoresCamp listarGanadoresCampeonatos()
+	{
+		return this.campeonatoDAO.listarGanadoresCampeonatos();
 	}
 
 }

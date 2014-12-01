@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONObject;
 
 import tipos.DataListaCampeonato;
+import tipos.DataListaGanadoresCamp;
 
 @Local
 public interface ICampeonatoController 
@@ -20,5 +21,7 @@ public interface ICampeonatoController
 	public DataListaCampeonato campeonatosEnEjecucion();
 
 	public DataListaCampeonato listarCampEnEjecucionYFinalizados();
+
+	public DataListaGanadoresCamp listarGanadoresCampeonatos();
 	
 }
