@@ -6,7 +6,7 @@ import java.util.List;
 public class DataListaGanadoresCamp 
 {
 	
-	public List<DataGanadoresCamp> listaGanadoresCamp;
+	private List<DataGanadoresCamp> listaGanadoresCamp;
 	
 	
 	public DataListaGanadoresCamp()

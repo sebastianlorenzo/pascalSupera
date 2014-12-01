@@ -3,8 +3,8 @@ package tipos;
 public class DataEquipoRanking 
 {
 	
-	String nomEquipo;
-	Integer ranking;
+	private String nomEquipo;
+	private Integer ranking;
 	
 	
 	public DataEquipoRanking()
