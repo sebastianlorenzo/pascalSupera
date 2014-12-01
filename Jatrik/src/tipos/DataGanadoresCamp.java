@@ -6,8 +6,8 @@ import java.util.List;
 public class DataGanadoresCamp 
 {
 	
-	public String nomCampeonato;
-	public List<DataEquipoRanking> listaEquipos;
+	private String nomCampeonato;
+	private List<DataEquipoRanking> listaEquipos;
 	
 	
 	public DataGanadoresCamp()
