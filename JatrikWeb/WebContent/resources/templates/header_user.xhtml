@@ -26,8 +26,9 @@
 				            <p:menuitem value="Ofertas realizadas" url="ofertasRealizadas_user.xhtml" icon="ui-icon-refresh" />
 				        </p:submenu>		        	
 				        <p:submenu label="Campeonatos" icon="ui-icon-gear">
-				        	<p:menuitem action="#{anotarseCampeonatoBean.listarCampeonatos()}" value="Anotarme a Campeonato" />
-				        	<p:menuitem action="#{campeonatosEnEjecucionBean.listarCampeonatos()}" value="Listar Campeonatos en Ejecución" />				            
+				        	<p:menuitem value="Anotarme a Campeonato" action="#{anotarseCampeonatoBean.listarCampeonatos()}"/>
+				        	<p:menuitem value="Listar Campeonatos en Ejecución" action="#{campeonatosEnEjecucionBean.listarCampeonatos()}"/>
+				        	<p:menuitem value="Historial de Campeonatos" url="ganadoresPorCampeonato_user.xhtml"  />				            
 				        </p:submenu>	
 				        <p:submenu label="Partidos" icon="ui-icon-gear">	 
 					        <p:menuitem url="proximosPartidos_user.xhtml" value="Ver próximos partidos" /> 

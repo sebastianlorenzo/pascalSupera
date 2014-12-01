@@ -4,11 +4,13 @@ public class DataRanking {
 	String posicion;
 	String nomUsr;
 	String nomEquipo;
+	Integer puntos;
 	
-	public DataRanking(String posicion, String nomUsr,String nomEquipo){
+	public DataRanking(String posicion, String nomUsr,String nomEquipo, Integer puntos){
 		this.posicion=posicion;
 		this.nomUsr= nomUsr;
 		this.nomEquipo = nomEquipo;
+		this.puntos= puntos;
 	}
 	
 	public String getPosicion() {
@@ -30,6 +32,14 @@ public class DataRanking {
 
 	public void setNomEquipo(String nomEquipo) {
 		this.nomEquipo = nomEquipo;
+	}
+
+	public Integer getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(Integer puntos) {
+		this.puntos = puntos;
 	}
 	
 }

@@ -32,7 +32,8 @@ public class VerRankingBean {
 			String posicion = ob.getString("posicion");
 			String nomUsr = ob.getString("usuario");
 			String nomEquipo = ob.getString("equipo");
-			DataRanking dr = new DataRanking(posicion, nomUsr,nomEquipo);
+			Integer puntos = ob.getInt("puntos");
+			DataRanking dr = new DataRanking(posicion, nomUsr,nomEquipo,puntos);
 			this.ldr.add(dr);
 		}
 	}

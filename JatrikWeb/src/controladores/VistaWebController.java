@@ -37,6 +37,7 @@ public class VistaWebController {
 	private String LISTAR_CAMPEONATOS_PATH = "campeonatos/listarCampeonatos";
 	private String ANOTARME_CAMPEONATO_PATH = "campeonatos/inscribirse";
 	private String CAMPEONATO_EN_EJECUCION_PATH = "campeonatos/campeonatosEnEjecucion";
+	private String GANADORES_CAMPEONATOS_PATH = "campeonatos/listarGanadoresCampeonatos";
 	//*************************EQUIPO***************************************************************
 	private String OBTENER_TITULARES_PATH = "equipos/obtenerJugadoresTitulares";
 	private String OBTENER_SUPLENTES_PATH = "equipos/obtenerJugadoresSuplentes";
@@ -257,6 +258,15 @@ public class VistaWebController {
 					
 					Client client = ClientBuilder.newClient();		
 					WebTarget target = client.target(REST_URI_PATH+CAMPEONATO_EN_EJECUCION_PATH);	 
+					String respuesta=target.request().get(String.class);
+				    return respuesta;
+					
+				}
+				// LISTAR GANADORES CAMPEONATOS	**************************************************************************************
+				public String listarGanadoresCampeonatos () {
+					
+					Client client = ClientBuilder.newClient();		
+					WebTarget target = client.target(REST_URI_PATH+GANADORES_CAMPEONATOS_PATH);	 
 					String respuesta=target.request().get(String.class);
 				    return respuesta;
 					
