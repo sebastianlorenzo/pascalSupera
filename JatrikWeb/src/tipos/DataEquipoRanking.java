@@ -1,6 +1,6 @@
 package tipos;
 
-public class DataEquipoRanking 
+public class DataEquipoRanking  implements Comparable<DataEquipoRanking>
 {
 	
 	private String nomEquipo;
@@ -32,5 +32,15 @@ public class DataEquipoRanking
 	{
 		this.ranking = ranking;
 	}
-
+	
+	 @Override
+     public int compareTo(DataEquipoRanking d) {
+         if (this.ranking > d.getRanking()) {
+             return -1;
+         }
+         if (this.ranking < d.getRanking()) {
+             return 1;
+         }
+         return 0;
+     }
 }

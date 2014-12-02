@@ -42,7 +42,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		}
 		catch (Throwable ex)
 		{
-			System.out.println("EXCEPCIÓN: " + ex.getClass());
+			System.out.println("EXCEPCIï¿½N: " + ex.getClass());
             return null;
 		}
 	}
@@ -79,7 +79,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	}
 	
 	
-	//funcion auxiliar. Suma los días recibidos a la fecha  	
+	//funcion auxiliar. Suma los dï¿½as recibidos a la fecha  	
 	public Date sumarDiasFecha(Date fecha, int dias)
 	{
 		Calendar calendar = Calendar.getInstance();
@@ -151,7 +151,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 		return dlcampeonatos;		
 	}
 	
-	//funcion auxiliar que permite saber si debemos crear un nuevo campeonato automáticamente.
+	//funcion auxiliar que permite saber si debemos crear un nuevo campeonato automï¿½ticamente.
 	@SuppressWarnings("unchecked")
 	public boolean hayCampeonatosDisponibles()
 	{
@@ -189,7 +189,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			em.merge(e);
 			em.merge(c);
 			
-			// El campeonato se llenó
+			// El campeonato se llenï¿½
 			if(listEquipos.size() == c.getCantEquipos()){
 				Collection<Partido> listPartidos = c.getPartidos();
 				// Para cada equipo anotado al campeonato
@@ -371,7 +371,7 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 	public void premiarGanadores(String nomCampeonato)
 	{
 		// Asigno puntos y plata a los tres primeros lugares
-		// Asigno 15, 10 y 5 puntos a cada posición
+		// Asigno 15, 10 y 5 puntos a cada posiciï¿½n
 		Query query = em.createQuery("SELECT r FROM ResultadoCampeonato r, Campeonato c "
 								   + "WHERE r.campeonato = c AND c.campeonato = '" + nomCampeonato + "' "
 								   + "ORDER BY r.puntaje DESC");
@@ -387,9 +387,10 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			
 			capital += puntos * (capital * Constantes.CONT_PORCENTAJE_CAPITAL / 100); 
 			u.setCapital(capital);
-			r.setPuntaje(r.getPuntaje() + puntos);
+			//r.setPuntaje(r.getPuntaje() + puntos);
+			e.setRanking(e.getRanking()+puntos);
 			
-			// Además restablezco el puntaje del equipo a -1. 
+			// Ademï¿½s restablezco el puntaje del equipo a -1. 
 	        e.setPuntaje(-1);
 	        
 			em.merge(r);
@@ -419,11 +420,11 @@ public class CampeonatoDAOImpl implements CampeonatoDAO
 			Integer cantidadEquipos    = c.getCantEquipos();
 			Integer numero_partido_max = cantidadEquipos * (cantidadEquipos - 1);
 			Partido partido            = em.find(Partido.class, nomCampeonato + "_partido_" + numero_partido_max);
-			// Si el campeonato está completo
+			// Si el campeonato estï¿½ completo
 			if(c.getCantEquipos() == c.getEquipos().size())
 			{
 				Date fecha_ultimo_partido = partido.getFechaPartido();
-				// Si la fecha del último partido del campeonato es anterior a hoy => El campeonato finalizó
+				// Si la fecha del ï¿½ltimo partido del campeonato es anterior a hoy => El campeonato finalizï¿½
 				if (fecha_ultimo_partido.before(fecha_hoy))
 				{
 					// Agrego este campeonato a la lista que vamos a retornar

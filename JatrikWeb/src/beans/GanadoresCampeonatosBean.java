@@ -1,7 +1,9 @@
 package beans;
 
+import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -18,13 +20,20 @@ public class GanadoresCampeonatosBean {
 	private List<DataGanadoresCamp> listaGanadores;
 	
 	
+	@PostConstruct
 	void init(){
 		VistaWebController vwc = new VistaWebController();
 		Gson g = new Gson();
 		DataListaGanadoresCamp dlgc = g.fromJson(vwc.listarGanadoresCampeonatos(), DataListaGanadoresCamp.class);
 		this.listaGanadores = dlgc.getListaGanadoresCamp();
+			for (DataGanadoresCamp dgc:this.listaGanadores){
+				Collections.sort(dgc.getListaEquipos());
+		}
 	}
 
+	public GanadoresCampeonatosBean(){
+		
+	}
 
 	public List<DataGanadoresCamp> getListaGanadores() {
 		return listaGanadores;
@@ -33,7 +42,7 @@ public class GanadoresCampeonatosBean {
 
 	public void setListaGanadores(List<DataGanadoresCamp> listaGanadores) {
 		this.listaGanadores = listaGanadores;
-	}
-	
+	}	
+		
 }
 
