@@ -65,7 +65,12 @@ public class EquipoController implements IEquipoController
 	{
 		Equipo e = new Equipo(equipo, pais);
 		int capacidad = Constantes.MAX_CAPACIDAD;
-		int altura = (int) (Math.random() * (Constantes.MAX_ALTURA_ESTADIO - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
+		double prob = Math.random();
+		int altura = 0;
+		if (prob>0.9)
+			altura = (int) (Math.random() * (Constantes.MAX_ALTURA_ESTADIO - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
+		else
+			altura = (int) (Math.random() * (1000 - Constantes.MIN_ALTURA_ESTADIO + 1) + Constantes.MIN_ALTURA_ESTADIO);
 		Estadio estadio = new Estadio(nomestadio, capacidad, altura);
 		this.estadioDAO.insertarEstadio(estadio);
 		e.setEstadio(estadio);
