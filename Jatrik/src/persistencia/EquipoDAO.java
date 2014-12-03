@@ -62,7 +62,7 @@ public interface EquipoDAO
 
 	public DataListaPartido obtenerUltimosResultadosEquipo(String nomUsuario);
 	 
-	public void actualizarPuntajesEquipo(String equipo, Integer puntos);
+	public void actualizarPuntajesEquipo(String campeonato, String equipo, Integer puntos);
 
 	public void reiniciarPuntajesEquipo(String equipo);
 	

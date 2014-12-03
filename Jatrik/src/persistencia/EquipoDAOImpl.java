@@ -666,7 +666,7 @@ public class EquipoDAOImpl implements EquipoDAO
 	}
 
 	@SuppressWarnings("unchecked")
-	public void actualizarPuntajesEquipo(String equipo, Integer puntos)
+	public void actualizarPuntajesEquipo(String campeonato, String equipo, Integer puntos)
 	{
 		/*** Obtengo el equipo, el usuario y el campeonato ***/
 		Equipo e = em.find(Equipo.class, equipo);		
@@ -706,7 +706,7 @@ public class EquipoDAOImpl implements EquipoDAO
 		while (it.hasNext())
 		{
 			ResultadoCampeonato r = it.next();
-			if (r.getEquipo().getEquipo().equals(equipo))
+			if (r.getEquipo().getEquipo().equals(equipo) && r.getCampeonato().getCampeonato().equals(campeonato))
 			{
 				r.setPuntaje(r.getPuntaje() + puntos);
 			}
