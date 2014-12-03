@@ -396,7 +396,7 @@ public class EquipoController implements IEquipoController
 		    int exito = 0;
 			int fallo = 0;
 			
-		    for (int i = 0; i < nodes.getLength(); i++) {
+		    for (int i = 0; i < 3000; i++) {
 		    	Element element = (Element) nodes.item(i);
 		    	int velocidad = 0;
 		    	int tecnica = 0;
@@ -436,7 +436,7 @@ public class EquipoController implements IEquipoController
 					posicion = Constantes.CONST_DELANTERO;
 		    		velocidad = (int) (Math.random()*50) + 50;
 			    	tecnica = (int) (Math.random()*50) + 50;
-			    	ataque = (int) (Math.random()*50);
+			    	ataque = (int) (Math.random()*50)+50;
 			    	defensa = (int) (Math.random()*50);
 			    	porteria = (int) (Math.random()*50);
 				}
