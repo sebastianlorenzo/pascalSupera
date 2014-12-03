@@ -242,49 +242,52 @@ public class PartidoController implements IPartidoController
 			{
 				// Calcular el jugador que recibió la tarjeta y hacer el cálculo de tarjetas que lleva - Es un jugador del equipo contrario
 				Jugador j = getJugadorTarjeta(jugadoresContrarios, tipoJugador);
-				System.out.print("\nANTES Jugador " + j.getJugador());
-				System.out.println("\nANTES Estado " + j.getEstado_jugador());
-				if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
+				if (j != null)
 				{
-					// Las tarjetas van sobre el equipo contrario
-					tarjetasAmarillas[1 - local_visitante]++;
-					jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
-					if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
+					System.out.print("\nANTES Jugador " + j.getJugador());
+					System.out.println("\nANTES Estado " + j.getEstado_jugador());
+					if(probTarjeta <= Constantes.CONST_TARJETA_AMARILLA)
 					{
-						System.out.print("Equipo del jugador null (tarjeta amarilla).\n");
-						return;
+						// Las tarjetas van sobre el equipo contrario
+						tarjetasAmarillas[1 - local_visitante]++;
+						jugadorDAO.sumarTarjetaAmarilla(j.getIdJugador());
+						if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
+						{
+							System.out.print("Equipo del jugador null (tarjeta amarilla).\n");
+							return;
+						}
+						mensaje = "Tarjeta amarilla para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ".";
+						if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
+						{
+							penalizacion[1 - local_visitante] += (float) 0.1;
+							jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
+							mensaje += " El mismo ha sido expulsado del juego.";
+						}
+						mensaje += "\n";
+						// Actualizo el historial de tarjetas amarillas del jugador
+						jugadorDAO.sumarTarjetaAmarillaHistorialJugador(j.getIdJugador());
 					}
-					mensaje = "Tarjeta amarilla para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ".";
-					if (jugadorDAO.getCantidadTarjetasAmarillas(j.getIdJugador()) == 2)
+					else
 					{
+						tarjetasRojas[1 - local_visitante]++;
 						penalizacion[1 - local_visitante] += (float) 0.1;
 						jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
-						mensaje += " El mismo ha sido expulsado del juego.";
+						if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
+						{
+							System.out.print("Equipo del jugador null (tarjeta roja).\n");
+							return;
+						}
+						mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
+						// Actualizo el historial de tarjetas rojas del jugador
+						jugadorDAO.sumarTarjetaRojaHistorialJugador(j.getIdJugador());
 					}
-					mensaje += "\n";
-					// Actualizo el historial de tarjetas amarillas del jugador
-					jugadorDAO.sumarTarjetaAmarillaHistorialJugador(j.getIdJugador());
+					minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
+					comentario = new Comentario(minuto, mensaje, partido);
+					comentarios.add(comentario);
+					System.out.print(" - " + mensaje);
+					System.out.print("DESPUES Jugador " + j.getJugador());
+					System.out.println("\nDESPUES Estado " + j.getEstado_jugador());
 				}
-				else
-				{
-					tarjetasRojas[1 - local_visitante]++;
-					penalizacion[1 - local_visitante] += (float) 0.1;
-					jugadorDAO.cambiarEstadoJugador(j.getIdJugador(), Constantes.CONST_EXPULSADO);
-					if (jugadorDAO.obtenerEquipo(j.getIdJugador()) == null)
-					{
-						System.out.print("Equipo del jugador null (tarjeta roja).\n");
-						return;
-					}
-					mensaje = "Tarjeta roja para el jugador " + j.getJugador() + " del equipo " + jugadorDAO.obtenerEquipo(j.getIdJugador()).getEquipo() + ". El mismo ha sido expulsado del juego.\n";
-					// Actualizo el historial de tarjetas rojas del jugador
-					jugadorDAO.sumarTarjetaRojaHistorialJugador(j.getIdJugador());
-				}
-				minuto = (i != 0) ? ((i * Constantes.CONST_DURACION_PARTIDO) / cantidad_jugadas) : 1;
-				comentario = new Comentario(minuto, mensaje, partido);
-				comentarios.add(comentario);
-				System.out.print(" - " + mensaje);
-				System.out.print("DESPUES Jugador " + j.getJugador());
-				System.out.println("\nDESPUES Estado " + j.getEstado_jugador());
 			}
 			
 			// Hubo lesión
