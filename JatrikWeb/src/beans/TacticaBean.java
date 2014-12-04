@@ -164,12 +164,27 @@ public class TacticaBean implements Serializable {
 			}			
 			List<DataPosicion> ldp = new ArrayList<DataPosicion>();
 			Iterator<DataJugador> it2 = nuevos_titulares.iterator();
+			Integer cant = 1;
+			String posicion = "";
 			while (it2.hasNext()){
 				DataJugador dj = (DataJugador) it2.next();
 				DataPosicion dp = new DataPosicion();
 				dp.setIdJugador(dj.getIdJugador());
-				dp.setPosicion(dj.getPosicion());
+				
+				if (cant == 1)
+					posicion = "portero";
+				else
+					if (cant > 1 && cant <= this.cant_defensas)
+						posicion = "defensa";
+				else 
+					if ((cant > (this.cant_defensas + 1)) && (cant <= (this.cant_mediocampistas +this.cant_defensas+1)))
+						posicion = "mediocampista";
+				else
+					if ((cant > (this.cant_mediocampistas + this.cant_defensas+1)) && (cant <= this.cant_delanteros+this.cant_mediocampistas +this.cant_defensas+1))
+							posicion = "delantero";
+				dp.setPosicion(posicion);
 				ldp.add(dp);
+				cant++;
 			}
 			DataListaPosicion dlp = new DataListaPosicion();
 			dlp.setListPosiciones(ldp);
